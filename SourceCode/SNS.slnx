@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="SNS.API/SNS.API.csproj" />
+  <Project Path="SNS.Application/SNS.Application.csproj" />
+  <Project Path="SNS.Domain/SNS.Domain.csproj" />
+  <Project Path="SNS.Infrastructure/SNS.Infrastructure.csproj" />
+</Solution>

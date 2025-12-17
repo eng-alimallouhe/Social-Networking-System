@@ -1,0 +1,49 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/28.0.6 Chrome/138.0.7204.100 Electron/37.2.3 Safari/537.36" version="28.0.6">
+  <diagram name="Page-1" id="il1NVM65M3Nmp2Pdl5f5">
+    <mxGraphModel dx="1512" dy="680" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="EdZOKSfrWMaQn4-REcdx-1" value="&lt;font face=&quot;Lucida Console&quot; style=&quot;font-size: 15px;&quot;&gt;ProfileDocument&lt;/font&gt;" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;strokeWidth=2;labelBackgroundColor=none;sketch=1;curveFitting=1;jiggle=2;rounded=1;fillColor=#364156;strokeColor=#EEEEEE;fontColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry x="140" y="170" width="450" height="346" as="geometry" />
+        </mxCell>
+        <mxCell id="EdZOKSfrWMaQn4-REcdx-3" value="&lt;font face=&quot;Lucida Console&quot; style=&quot;font-size: 13px;&quot;&gt;+ Id: string (Document Key)&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;strokeWidth=2;labelBackgroundColor=none;sketch=1;curveFitting=1;jiggle=2;rounded=1;fontColor=#FFFFFF;" vertex="1" parent="EdZOKSfrWMaQn4-REcdx-1">
+          <mxGeometry y="26" width="450" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="EdZOKSfrWMaQn4-REcdx-4" value="&lt;font face=&quot;Lucida Console&quot; style=&quot;font-size: 13px;&quot;&gt;+ FullName: string&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;strokeWidth=2;labelBackgroundColor=none;sketch=1;curveFitting=1;jiggle=2;rounded=1;fontColor=#FFFFFF;" vertex="1" parent="EdZOKSfrWMaQn4-REcdx-1">
+          <mxGeometry y="52" width="450" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="EdZOKSfrWMaQn4-REcdx-5" value="&lt;font face=&quot;Lucida Console&quot; style=&quot;font-size: 13px;&quot;&gt;+ Bio: string&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;strokeWidth=2;labelBackgroundColor=none;sketch=1;curveFitting=1;jiggle=2;rounded=1;fontColor=#FFFFFF;" vertex="1" parent="EdZOKSfrWMaQn4-REcdx-1">
+          <mxGeometry y="78" width="450" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="EdZOKSfrWMaQn4-REcdx-6" value="&lt;font face=&quot;Lucida Console&quot; style=&quot;font-size: 13px;&quot;&gt;+ ProfilePictureUrl: string&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;strokeWidth=2;labelBackgroundColor=none;sketch=1;curveFitting=1;jiggle=2;rounded=1;fontColor=#FFFFFF;" vertex="1" parent="EdZOKSfrWMaQn4-REcdx-1">
+          <mxGeometry y="104" width="450" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="EdZOKSfrWMaQn4-REcdx-8" value="&lt;font face=&quot;Lucida Console&quot; style=&quot;font-size: 13px;&quot;&gt;+ FollowersCount: int&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;strokeWidth=2;labelBackgroundColor=none;sketch=1;curveFitting=1;jiggle=2;rounded=1;fontColor=#FFFFFF;" vertex="1" parent="EdZOKSfrWMaQn4-REcdx-1">
+          <mxGeometry y="130" width="450" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="EdZOKSfrWMaQn4-REcdx-9" value="&lt;font face=&quot;Lucida Console&quot; style=&quot;font-size: 13px;&quot;&gt;+ FollowingCount: int&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;strokeWidth=2;labelBackgroundColor=none;sketch=1;curveFitting=1;jiggle=2;rounded=1;fontColor=#FFFFFF;" vertex="1" parent="EdZOKSfrWMaQn4-REcdx-1">
+          <mxGeometry y="156" width="450" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="EdZOKSfrWMaQn4-REcdx-11" value="&lt;font face=&quot;Lucida Console&quot; style=&quot;font-size: 13px;&quot;&gt;+ BlockedProfiles: List&amp;lt;Guid&amp;gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;strokeWidth=2;labelBackgroundColor=none;sketch=1;curveFitting=1;jiggle=2;rounded=1;fontColor=#FFFFFF;" vertex="1" parent="EdZOKSfrWMaQn4-REcdx-1">
+          <mxGeometry y="182" width="450" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="EdZOKSfrWMaQn4-REcdx-12" value="&lt;font face=&quot;Lucida Console&quot; style=&quot;font-size: 13px;&quot;&gt;+ SubscribedCommunities: List&amp;lt;Guid&amp;gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;strokeWidth=2;labelBackgroundColor=none;sketch=1;curveFitting=1;jiggle=2;rounded=1;fontColor=#FFFFFF;" vertex="1" parent="EdZOKSfrWMaQn4-REcdx-1">
+          <mxGeometry y="208" width="450" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="EdZOKSfrWMaQn4-REcdx-14" value="&lt;font face=&quot;Lucida Console&quot; style=&quot;font-size: 13px;&quot;&gt;+ Skills: List&amp;lt;string&amp;gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;strokeWidth=2;labelBackgroundColor=none;sketch=1;curveFitting=1;jiggle=2;rounded=1;fontColor=#FFFFFF;" vertex="1" parent="EdZOKSfrWMaQn4-REcdx-1">
+          <mxGeometry y="234" width="450" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="EdZOKSfrWMaQn4-REcdx-15" value="&lt;font face=&quot;Lucida Console&quot; style=&quot;font-size: 13px;&quot;&gt;+ Interests: List&amp;lt;string&amp;gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;strokeWidth=2;labelBackgroundColor=none;sketch=1;curveFitting=1;jiggle=2;rounded=1;fontColor=#FFFFFF;" vertex="1" parent="EdZOKSfrWMaQn4-REcdx-1">
+          <mxGeometry y="260" width="450" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="EdZOKSfrWMaQn4-REcdx-16" value="&lt;font face=&quot;Lucida Console&quot; style=&quot;font-size: 13px;&quot;&gt;+ University: string&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;strokeWidth=2;labelBackgroundColor=none;sketch=1;curveFitting=1;jiggle=2;rounded=1;fontColor=#FFFFFF;" vertex="1" parent="EdZOKSfrWMaQn4-REcdx-1">
+          <mxGeometry y="286" width="450" height="34" as="geometry" />
+        </mxCell>
+        <mxCell id="EdZOKSfrWMaQn4-REcdx-17" value="&lt;font face=&quot;Lucida Console&quot; style=&quot;font-size: 13px;&quot;&gt;+ Faculty: string&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;strokeWidth=2;labelBackgroundColor=none;sketch=1;curveFitting=1;jiggle=2;rounded=1;fontColor=#FFFFFF;" vertex="1" parent="EdZOKSfrWMaQn4-REcdx-1">
+          <mxGeometry y="320" width="450" height="26" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

@@ -1,0 +1,25 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/28.0.6 Chrome/138.0.7204.100 Electron/37.2.3 Safari/537.36" version="28.0.6">
+  <diagram name="Page-1" id="FmOJ2WVpyzpaNC-kHLTh">
+    <mxGraphModel dx="1512" dy="680" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="ZbK_-VlITrASynJl2hlT-1" value="&lt;font face=&quot;Lucida Console&quot; style=&quot;font-size: 15px;font-style: 2;&quot;&gt;IIndexManagementService&lt;/font&gt;" style="swimlane;fontStyle=1;align=center;verticalAlign=middle;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;strokeWidth=2;labelBackgroundColor=none;sketch=1;curveFitting=1;jiggle=2;rounded=1;fillColor=#4CAF50;strokeColor=#EEEEEE;fontColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry x="250" y="280" width="550" height="226" as="geometry" />
+        </mxCell>
+        <mxCell id="ZbK_-VlITrASynJl2hlT-3" value="&lt;font face=&quot;Lucida Console&quot; style=&quot;font-size: 13px;&quot;&gt;+ InitializeIndicesAsync(): Task&amp;lt;Result&amp;gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;strokeWidth=2;labelBackgroundColor=none;sketch=1;curveFitting=1;jiggle=2;rounded=1;fontColor=#FFFFFF;" vertex="1" parent="ZbK_-VlITrASynJl2hlT-1">
+          <mxGeometry y="26" width="550" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="ZbK_-VlITrASynJl2hlT-4" value="&lt;font face=&quot;Lucida Console&quot; style=&quot;font-size: 13px;&quot;&gt;+ CreateIndexAsync&amp;lt;T&amp;gt;(string indexName): Task&amp;lt;&lt;/font&gt;&lt;span style=&quot;font-family: &amp;quot;Lucida Console&amp;quot;; font-size: 13px;&quot;&gt;Result&amp;lt;&lt;/span&gt;&lt;font face=&quot;Lucida Console&quot; style=&quot;font-size: 13px;&quot;&gt;bool&amp;gt;&amp;gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;strokeWidth=2;labelBackgroundColor=none;sketch=1;curveFitting=1;jiggle=2;rounded=1;fontColor=#FFFFFF;" vertex="1" parent="ZbK_-VlITrASynJl2hlT-1">
+          <mxGeometry y="76" width="550" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="ZbK_-VlITrASynJl2hlT-5" value="&lt;font face=&quot;Lucida Console&quot; style=&quot;font-size: 13px;&quot;&gt;+ UpdateMappingAsync&amp;lt;T&amp;gt;(string indexName): Task&amp;lt;bool&amp;gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;strokeWidth=2;labelBackgroundColor=none;sketch=1;curveFitting=1;jiggle=2;rounded=1;fontColor=#FFFFFF;" vertex="1" parent="ZbK_-VlITrASynJl2hlT-1">
+          <mxGeometry y="126" width="550" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="ZbK_-VlITrASynJl2hlT-6" value="&lt;font face=&quot;Lucida Console&quot; style=&quot;font-size: 13px;&quot;&gt;+ DeleteIndexAsync(string indexName): Task&amp;lt;bool&amp;gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;strokeWidth=2;labelBackgroundColor=none;sketch=1;curveFitting=1;jiggle=2;rounded=1;fontColor=#FFFFFF;" vertex="1" parent="ZbK_-VlITrASynJl2hlT-1">
+          <mxGeometry y="176" width="550" height="50" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

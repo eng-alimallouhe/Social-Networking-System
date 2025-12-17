@@ -1,0 +1,744 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/28.0.6 Chrome/138.0.7204.100 Electron/37.2.3 Safari/537.36" version="28.0.6">
+  <diagram name="Page-1" id="E37XNX4elTI9oVRpryI3">
+    <mxGraphModel dx="2362" dy="1780" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-1" value="" style="edgeStyle=entityRelationEdgeStyle;fontSize=12;html=1;endArrow=block;startArrow=none;rounded=1;curved=0;strokeWidth=2;labelBackgroundColor=none;fontColor=default;strokeColor=#182E3E;startFill=0;dashed=1;dashPattern=8 8;endFill=0;sketch=1;curveFitting=1;jiggle=2;" edge="1" parent="1" source="MM8MfeFnqsnXhdhwojKX-31" target="MM8MfeFnqsnXhdhwojKX-2">
+          <mxGeometry width="100" height="100" relative="1" as="geometry">
+            <mxPoint x="200" y="10" as="sourcePoint" />
+            <mxPoint x="260" y="10" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-2" value="&lt;font face=&quot;Lucida Console&quot; style=&quot;font-size: 15px;&quot;&gt;IRepository&amp;lt;TEntity&amp;gt;&lt;/font&gt;" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;strokeColor=#EEEEEE;fontColor=#FFFFFF;fillColor=#56517E;labelBackgroundColor=none;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="1">
+          <mxGeometry x="-740" y="-530" width="500" height="644" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-3" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;+ GetAllSpecificallyAsync(ISpecification&amp;lt;TEntity&amp;gt; specification):&amp;nbsp;Task&amp;lt;(ICollection&amp;lt;TEntity&amp;gt; items, int count)&amp;gt;&lt;/span&gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;labelBackgroundColor=none;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-2">
+          <mxGeometry y="30" width="500" height="54" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-4" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;+ GetAllGroupedAsync&amp;lt;TResult, TKey&amp;gt;(&lt;/span&gt;&lt;/font&gt;&lt;span data-end=&quot;243&quot; data-start=&quot;208&quot;&gt;&lt;font face=&quot;Lucida Console&quot; style=&quot;font-size: 13px;&quot;&gt;IGroupedProjectionSpecification&lt;/font&gt;&lt;/span&gt;&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;&amp;lt;TEntity, TResult, TKey&amp;gt; specification):&amp;nbsp;Task&amp;lt;ICollection&amp;lt;TResult&amp;gt;&amp;gt;&lt;/span&gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;labelBackgroundColor=none;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-2">
+          <mxGeometry y="84" width="500" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-5" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;+&amp;nbsp;GetAllByExpressionAsync(Expression&amp;lt;Func&amp;lt;TEntity, bool&amp;gt;&amp;gt; expression):&amp;nbsp;Task&amp;lt;ICollection&amp;lt;TEntity&amp;gt;&amp;gt;&lt;/span&gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;labelBackgroundColor=none;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-2">
+          <mxGeometry y="144" width="500" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-6" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;+&amp;nbsp;ProjectToListAsync&amp;lt;TResult&amp;gt;(ISpecification&amp;lt;TEntity&amp;gt; spec, IConfigurationProvider configuration):&amp;nbsp;Task&amp;lt;List&amp;lt;TResult&amp;gt;&amp;gt;&lt;/span&gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;labelBackgroundColor=none;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-2">
+          <mxGeometry y="194" width="500" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-7" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;+&amp;nbsp;GetByIdAsync(Guid id):&amp;nbsp;Task&amp;lt;TEntity?&amp;gt;&lt;/span&gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;labelBackgroundColor=none;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-2">
+          <mxGeometry y="244" width="500" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-8" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;+ GetEntitySpecificallyAsync(ISpecification&amp;lt;TEntity&amp;gt; specification):&amp;nbsp;Task&amp;lt;TEntity entity?&amp;gt;&lt;/span&gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;labelBackgroundColor=none;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-2">
+          <mxGeometry y="284" width="500" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-9" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;+ GetByExpressionAsync(Expression&amp;lt;Func&amp;lt;TEntity, bool&amp;gt;&amp;gt; expression, bool isTrackingEnable):&amp;nbsp;Task&amp;lt;TEntity?&amp;gt;&lt;/span&gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;labelBackgroundColor=none;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-2">
+          <mxGeometry y="334" width="500" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-10" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;+&amp;nbsp;ProjectToEntityAsync&amp;lt;TResult&amp;gt;(ISpecification&amp;lt;TEntity&amp;gt; spec, IConfigurationProvider configuration):&amp;nbsp;Task&amp;lt;TResult?&amp;gt;&lt;/span&gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;labelBackgroundColor=none;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-2">
+          <mxGeometry y="384" width="500" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-11" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;+&amp;nbsp;CountAsync(Expression&amp;lt;Func&amp;lt;TEntity, bool&amp;gt;&amp;gt; expression):&amp;nbsp;Task&amp;lt;int&amp;gt;&lt;/span&gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;labelBackgroundColor=none;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-2">
+          <mxGeometry y="434" width="500" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-12" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;+&amp;nbsp;AddAsync(TEntity entity): Task&lt;/span&gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;labelBackgroundColor=none;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-2">
+          <mxGeometry y="484" width="500" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-13" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;+&amp;nbsp;AddRangeAsync(TEntity entity): Task&lt;/span&gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;labelBackgroundColor=none;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-2">
+          <mxGeometry y="524" width="500" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-14" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;+&amp;nbsp;AddRangeAsync(TEntity entity): Task&lt;/span&gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;labelBackgroundColor=none;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-2">
+          <mxGeometry y="564" width="500" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-15" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;+ DeleteAsync(Guid id): Task&lt;/span&gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;labelBackgroundColor=none;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-2">
+          <mxGeometry y="604" width="500" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-16" value="&lt;font face=&quot;Lucida Console&quot; style=&quot;font-size: 15px;&quot;&gt;ISoftDelatableRepository&amp;lt;TEntity&amp;gt;&lt;/font&gt;" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;strokeColor=#EEEEEE;fontColor=#FFFFFF;fillColor=#56517E;labelBackgroundColor=none;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="1">
+          <mxGeometry x="1220" y="-530" width="500" height="684" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-17" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;+ GetAllSpecificallyAsync(ISpecification&amp;lt;TEntity&amp;gt; specification):&amp;nbsp;Task&amp;lt;(ICollection&amp;lt;TEntity&amp;gt; items, int count)&amp;gt;&lt;/span&gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;labelBackgroundColor=none;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-16">
+          <mxGeometry y="30" width="500" height="54" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-18" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;+ GetAllGroupedAsync&amp;lt;TResult, TKey&amp;gt;(&lt;/span&gt;&lt;/font&gt;&lt;span data-end=&quot;243&quot; data-start=&quot;208&quot;&gt;&lt;font face=&quot;Lucida Console&quot; style=&quot;font-size: 13px;&quot;&gt;IGroupedProjectionSpecification&lt;/font&gt;&lt;/span&gt;&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;&amp;lt;TEntity, TResult, TKey&amp;gt; specification):&amp;nbsp;Task&amp;lt;ICollection&amp;lt;TResult&amp;gt;&amp;gt;&lt;/span&gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;labelBackgroundColor=none;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-16">
+          <mxGeometry y="84" width="500" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-19" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;+&amp;nbsp;GetAllByExpressionAsync(Expression&amp;lt;Func&amp;lt;TEntity, bool&amp;gt;&amp;gt; expression):&amp;nbsp;Task&amp;lt;ICollection&amp;lt;TEntity&amp;gt;&amp;gt;&lt;/span&gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;labelBackgroundColor=none;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-16">
+          <mxGeometry y="144" width="500" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-20" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;+&amp;nbsp;ProjectToListAsync&amp;lt;TResult&amp;gt;(ISpecification&amp;lt;TEntity&amp;gt; spec, IConfigurationProvider configuration):&amp;nbsp;Task&amp;lt;List&amp;lt;TResult&amp;gt;&amp;gt;&lt;/span&gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;labelBackgroundColor=none;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-16">
+          <mxGeometry y="194" width="500" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-21" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;+&amp;nbsp;GetByIdAsync(Guid id):&amp;nbsp;Task&amp;lt;TEntity?&amp;gt;&lt;/span&gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;labelBackgroundColor=none;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-16">
+          <mxGeometry y="244" width="500" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-22" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;+ GetEntitySpecificallyAsync(ISpecification&amp;lt;TEntity&amp;gt; specification):&amp;nbsp;Task&amp;lt;TEntity entity?&amp;gt;&lt;/span&gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;labelBackgroundColor=none;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-16">
+          <mxGeometry y="284" width="500" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-23" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;+ GetByExpressionAsync(Expression&amp;lt;Func&amp;lt;TEntity, bool&amp;gt;&amp;gt; expression, bool isTrackingEnable):&amp;nbsp;Task&amp;lt;TEntity?&amp;gt;&lt;/span&gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;labelBackgroundColor=none;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-16">
+          <mxGeometry y="334" width="500" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-24" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;+&amp;nbsp;ProjectToEntityAsync&amp;lt;TResult&amp;gt;(ISpecification&amp;lt;TEntity&amp;gt; spec, IConfigurationProvider configuration):&amp;nbsp;Task&amp;lt;TResult?&amp;gt;&lt;/span&gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;labelBackgroundColor=none;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-16">
+          <mxGeometry y="384" width="500" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-25" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;+&amp;nbsp;CountAsync(Expression&amp;lt;Func&amp;lt;TEntity, bool&amp;gt;&amp;gt; expression):&amp;nbsp;Task&amp;lt;int&amp;gt;&lt;/span&gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;labelBackgroundColor=none;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-16">
+          <mxGeometry y="434" width="500" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-26" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;+&amp;nbsp;AddAsync(TEntity entity): Task&lt;/span&gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;labelBackgroundColor=none;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-16">
+          <mxGeometry y="484" width="500" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-27" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;+&amp;nbsp;AddRangeAsync(TEntity entity): Task&lt;/span&gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;labelBackgroundColor=none;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-16">
+          <mxGeometry y="524" width="500" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-28" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;+&amp;nbsp;AddRangeAsync(TEntity entity): Task&lt;/span&gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;labelBackgroundColor=none;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-16">
+          <mxGeometry y="564" width="500" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-29" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;+ DeleteAsync(Guid id): Task&lt;/span&gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;labelBackgroundColor=none;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-16">
+          <mxGeometry y="604" width="500" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-30" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;+ SoftDeleteAsync(Guid id): Task&lt;/span&gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;labelBackgroundColor=none;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-16">
+          <mxGeometry y="644" width="500" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-31" value="&lt;font face=&quot;Lucida Console&quot; style=&quot;font-size: 15px;&quot;&gt;Repository&amp;lt;TEntity&amp;gt;&lt;/font&gt;" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=34;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;strokeColor=#EEEEEE;fontColor=#FFFFFF;fillColor=#56517E;labelBackgroundColor=none;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="1">
+          <mxGeometry x="-30" y="-304" width="500" height="742" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-32" value="&lt;font face=&quot;Lucida Console&quot; style=&quot;font-size: 13px;&quot;&gt;- _context: SDPContext { get; }&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;labelBackgroundColor=none;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-31">
+          <mxGeometry y="34" width="500" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-33" value="&lt;font face=&quot;Lucida Console&quot; style=&quot;font-size: 13px;&quot;&gt;- _set: DbSet&amp;lt;TEntity&amp;gt; { get; }&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;labelBackgroundColor=none;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-31">
+          <mxGeometry y="60" width="500" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-34" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=#EEEEEE;fontColor=#FFFFFF;labelBackgroundColor=none;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-31">
+          <mxGeometry y="86" width="500" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-35" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;+ Repository(SDPContext context)&lt;/span&gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;labelBackgroundColor=none;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-31">
+          <mxGeometry y="94" width="500" height="34" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-36" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;+ GetAllSpecificallyAsync(ISpecification&amp;lt;TEntity&amp;gt; specification):&amp;nbsp;Task&amp;lt;(ICollection&amp;lt;TEntity&amp;gt; items, int count)&amp;gt;&lt;/span&gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;labelBackgroundColor=none;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-31">
+          <mxGeometry y="128" width="500" height="54" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-37" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;+ DeleteAsync(Guid id): Task&lt;/span&gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;labelBackgroundColor=none;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-31">
+          <mxGeometry y="182" width="500" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-38" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;+&amp;nbsp;AddRangeAsync(TEntity entity): Task&lt;/span&gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;labelBackgroundColor=none;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-31">
+          <mxGeometry y="222" width="500" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-39" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;+&amp;nbsp;AddRangeAsync(TEntity entity): Task&lt;/span&gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;labelBackgroundColor=none;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-31">
+          <mxGeometry y="262" width="500" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-40" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;+&amp;nbsp;AddAsync(TEntity entity): Task&lt;/span&gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;labelBackgroundColor=none;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-31">
+          <mxGeometry y="302" width="500" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-41" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;+&amp;nbsp;CountAsync(Expression&amp;lt;Func&amp;lt;TEntity, bool&amp;gt;&amp;gt; expression):&amp;nbsp;Task&amp;lt;int&amp;gt;&lt;/span&gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;labelBackgroundColor=none;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-31">
+          <mxGeometry y="342" width="500" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-42" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;+&amp;nbsp;ProjectToEntityAsync&amp;lt;TResult&amp;gt;(ISpecification&amp;lt;TEntity&amp;gt; spec, IConfigurationProvider configuration):&amp;nbsp;Task&amp;lt;TResult?&amp;gt;&lt;/span&gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;labelBackgroundColor=none;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-31">
+          <mxGeometry y="392" width="500" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-43" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;+ GetByExpressionAsync(Expression&amp;lt;Func&amp;lt;TEntity, bool&amp;gt;&amp;gt; expression, bool isTrackingEnable):&amp;nbsp;Task&amp;lt;TEntity?&amp;gt;&lt;/span&gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;labelBackgroundColor=none;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-31">
+          <mxGeometry y="442" width="500" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-44" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;+ GetEntitySpecificallyAsync(ISpecification&amp;lt;TEntity&amp;gt; specification):&amp;nbsp;Task&amp;lt;TEntity entity?&amp;gt;&lt;/span&gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;labelBackgroundColor=none;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-31">
+          <mxGeometry y="492" width="500" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-45" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;+&amp;nbsp;GetByIdAsync(Guid id):&amp;nbsp;Task&amp;lt;TEntity?&amp;gt;&lt;/span&gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;labelBackgroundColor=none;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-31">
+          <mxGeometry y="542" width="500" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-46" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;+&amp;nbsp;GetAllByExpressionAsync(Expression&amp;lt;Func&amp;lt;TEntity, bool&amp;gt;&amp;gt; expression):&amp;nbsp;Task&amp;lt;ICollection&amp;lt;TEntity&amp;gt;&amp;gt;&lt;/span&gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;labelBackgroundColor=none;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-31">
+          <mxGeometry y="582" width="500" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-47" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;+ GetAllGroupedAsync&amp;lt;TResult, TKey&amp;gt;(&lt;/span&gt;&lt;/font&gt;&lt;span data-end=&quot;243&quot; data-start=&quot;208&quot;&gt;&lt;font face=&quot;Lucida Console&quot; style=&quot;font-size: 13px;&quot;&gt;IGroupedProjectionSpecification&lt;/font&gt;&lt;/span&gt;&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;&amp;lt;TEntity, TResult, TKey&amp;gt; specification):&amp;nbsp;Task&amp;lt;ICollection&amp;lt;TResult&amp;gt;&amp;gt;&lt;/span&gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;labelBackgroundColor=none;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-31">
+          <mxGeometry y="632" width="500" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-48" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;+&amp;nbsp;ProjectToListAsync&amp;lt;TResult&amp;gt;(ISpecification&amp;lt;TEntity&amp;gt; spec, IConfigurationProvider configuration):&amp;nbsp;Task&amp;lt;List&amp;lt;TResult&amp;gt;&amp;gt;&lt;/span&gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;labelBackgroundColor=none;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-31">
+          <mxGeometry y="692" width="500" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-49" value="&lt;font face=&quot;Lucida Console&quot; style=&quot;font-size: 15px;&quot;&gt;SoftDeletableRepository&amp;lt;TEntity&amp;gt;&lt;/font&gt;" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;strokeColor=#EEEEEE;fontColor=#FFFFFF;fillColor=#56517E;labelBackgroundColor=none;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="1">
+          <mxGeometry x="540" y="-310" width="500" height="778" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-50" value="&lt;font face=&quot;Lucida Console&quot; style=&quot;font-size: 13px;&quot;&gt;- _context: SDPContext { get; }&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;labelBackgroundColor=none;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-49">
+          <mxGeometry y="30" width="500" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-51" value="&lt;font face=&quot;Lucida Console&quot; style=&quot;font-size: 13px;&quot;&gt;- _set: DbSet&amp;lt;TEntity&amp;gt; { get; }&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;labelBackgroundColor=none;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-49">
+          <mxGeometry y="56" width="500" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-52" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=#EEEEEE;fontColor=#FFFFFF;labelBackgroundColor=none;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-49">
+          <mxGeometry y="82" width="500" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-53" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;+ Repository(SDPContext context)&lt;/span&gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;labelBackgroundColor=none;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-49">
+          <mxGeometry y="90" width="500" height="34" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-54" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;+ GetAllSpecificallyAsync(ISpecification&amp;lt;TEntity&amp;gt; specification):&amp;nbsp;Task&amp;lt;(ICollection&amp;lt;TEntity&amp;gt; items, int count)&amp;gt;&lt;/span&gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;labelBackgroundColor=none;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-49">
+          <mxGeometry y="124" width="500" height="54" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-55" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;+ DeleteAsync(Guid id): Task&lt;/span&gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;labelBackgroundColor=none;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-49">
+          <mxGeometry y="178" width="500" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-56" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;+ SoftDeleteAsync(Guid id): Task&lt;/span&gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;labelBackgroundColor=none;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-49">
+          <mxGeometry y="218" width="500" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-57" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;+&amp;nbsp;AddRangeAsync(TEntity entity): Task&lt;/span&gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;labelBackgroundColor=none;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-49">
+          <mxGeometry y="258" width="500" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-58" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;+&amp;nbsp;AddRangeAsync(TEntity entity): Task&lt;/span&gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;labelBackgroundColor=none;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-49">
+          <mxGeometry y="298" width="500" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-59" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;+&amp;nbsp;AddAsync(TEntity entity): Task&lt;/span&gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;labelBackgroundColor=none;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-49">
+          <mxGeometry y="338" width="500" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-60" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#182E3E;fontColor=default;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" edge="1" parent="MM8MfeFnqsnXhdhwojKX-49" source="MM8MfeFnqsnXhdhwojKX-61">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="510" y="370" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-61" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;+&amp;nbsp;CountAsync(Expression&amp;lt;Func&amp;lt;TEntity, bool&amp;gt;&amp;gt; expression):&amp;nbsp;Task&amp;lt;int&amp;gt;&lt;/span&gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;labelBackgroundColor=none;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-49">
+          <mxGeometry y="378" width="500" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-62" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;+&amp;nbsp;ProjectToEntityAsync&amp;lt;TResult&amp;gt;(ISpecification&amp;lt;TEntity&amp;gt; spec, IConfigurationProvider configuration):&amp;nbsp;Task&amp;lt;TResult?&amp;gt;&lt;/span&gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;labelBackgroundColor=none;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-49">
+          <mxGeometry y="428" width="500" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-63" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;+ GetByExpressionAsync(Expression&amp;lt;Func&amp;lt;TEntity, bool&amp;gt;&amp;gt; expression, bool isTrackingEnable):&amp;nbsp;Task&amp;lt;TEntity?&amp;gt;&lt;/span&gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;labelBackgroundColor=none;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-49">
+          <mxGeometry y="478" width="500" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-64" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;+ GetEntitySpecificallyAsync(ISpecification&amp;lt;TEntity&amp;gt; specification):&amp;nbsp;Task&amp;lt;TEntity entity?&amp;gt;&lt;/span&gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;labelBackgroundColor=none;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-49">
+          <mxGeometry y="528" width="500" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-65" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;+&amp;nbsp;GetByIdAsync(Guid id):&amp;nbsp;Task&amp;lt;TEntity?&amp;gt;&lt;/span&gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;labelBackgroundColor=none;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-49">
+          <mxGeometry y="578" width="500" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-66" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;+&amp;nbsp;GetAllByExpressionAsync(Expression&amp;lt;Func&amp;lt;TEntity, bool&amp;gt;&amp;gt; expression):&amp;nbsp;Task&amp;lt;ICollection&amp;lt;TEntity&amp;gt;&amp;gt;&lt;/span&gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;labelBackgroundColor=none;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-49">
+          <mxGeometry y="618" width="500" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-67" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;+ GetAllGroupedAsync&amp;lt;TResult, TKey&amp;gt;(&lt;/span&gt;&lt;/font&gt;&lt;span data-end=&quot;243&quot; data-start=&quot;208&quot;&gt;&lt;font face=&quot;Lucida Console&quot; style=&quot;font-size: 13px;&quot;&gt;IGroupedProjectionSpecification&lt;/font&gt;&lt;/span&gt;&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;&amp;lt;TEntity, TResult, TKey&amp;gt; specification):&amp;nbsp;Task&amp;lt;ICollection&amp;lt;TResult&amp;gt;&amp;gt;&lt;/span&gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;labelBackgroundColor=none;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-49">
+          <mxGeometry y="668" width="500" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-68" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;+&amp;nbsp;ProjectToListAsync&amp;lt;TResult&amp;gt;(ISpecification&amp;lt;TEntity&amp;gt; spec, IConfigurationProvider configuration):&amp;nbsp;Task&amp;lt;List&amp;lt;TResult&amp;gt;&amp;gt;&lt;/span&gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;labelBackgroundColor=none;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-49">
+          <mxGeometry y="728" width="500" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-69" value="" style="edgeStyle=entityRelationEdgeStyle;fontSize=12;html=1;endArrow=block;startArrow=none;rounded=1;curved=0;strokeWidth=2;labelBackgroundColor=none;fontColor=default;strokeColor=#182E3E;startFill=0;dashed=1;dashPattern=8 8;endFill=0;sketch=1;curveFitting=1;jiggle=2;" edge="1" parent="1" source="MM8MfeFnqsnXhdhwojKX-49" target="MM8MfeFnqsnXhdhwojKX-16">
+          <mxGeometry width="100" height="100" relative="1" as="geometry">
+            <mxPoint x="90" y="127" as="sourcePoint" />
+            <mxPoint x="-40" y="80" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-70" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 15px;&quot;&gt;UserRepository&amp;lt;User&amp;gt;&lt;/span&gt;&lt;/font&gt;" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;strokeColor=#EEEEEE;fontColor=#FFFFFF;fillColor=#56517E;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="1">
+          <mxGeometry x="1230" y="260" width="500" height="112" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-71" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;- _context:&amp;nbsp;&lt;/span&gt;&lt;/font&gt;&lt;span style=&quot;font-family: &amp;quot;Lucida Console&amp;quot;; font-size: 13px;&quot;&gt;SDPContext&lt;/span&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-70">
+          <mxGeometry y="26" width="500" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-72" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=#EEEEEE;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-70">
+          <mxGeometry y="52" width="500" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-73" value="&lt;font face=&quot;Lucida Console&quot; style=&quot;font-size: 13px;&quot;&gt;+ UserRepository(&lt;/font&gt;&lt;span style=&quot;font-family: &amp;quot;Lucida Console&amp;quot;; font-size: 13px;&quot;&gt;SDPContext context)&lt;/span&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-70">
+          <mxGeometry y="60" width="500" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-74" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;+ SoftDeleteAsync(Guid id): Task&amp;nbsp;&lt;/span&gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-70">
+          <mxGeometry y="86" width="500" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-75" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 15px;&quot;&gt;NotificationRepository&amp;lt;&lt;/span&gt;&lt;/font&gt;&lt;span style=&quot;font-family: &amp;quot;Lucida Console&amp;quot;; font-size: 15px;&quot;&gt;Notification&lt;/span&gt;&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 15px;&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/font&gt;" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;strokeColor=#EEEEEE;fontColor=#FFFFFF;fillColor=#56517E;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="1">
+          <mxGeometry x="-740" y="174" width="500" height="86" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-76" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;- _context:&amp;nbsp;&lt;/span&gt;&lt;/font&gt;&lt;span style=&quot;font-family: &amp;quot;Lucida Console&amp;quot;; font-size: 13px;&quot;&gt;SDPContext&lt;/span&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-75">
+          <mxGeometry y="26" width="500" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-77" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=#EEEEEE;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-75">
+          <mxGeometry y="52" width="500" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-78" value="&lt;font face=&quot;Lucida Console&quot; style=&quot;font-size: 13px;&quot;&gt;+ NotificationRepository(&lt;/font&gt;&lt;span style=&quot;font-family: &amp;quot;Lucida Console&amp;quot;; font-size: 13px;&quot;&gt;SDPContext context)&lt;/span&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-75">
+          <mxGeometry y="60" width="500" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-79" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 15px;&quot;&gt;PostRepository&amp;lt;Post&amp;gt;&lt;/span&gt;&lt;/font&gt;" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;strokeColor=#EEEEEE;fontColor=#FFFFFF;fillColor=#56517E;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="1">
+          <mxGeometry x="540" y="494" width="500" height="112" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-80" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;- _context:&amp;nbsp;&lt;/span&gt;&lt;/font&gt;&lt;span style=&quot;font-family: &amp;quot;Lucida Console&amp;quot;; font-size: 13px;&quot;&gt;SDPContext&lt;/span&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-79">
+          <mxGeometry y="26" width="500" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-81" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=#EEEEEE;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-79">
+          <mxGeometry y="52" width="500" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-82" value="&lt;font face=&quot;Lucida Console&quot; style=&quot;font-size: 13px;&quot;&gt;+ PostRepository(&lt;/font&gt;&lt;span style=&quot;font-family: &amp;quot;Lucida Console&amp;quot;; font-size: 13px;&quot;&gt;SDPContext context)&lt;/span&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-79">
+          <mxGeometry y="60" width="500" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-83" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;+ SoftDeleteAsync(Guid id): Task&amp;nbsp;&lt;/span&gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-79">
+          <mxGeometry y="86" width="500" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-84" value="&lt;span style=&quot;font-family: &amp;quot;Lucida Console&amp;quot;; font-size: 15px;&quot;&gt;Comunity&lt;/span&gt;&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 15px;&quot;&gt;Repository&amp;lt;Comunity&amp;gt;&lt;/span&gt;&lt;/font&gt;" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;strokeColor=#EEEEEE;fontColor=#FFFFFF;fillColor=#56517E;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="1">
+          <mxGeometry x="1230" y="430" width="500" height="112" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-85" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;- _context:&amp;nbsp;&lt;/span&gt;&lt;/font&gt;&lt;span style=&quot;font-family: &amp;quot;Lucida Console&amp;quot;; font-size: 13px;&quot;&gt;SDPContext&lt;/span&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-84">
+          <mxGeometry y="26" width="500" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-86" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=#EEEEEE;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-84">
+          <mxGeometry y="52" width="500" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-87" value="&lt;font face=&quot;Lucida Console&quot; style=&quot;font-size: 13px;&quot;&gt;+ ComunityRepository(&lt;/font&gt;&lt;span style=&quot;font-family: &amp;quot;Lucida Console&amp;quot;; font-size: 13px;&quot;&gt;SDPContext context)&lt;/span&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-84">
+          <mxGeometry y="60" width="500" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-88" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;+ SoftDeleteAsync(Guid id): Task&amp;nbsp;&lt;/span&gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-84">
+          <mxGeometry y="86" width="500" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-89" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 15px;&quot;&gt;ProblemRepository&amp;lt;Proplem&amp;gt;&lt;/span&gt;&lt;/font&gt;" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;strokeColor=#EEEEEE;fontColor=#FFFFFF;fillColor=#56517E;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="1">
+          <mxGeometry x="1230" y="606" width="500" height="112" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-90" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;- _context:&amp;nbsp;&lt;/span&gt;&lt;/font&gt;&lt;span style=&quot;font-family: &amp;quot;Lucida Console&amp;quot;; font-size: 13px;&quot;&gt;SDPContext&lt;/span&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-89">
+          <mxGeometry y="26" width="500" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-91" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=#EEEEEE;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-89">
+          <mxGeometry y="52" width="500" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-92" value="&lt;font face=&quot;Lucida Console&quot; style=&quot;font-size: 13px;&quot;&gt;+ ProblemRepository(&lt;/font&gt;&lt;span style=&quot;font-family: &amp;quot;Lucida Console&amp;quot;; font-size: 13px;&quot;&gt;SDPContext context)&lt;/span&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-89">
+          <mxGeometry y="60" width="500" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-93" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;+ SoftDeleteAsync(Guid id): Task&amp;nbsp;&lt;/span&gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-89">
+          <mxGeometry y="86" width="500" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-94" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 15px;&quot;&gt;SolutionRepository&amp;lt;&lt;/span&gt;&lt;/font&gt;&lt;span style=&quot;font-family: &amp;quot;Lucida Console&amp;quot;; font-size: 15px;&quot;&gt;Solution&lt;/span&gt;&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 15px;&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/font&gt;" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;strokeColor=#EEEEEE;fontColor=#FFFFFF;fillColor=#56517E;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="1">
+          <mxGeometry x="1230" y="780" width="500" height="112" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-95" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;- _context:&amp;nbsp;&lt;/span&gt;&lt;/font&gt;&lt;span style=&quot;font-family: &amp;quot;Lucida Console&amp;quot;; font-size: 13px;&quot;&gt;SDPContext&lt;/span&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-94">
+          <mxGeometry y="26" width="500" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-96" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=#EEEEEE;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-94">
+          <mxGeometry y="52" width="500" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-97" value="&lt;font face=&quot;Lucida Console&quot; style=&quot;font-size: 13px;&quot;&gt;+ SolutionRepository(&lt;/font&gt;&lt;span style=&quot;font-family: &amp;quot;Lucida Console&amp;quot;; font-size: 13px;&quot;&gt;SDPContext context)&lt;/span&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-94">
+          <mxGeometry y="60" width="500" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-98" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;+ SoftDeleteAsync(Guid id): Task&amp;nbsp;&lt;/span&gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-94">
+          <mxGeometry y="86" width="500" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-99" value="&lt;span style=&quot;font-family: &amp;quot;Lucida Console&amp;quot;; font-size: 15px;&quot;&gt;Comment&lt;/span&gt;&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 15px;&quot;&gt;Repository&amp;lt;&lt;/span&gt;&lt;/font&gt;&lt;span style=&quot;font-family: &amp;quot;Lucida Console&amp;quot;; font-size: 15px;&quot;&gt;Comment&lt;/span&gt;&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 15px;&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/font&gt;" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;strokeColor=#EEEEEE;fontColor=#FFFFFF;fillColor=#56517E;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="1">
+          <mxGeometry x="540" y="920" width="500" height="112" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-100" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;- _context:&amp;nbsp;&lt;/span&gt;&lt;/font&gt;&lt;span style=&quot;font-family: &amp;quot;Lucida Console&amp;quot;; font-size: 13px;&quot;&gt;SDPContext&lt;/span&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-99">
+          <mxGeometry y="26" width="500" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-101" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=#EEEEEE;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-99">
+          <mxGeometry y="52" width="500" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-102" value="&lt;font face=&quot;Lucida Console&quot; style=&quot;font-size: 13px;&quot;&gt;+ CommentRepository(&lt;/font&gt;&lt;span style=&quot;font-family: &amp;quot;Lucida Console&amp;quot;; font-size: 13px;&quot;&gt;SDPContext context)&lt;/span&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-99">
+          <mxGeometry y="60" width="500" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-103" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;+ SoftDeleteAsync(Guid id): Task&amp;nbsp;&lt;/span&gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-99">
+          <mxGeometry y="86" width="500" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-104" value="&lt;span style=&quot;font-family: &amp;quot;Lucida Console&amp;quot;; font-size: 15px;&quot;&gt;Job&lt;/span&gt;&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 15px;&quot;&gt;Repository&amp;lt;&lt;/span&gt;&lt;/font&gt;&lt;span style=&quot;font-family: &amp;quot;Lucida Console&amp;quot;; font-size: 15px;&quot;&gt;Job&lt;/span&gt;&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 15px;&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/font&gt;" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;strokeColor=#EEEEEE;fontColor=#FFFFFF;fillColor=#56517E;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="1">
+          <mxGeometry x="540" y="770" width="500" height="112" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-105" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;- _context:&amp;nbsp;&lt;/span&gt;&lt;/font&gt;&lt;span style=&quot;font-family: &amp;quot;Lucida Console&amp;quot;; font-size: 13px;&quot;&gt;SDPContext&lt;/span&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-104">
+          <mxGeometry y="26" width="500" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-106" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=#EEEEEE;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-104">
+          <mxGeometry y="52" width="500" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-107" value="&lt;font face=&quot;Lucida Console&quot; style=&quot;font-size: 13px;&quot;&gt;+ jobRepository(&lt;/font&gt;&lt;span style=&quot;font-family: &amp;quot;Lucida Console&amp;quot;; font-size: 13px;&quot;&gt;SDPContext context)&lt;/span&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-104">
+          <mxGeometry y="60" width="500" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-108" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;+ SoftDeleteAsync(Guid id): Task&amp;nbsp;&lt;/span&gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-104">
+          <mxGeometry y="86" width="500" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-109" value="&lt;span style=&quot;font-family: &amp;quot;Lucida Console&amp;quot;; font-size: 15px;&quot;&gt;JobApplication&lt;/span&gt;&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 15px;&quot;&gt;Repository&amp;lt;&lt;/span&gt;&lt;/font&gt;&lt;span style=&quot;font-family: &amp;quot;Lucida Console&amp;quot;; font-size: 15px;&quot;&gt;JobApplication&lt;/span&gt;&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 15px;&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/font&gt;" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;strokeColor=#EEEEEE;fontColor=#FFFFFF;fillColor=#56517E;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="1">
+          <mxGeometry x="540" y="630" width="500" height="112" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-110" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;- _context:&amp;nbsp;&lt;/span&gt;&lt;/font&gt;&lt;span style=&quot;font-family: &amp;quot;Lucida Console&amp;quot;; font-size: 13px;&quot;&gt;SDPContext&lt;/span&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-109">
+          <mxGeometry y="26" width="500" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-111" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=#EEEEEE;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-109">
+          <mxGeometry y="52" width="500" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-112" value="&lt;font face=&quot;Lucida Console&quot; style=&quot;font-size: 13px;&quot;&gt;+ jobApplicationRepository(&lt;/font&gt;&lt;span style=&quot;font-family: &amp;quot;Lucida Console&amp;quot;; font-size: 13px;&quot;&gt;SDPContext context)&lt;/span&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-109">
+          <mxGeometry y="60" width="500" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-113" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;+ SoftDeleteAsync(Guid id): Task&amp;nbsp;&lt;/span&gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-109">
+          <mxGeometry y="86" width="500" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-114" value="" style="edgeStyle=entityRelationEdgeStyle;fontSize=12;html=1;endArrow=none;startArrow=open;rounded=1;curved=0;startFill=0;endFill=0;strokeWidth=2;labelBackgroundColor=none;fontColor=default;strokeColor=#182E3E;sketch=1;curveFitting=1;jiggle=2;" edge="1" parent="1" source="MM8MfeFnqsnXhdhwojKX-70" target="MM8MfeFnqsnXhdhwojKX-49">
+          <mxGeometry width="100" height="100" relative="1" as="geometry">
+            <mxPoint x="1990" y="894" as="sourcePoint" />
+            <mxPoint x="2110" y="590" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-115" value="" style="edgeStyle=entityRelationEdgeStyle;fontSize=12;html=1;endArrow=none;startArrow=open;rounded=1;curved=0;startFill=0;endFill=0;strokeWidth=2;labelBackgroundColor=none;fontColor=default;strokeColor=#182E3E;sketch=1;curveFitting=1;jiggle=2;" edge="1" parent="1" source="MM8MfeFnqsnXhdhwojKX-84" target="MM8MfeFnqsnXhdhwojKX-49">
+          <mxGeometry width="100" height="100" relative="1" as="geometry">
+            <mxPoint x="1240" y="326" as="sourcePoint" />
+            <mxPoint x="1160" y="160" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-116" value="" style="edgeStyle=entityRelationEdgeStyle;fontSize=12;html=1;endArrow=none;startArrow=open;rounded=1;curved=0;startFill=0;endFill=0;strokeWidth=2;labelBackgroundColor=none;fontColor=default;strokeColor=#182E3E;sketch=1;curveFitting=1;jiggle=2;" edge="1" parent="1" source="MM8MfeFnqsnXhdhwojKX-89" target="MM8MfeFnqsnXhdhwojKX-49">
+          <mxGeometry width="100" height="100" relative="1" as="geometry">
+            <mxPoint x="1240" y="496" as="sourcePoint" />
+            <mxPoint x="1050" y="89" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-117" value="" style="edgeStyle=entityRelationEdgeStyle;fontSize=12;html=1;endArrow=none;startArrow=open;rounded=1;curved=0;startFill=0;endFill=0;strokeWidth=2;labelBackgroundColor=none;fontColor=default;strokeColor=#182E3E;sketch=1;curveFitting=1;jiggle=2;" edge="1" parent="1" source="MM8MfeFnqsnXhdhwojKX-94" target="MM8MfeFnqsnXhdhwojKX-49">
+          <mxGeometry width="100" height="100" relative="1" as="geometry">
+            <mxPoint x="1770" y="847" as="sourcePoint" />
+            <mxPoint x="1090" y="100" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-118" value="" style="edgeStyle=entityRelationEdgeStyle;fontSize=12;html=1;endArrow=none;startArrow=open;rounded=1;curved=0;startFill=0;endFill=0;strokeWidth=2;labelBackgroundColor=none;fontColor=default;strokeColor=#182E3E;sketch=1;curveFitting=1;jiggle=2;" edge="1" parent="1" source="MM8MfeFnqsnXhdhwojKX-109" target="MM8MfeFnqsnXhdhwojKX-49">
+          <mxGeometry width="100" height="100" relative="1" as="geometry">
+            <mxPoint x="1240" y="846" as="sourcePoint" />
+            <mxPoint x="1050" y="89" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-119" value="" style="edgeStyle=entityRelationEdgeStyle;fontSize=12;html=1;endArrow=none;startArrow=open;rounded=1;curved=0;startFill=0;endFill=0;strokeWidth=2;labelBackgroundColor=none;fontColor=default;strokeColor=#182E3E;sketch=1;curveFitting=1;jiggle=2;" edge="1" parent="1" source="MM8MfeFnqsnXhdhwojKX-79" target="MM8MfeFnqsnXhdhwojKX-49">
+          <mxGeometry width="100" height="100" relative="1" as="geometry">
+            <mxPoint x="1050" y="696" as="sourcePoint" />
+            <mxPoint x="1050" y="89" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-120" value="" style="edgeStyle=entityRelationEdgeStyle;fontSize=12;html=1;endArrow=none;startArrow=open;rounded=1;curved=0;startFill=0;endFill=0;strokeWidth=2;labelBackgroundColor=none;fontColor=default;strokeColor=#182E3E;sketch=1;curveFitting=1;jiggle=2;" edge="1" parent="1" source="MM8MfeFnqsnXhdhwojKX-104" target="MM8MfeFnqsnXhdhwojKX-49">
+          <mxGeometry width="100" height="100" relative="1" as="geometry">
+            <mxPoint x="1050" y="560" as="sourcePoint" />
+            <mxPoint x="1050" y="89" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-121" value="" style="edgeStyle=entityRelationEdgeStyle;fontSize=12;html=1;endArrow=none;startArrow=open;rounded=1;curved=0;startFill=0;endFill=0;strokeWidth=2;labelBackgroundColor=none;fontColor=default;strokeColor=#182E3E;sketch=1;curveFitting=1;jiggle=2;" edge="1" parent="1" source="MM8MfeFnqsnXhdhwojKX-99" target="MM8MfeFnqsnXhdhwojKX-49">
+          <mxGeometry width="100" height="100" relative="1" as="geometry">
+            <mxPoint x="1050" y="836" as="sourcePoint" />
+            <mxPoint x="1050" y="89" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-122" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 15px;&quot;&gt;ReportRepository&amp;lt;&lt;/span&gt;&lt;/font&gt;&lt;span style=&quot;font-family: &amp;quot;Lucida Console&amp;quot;; font-size: 15px;&quot;&gt;Report&lt;/span&gt;&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 15px;&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/font&gt;" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;strokeColor=#EEEEEE;fontColor=#FFFFFF;fillColor=#56517E;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="1">
+          <mxGeometry x="-740" y="290" width="500" height="86" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-123" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;- _context:&amp;nbsp;&lt;/span&gt;&lt;/font&gt;&lt;span style=&quot;font-family: &amp;quot;Lucida Console&amp;quot;; font-size: 13px;&quot;&gt;SDPContext&lt;/span&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-122">
+          <mxGeometry y="26" width="500" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-124" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=#EEEEEE;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-122">
+          <mxGeometry y="52" width="500" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-125" value="&lt;font face=&quot;Lucida Console&quot; style=&quot;font-size: 13px;&quot;&gt;+ ReportRepository(&lt;/font&gt;&lt;span style=&quot;font-family: &amp;quot;Lucida Console&amp;quot;; font-size: 13px;&quot;&gt;SDPContext context)&lt;/span&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-122">
+          <mxGeometry y="60" width="500" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-126" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 15px;&quot;&gt;InteractionRepository&amp;lt;&lt;/span&gt;&lt;/font&gt;&lt;span style=&quot;font-family: &amp;quot;Lucida Console&amp;quot;; font-size: 15px;&quot;&gt;Interaction&lt;/span&gt;&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 15px;&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/font&gt;" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;strokeColor=#EEEEEE;fontColor=#FFFFFF;fillColor=#56517E;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="1">
+          <mxGeometry x="-740" y="408" width="500" height="86" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-127" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;- _context:&amp;nbsp;&lt;/span&gt;&lt;/font&gt;&lt;span style=&quot;font-family: &amp;quot;Lucida Console&amp;quot;; font-size: 13px;&quot;&gt;SDPContext&lt;/span&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-126">
+          <mxGeometry y="26" width="500" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-128" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=#EEEEEE;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-126">
+          <mxGeometry y="52" width="500" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-129" value="&lt;font face=&quot;Lucida Console&quot; style=&quot;font-size: 13px;&quot;&gt;+ InteractionRepository(&lt;/font&gt;&lt;span style=&quot;font-family: &amp;quot;Lucida Console&amp;quot;; font-size: 13px;&quot;&gt;SDPContext context)&lt;/span&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-126">
+          <mxGeometry y="60" width="500" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-130" value="&lt;span style=&quot;font-family: &amp;quot;Lucida Console&amp;quot;; font-size: 15px;&quot;&gt;ComunityMembership&lt;/span&gt;&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 15px;&quot;&gt;Repository&amp;lt;&lt;/span&gt;&lt;/font&gt;&lt;span style=&quot;font-family: &amp;quot;Lucida Console&amp;quot;; font-size: 15px;&quot;&gt;ComunityMembership&lt;/span&gt;&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 15px;&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/font&gt;" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;strokeColor=#EEEEEE;fontColor=#FFFFFF;fillColor=#56517E;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="1">
+          <mxGeometry x="-30" y="480" width="500" height="86" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-131" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;- _context:&amp;nbsp;&lt;/span&gt;&lt;/font&gt;&lt;span style=&quot;font-family: &amp;quot;Lucida Console&amp;quot;; font-size: 13px;&quot;&gt;SDPContext&lt;/span&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-130">
+          <mxGeometry y="26" width="500" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-132" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=#EEEEEE;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-130">
+          <mxGeometry y="52" width="500" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-133" value="&lt;font face=&quot;Lucida Console&quot; style=&quot;font-size: 13px;&quot;&gt;+ ComunityMembershipRepository(&lt;/font&gt;&lt;span style=&quot;font-family: &amp;quot;Lucida Console&amp;quot;; font-size: 13px;&quot;&gt;SDPContext context)&lt;/span&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-130">
+          <mxGeometry y="60" width="500" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-134" value="&lt;span style=&quot;font-family: &amp;quot;Lucida Console&amp;quot;; font-size: 15px;&quot;&gt;ComunityPost&lt;/span&gt;&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 15px;&quot;&gt;Repository&amp;lt;&lt;/span&gt;&lt;/font&gt;&lt;span style=&quot;font-family: &amp;quot;Lucida Console&amp;quot;; font-size: 15px;&quot;&gt;ComunityPost&lt;/span&gt;&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 15px;&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/font&gt;" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;strokeColor=#EEEEEE;fontColor=#FFFFFF;fillColor=#56517E;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="1">
+          <mxGeometry x="1230" y="920" width="500" height="112" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-135" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;- _context:&amp;nbsp;&lt;/span&gt;&lt;/font&gt;&lt;span style=&quot;font-family: &amp;quot;Lucida Console&amp;quot;; font-size: 13px;&quot;&gt;SDPContext&lt;/span&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-134">
+          <mxGeometry y="26" width="500" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-136" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=#EEEEEE;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-134">
+          <mxGeometry y="52" width="500" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-137" value="&lt;font face=&quot;Lucida Console&quot; style=&quot;font-size: 13px;&quot;&gt;+ ComunityPostRepository(&lt;/font&gt;&lt;span style=&quot;font-family: &amp;quot;Lucida Console&amp;quot;; font-size: 13px;&quot;&gt;SDPContext context)&lt;/span&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-134">
+          <mxGeometry y="60" width="500" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-138" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;+ SoftDeleteAsync(Guid id): Task&amp;nbsp;&lt;/span&gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-134">
+          <mxGeometry y="86" width="500" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-139" value="" style="edgeStyle=entityRelationEdgeStyle;fontSize=12;html=1;endArrow=none;startArrow=open;rounded=1;curved=0;startFill=0;endFill=0;strokeWidth=2;labelBackgroundColor=none;fontColor=default;strokeColor=#182E3E;sketch=1;curveFitting=1;jiggle=2;" edge="1" parent="1" source="MM8MfeFnqsnXhdhwojKX-134" target="MM8MfeFnqsnXhdhwojKX-49">
+          <mxGeometry width="100" height="100" relative="1" as="geometry">
+            <mxPoint x="1240" y="846" as="sourcePoint" />
+            <mxPoint x="1050" y="89" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-140" value="&lt;span style=&quot;font-family: &amp;quot;Lucida Console&amp;quot;; font-size: 15px;&quot;&gt;Media&lt;/span&gt;&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 15px;&quot;&gt;Repository&amp;lt;&lt;/span&gt;&lt;/font&gt;&lt;span style=&quot;font-family: &amp;quot;Lucida Console&amp;quot;; font-size: 15px;&quot;&gt;Media&lt;/span&gt;&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 15px;&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/font&gt;" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;strokeColor=#EEEEEE;fontColor=#FFFFFF;fillColor=#56517E;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="1">
+          <mxGeometry x="-30" y="600" width="500" height="86" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-141" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;- _context:&amp;nbsp;&lt;/span&gt;&lt;/font&gt;&lt;span style=&quot;font-family: &amp;quot;Lucida Console&amp;quot;; font-size: 13px;&quot;&gt;SDPContext&lt;/span&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-140">
+          <mxGeometry y="26" width="500" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-142" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=#EEEEEE;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-140">
+          <mxGeometry y="52" width="500" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-143" value="&lt;font face=&quot;Lucida Console&quot; style=&quot;font-size: 13px;&quot;&gt;+ MediaRepository(&lt;/font&gt;&lt;span style=&quot;font-family: &amp;quot;Lucida Console&amp;quot;; font-size: 13px;&quot;&gt;SDPContext context)&lt;/span&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-140">
+          <mxGeometry y="60" width="500" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-144" value="&lt;span style=&quot;font-family: &amp;quot;Lucida Console&amp;quot;; font-size: 15px;&quot;&gt;RefreshToken&lt;/span&gt;&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 15px;&quot;&gt;Repository&amp;lt;&lt;/span&gt;&lt;/font&gt;&lt;span style=&quot;font-family: &amp;quot;Lucida Console&amp;quot;; font-size: 15px;&quot;&gt;RefreshToken&lt;/span&gt;&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 15px;&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/font&gt;" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;strokeColor=#EEEEEE;fontColor=#FFFFFF;fillColor=#56517E;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="1">
+          <mxGeometry x="-30" y="730" width="500" height="86" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-145" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;- _context:&amp;nbsp;&lt;/span&gt;&lt;/font&gt;&lt;span style=&quot;font-family: &amp;quot;Lucida Console&amp;quot;; font-size: 13px;&quot;&gt;SDPContext&lt;/span&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-144">
+          <mxGeometry y="26" width="500" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-146" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=#EEEEEE;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-144">
+          <mxGeometry y="52" width="500" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-147" value="&lt;font face=&quot;Lucida Console&quot; style=&quot;font-size: 13px;&quot;&gt;+ RefreshTokenRepository(&lt;/font&gt;&lt;span style=&quot;font-family: &amp;quot;Lucida Console&amp;quot;; font-size: 13px;&quot;&gt;SDPContext context)&lt;/span&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-144">
+          <mxGeometry y="60" width="500" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-148" value="&lt;span style=&quot;font-family: &amp;quot;Lucida Console&amp;quot;; font-size: 15px;&quot;&gt;Role&lt;/span&gt;&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 15px;&quot;&gt;Repository&amp;lt;&lt;/span&gt;&lt;/font&gt;&lt;span style=&quot;font-family: &amp;quot;Lucida Console&amp;quot;; font-size: 15px;&quot;&gt;Role&lt;/span&gt;&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 15px;&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/font&gt;" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;strokeColor=#EEEEEE;fontColor=#FFFFFF;fillColor=#56517E;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="1">
+          <mxGeometry x="1230" y="1090" width="500" height="112" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-149" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;- _context:&amp;nbsp;&lt;/span&gt;&lt;/font&gt;&lt;span style=&quot;font-family: &amp;quot;Lucida Console&amp;quot;; font-size: 13px;&quot;&gt;SDPContext&lt;/span&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-148">
+          <mxGeometry y="26" width="500" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-150" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=#EEEEEE;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-148">
+          <mxGeometry y="52" width="500" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-151" value="&lt;font face=&quot;Lucida Console&quot; style=&quot;font-size: 13px;&quot;&gt;+ RoleRepository(&lt;/font&gt;&lt;span style=&quot;font-family: &amp;quot;Lucida Console&amp;quot;; font-size: 13px;&quot;&gt;SDPContext context)&lt;/span&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-148">
+          <mxGeometry y="60" width="500" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-152" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;+ SoftDeleteAsync(Guid id): Task&amp;nbsp;&lt;/span&gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-148">
+          <mxGeometry y="86" width="500" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-153" value="" style="edgeStyle=entityRelationEdgeStyle;fontSize=12;html=1;endArrow=none;startArrow=open;rounded=1;curved=0;startFill=0;endFill=0;strokeWidth=2;labelBackgroundColor=none;fontColor=default;strokeColor=#182E3E;sketch=1;curveFitting=1;jiggle=2;" edge="1" parent="1" source="MM8MfeFnqsnXhdhwojKX-148" target="MM8MfeFnqsnXhdhwojKX-49">
+          <mxGeometry width="100" height="100" relative="1" as="geometry">
+            <mxPoint x="1240" y="986" as="sourcePoint" />
+            <mxPoint x="1050" y="89" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-154" value="&lt;span style=&quot;font-family: &amp;quot;Lucida Console&amp;quot;; font-size: 15px;&quot;&gt;Profile&lt;/span&gt;&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 15px;&quot;&gt;Repository&amp;lt;&lt;/span&gt;&lt;/font&gt;&lt;span style=&quot;font-family: &amp;quot;Lucida Console&amp;quot;; font-size: 15px;&quot;&gt;Proofile&lt;/span&gt;&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 15px;&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/font&gt;" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;strokeColor=#EEEEEE;fontColor=#FFFFFF;fillColor=#56517E;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="1">
+          <mxGeometry x="-30" y="870" width="500" height="86" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-155" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;- _context:&amp;nbsp;&lt;/span&gt;&lt;/font&gt;&lt;span style=&quot;font-family: &amp;quot;Lucida Console&amp;quot;; font-size: 13px;&quot;&gt;SDPContext&lt;/span&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-154">
+          <mxGeometry y="26" width="500" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-156" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=#EEEEEE;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-154">
+          <mxGeometry y="52" width="500" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-157" value="&lt;font face=&quot;Lucida Console&quot; style=&quot;font-size: 13px;&quot;&gt;+ ProfileRepository(&lt;/font&gt;&lt;span style=&quot;font-family: &amp;quot;Lucida Console&amp;quot;; font-size: 13px;&quot;&gt;SDPContext context)&lt;/span&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-154">
+          <mxGeometry y="60" width="500" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-158" value="&lt;span style=&quot;font-family: &amp;quot;Lucida Console&amp;quot;; font-size: 15px;&quot;&gt;UserInterest&lt;/span&gt;&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 15px;&quot;&gt;Repository&amp;lt;&lt;/span&gt;&lt;/font&gt;&lt;span style=&quot;font-family: &amp;quot;Lucida Console&amp;quot;; font-size: 15px;&quot;&gt;UserInterest&lt;/span&gt;&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 15px;&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/font&gt;" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;strokeColor=#EEEEEE;fontColor=#FFFFFF;fillColor=#56517E;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="1">
+          <mxGeometry x="-740" y="686" width="500" height="86" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-159" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;- _context:&amp;nbsp;&lt;/span&gt;&lt;/font&gt;&lt;span style=&quot;font-family: &amp;quot;Lucida Console&amp;quot;; font-size: 13px;&quot;&gt;SDPContext&lt;/span&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-158">
+          <mxGeometry y="26" width="500" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-160" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=#EEEEEE;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-158">
+          <mxGeometry y="52" width="500" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-161" value="&lt;font face=&quot;Lucida Console&quot; style=&quot;font-size: 13px;&quot;&gt;+ UserInterestRepository(&lt;/font&gt;&lt;span style=&quot;font-family: &amp;quot;Lucida Console&amp;quot;; font-size: 13px;&quot;&gt;SDPContext context)&lt;/span&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-158">
+          <mxGeometry y="60" width="500" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-162" value="&lt;span style=&quot;font-family: &amp;quot;Lucida Console&amp;quot;; font-size: 15px;&quot;&gt;Follow&lt;/span&gt;&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 15px;&quot;&gt;Repository&amp;lt;&lt;/span&gt;&lt;/font&gt;&lt;span style=&quot;font-family: &amp;quot;Lucida Console&amp;quot;; font-size: 15px;&quot;&gt;Follow&lt;/span&gt;&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 15px;&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/font&gt;" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;strokeColor=#EEEEEE;fontColor=#FFFFFF;fillColor=#56517E;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="1">
+          <mxGeometry x="-740" y="806" width="500" height="86" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-163" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;- _context:&amp;nbsp;&lt;/span&gt;&lt;/font&gt;&lt;span style=&quot;font-family: &amp;quot;Lucida Console&amp;quot;; font-size: 13px;&quot;&gt;SDPContext&lt;/span&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-162">
+          <mxGeometry y="26" width="500" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-164" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=#EEEEEE;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-162">
+          <mxGeometry y="52" width="500" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-165" value="&lt;font face=&quot;Lucida Console&quot; style=&quot;font-size: 13px;&quot;&gt;+ FollowRepository(&lt;/font&gt;&lt;span style=&quot;font-family: &amp;quot;Lucida Console&amp;quot;; font-size: 13px;&quot;&gt;SDPContext context)&lt;/span&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-162">
+          <mxGeometry y="60" width="500" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-166" value="&lt;span style=&quot;font-family: &amp;quot;Lucida Console&amp;quot;; font-size: 15px;&quot;&gt;VerificationCode&lt;/span&gt;&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 15px;&quot;&gt;Repository&amp;lt;&lt;/span&gt;&lt;/font&gt;&lt;span style=&quot;font-family: &amp;quot;Lucida Console&amp;quot;; font-size: 15px;&quot;&gt;VerificationCode&lt;/span&gt;&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 15px;&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/font&gt;" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;strokeColor=#EEEEEE;fontColor=#FFFFFF;fillColor=#56517E;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="1">
+          <mxGeometry x="-740" y="542" width="500" height="86" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-167" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;- _context:&amp;nbsp;&lt;/span&gt;&lt;/font&gt;&lt;span style=&quot;font-family: &amp;quot;Lucida Console&amp;quot;; font-size: 13px;&quot;&gt;SDPContext&lt;/span&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-166">
+          <mxGeometry y="26" width="500" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-168" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=#EEEEEE;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-166">
+          <mxGeometry y="52" width="500" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-169" value="&lt;font face=&quot;Lucida Console&quot; style=&quot;font-size: 13px;&quot;&gt;+ VerificationCodeRepository(&lt;/font&gt;&lt;span style=&quot;font-family: &amp;quot;Lucida Console&amp;quot;; font-size: 13px;&quot;&gt;SDPContext context)&lt;/span&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-166">
+          <mxGeometry y="60" width="500" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-170" value="&lt;span style=&quot;font-family: &amp;quot;Lucida Console&amp;quot;; font-size: 15px;&quot;&gt;Interest&lt;/span&gt;&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 15px;&quot;&gt;Repository&amp;lt;&lt;/span&gt;&lt;/font&gt;&lt;span style=&quot;font-family: &amp;quot;Lucida Console&amp;quot;; font-size: 15px;&quot;&gt;Interest&lt;/span&gt;&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 15px;&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/font&gt;" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;strokeColor=#EEEEEE;fontColor=#FFFFFF;fillColor=#56517E;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="1">
+          <mxGeometry x="540" y="1080" width="500" height="112" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-171" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;- _context:&amp;nbsp;&lt;/span&gt;&lt;/font&gt;&lt;span style=&quot;font-family: &amp;quot;Lucida Console&amp;quot;; font-size: 13px;&quot;&gt;SDPContext&lt;/span&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-170">
+          <mxGeometry y="26" width="500" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-172" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=#EEEEEE;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-170">
+          <mxGeometry y="52" width="500" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-173" value="&lt;font face=&quot;Lucida Console&quot; style=&quot;font-size: 13px;&quot;&gt;+ InterestRepository(&lt;/font&gt;&lt;span style=&quot;font-family: &amp;quot;Lucida Console&amp;quot;; font-size: 13px;&quot;&gt;SDPContext context)&lt;/span&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-170">
+          <mxGeometry y="60" width="500" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-174" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;+ SoftDeleteAsync(Guid id): Task&amp;nbsp;&lt;/span&gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-170">
+          <mxGeometry y="86" width="500" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-175" value="&lt;span style=&quot;font-family: &amp;quot;Lucida Console&amp;quot;; font-size: 15px;&quot;&gt;Skill&lt;/span&gt;&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 15px;&quot;&gt;Repository&amp;lt;&lt;/span&gt;&lt;/font&gt;&lt;span style=&quot;font-family: &amp;quot;Lucida Console&amp;quot;; font-size: 15px;&quot;&gt;Skill&lt;/span&gt;&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 15px;&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/font&gt;" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;strokeColor=#EEEEEE;fontColor=#FFFFFF;fillColor=#56517E;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="1">
+          <mxGeometry x="540" y="1230" width="500" height="112" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-176" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;- _context:&amp;nbsp;&lt;/span&gt;&lt;/font&gt;&lt;span style=&quot;font-family: &amp;quot;Lucida Console&amp;quot;; font-size: 13px;&quot;&gt;SDPContext&lt;/span&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-175">
+          <mxGeometry y="26" width="500" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-177" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=#EEEEEE;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-175">
+          <mxGeometry y="52" width="500" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-178" value="&lt;font face=&quot;Lucida Console&quot; style=&quot;font-size: 13px;&quot;&gt;+ SkillRepository(&lt;/font&gt;&lt;span style=&quot;font-family: &amp;quot;Lucida Console&amp;quot;; font-size: 13px;&quot;&gt;SDPContext context)&lt;/span&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-175">
+          <mxGeometry y="60" width="500" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-179" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;+ SoftDeleteAsync(Guid id): Task&amp;nbsp;&lt;/span&gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-175">
+          <mxGeometry y="86" width="500" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-180" value="&lt;span style=&quot;font-family: &amp;quot;Lucida Console&amp;quot;; font-size: 15px;&quot;&gt;SkillCategory&lt;/span&gt;&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 15px;&quot;&gt;Repository&amp;lt;&lt;/span&gt;&lt;/font&gt;&lt;span style=&quot;font-family: &amp;quot;Lucida Console&amp;quot;; font-size: 15px;&quot;&gt;SkillCategory&lt;/span&gt;&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 15px;&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/font&gt;" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;strokeColor=#EEEEEE;fontColor=#FFFFFF;fillColor=#56517E;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="1">
+          <mxGeometry x="1230" y="1230" width="500" height="112" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-181" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;- _context:&amp;nbsp;&lt;/span&gt;&lt;/font&gt;&lt;span style=&quot;font-family: &amp;quot;Lucida Console&amp;quot;; font-size: 13px;&quot;&gt;SDPContext&lt;/span&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-180">
+          <mxGeometry y="26" width="500" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-182" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=#EEEEEE;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-180">
+          <mxGeometry y="52" width="500" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-183" value="&lt;font face=&quot;Lucida Console&quot; style=&quot;font-size: 13px;&quot;&gt;+ SkillCategoryRepository(&lt;/font&gt;&lt;span style=&quot;font-family: &amp;quot;Lucida Console&amp;quot;; font-size: 13px;&quot;&gt;SDPContext context)&lt;/span&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-180">
+          <mxGeometry y="60" width="500" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-184" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;+ SoftDeleteAsync(Guid id): Task&amp;nbsp;&lt;/span&gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-180">
+          <mxGeometry y="86" width="500" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-185" value="" style="edgeStyle=entityRelationEdgeStyle;fontSize=12;html=1;endArrow=none;startArrow=open;rounded=1;curved=0;startFill=0;endFill=0;strokeWidth=2;labelBackgroundColor=none;fontColor=default;strokeColor=#182E3E;sketch=1;curveFitting=1;jiggle=2;" edge="1" parent="1" source="MM8MfeFnqsnXhdhwojKX-180" target="MM8MfeFnqsnXhdhwojKX-49">
+          <mxGeometry width="100" height="100" relative="1" as="geometry">
+            <mxPoint x="1240" y="1156" as="sourcePoint" />
+            <mxPoint x="1050" y="89" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-186" value="" style="edgeStyle=entityRelationEdgeStyle;fontSize=12;html=1;endArrow=none;startArrow=open;rounded=1;curved=0;startFill=0;endFill=0;strokeWidth=2;labelBackgroundColor=none;fontColor=default;strokeColor=#182E3E;sketch=1;curveFitting=1;jiggle=2;" edge="1" parent="1" source="MM8MfeFnqsnXhdhwojKX-170" target="MM8MfeFnqsnXhdhwojKX-49">
+          <mxGeometry width="100" height="100" relative="1" as="geometry">
+            <mxPoint x="1240" y="1296" as="sourcePoint" />
+            <mxPoint x="1050" y="89" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-187" value="" style="edgeStyle=entityRelationEdgeStyle;fontSize=12;html=1;endArrow=none;startArrow=open;rounded=1;curved=0;startFill=0;endFill=0;strokeWidth=2;labelBackgroundColor=none;fontColor=default;strokeColor=#182E3E;sketch=1;curveFitting=1;jiggle=2;" edge="1" parent="1" source="MM8MfeFnqsnXhdhwojKX-175" target="MM8MfeFnqsnXhdhwojKX-49">
+          <mxGeometry width="100" height="100" relative="1" as="geometry">
+            <mxPoint x="1050" y="1146" as="sourcePoint" />
+            <mxPoint x="1050" y="89" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-188" value="" style="edgeStyle=entityRelationEdgeStyle;fontSize=12;html=1;endArrow=none;startArrow=open;rounded=1;curved=0;startFill=0;endFill=0;strokeWidth=2;labelBackgroundColor=none;fontColor=default;strokeColor=#182E3E;sketch=1;curveFitting=1;jiggle=2;" edge="1" parent="1" source="MM8MfeFnqsnXhdhwojKX-75" target="MM8MfeFnqsnXhdhwojKX-31">
+          <mxGeometry width="100" height="100" relative="1" as="geometry">
+            <mxPoint x="-60" y="701" as="sourcePoint" />
+            <mxPoint x="-60" y="230" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-189" value="" style="edgeStyle=entityRelationEdgeStyle;fontSize=12;html=1;endArrow=none;startArrow=open;rounded=1;curved=0;startFill=0;endFill=0;strokeWidth=2;labelBackgroundColor=none;fontColor=default;strokeColor=#182E3E;sketch=1;curveFitting=1;jiggle=2;" edge="1" parent="1" source="MM8MfeFnqsnXhdhwojKX-122" target="MM8MfeFnqsnXhdhwojKX-31">
+          <mxGeometry width="100" height="100" relative="1" as="geometry">
+            <mxPoint x="-50" y="711" as="sourcePoint" />
+            <mxPoint x="-20" y="77" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-190" value="" style="edgeStyle=entityRelationEdgeStyle;fontSize=12;html=1;endArrow=none;startArrow=open;rounded=1;curved=0;startFill=0;endFill=0;strokeWidth=2;labelBackgroundColor=none;fontColor=default;strokeColor=#182E3E;sketch=1;curveFitting=1;jiggle=2;" edge="1" parent="1" source="MM8MfeFnqsnXhdhwojKX-126" target="MM8MfeFnqsnXhdhwojKX-31">
+          <mxGeometry width="100" height="100" relative="1" as="geometry">
+            <mxPoint x="-40" y="721" as="sourcePoint" />
+            <mxPoint x="-20" y="77" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-191" value="" style="edgeStyle=entityRelationEdgeStyle;fontSize=12;html=1;endArrow=none;startArrow=open;rounded=1;curved=0;startFill=0;endFill=0;strokeWidth=2;labelBackgroundColor=none;fontColor=default;strokeColor=#182E3E;sketch=1;curveFitting=1;jiggle=2;" edge="1" parent="1" source="MM8MfeFnqsnXhdhwojKX-166" target="MM8MfeFnqsnXhdhwojKX-31">
+          <mxGeometry width="100" height="100" relative="1" as="geometry">
+            <mxPoint x="-30" y="731" as="sourcePoint" />
+            <mxPoint x="-70" y="-210" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-192" value="" style="edgeStyle=entityRelationEdgeStyle;fontSize=12;html=1;endArrow=none;startArrow=open;rounded=1;curved=0;startFill=0;endFill=0;strokeWidth=2;labelBackgroundColor=none;fontColor=default;strokeColor=#182E3E;sketch=1;curveFitting=1;jiggle=2;" edge="1" parent="1" source="MM8MfeFnqsnXhdhwojKX-162" target="MM8MfeFnqsnXhdhwojKX-31">
+          <mxGeometry width="100" height="100" relative="1" as="geometry">
+            <mxPoint x="-20" y="741" as="sourcePoint" />
+            <mxPoint x="480" y="77" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-193" value="" style="edgeStyle=entityRelationEdgeStyle;fontSize=12;html=1;endArrow=none;startArrow=open;rounded=1;curved=0;startFill=0;endFill=0;strokeWidth=2;labelBackgroundColor=none;fontColor=default;strokeColor=#182E3E;sketch=1;curveFitting=1;jiggle=2;" edge="1" parent="1" source="MM8MfeFnqsnXhdhwojKX-158" target="MM8MfeFnqsnXhdhwojKX-31">
+          <mxGeometry width="100" height="100" relative="1" as="geometry">
+            <mxPoint x="-10" y="751" as="sourcePoint" />
+            <mxPoint x="480" y="77" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-194" value="" style="edgeStyle=entityRelationEdgeStyle;fontSize=12;html=1;endArrow=none;startArrow=open;rounded=1;curved=0;startFill=0;endFill=0;strokeWidth=2;labelBackgroundColor=none;fontColor=default;strokeColor=#182E3E;sketch=1;curveFitting=1;jiggle=2;" edge="1" parent="1" source="MM8MfeFnqsnXhdhwojKX-144" target="MM8MfeFnqsnXhdhwojKX-31">
+          <mxGeometry width="100" height="100" relative="1" as="geometry">
+            <mxPoint x="-230" y="227" as="sourcePoint" />
+            <mxPoint x="-20" y="77" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-195" value="" style="edgeStyle=entityRelationEdgeStyle;fontSize=12;html=1;endArrow=none;startArrow=open;rounded=1;curved=0;startFill=0;endFill=0;strokeWidth=2;labelBackgroundColor=none;fontColor=default;strokeColor=#182E3E;sketch=1;curveFitting=1;jiggle=2;" edge="1" parent="1" source="MM8MfeFnqsnXhdhwojKX-130" target="MM8MfeFnqsnXhdhwojKX-31">
+          <mxGeometry width="100" height="100" relative="1" as="geometry">
+            <mxPoint x="-220" y="237" as="sourcePoint" />
+            <mxPoint x="-10" y="87" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-196" value="" style="edgeStyle=entityRelationEdgeStyle;fontSize=12;html=1;endArrow=none;startArrow=open;rounded=1;curved=0;startFill=0;endFill=0;strokeWidth=2;labelBackgroundColor=none;fontColor=default;strokeColor=#182E3E;sketch=1;curveFitting=1;jiggle=2;" edge="1" parent="1" source="MM8MfeFnqsnXhdhwojKX-140" target="MM8MfeFnqsnXhdhwojKX-31">
+          <mxGeometry width="100" height="100" relative="1" as="geometry">
+            <mxPoint x="-210" y="247" as="sourcePoint" />
+            <mxPoint y="97" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-197" value="" style="edgeStyle=entityRelationEdgeStyle;fontSize=12;html=1;endArrow=none;startArrow=open;rounded=1;curved=0;startFill=0;endFill=0;strokeWidth=2;labelBackgroundColor=none;fontColor=default;strokeColor=#182E3E;sketch=1;curveFitting=1;jiggle=2;" edge="1" parent="1" source="MM8MfeFnqsnXhdhwojKX-154" target="MM8MfeFnqsnXhdhwojKX-31">
+          <mxGeometry width="100" height="100" relative="1" as="geometry">
+            <mxPoint x="480" y="783" as="sourcePoint" />
+            <mxPoint x="480" y="77" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-198" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 15px;&quot;&gt;ISpecification&amp;lt;&lt;/span&gt;&lt;/font&gt;&lt;span style=&quot;font-family: &amp;quot;Lucida Console&amp;quot;; font-size: 15px;&quot;&gt;TEntity&lt;/span&gt;&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 15px;&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/font&gt;" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;strokeColor=#EEEEEE;fontColor=#FFFFFF;fillColor=#56517E;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="1">
+          <mxGeometry x="-70" y="-680" width="500" height="208" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-199" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;+&amp;nbsp;Criteria:&amp;nbsp;Expression&amp;lt;Func&amp;lt;TEntity, bool&amp;gt;&amp;gt; { get; }&lt;/span&gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-198">
+          <mxGeometry y="26" width="500" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-200" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;+ Includes: List&amp;lt;string&amp;gt;&amp;nbsp;{ get; }&lt;/span&gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-198">
+          <mxGeometry y="52" width="500" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-201" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;+&amp;nbsp;IsTrackingEnabled: Boolean&lt;/span&gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-198">
+          <mxGeometry y="78" width="500" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-202" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;+&amp;nbsp;OrderBy:&amp;nbsp;Expression&amp;lt;Func&amp;lt;TEntity, object&amp;gt;&amp;gt;? { get; }&lt;/span&gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-198">
+          <mxGeometry y="104" width="500" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-203" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;+ OrderByDescending:&amp;nbsp;Expression&amp;lt;Func&amp;lt;TEntity, object&amp;gt;&amp;gt;? {get;}&lt;/span&gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-198">
+          <mxGeometry y="130" width="500" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-204" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;+&amp;nbsp;Skip: int?&lt;/span&gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-198">
+          <mxGeometry y="156" width="500" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-205" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;+&amp;nbsp;Take: int?&lt;/span&gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-198">
+          <mxGeometry y="182" width="500" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-206" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 15px;&quot;&gt;IGroupedSpecification&amp;lt;&lt;/span&gt;&lt;/font&gt;&lt;span style=&quot;font-family: &amp;quot;Lucida Console&amp;quot;; font-size: 15px;&quot;&gt;TEntity&lt;/span&gt;&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 15px;&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/font&gt;" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;strokeColor=#EEEEEE;fontColor=#FFFFFF;fillColor=#56517E;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="1">
+          <mxGeometry x="530" y="-690" width="500" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-207" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;+ GroupBy: Expression&amp;lt;Func&amp;lt;TEntity, TKey&amp;gt;&amp;gt;&amp;nbsp;{ get; }&lt;/span&gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-206">
+          <mxGeometry y="26" width="500" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-208" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;+ Selector:&amp;nbsp;Expression&amp;lt;Func&amp;lt;IGrouping&amp;lt;TKey, TEntity&amp;gt;, TResult&amp;gt;&amp;gt;&lt;/span&gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-206">
+          <mxGeometry y="52" width="500" height="48" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-209" value="&lt;font face=&quot;Lucida Console&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;+&amp;nbsp;ResultOrdering:&amp;nbsp;Func&amp;lt;IQueryable&amp;lt;TResult&amp;gt;, IOrderedQueryable&amp;lt;TResult&amp;gt;&amp;gt;?&lt;/span&gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#FFFFFF;sketch=1;curveFitting=1;jiggle=2;labelBackgroundColor=none;" vertex="1" parent="MM8MfeFnqsnXhdhwojKX-206">
+          <mxGeometry y="100" width="500" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-210" value="" style="edgeStyle=entityRelationEdgeStyle;fontSize=12;html=1;endArrow=none;startArrow=open;rounded=1;curved=0;startFill=0;endFill=0;strokeWidth=2;labelBackgroundColor=none;fontColor=default;strokeColor=#182E3E;sketch=1;curveFitting=1;jiggle=2;" edge="1" parent="1" source="MM8MfeFnqsnXhdhwojKX-198" target="MM8MfeFnqsnXhdhwojKX-206">
+          <mxGeometry width="100" height="100" relative="1" as="geometry">
+            <mxPoint x="660" y="134" as="sourcePoint" />
+            <mxPoint x="780" y="-170" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-211" value="" style="edgeStyle=entityRelationEdgeStyle;fontSize=12;html=1;endArrow=none;startArrow=none;rounded=1;curved=0;startFill=0;endFill=0;strokeWidth=2;labelBackgroundColor=none;fontColor=default;strokeColor=#182E3E;sketch=1;curveFitting=1;jiggle=2;" edge="1" parent="1" source="MM8MfeFnqsnXhdhwojKX-31" target="MM8MfeFnqsnXhdhwojKX-198">
+          <mxGeometry width="100" height="100" relative="1" as="geometry">
+            <mxPoint x="440" y="-566" as="sourcePoint" />
+            <mxPoint x="620" y="-585" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-212" value="" style="edgeStyle=entityRelationEdgeStyle;fontSize=12;html=1;endArrow=none;startArrow=none;rounded=1;curved=0;startFill=0;endFill=0;strokeWidth=2;labelBackgroundColor=none;fontColor=default;strokeColor=#182E3E;sketch=1;curveFitting=1;jiggle=2;" edge="1" parent="1" source="MM8MfeFnqsnXhdhwojKX-31" target="MM8MfeFnqsnXhdhwojKX-206">
+          <mxGeometry width="100" height="100" relative="1" as="geometry">
+            <mxPoint x="480" y="77" as="sourcePoint" />
+            <mxPoint x="440" y="-566" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-213" value="" style="edgeStyle=entityRelationEdgeStyle;fontSize=12;html=1;endArrow=none;startArrow=none;rounded=1;curved=0;startFill=0;endFill=0;strokeWidth=2;labelBackgroundColor=none;fontColor=default;strokeColor=#182E3E;sketch=1;curveFitting=1;jiggle=2;" edge="1" parent="1" source="MM8MfeFnqsnXhdhwojKX-49" target="MM8MfeFnqsnXhdhwojKX-206">
+          <mxGeometry width="100" height="100" relative="1" as="geometry">
+            <mxPoint x="480" y="77" as="sourcePoint" />
+            <mxPoint x="540" y="-605" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MM8MfeFnqsnXhdhwojKX-214" value="" style="edgeStyle=entityRelationEdgeStyle;fontSize=12;html=1;endArrow=none;startArrow=none;rounded=1;curved=0;startFill=0;endFill=0;strokeWidth=2;labelBackgroundColor=none;fontColor=default;strokeColor=#182E3E;sketch=1;curveFitting=1;jiggle=2;" edge="1" parent="1" source="MM8MfeFnqsnXhdhwojKX-31" target="MM8MfeFnqsnXhdhwojKX-207">
+          <mxGeometry width="100" height="100" relative="1" as="geometry">
+            <mxPoint x="1050" y="89" as="sourcePoint" />
+            <mxPoint x="1040" y="-605" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
