@@ -1,6 +1,8 @@
-﻿namespace SNS.Domain.Security;
+﻿using SNS.Domain.Abstractions.Common;
 
-public class User
+namespace SNS.Domain.Security;
+
+public class User : ISoftDeletable
 {
     // Primary Key
     public Guid Id { get; set; } = Guid.NewGuid();
@@ -26,7 +28,9 @@ public class User
     public bool IsTwoFactorEnabled { get; set; } 
     public bool IsBanned { get; set; }
     public bool IsSuspended { get; set; } 
-    public DateTime? SuspendedUntil { get; set; } 
+    public DateTime? SuspendedUntil { get; set; }
+
+    // Soft Delete
     public bool IsActive { get; set; } 
 
     

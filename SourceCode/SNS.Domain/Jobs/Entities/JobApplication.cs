@@ -1,11 +1,12 @@
-﻿using SNS.Domain.QA.Enums;
+﻿using SNS.Domain.Abstractions.Common;
+using SNS.Domain.QA.Enums;
 using SNS.Domain.Resumes.Entities;
 using SNS.Domain.SocialGraph;
 
 namespace SNS.Domain.Jobs.Entities;
 
 
-public class JobApplication
+public class JobApplication : ISoftDeletable
 {
     // Primary Key
     public Guid Id { get; set; }
@@ -26,7 +27,10 @@ public class JobApplication
     //Timestamp
     public DateTime CreatedAt { get; set; }
 
-    
+    //Soft Delete
+    public bool IsActive { get; set; }
+
+
     //Navigation Properties
     public Job Job { get; set; } = null!;
     public Profile ApplicantProfile { get; set; } = null!;

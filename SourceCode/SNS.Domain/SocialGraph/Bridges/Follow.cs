@@ -1,6 +1,8 @@
-﻿namespace SNS.Domain.SocialGraph;
+﻿using SNS.Domain.Abstractions.Common;
 
-public class Follow
+namespace SNS.Domain.SocialGraph.Bridges;
+
+public class Follow : IHardDeletable
 {
     // Primary Key
     public Guid Id { get; set; }

@@ -1,8 +1,9 @@
-﻿using SNS.Domain.SocialGraph;
+﻿using SNS.Domain.Abstractions.Common;
+using SNS.Domain.SocialGraph;
 
 namespace SNS.Domain.Education.Entities;
 
-public class ProfileFacultyRequest
+public class ProfileFacultyRequest : IHardDeletable
 {
     // Primary Key
     public Guid Id { get; set; }
@@ -18,9 +19,6 @@ public class ProfileFacultyRequest
     // Timestamp
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
-
-    // Soft Delete
-    public bool IsActive { get; set; }
 
     // Navigation Properties
     public Profile Profile { get; set; } = null!;

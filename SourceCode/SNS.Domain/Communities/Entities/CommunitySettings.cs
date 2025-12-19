@@ -1,6 +1,8 @@
-﻿namespace SNS.Domain.Communities.Entities;
+﻿using SNS.Domain.Abstractions.Common;
 
-public class CommunitySettings
+namespace SNS.Domain.Communities.Entities;
+
+public class CommunitySettings : IHardDeletable
     {
         // Primary Key
         public Guid Id { get; set; }

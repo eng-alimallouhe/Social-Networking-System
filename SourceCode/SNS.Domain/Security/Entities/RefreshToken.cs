@@ -1,6 +1,8 @@
-﻿namespace SNS.Domain.Security;
+﻿using SNS.Domain.Abstractions.Common;
 
-public class RefreshToken
+namespace SNS.Domain.Security;
+
+public class RefreshToken : IHardDeletable
 {
     // Primary Key
     public Guid Id { get; set; }

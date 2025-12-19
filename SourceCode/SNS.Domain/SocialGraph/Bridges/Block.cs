@@ -1,6 +1,8 @@
-﻿namespace SNS.Domain.SocialGraph;
+﻿using SNS.Domain.Abstractions.Common;
 
-public class Block
+namespace SNS.Domain.SocialGraph.Bridges;
+
+public class Block : IHardDeletable
 {
     // Primary Key
     public Guid Id { get; set; }

@@ -1,13 +1,13 @@
-﻿namespace SNS.Domain.Preferences.Entities;
+﻿using SNS.Domain.Abstractions.Common;
 
-public class Topic
+namespace SNS.Domain.Preferences.Entities;
+
+public class Topic : IHardDeletable
 {
     // Primary Key
     public Guid Id { get; set; }
 
     public string TopicTitle { get; set; } = default!;
-
-    public bool IsActive { get; set; } = true; // Soft Delete
 
     // Navigation
     public ICollection<TopicInterest> TopicInterests { get; set; } = new List<TopicInterest>();

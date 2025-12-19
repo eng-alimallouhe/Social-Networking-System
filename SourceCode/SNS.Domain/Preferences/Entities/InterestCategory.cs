@@ -1,6 +1,8 @@
-﻿namespace SNS.Domain.Preferences.Entities;
+﻿using SNS.Domain.Abstractions.Common;
 
-public class InterestCategory
+namespace SNS.Domain.Preferences.Entities;
+
+public class InterestCategory : ISoftDeletable
 {
     // Primary Key
     public Guid Id { get; set; }
@@ -8,7 +10,8 @@ public class InterestCategory
     public string CategoryName { get; set; } = default!;
     public string? CategoryDescription { get; set; }
 
-    public bool IsActive { get; set; } = true; // Soft Delete
+    // Soft Delete
+    public bool IsActive { get; set; } = true; 
 
     // Navigation
     public ICollection<Interest> Interests { get; set; } = new List<Interest>();

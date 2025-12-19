@@ -1,6 +1,8 @@
-﻿namespace SNS.Domain.Preferences.Entities;
+﻿using SNS.Domain.Abstractions.Common;
 
-public class TopicInterest
+namespace SNS.Domain.Preferences.Entities;
+
+public class TopicInterest : IHardDeletable
 {
     // Primary Key
     public Guid Id { get; set; }

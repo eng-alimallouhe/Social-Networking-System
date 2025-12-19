@@ -1,8 +1,9 @@
-﻿using SNS.Domain.Common.Enums;
+﻿using SNS.Domain.Abstractions.Common;
+using SNS.Domain.Common.Enums;
 
 namespace SNS.Domain.Content.Entities;
 
-public class PostMedia
+public class PostMedia : IHardDeletable
 {
     // Primary Key
     public Guid Id { get; set; }

@@ -1,9 +1,10 @@
 ﻿
+using SNS.Domain.Abstractions.Common;
 using SNS.Domain.Security.Enums;
 
 namespace SNS.Domain.Security;
 
-public class IdentityArchive
+public class IdentityArchive : IHardDeletable
 {
     // Primary Key
     public Guid Id { get; set; } 

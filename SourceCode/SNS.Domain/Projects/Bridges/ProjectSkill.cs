@@ -1,9 +1,10 @@
 ﻿using SNS.Domain.Projects.Entities;
 using SNS.Domain.Preferences.Entities;
+using SNS.Domain.Abstractions.Common;
 
 namespace SNS.Domain.Projects.Bridges;    
 
-public class ProjectSkill
+public class ProjectSkill : IHardDeletable
 {
     // Primary Key
     public Guid Id { get; set; }

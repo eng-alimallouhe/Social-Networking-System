@@ -1,10 +1,11 @@
-﻿using SNS.Domain.QA.Entities;
+﻿using SNS.Domain.Abstractions.Common;
+using SNS.Domain.QA.Entities;
 using SNS.Domain.QA.Enums;
 using SNS.Domain.SocialGraph;
 
 namespace SNS.Domain.QA.Bridges;
 
-public class SolutionVote
+public class SolutionVote : IHardDeletable
 {
     // Primary Key
     public Guid Id { get; set; }

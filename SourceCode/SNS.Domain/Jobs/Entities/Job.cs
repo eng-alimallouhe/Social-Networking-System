@@ -1,10 +1,11 @@
-﻿using SNS.Domain.QA.Enums;
+﻿using SNS.Domain.Abstractions.Common;
+using SNS.Domain.QA.Enums;
 using SNS.Domain.SocialGraph;
 
 namespace SNS.Domain.Jobs.Entities;
 
 
-public class Job
+public class Job : ISoftDeletable
 {
     // Primary Key
     public Guid Id { get; set; }

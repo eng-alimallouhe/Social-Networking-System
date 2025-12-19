@@ -1,11 +1,12 @@
-﻿using SNS.Domain.Communities.Entities;
+﻿using SNS.Domain.Abstractions.Common;
+using SNS.Domain.Communities.Entities;
 using SNS.Domain.Content.Enums;
 using SNS.Domain.Posts.Bridges;
 using SNS.Domain.SocialGraph;
 
 namespace SNS.Domain.Content.Entities;
 
-public class Post
+public class Post : ISoftDeletable
 {
     // Primary Key
     public Guid Id { get; set; }
@@ -20,7 +21,12 @@ public class Post
     public bool IsPinned { get; set; }
     public PostType Type { get; set; }
     public PostStatus Status { get; set; }
+
+
+
+    // Soft Delete
     public bool IsActive { get; set; }
+
 
     // Timestamp
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;

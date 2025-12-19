@@ -1,11 +1,12 @@
 ﻿
+using SNS.Domain.Abstractions.Common;
 using SNS.Domain.Preferences.Entities;
 using SNS.Domain.QA.Entities;
 
 namespace SNS.Domain.QA.Bridges;
 
 
-public class ProblemTopic
+public class ProblemTopic : IHardDeletable
 {
     // Foreign Key: One(Problem) → Many(ProblemTopics)
     public Guid ProblemId { get; set; }

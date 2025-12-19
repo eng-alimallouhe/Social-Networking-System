@@ -1,7 +1,9 @@
-﻿namespace SNS.Domain.Preferences.Entities;
+﻿using SNS.Domain.Abstractions.Common;
 
-public class Tag
+namespace SNS.Domain.Preferences.Entities;
+
+public class Tag : IHardDeletable
 {
     public int Id { get; set; }
-    public string Name { get; set; }
+    public required string Name { get; set; }
 }

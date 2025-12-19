@@ -1,10 +1,11 @@
 ﻿using SNS.Domain.Communities.Enums;
 using SNS.Domain.SocialGraph;
+using SNS.Domain.Abstractions.Common;
 
 namespace SNS.Domain.Communities.Entities;
 
-public class CommunityInvitation
-    {
+public class CommunityInvitation : IHardDeletable
+{
         // Primary Key
         public Guid Id { get; set; }
 

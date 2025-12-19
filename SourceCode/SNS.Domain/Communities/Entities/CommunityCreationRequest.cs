@@ -1,11 +1,12 @@
 ﻿using SNS.Domain.Communities.Enums;
 using SNS.Domain.SocialGraph;
+using SNS.Domain.Abstractions.Common;
 
 namespace SNS.Domain.Communities.Entities;
 
 
-    public class CommunityCreationRequest
-    {
+    public class CommunityCreationRequest : IHardDeletable
+{
         // Primary Key
         public Guid Id { get; set; }
 

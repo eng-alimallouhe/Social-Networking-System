@@ -1,6 +1,8 @@
-﻿namespace SNS.Domain.Projects.Entities;
+﻿using SNS.Domain.Abstractions.Common;
 
-public class ProjectMilestone
+namespace SNS.Domain.Projects.Entities;
+
+public class ProjectMilestone : IHardDeletable
 {
     // Primary Key
     public Guid Id { get; set; }

@@ -1,9 +1,10 @@
 ﻿using SNS.Domain.SocialGraph;
 using SNS.Domain.Content.Enums;
+using SNS.Domain.Abstractions.Common;
 
 namespace SNS.Domain.Content.Entities;
 
-public class PostReaction
+public class PostReaction : IHardDeletable
 {
     // Primary Key
     public Guid Id { get; set; }

@@ -1,9 +1,10 @@
-﻿using SNS.Domain.Communities.Enums;
+﻿using SNS.Domain.Abstractions.Common;
+using SNS.Domain.Communities.Enums;
 using SNS.Domain.SocialGraph;
 
 namespace SNS.Domain.Communities.Entities;
 
-public class Community
+public class Community : ISoftDeletable
     {
         // Primary Key
         public Guid Id { get; set; }

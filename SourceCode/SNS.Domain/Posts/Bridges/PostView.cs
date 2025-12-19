@@ -1,10 +1,11 @@
-﻿using SNS.Domain.Common.Enums;
+﻿using SNS.Domain.Abstractions.Common;
+using SNS.Domain.Common.Enums;
 using SNS.Domain.Content.Entities;
 using SNS.Domain.SocialGraph;
 
 namespace SNS.Domain.Posts.Bridges;
 
-public class PostView
+public class PostView : IHardDeletable
 {
     // Primary Key
     public Guid Id { get; set; }

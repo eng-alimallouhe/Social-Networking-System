@@ -1,4 +1,5 @@
-﻿using SNS.Domain.Abstractions.Specifications;
+﻿using SNS.Domain.Abstractions.Common;
+using SNS.Domain.Abstractions.Specifications;
 using System.Linq.Expressions;
 
 
@@ -14,8 +15,8 @@ namespace SNS.Domain.Abstractions.Repositories;
 /// </summary>
 /// <typeparam name="TEntity">
 /// The type of the entity managed by the repository.
-/// </typeparam>
-public interface IRepository<TEntity> where TEntity : class
+/// </typeparam>  
+public interface IRepository<TEntity> where TEntity : class, IHardDeletable
 {
     // ------------------------------------------------------------------
     // Query entry point
@@ -59,7 +60,7 @@ public interface IRepository<TEntity> where TEntity : class
     /// <returns>
     /// The matching entity if found; otherwise, <c>null</c>.
     /// </returns>
-    Task<TEntity?> GetEntitySpecificallyAsync(ISpecification<TEntity> specification);
+    Task<TEntity?> GetSingleAsync(ISingleEntitySpecification<TEntity> specification);
 
     /// <summary>
     /// Retrieves a collection of entities that match the given specification,
@@ -72,7 +73,7 @@ public interface IRepository<TEntity> where TEntity : class
     /// A tuple containing the resulting entities and the total record count.
     /// </returns>
     Task<(ICollection<TEntity> items, int count)>
-        GetAllSpecificallyAsync(ISpecification<TEntity> specification);
+        GetListAsync(ISpecification<TEntity> specification);
 
     /// <summary>
     /// Retrieves all entities that satisfy the provided expression.
@@ -81,7 +82,7 @@ public interface IRepository<TEntity> where TEntity : class
     /// A predicate expression used to filter entities.
     /// </param>
     Task<ICollection<TEntity>>
-        GetAllByExpressionAsync(Expression<Func<TEntity, bool>> expression);
+        GetListByExpressionAsync(Expression<Func<TEntity, bool>> expression);
 
     /// <summary>
     /// Retrieves a single entity that satisfies the provided expression.
@@ -96,7 +97,7 @@ public interface IRepository<TEntity> where TEntity : class
     /// The matching entity if found; otherwise, <c>null</c>.
     /// </returns>
     Task<TEntity?>
-        GetByExpressionAsync(
+        GetSingleByExpressionAsync(
             Expression<Func<TEntity, bool>> expression,
             bool isTrackingEnable = false);
 
@@ -128,7 +129,7 @@ public interface IRepository<TEntity> where TEntity : class
     /// The grouped specification defining grouping and projection rules.
     /// </param>
     Task<ICollection<TResult>>
-        GetAllGroupedAsync<TResult, TKey>(
+        GetGroupedListAsync<TResult, TKey>(
             IGroupedSpecification<TEntity, TKey, TResult> specification);
 
     // ------------------------------------------------------------------
