@@ -1,9 +1,10 @@
-﻿using SNS.Domain.Content.Entities;
+﻿using SNS.Domain.Abstractions.Common;
+using SNS.Domain.Content.Entities;
 using SNS.Domain.Preferences.Entities;
 
 namespace SNS.Domain.Posts.Bridges;
 
-public class PostTag
+public class PostTag : IHardDeletable
 {
     public Guid PostId { get; set; }
     public Guid TagId { get; set; }

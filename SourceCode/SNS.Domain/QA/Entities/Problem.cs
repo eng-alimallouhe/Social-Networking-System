@@ -1,11 +1,12 @@
-﻿using SNS.Domain.Communities.Entities;
+﻿using SNS.Domain.Abstractions.Common;
+using SNS.Domain.Communities.Entities;
 using SNS.Domain.QA.Bridges;
 using SNS.Domain.QA.Enums;
 using SNS.Domain.SocialGraph;
 
 namespace SNS.Domain.QA.Entities;
 
-public class Problem
+public class Problem : ISoftDeletable
 {
     // Primary Key
     public Guid Id { get; set; }

@@ -1,9 +1,10 @@
-﻿using SNS.Domain.Resumes.Enums;
+﻿using SNS.Domain.Abstractions.Common;
+using SNS.Domain.Resumes.Enums;
 using SNS.Domain.SocialGraph;
 
 namespace SNS.Domain.Resumes.Entities;
 
-public class Resume
+public class Resume : ISoftDeletable
 {
     // Primary Key
     public Guid Id { get; set; }

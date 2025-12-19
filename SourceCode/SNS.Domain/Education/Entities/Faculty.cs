@@ -1,8 +1,9 @@
-﻿using SNS.Domain.SocialGraph;
+﻿using SNS.Domain.Abstractions.Common;
+using SNS.Domain.SocialGraph;
 
 namespace SNS.Domain.Education.Entities;
 
-public class Faculty
+public class Faculty : ISoftDeletable
 {
     // Primary Key
     public Guid Id { get; set; }

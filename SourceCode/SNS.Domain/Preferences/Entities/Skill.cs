@@ -1,6 +1,8 @@
-﻿namespace SNS.Domain.Preferences.Entities;
+﻿using SNS.Domain.Abstractions.Common;
 
-public class Skill
+namespace SNS.Domain.Preferences.Entities;
+
+public class Skill : ISoftDeletable
 {
     // Primary Key
     public Guid Id { get; set; }
@@ -9,7 +11,9 @@ public class Skill
     public Guid CategoryId { get; set; }
 
     public string SkillName { get; set; } = default!;
-    public bool IsActive { get; set; } = true; // Soft Delete
+    
+    // Soft Delete
+    public bool IsActive { get; set; } = true; 
 
     // Navigation
     public SkillsCategory Category { get; set; } = null!;

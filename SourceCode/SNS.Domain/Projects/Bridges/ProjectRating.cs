@@ -1,9 +1,10 @@
-﻿using SNS.Domain.Projects.Entities;
+﻿using SNS.Domain.Abstractions.Common;
+using SNS.Domain.Projects.Entities;
 using SNS.Domain.SocialGraph;
 
 namespace SNS.Domain.Projects.Bridges;
 
-public class ProjectRating
+public class ProjectRating : IHardDeletable
 {
     // Primary Key
     public Guid Id { get; set; }

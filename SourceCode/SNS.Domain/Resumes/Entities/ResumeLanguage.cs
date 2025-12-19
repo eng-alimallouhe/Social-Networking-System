@@ -1,8 +1,9 @@
-﻿using SNS.Domain.Resumes.Enums;
+﻿using SNS.Domain.Abstractions.Common;
+using SNS.Domain.Resumes.Enums;
 
 namespace SNS.Domain.Resumes.Entities;
 
-public class ResumeLanguage
+public class ResumeLanguage : IHardDeletable
 {
     // Primary Key
     public Guid Id { get; set; }

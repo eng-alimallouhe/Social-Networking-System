@@ -62,7 +62,7 @@ public interface ISoftDeletableRepository<TEntity> where TEntity : class
     /// <returns>
     /// The matching entity if found; otherwise, <c>null</c>.
     /// </returns>
-    Task<TEntity?> GetEntitySpecificallyAsync(ISpecification<TEntity> specification);
+    Task<TEntity?> GetSingleAsync(ISpecification<TEntity> specification);
 
     /// <summary>
     /// Retrieves a collection of entities that match the given specification,
@@ -75,7 +75,7 @@ public interface ISoftDeletableRepository<TEntity> where TEntity : class
     /// A tuple containing the resulting entities and the total record count.
     /// </returns>
     Task<(ICollection<TEntity> items, int count)>
-        GetAllSpecificallyAsync(ISpecification<TEntity> specification);
+        GetListAsync(ISpecification<TEntity> specification);
 
     /// <summary>
     /// Retrieves all entities that satisfy the provided predicate expression.
@@ -84,7 +84,7 @@ public interface ISoftDeletableRepository<TEntity> where TEntity : class
     /// A predicate expression used to filter entities.
     /// </param>
     Task<ICollection<TEntity>>
-        GetAllByExpressionAsync(Expression<Func<TEntity, bool>> expression);
+        GetListByExpressionAsync(Expression<Func<TEntity, bool>> expression);
 
     /// <summary>
     /// Retrieves a single entity that satisfies the provided predicate expression.
@@ -99,7 +99,7 @@ public interface ISoftDeletableRepository<TEntity> where TEntity : class
     /// The matching entity if found; otherwise, <c>null</c>.
     /// </returns>
     Task<TEntity?>
-        GetByExpressionAsync(
+        GetSingleByExpressionAsync(
             Expression<Func<TEntity, bool>> expression,
             bool isTrackingEnable = false);
 
@@ -133,8 +133,8 @@ public interface ISoftDeletableRepository<TEntity> where TEntity : class
     /// projection, and result ordering rules.
     /// </param>
     Task<ICollection<TResult>>
-        GetAllGroupedAsync<TResult, TKey>(
-            IGroupedSpecification<TEntity, TResult, TKey> specification);
+        GetGroupedListAsync<TResult, TKey>(
+            IGroupedSpecification<TEntity, TKey, TResult> specification);
 
     // ------------------------------------------------------------------
     // Write and delete operations

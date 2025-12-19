@@ -1,8 +1,9 @@
-﻿using SNS.Domain.SocialGraph;
+﻿using SNS.Domain.Abstractions.Common;
+using SNS.Domain.SocialGraph;
 
 namespace SNS.Domain.QA.Entities;
 
-public class Discussion
+public class Discussion : ISoftDeletable
 {
     // Primary Key
     public Guid Id { get; set; }

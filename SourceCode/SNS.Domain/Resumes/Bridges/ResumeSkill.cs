@@ -1,8 +1,10 @@
-﻿using SNS.Domain.Resumes.Enums;
+﻿using SNS.Domain.Abstractions.Common;
+using SNS.Domain.Resumes.Entities;
+using SNS.Domain.Resumes.Enums;
 
-namespace SNS.Domain.Resumes.Entities;
+namespace SNS.Domain.Resumes.Bridges;
 
-public class ResumeSkill
+public class ResumeSkill : IHardDeletable
 {
     // Primary Key
     public Guid Id { get; set; }

@@ -1,7 +1,9 @@
 ﻿
+using SNS.Domain.Abstractions.Common;
+
 namespace SNS.Domain.Security;
 
-public class UserSession
+public class UserSession : IHardDeletable
 {
     // Primary Key
     public Guid Id { get; set; } 

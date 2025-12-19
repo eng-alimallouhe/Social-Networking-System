@@ -1,8 +1,9 @@
-﻿using SNS.Domain.QA.Enums;
+﻿using SNS.Domain.Abstractions.Common;
+using SNS.Domain.QA.Enums;
 
 namespace SNS.Domain.QA.Entities;
 
-public class SolutionContentBlock
+public class SolutionContentBlock : IHardDeletable
 {
     // Primary Key
     public Guid Id { get; set; }

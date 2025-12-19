@@ -1,6 +1,8 @@
-﻿namespace SNS.Domain.Resumes.Entities;
+﻿using SNS.Domain.Abstractions.Common;
 
-public class ResumeCertificate
+namespace SNS.Domain.Resumes.Entities;
+
+public class ResumeCertificate : IHardDeletable
 {
     // Primary Key
     public Guid Id { get; set; }

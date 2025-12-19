@@ -1,7 +1,9 @@
 ﻿
+using SNS.Domain.Abstractions.Common;
+
 namespace SNS.Domain.Security;
 
-public class VerificationCode
+public class VerificationCode : IHardDeletable
 {
     // Primary Key
     public Guid Id { get; set; } = Guid.NewGuid();

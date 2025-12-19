@@ -1,11 +1,12 @@
 ﻿
+using SNS.Domain.Abstractions.Common;
 using SNS.Domain.Common.Enums;
 using SNS.Domain.QA.Entities;
 using SNS.Domain.SocialGraph;
 
 namespace SNS.Domain.QA.Bridges;
 
-public class ProblemView
+public class ProblemView : IHardDeletable
 {
     // Primary Key
     public Guid Id { get; set; }

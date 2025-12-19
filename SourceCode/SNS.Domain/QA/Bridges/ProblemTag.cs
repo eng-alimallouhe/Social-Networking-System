@@ -1,10 +1,11 @@
 ﻿
+using SNS.Domain.Abstractions.Common;
 using SNS.Domain.Preferences.Entities;
 using SNS.Domain.QA.Entities;
 
 namespace SNS.Domain.QA.Bridges;
 
-public class ProblemTag
+public class ProblemTag : IHardDeletable
 {
     // Primary Key
     public Guid Id { get; set; }

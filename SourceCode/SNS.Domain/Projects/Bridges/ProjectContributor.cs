@@ -1,10 +1,11 @@
-﻿using SNS.Domain.Projects.Entities;
+﻿using SNS.Domain.Abstractions.Common;
+using SNS.Domain.Projects.Entities;
 using SNS.Domain.Projects.Enums;
 using SNS.Domain.SocialGraph;
 
 namespace SNS.Domain.Projects.Bridges;
 
-public class ProjectContributor
+public class ProjectContributor : IHardDeletable
 {
     // Primary Key
     public Guid Id { get; set; }

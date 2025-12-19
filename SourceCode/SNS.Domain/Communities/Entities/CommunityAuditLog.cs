@@ -1,8 +1,9 @@
-﻿using SNS.Domain.SocialGraph;
+﻿using SNS.Domain.Abstractions.Common;
+using SNS.Domain.SocialGraph;
 
 namespace SNS.Domain.Communities.Entities;
 
-public class CommunityAuditLog
+public class CommunityAuditLog : IHardDeletable
     {
         // Primary Key
         public Guid Id { get; set; }

@@ -1,6 +1,8 @@
-﻿namespace SNS.Domain.Security;
+﻿using SNS.Domain.Abstractions.Common;
 
-public class SupportTicket
+namespace SNS.Domain.Security;
+
+public class SupportTicket : ISoftDeletable
 {
     // Primary Key
     public Guid Id { get; set; }
@@ -18,6 +20,10 @@ public class SupportTicket
 
     public Guid? ClosedBy { get; set; }
     public SupportTicketStatus Status { get; set; }
+
+
+    // Soft Delete
+    public bool IsActive { get; set; }
 
     // Navigation
     public ICollection<SupportResponse> Responses { get; set; } = new List<SupportResponse>();

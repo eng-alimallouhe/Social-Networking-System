@@ -1,9 +1,10 @@
-﻿using SNS.Domain.Common.Enums;
+﻿using SNS.Domain.Abstractions.Common;
+using SNS.Domain.Common.Enums;
 using SNS.Domain.SocialGraph;
 
 namespace SNS.Domain.Education.Entities;
 
-public class UniversityRequest
+public class UniversityRequest : IHardDeletable
 {
     // Primary Key
     public Guid Id { get; set; }
@@ -21,9 +22,6 @@ public class UniversityRequest
     // Timestamp
     public DateTime CreatedAt { get; set; }
     public DateTime? ReviewedAt { get; set; }
-
-    // Soft Delete
-    public bool IsActive { get; set; }
 
     // Navigation Properties
     public Profile SubmitterProfile { get; set; } = null!;

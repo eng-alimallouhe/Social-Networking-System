@@ -1,10 +1,11 @@
-﻿using SNS.Domain.Preferences.Entities;
+﻿using SNS.Domain.Abstractions.Common;
+using SNS.Domain.Preferences.Entities;
 using SNS.Domain.Preferences.Enums;
 using SNS.Domain.SocialGraph;
 
 namespace SNS.Domain.ProfileContext.Bridges;
 
-public class ProfileSkillRequest
+public class ProfileSkillRequest : IHardDeletable
 {
     // Primary Key
     public Guid Id { get; set; }

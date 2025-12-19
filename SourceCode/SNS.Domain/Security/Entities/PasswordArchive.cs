@@ -1,6 +1,8 @@
-﻿namespace SNS.Domain.Security;
+﻿using SNS.Domain.Abstractions.Common;
 
-public class PasswordArchive
+namespace SNS.Domain.Security;
+
+public class PasswordArchive : IHardDeletable
 {
     // Primary Key
     public Guid Id { get; set; }

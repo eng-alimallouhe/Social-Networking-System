@@ -1,9 +1,10 @@
-﻿using SNS.Domain.Preferences.Entities;
+﻿using SNS.Domain.Abstractions.Common;
+using SNS.Domain.Preferences.Entities;
 
 namespace SNS.Domain.Jobs.Entities;
 
 
-public class JobSkill
+public class JobSkill : IHardDeletable
 {
     // Primary Key
     public Guid Id { get; set; }

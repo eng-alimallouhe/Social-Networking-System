@@ -1,12 +1,14 @@
-﻿using SNS.Domain.Content.Entities;
+﻿using SNS.Domain.Abstractions.Common;
+using SNS.Domain.Content.Entities;
 using SNS.Domain.Education.Entities;
 using SNS.Domain.Jobs.Entities;
 using SNS.Domain.ProfileContext.Bridges;
 using SNS.Domain.Resumes.Entities;
+using SNS.Domain.SocialGraph.Bridges;
 
 namespace SNS.Domain.SocialGraph;
 
-public class Profile
+public class Profile : ISoftDeletable
 {
     // Primary Key
     public Guid Id { get; set; }

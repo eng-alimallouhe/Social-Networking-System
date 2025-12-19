@@ -1,8 +1,9 @@
-﻿using SNS.Domain.Security.Enums;
+﻿using SNS.Domain.Abstractions.Common;
+using SNS.Domain.Security.Enums;
 
 namespace SNS.Domain.Security;
 
-public class PendingUpdate
+public class PendingUpdate : IHardDeletable
 {
     // Primary Key
     public Guid Id { get; set; }
