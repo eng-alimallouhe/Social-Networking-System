@@ -1,4 +1,5 @@
 ﻿using SNS.Domain.Abstractions.Common;
+using SNS.Domain.Common.Helpers;
 using SNS.Domain.Resumes.Entities;
 using SNS.Domain.Resumes.Enums;
 
@@ -16,4 +17,9 @@ public class ResumeSkill : IHardDeletable
 
     // Navigation
     public Resume Resume { get; set; } = null!;
+
+    public ResumeSkill()
+    {
+        Id = SequentialGuid.GenerateSequentialGuid();
+    }
 }

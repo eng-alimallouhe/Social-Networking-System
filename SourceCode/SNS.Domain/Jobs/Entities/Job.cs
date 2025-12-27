@@ -1,4 +1,5 @@
 ﻿using SNS.Domain.Abstractions.Common;
+using SNS.Domain.Common.Helpers;
 using SNS.Domain.QA.Enums;
 using SNS.Domain.SocialGraph;
 
@@ -17,7 +18,7 @@ public class Job : ISoftDeletable
     public string Description { get; set; } = string.Empty;
     public string Company { get; set; } = string.Empty;
     public string Location { get; set; } = string.Empty;
-    public JobType JobType { get; set; }
+    public JobType Type { get; set; }
     public decimal MinSalary { get; set; }
     public decimal MaxSalary { get; set; }
     public string CurrencyCode { get; set; } = string.Empty;
@@ -35,4 +36,10 @@ public class Job : ISoftDeletable
     public Profile OwnerProfile { get; set; } = null!;
     public ICollection<JobApplication> Applications { get; set; } = new List<JobApplication>();
     public ICollection<JobSkill> JobSkills { get; set; } = new List<JobSkill>();
+
+    public Job()
+    {
+        Id = SequentialGuid.GenerateSequentialGuid();
+        CreatedAt = DateTime.UtcNow;
+    }
 }

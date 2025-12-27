@@ -1,4 +1,5 @@
 ﻿using SNS.Domain.Abstractions.Common;
+using SNS.Domain.Common.Helpers;
 using SNS.Domain.SocialGraph;
 
 namespace SNS.Domain.Content.Entities;
@@ -21,8 +22,8 @@ public class Comment : ISoftDeletable
     public bool IsActive { get; set; }
 
     // Timestamp
-    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-    public DateTime? UpdatedAt { get; set; }
+    public DateTime CreatedAt { get; set; }
+    public DateTime UpdatedAt { get; set; }
 
     // Navigation Properties
     public Post Post { get; set; } = null!;
@@ -30,4 +31,11 @@ public class Comment : ISoftDeletable
     public Comment? ParentComment { get; set; }
     public ICollection<Comment> Replies { get; set; } = new List<Comment>();
     public ICollection<CommentReaction> Reactions { get; set; } = new List<CommentReaction>();
+
+    public Comment()
+    {
+        Id = SequentialGuid.GenerateSequentialGuid();
+        CreatedAt = DateTime.UtcNow;
+        UpdatedAt = DateTime.UtcNow;
+    }
 }

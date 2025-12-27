@@ -1,4 +1,5 @@
 ﻿using SNS.Domain.Abstractions.Common;
+using SNS.Domain.Common.Helpers;
 using SNS.Domain.Projects.Entities;
 using SNS.Domain.Projects.Enums;
 using SNS.Domain.SocialGraph;
@@ -17,11 +18,20 @@ public class ProjectContributor : IHardDeletable
     // General Properties
     public InvitingStatus InvitingStatus { get; set; }
     public ProjectRole Role { get; set; }
+
     public DateTime InvitationSentAt { get; set; }
     public DateTime? RespondedAt { get; set; }
+    
     public string InvitationMessage { get; set; } = string.Empty;
 
     // Navigation
     public Project Project { get; set; } = null!;
     public Profile ContributorProfile { get; set; } = null!;
+
+    public ProjectContributor()
+    {
+        Id = SequentialGuid.GenerateSequentialGuid();
+        InvitingStatus = InvitingStatus.Pending;
+        InvitationSentAt = DateTime.UtcNow;
+    }
 }

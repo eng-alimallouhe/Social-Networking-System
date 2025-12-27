@@ -1,4 +1,5 @@
 ﻿using SNS.Domain.Abstractions.Common;
+using SNS.Domain.Common.Helpers;
 using SNS.Domain.Preferences.Entities;
 using SNS.Domain.SocialGraph;
 
@@ -16,4 +17,9 @@ public class ProfileInterestRequest : IHardDeletable
     // Navigation
     public Profile Profile { get; set; } = null!;
     public InterestRequest InterestRequest { get; set; } = null!;
+
+    public ProfileInterestRequest()
+    {
+        Id = SequentialGuid.GenerateSequentialGuid();
+    }
 }

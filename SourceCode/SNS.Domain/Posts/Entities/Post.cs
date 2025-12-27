@@ -1,4 +1,5 @@
 ﻿using SNS.Domain.Abstractions.Common;
+using SNS.Domain.Common.Helpers;
 using SNS.Domain.Communities.Entities;
 using SNS.Domain.Content.Enums;
 using SNS.Domain.Posts.Bridges;
@@ -29,8 +30,8 @@ public class Post : ISoftDeletable
 
 
     // Timestamp
-    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-    public DateTime? UpdatedAt { get; set; }
+    public DateTime CreatedAt { get; set; }
+    public DateTime UpdatedAt { get; set; }
 
     // Navigation Properties
     public Profile AuthorProfile { get; set; } = null!;
@@ -41,4 +42,11 @@ public class Post : ISoftDeletable
     public ICollection<PostView> Views { get; set; } = new List<PostView>();
     public ICollection<PostTopic> Topics { get; set; } = new List<PostTopic>();
     public ICollection<PostTag> Tags { get; set; } = new List<PostTag>();
+
+    public Post()
+    {
+        Id = SequentialGuid.GenerateSequentialGuid();
+        CreatedAt = DateTime.UtcNow;
+        UpdatedAt = DateTime.UtcNow;
+    }
 }

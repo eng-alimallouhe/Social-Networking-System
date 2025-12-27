@@ -1,4 +1,5 @@
 ﻿using SNS.Domain.Abstractions.Common;
+using SNS.Domain.Common.Helpers;
 using SNS.Domain.QA.Enums;
 
 namespace SNS.Domain.QA.Entities;
@@ -12,11 +13,16 @@ public class SolutionContentBlock : IHardDeletable
     public Guid SolutionId { get; set; }
 
     // General Properties
-    public SolutionBlockType BlockType { get; set; }
+    public SolutionBlockType Type { get; set; }
     public string Content { get; set; } = string.Empty;
     public string? ExtraInfo { get; set; }
     public int Order { get; set; }
 
     // Navigation Properties
     public Solution Solution { get; set; } = null!;
+
+    public SolutionContentBlock()
+    {
+        Id = SequentialGuid.GenerateSequentialGuid();
+    }
 }

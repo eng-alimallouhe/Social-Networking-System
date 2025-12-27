@@ -1,4 +1,5 @@
 ﻿using SNS.Domain.Abstractions.Common;
+using SNS.Domain.Common.Helpers;
 
 namespace SNS.Domain.Resumes.Entities;
 
@@ -19,4 +20,9 @@ public class ResumeExperience : IHardDeletable
 
     // Navigation
     public Resume Resume { get; set; } = null!;
+
+    public ResumeExperience()
+    {
+        Id = SequentialGuid.GenerateSequentialGuid();
+    }
 }

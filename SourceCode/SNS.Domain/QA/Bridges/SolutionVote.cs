@@ -1,4 +1,5 @@
 ﻿using SNS.Domain.Abstractions.Common;
+using SNS.Domain.Common.Helpers;
 using SNS.Domain.QA.Entities;
 using SNS.Domain.QA.Enums;
 using SNS.Domain.SocialGraph;
@@ -17,12 +18,18 @@ public class SolutionVote : IHardDeletable
     public Guid VoterProfileId { get; set; }
 
     // General Properties
-    public VoteType VoteType { get; set; }
+    public VoteType Type { get; set; }
 
     // Timestamp
-    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime CreatedAt { get; set; }
 
     // Navigation Properties
     public Solution Solution { get; set; } = null!;
     public Profile VoterProfile { get; set; } = null!;
+
+    public SolutionVote()
+    {
+        Id = SequentialGuid.GenerateSequentialGuid();
+        CreatedAt = DateTime.UtcNow;
+    }
 }

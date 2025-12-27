@@ -1,7 +1,8 @@
 ﻿
 using SNS.Domain.Abstractions.Common;
+using SNS.Domain.Common.Helpers;
 
-namespace SNS.Domain.Security;
+namespace SNS.Domain.Security.Entities;
 
 public class UserSession : IHardDeletable
 {
@@ -24,9 +25,17 @@ public class UserSession : IHardDeletable
     public required string Device { get; set; }
     public required string Browser { get; set; }
     public required string Country { get; set; }
-    public bool IsActive { get; set; } = true;
+    public bool IsActive { get; set; }
 
 
     // Navigation
     public User User { get; set; } = null!;
+
+    public UserSession()
+    {
+        Id = SequentialGuid.GenerateSequentialGuid();
+        LoginAt = DateTime.UtcNow;
+        LastSeenAt = DateTime.UtcNow;
+        IsActive = true;
+    }
 }

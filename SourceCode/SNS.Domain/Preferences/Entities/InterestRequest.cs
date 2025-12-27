@@ -1,5 +1,6 @@
 ﻿using SNS.Domain.Abstractions.Common;
 using SNS.Domain.Common.Enums;
+using SNS.Domain.Common.Helpers;
 using SNS.Domain.ProfileContext.Bridges;
 using SNS.Domain.SocialGraph;
 
@@ -10,10 +11,10 @@ public class InterestRequest : IHardDeletable
     // Primary Key
     public Guid Id { get; set; }
 
-    public string InterestName { get; set; } = default!;
-    public string? InterestDescription { get; set; }
+    public string Name { get; set; } = default!;
+    public string? Description { get; set; }
 
-    public RequestStatus RequestStatus { get; set; }
+    public RequestStatus Status { get; set; }
     
     // Foreign Key
     public Guid? RequestedByProfileId { get; set; }
@@ -21,4 +22,10 @@ public class InterestRequest : IHardDeletable
     // Navigation
     public Profile? RequestedByProfile { get; set; }
     public ICollection<ProfileInterestRequest> ProfileInterestRequests { get; set; } = new List<ProfileInterestRequest>();
+
+    public InterestRequest()
+    {
+        Id = SequentialGuid.GenerateSequentialGuid();
+        Status = RequestStatus.Pending;
+    }
 }

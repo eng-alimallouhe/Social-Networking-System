@@ -1,6 +1,7 @@
 ﻿using SNS.Domain.Abstractions.Common;
+using SNS.Domain.Common.Helpers;
 
-namespace SNS.Domain.Security;
+namespace SNS.Domain.Security.Entities;
 
 public class SupportTicket : ISoftDeletable
 {
@@ -11,7 +12,7 @@ public class SupportTicket : ISoftDeletable
     public Guid ApplicantId { get; set; }
 
     public SupportTicketType Type { get; set; }
-    public required string Description { get; set; }
+    public string Description { get; set; } = string.Empty;
     public List<string> Attachments { get; set; } = new List<string>();
 
     // Timestamp
@@ -27,4 +28,11 @@ public class SupportTicket : ISoftDeletable
 
     // Navigation
     public ICollection<SupportResponse> Responses { get; set; } = new List<SupportResponse>();
+
+    public SupportTicket()
+    {
+        Id = SequentialGuid.GenerateSequentialGuid();
+        CreatedAt = DateTime.UtcNow;    
+        IsActive = true;
+    }
 }

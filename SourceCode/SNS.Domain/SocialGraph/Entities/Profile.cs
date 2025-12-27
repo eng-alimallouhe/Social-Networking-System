@@ -1,4 +1,5 @@
 ﻿using SNS.Domain.Abstractions.Common;
+using SNS.Domain.Common.Helpers;
 using SNS.Domain.Content.Entities;
 using SNS.Domain.Education.Entities;
 using SNS.Domain.Jobs.Entities;
@@ -26,11 +27,14 @@ public class Profile : ISoftDeletable
     public string? FullName { get; set; }
     public string? Bio { get; set; }
     public string? ProfilePictureUrl { get; set; }
+    public string? Specialization { get; set; }
 
     public string? GitHubUrl { get; set; }
     public string? LinkedInUrl { get; set; }
     public string? FacebookUrl { get; set; }
     public string? XUrl { get; set; }
+    public string? Website { get; set; }
+
     public string? Location { get; set; }
     public string? SkillsSummary { get; set; }
 
@@ -67,4 +71,15 @@ public class Profile : ISoftDeletable
     public ICollection<PostReaction> PostReactions { get; set; } = new List<PostReaction>();
     public ICollection<Comment> Comments { get; set; } = new List<Comment>();
     public ICollection<CommentReaction> CommentReactions { get; set; } = new List<CommentReaction>();
+    public ICollection<ProfileView> Views { get; set; } = new List<ProfileView>();
+    public ICollection<ProfileView> Vieweds { get; set; } = new List<ProfileView>();
+
+
+    public Profile()
+    {
+        Id = SequentialGuid.GenerateSequentialGuid();
+        CreatedAt = DateTime.UtcNow;
+        UpdatedAt = DateTime.UtcNow;
+        IsActive = true;
+    }
 }

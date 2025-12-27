@@ -1,4 +1,5 @@
 ﻿using SNS.Domain.Abstractions.Common;
+using SNS.Domain.Common.Helpers;
 using SNS.Domain.Preferences.Entities;
 using SNS.Domain.Preferences.Enums;
 using SNS.Domain.SocialGraph;
@@ -14,9 +15,14 @@ public class ProfileSkill : IHardDeletable
     public Guid ProfileId { get; set; }
     public Guid SkillId { get; set; }
 
-    public ProficiencyLevel ProficiencyLevel { get; set; }
+    public ProficiencyLevel Level { get; set; }
 
     // Navigation
     public Profile Profile { get; set; } = null!;
     public Skill Skill { get; set; } = null!;
+
+    public ProfileSkill()
+    {
+        Id = SequentialGuid.GenerateSequentialGuid();
+    }
 }

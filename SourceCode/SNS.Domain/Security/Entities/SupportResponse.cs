@@ -1,6 +1,7 @@
 ﻿using SNS.Domain.Abstractions.Common;
+using SNS.Domain.Common.Helpers;
 
-namespace SNS.Domain.Security;
+namespace SNS.Domain.Security.Entities;
 
 public class SupportResponse : IHardDeletable
 {
@@ -26,4 +27,10 @@ public class SupportResponse : IHardDeletable
 
     // Navigation
     public ICollection<SupportResponse> Replies { get; set; } = new List<SupportResponse>();
+
+
+    public SupportResponse()
+    {
+        Id = SequentialGuid.GenerateSequentialGuid();
+    }
 }

@@ -1,5 +1,6 @@
 ﻿using SNS.Domain.Abstractions.Common;
 using SNS.Domain.Common.Enums;
+using SNS.Domain.Common.Helpers;
 
 
 namespace SNS.Domain.Projects.Entities;
@@ -19,4 +20,9 @@ public class ProjectMedia : IHardDeletable
 
     // Navigation
     public Project Project { get; set; } = null!;
+
+    public ProjectMedia()
+    {
+        Id = SequentialGuid.GenerateSequentialGuid();
+    }
 }

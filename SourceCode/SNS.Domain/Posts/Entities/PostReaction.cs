@@ -1,6 +1,7 @@
-﻿using SNS.Domain.SocialGraph;
+﻿using SNS.Domain.Abstractions.Common;
+using SNS.Domain.Common.Helpers;
 using SNS.Domain.Content.Enums;
-using SNS.Domain.Abstractions.Common;
+using SNS.Domain.SocialGraph;
 
 namespace SNS.Domain.Content.Entities;
 
@@ -14,12 +15,18 @@ public class PostReaction : IHardDeletable
     public Guid ReactingProfileId { get; set; }
 
     // General
-    public ReactionType ReactionType { get; set; }
+    public ReactionType Type { get; set; }
 
     // Timestamp
-    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime CreatedAt { get; set; }
 
     // Navigation
     public Post Post { get; set; } = null!;
     public Profile Profile { get; set; } = null!;
+
+    public PostReaction()
+    {
+        Id = SequentialGuid.GenerateSequentialGuid();
+        CreatedAt = DateTime.UtcNow;
+    }
 }

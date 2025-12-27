@@ -1,6 +1,8 @@
 ﻿using SNS.Domain.Abstractions.Common;
+using SNS.Domain.Common.Helpers;
+using SNS.Domain.SocialGraph;
 
-namespace SNS.Domain.Security;
+namespace SNS.Domain.Security.Entities;
 
 public class User : ISoftDeletable
 {
@@ -41,6 +43,7 @@ public class User : ISoftDeletable
 
     // Navigation Properties
     public Role Role { get; set; } = null!;
+    public Profile Profile { get; set; } = null!;
     public RefreshToken Token { get; set; } = null!;
     public ICollection<VerificationCode> VerificationCodes { get; set; } = new List<VerificationCode>();
     public ICollection<IdentityArchive> IdentityArchives { get; set; } = new List<IdentityArchive>();
@@ -54,4 +57,15 @@ public class User : ISoftDeletable
     public ICollection<SupportTicket> SupportTickets { get; set; } = new List<SupportTicket>();
     public ICollection<UserSession> Sessions { get; set; } = new List<UserSession>();
 
+
+    public User()
+    {
+        Id = SequentialGuid.GenerateSequentialGuid();
+        CreatedAt = DateTime.UtcNow;
+        UpdatedAt = DateTime.UtcNow;
+        LastLogIn = DateTime.UtcNow;
+        LastPasswordChange = DateTime.UtcNow;
+        CodeCreatedAt = DateTime.UtcNow;
+        IsActive = true;
+    }
 }

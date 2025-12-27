@@ -1,5 +1,6 @@
 ﻿using SNS.Domain.Abstractions.Common;
 using SNS.Domain.Common.Enums;
+using SNS.Domain.Common.Helpers;
 using SNS.Domain.SocialGraph;
 
 namespace SNS.Domain.Education.Entities;
@@ -19,7 +20,7 @@ public class FacultyRequest : IHardDeletable
     public Guid? UniversityId { get; set; }
 
     // Properties
-    public string FacultyName { get; set; } = string.Empty;
+    public string Name { get; set; } = string.Empty;
     public RequestStatus Status { get; set; }
     public string ReviewComment { get; set; } = string.Empty;
 
@@ -35,4 +36,11 @@ public class FacultyRequest : IHardDeletable
     public University? University { get; set; }
     public UniversityRequest? UniversityRequest { get; set; }
     public ICollection<ProfileFacultyRequest> Requests { get; set; } = new List<ProfileFacultyRequest>();
+
+    public FacultyRequest()
+    {
+        Id = SequentialGuid.GenerateSequentialGuid();
+        RequestStatus = RequestStatus.Pending;
+        CreatedAt = DateTime.UtcNow;
+    }
 }

@@ -1,7 +1,8 @@
 ﻿using SNS.Domain.Abstractions.Common;
+using SNS.Domain.Common.Helpers;
 using SNS.Domain.Security.Enums;
 
-namespace SNS.Domain.Security;
+namespace SNS.Domain.Security.Entities;
 
 public class PendingUpdate : IHardDeletable
 {
@@ -12,7 +13,6 @@ public class PendingUpdate : IHardDeletable
     // Foreign Key: One(User) To Many(PendingUpdates)
     public Guid UserId { get; set; }
 
-
     public required string UpdatedInfo { get; set; }
     public UpdateType UpdateType { get; set; }
 
@@ -22,4 +22,11 @@ public class PendingUpdate : IHardDeletable
 
     // Navigation
     public User User { get; set; } = null!;
+    public VerificationCode? VerificationCode { get; set; }
+
+    public PendingUpdate()
+    {
+        Id = SequentialGuid.GenerateSequentialGuid();
+        RequestedAt = DateTime.UtcNow;
+    }
 }
