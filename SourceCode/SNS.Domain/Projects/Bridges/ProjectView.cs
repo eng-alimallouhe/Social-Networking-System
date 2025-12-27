@@ -1,7 +1,8 @@
-﻿using SNS.Domain.Projects.Entities;
+﻿using SNS.Domain.Abstractions.Common;
 using SNS.Domain.Common.Enums;
+using SNS.Domain.Common.Helpers;
+using SNS.Domain.Projects.Entities;
 using SNS.Domain.SocialGraph;
-using SNS.Domain.Abstractions.Common;
 
 namespace SNS.Domain.Projects.Bridges;
 
@@ -15,7 +16,7 @@ public class ProjectView : IHardDeletable
     public Guid ViewerProfileId { get; set; }
 
     // Timestamp
-    public DateTime ViewedAt { get; set; } = DateTime.UtcNow;
+    public DateTime ViewedAt { get; set; }
 
     // Optional Info
     public DeviceType? DeviceType { get; set; }
@@ -25,4 +26,10 @@ public class ProjectView : IHardDeletable
     // Navigation
     public Project Project { get; set; } = null!;
     public Profile ViewerProfile { get; set; } = null!;
+
+    public ProjectView()
+    {
+        Id = SequentialGuid.GenerateSequentialGuid();
+        ViewedAt = DateTime.UtcNow;
+    }
 }

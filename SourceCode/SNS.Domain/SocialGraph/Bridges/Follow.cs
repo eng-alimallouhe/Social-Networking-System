@@ -1,4 +1,5 @@
 ﻿using SNS.Domain.Abstractions.Common;
+using SNS.Domain.Common.Helpers;
 
 namespace SNS.Domain.SocialGraph.Bridges;
 
@@ -19,4 +20,10 @@ public class Follow : IHardDeletable
 
     // Timestamp
     public DateTime CreatedAt { get; set; }
+
+    public Follow()
+    {
+        Id = SequentialGuid.GenerateSequentialGuid();
+        CreatedAt = DateTime.UtcNow;
+    }
 }

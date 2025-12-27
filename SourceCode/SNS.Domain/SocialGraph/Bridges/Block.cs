@@ -1,4 +1,5 @@
 ﻿using SNS.Domain.Abstractions.Common;
+using SNS.Domain.Common.Helpers;
 
 namespace SNS.Domain.SocialGraph.Bridges;
 
@@ -20,4 +21,11 @@ public class Block : IHardDeletable
     // Navigation
     public Profile Blocker { get; set; } = default!;
     public Profile Blocked { get; set; } = default!;
+
+    public Block()
+    {
+        Id = SequentialGuid.GenerateSequentialGuid();
+        CreatedAt = DateTime.UtcNow;
+        UpdatedAt = DateTime.UtcNow;
+    }
 }

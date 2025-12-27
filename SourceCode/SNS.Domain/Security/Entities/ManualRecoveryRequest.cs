@@ -1,6 +1,7 @@
 ﻿using SNS.Domain.Abstractions.Common;
+using SNS.Domain.Common.Helpers;
 
-namespace SNS.Domain.Security;
+namespace SNS.Domain.Security.Entities;
 
 public class ManualRecoveryRequest : IHardDeletable
 {
@@ -27,4 +28,10 @@ public class ManualRecoveryRequest : IHardDeletable
     // Navigation Properties
     public User CandidateUser { get; set; } = null!;
     public User Reviewer { get; set; } = null!;
+
+    public ManualRecoveryRequest()
+    {
+        Id = SequentialGuid.GenerateSequentialGuid();
+        CreatedAt = DateTime.UtcNow;
+    }
 }

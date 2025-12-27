@@ -1,6 +1,7 @@
 ﻿using SNS.Domain.Abstractions.Common;
+using SNS.Domain.Common.Helpers;
 
-namespace SNS.Domain.Security;
+namespace SNS.Domain.Security.Entities;
 
 public class RefreshToken : IHardDeletable
 {
@@ -16,4 +17,12 @@ public class RefreshToken : IHardDeletable
     // Timestamp
     public DateTime CreatedAt { get; set; }
     public DateTime ExpiresAt { get; set; }
+
+
+    public RefreshToken()
+    {
+        Id = SequentialGuid.GenerateSequentialGuid();
+        CreatedAt = DateTime.UtcNow;
+        ExpiresAt = CreatedAt.AddDays(7);
+    }
 }

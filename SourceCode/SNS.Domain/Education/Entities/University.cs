@@ -1,4 +1,5 @@
 ﻿using SNS.Domain.Abstractions.Common;
+using SNS.Domain.Common.Helpers;
 using SNS.Domain.SocialGraph;
 
 namespace SNS.Domain.Education.Entities;
@@ -24,4 +25,12 @@ public class University : ISoftDeletable
     public ICollection<Faculty> Faculties { get; set; } = new List<Faculty>();
     public ICollection<Profile> Profiles { get; set; } = new List<Profile>();
     public ICollection<FacultyRequest> FacultyRequests { get; set; } = new List<FacultyRequest>();
+
+    public University()
+    {
+        Id = SequentialGuid.GenerateSequentialGuid();
+        CreatedAt = DateTime.UtcNow;
+        UpdatedAt = DateTime.UtcNow;
+        IsActive = true;
+    }
 }

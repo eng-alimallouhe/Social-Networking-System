@@ -1,4 +1,5 @@
 ﻿using SNS.Domain.Abstractions.Common;
+using SNS.Domain.Common.Helpers;
 using SNS.Domain.Resumes.Enums;
 using SNS.Domain.SocialGraph;
 
@@ -12,7 +13,8 @@ public class Resume : ISoftDeletable
     // Foreign Key: One(Profile) To Many(Resumes)
     public Guid OwnerProfileId { get; set; }
 
-    public string PersonalPicture { get; set; } = string.Empty;
+    public string? PersonalPictureUrl { get; set; }
+    public bool SyncProfilePicture { get; set; }
     public string Title { get; set; } = string.Empty;
 
     public Template Template { get; set; }
@@ -25,7 +27,7 @@ public class Resume : ISoftDeletable
     // Soft Delete
     public bool IsActive { get; set; }
 
-    public ResumeLangauge ResumeLangauge { get; set; }
+    public ResumeLangauge Langauge { get; set; }
 
     // Navigation
     public Profile Owner { get; set; } = null!;
@@ -33,4 +35,12 @@ public class Resume : ISoftDeletable
     public ICollection<ResumeExperience> Experiences { get; set; } = new List<ResumeExperience>();
     public ICollection<ResumeCertificate> Certificates { get; set; } = new List<ResumeCertificate>();
     public ICollection<ResumeLanguage> Languages { get; set; } = new List<ResumeLanguage>();
+
+    public Resume()
+    {
+        Id = SequentialGuid.GenerateSequentialGuid();
+        CreatedAt = DateTime.UtcNow;
+        UpdatedAt = DateTime.UtcNow;
+        IsActive = true;
+    }
 }

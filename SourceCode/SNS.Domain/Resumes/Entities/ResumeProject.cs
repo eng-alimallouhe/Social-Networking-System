@@ -4,10 +4,7 @@ namespace SNS.Domain.Resumes.Entities;
 
 public class ResumeProject : IHardDeletable
 {
-    // Primary Key
-    public Guid Id { get; set; }
-
-    // Foreign Keys
+    // Primary Key (Composite)
     public Guid ResumeId { get; set; }
     public Guid ProjectId { get; set; }
 

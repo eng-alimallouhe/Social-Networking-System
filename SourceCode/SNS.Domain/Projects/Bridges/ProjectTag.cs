@@ -1,6 +1,7 @@
-﻿using SNS.Domain.Projects.Entities;
+﻿using SNS.Domain.Abstractions.Common;
+using SNS.Domain.Common.Helpers;
 using SNS.Domain.Preferences.Entities;
-using SNS.Domain.Abstractions.Common;
+using SNS.Domain.Projects.Entities;
 
 namespace SNS.Domain.Projects.Bridges;
 
@@ -16,4 +17,9 @@ public class ProjectTag : IHardDeletable
     // Navigation
     public Project Project { get; set; } = null!;
     public Tag Tag { get; set; } = null!;
+
+    public ProjectTag()
+    {
+        Id = SequentialGuid.GenerateSequentialGuid();
+    }
 }

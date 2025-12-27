@@ -1,4 +1,5 @@
 ﻿using SNS.Domain.Abstractions.Common;
+using SNS.Domain.Common.Helpers;
 using SNS.Domain.QA.Bridges;
 using SNS.Domain.QA.Enums;
 using SNS.Domain.SocialGraph;
@@ -17,14 +18,14 @@ public class Solution : ISoftDeletable
     public Guid AuthorProfileId { get; set; }
 
     // General Properties
-    public SolutionStatus Status { get; set; } = SolutionStatus.Pending;
+    public SolutionStatus Status { get; set; } 
 
     // Timestamp
-    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-    public DateTime? UpdatedAt { get; set; }
+    public DateTime CreatedAt { get; set; } 
+    public DateTime UpdatedAt { get; set; }
         
     // Soft Delete
-    public bool IsActive { get; set; } = true;
+    public bool IsActive { get; set; }
 
     // Navigation Properties
     public Problem Problem { get; set; } = null!;
@@ -32,4 +33,13 @@ public class Solution : ISoftDeletable
     public ICollection<SolutionContentBlock> ContentBlocks { get; set; } = new List<SolutionContentBlock>();
     public ICollection<SolutionVote> Votes { get; set; } = new List<SolutionVote>();
     public ICollection<Discussion> Discussions { get; set; } = new List<Discussion>();
+
+    public Solution()
+    {
+        Id = SequentialGuid.GenerateSequentialGuid();
+        Status = SolutionStatus.Pending;
+        CreatedAt = DateTime.UtcNow;
+        UpdatedAt = DateTime.UtcNow;
+        IsActive = true;
+    }
 }

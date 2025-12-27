@@ -1,6 +1,7 @@
 ﻿using SNS.Domain.Abstractions.Common;
+using SNS.Domain.Common.Helpers;
 
-namespace SNS.Domain.Security;
+namespace SNS.Domain.Security.Entities;
 
 public class PasswordArchive : IHardDeletable
 {
@@ -10,12 +11,16 @@ public class PasswordArchive : IHardDeletable
     // Foreign Key: One(User) To Many(PasswordArchives)
     public Guid UserId { get; set; }
 
-
     public required string HashedPassword { get; set; }
 
     // Timestamp
-    public DateTime ChangedAt { get; set; }
+    public DateTime CreatedAt { get; set; }
 
     // Navigation
     public User User { get; set; } = null!;
+
+    public PasswordArchive()
+    {
+        Id = SequentialGuid.GenerateSequentialGuid();
+    }
 }

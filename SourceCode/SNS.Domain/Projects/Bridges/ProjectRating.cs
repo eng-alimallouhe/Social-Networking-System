@@ -1,4 +1,5 @@
 ﻿using SNS.Domain.Abstractions.Common;
+using SNS.Domain.Common.Helpers;
 using SNS.Domain.Projects.Entities;
 using SNS.Domain.SocialGraph;
 
@@ -18,9 +19,15 @@ public class ProjectRating : IHardDeletable
     public string Comment { get; set; } = string.Empty;
 
     // Timestamp
-    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime CreatedAt { get; set; }
 
     // Navigation
     public Project Project { get; set; } = null!;
     public Profile User { get; set; } = null!;
+
+    public ProjectRating()
+    {
+        Id = SequentialGuid.GenerateSequentialGuid();
+        CreatedAt = DateTime.UtcNow;
+    }
 }

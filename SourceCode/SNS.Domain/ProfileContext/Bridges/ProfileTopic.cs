@@ -1,4 +1,5 @@
 ﻿using SNS.Domain.Abstractions.Common;
+using SNS.Domain.Common.Helpers;
 using SNS.Domain.Preferences.Entities;
 using SNS.Domain.SocialGraph;
 
@@ -21,4 +22,10 @@ public class ProfileTopic : IHardDeletable
     // Navigation
     public Profile Profile { get; set; } = null!;
     public Topic Topic { get; set; } = null!;
+
+    public ProfileTopic()
+    {
+        Id = SequentialGuid.GenerateSequentialGuid();
+        LastUpdate = DateTime.UtcNow;
+    }
 }

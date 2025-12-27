@@ -1,16 +1,17 @@
 ﻿using SNS.Domain.Abstractions.Common;
 using SNS.Domain.Common.Enums;
 using SNS.Domain.Common.Helpers;
+using SNS.Domain.Content.Entities;
 
-namespace SNS.Domain.Content.Entities;
+namespace SNS.Domain.Posts.Entities;
 
-public class PostMedia : IHardDeletable
+public class CommentMedia : IHardDeletable  
 {
     // Primary Key
     public Guid Id { get; set; }
 
     // Foreign Key
-    public Guid PostId { get; set; }
+    public Guid CommentId { get; set; }
 
     // General
     public string Url { get; set; } = string.Empty;
@@ -23,9 +24,9 @@ public class PostMedia : IHardDeletable
     public int? Height { get; set; }
 
     // Navigation
-    public Post Post { get; set; } = null!;
+    public Comment Comment { get; set; } = null!;
 
-    public PostMedia()
+    public CommentMedia()
     {
         Id = SequentialGuid.GenerateSequentialGuid();
     }

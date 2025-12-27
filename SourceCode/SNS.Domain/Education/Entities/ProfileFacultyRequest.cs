@@ -1,4 +1,5 @@
 ﻿using SNS.Domain.Abstractions.Common;
+using SNS.Domain.Common.Helpers;
 using SNS.Domain.SocialGraph;
 
 namespace SNS.Domain.Education.Entities;
@@ -23,4 +24,11 @@ public class ProfileFacultyRequest : IHardDeletable
     // Navigation Properties
     public Profile Profile { get; set; } = null!;
     public FacultyRequest FacultyRequest { get; set; } = null!;
+
+    public ProfileFacultyRequest()
+    {
+        Id = SequentialGuid.GenerateSequentialGuid();
+        CreatedAt = DateTime.UtcNow;
+        UpdatedAt = DateTime.UtcNow;
+    }
 }

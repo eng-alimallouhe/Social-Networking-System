@@ -1,7 +1,8 @@
 ﻿using SNS.Domain.Abstractions.Common;
+using SNS.Domain.Common.Helpers;
 using SNS.Domain.Security.Enums;
 
-namespace SNS.Domain.Security;
+namespace SNS.Domain.Security.Entities;
 
 public class Notification : IHardDeletable
 {
@@ -20,4 +21,10 @@ public class Notification : IHardDeletable
 
     // Timestamp
     public DateTime CreatedAt { get; set; }
+
+    public Notification()
+    {
+        Id = SequentialGuid.GenerateSequentialGuid();
+        IsRead = false;
+    }
 }

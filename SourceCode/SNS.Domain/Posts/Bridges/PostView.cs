@@ -1,5 +1,6 @@
 ﻿using SNS.Domain.Abstractions.Common;
 using SNS.Domain.Common.Enums;
+using SNS.Domain.Common.Helpers;
 using SNS.Domain.Content.Entities;
 using SNS.Domain.SocialGraph;
 
@@ -25,4 +26,9 @@ public class PostView : IHardDeletable
     // Navigation
     public Post Post { get; set; } = null!;
     public Profile ViewerProfile { get; set; } = null!;
+
+    public PostView()
+    {
+        Id = SequentialGuid.GenerateSequentialGuid();
+    }
 }

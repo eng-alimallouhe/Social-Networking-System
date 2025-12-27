@@ -1,4 +1,5 @@
 ﻿using SNS.Domain.Abstractions.Common;
+using SNS.Domain.Common.Helpers;
 using SNS.Domain.SocialGraph;
 
 namespace SNS.Domain.QA.Entities;
@@ -23,15 +24,23 @@ public class Discussion : ISoftDeletable
     public string CodeLanguage { get; set; } = string.Empty;
 
     // Timestamp
-    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-    public DateTime? UpdatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime CreatedAt { get; set; } 
+    public DateTime UpdatedAt { get; set; }
 
     // Soft Delete
-    public bool IsActive { get; set; } = true;
+    public bool IsActive { get; set; }
 
     // Navigation Properties
     public Solution Solution { get; set; } = null!;
     public Discussion? ParentDiscussion { get; set; }
     public Profile AuthorProfile { get; set; } = null!;
     public ICollection<Discussion> Replies { get; set; } = new List<Discussion>();
+
+    public Discussion()
+    {
+        Id = SequentialGuid.GenerateSequentialGuid();
+        CreatedAt = DateTime.UtcNow;
+        UpdatedAt = DateTime.UtcNow;
+        IsActive = true;
+    }
 }

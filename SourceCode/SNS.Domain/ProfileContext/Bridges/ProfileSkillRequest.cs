@@ -1,4 +1,5 @@
 ﻿using SNS.Domain.Abstractions.Common;
+using SNS.Domain.Common.Helpers;
 using SNS.Domain.Preferences.Entities;
 using SNS.Domain.Preferences.Enums;
 using SNS.Domain.SocialGraph;
@@ -17,9 +18,14 @@ public class ProfileSkillRequest : IHardDeletable
     // Timestamp
     public DateTime CreatedAt { get; set; }
 
-    public ProficiencyLevel ProficiencyLevel { get; set; }
+    public ProficiencyLevel Level { get; set; }
 
     // Navigation
     public SkillRequest SkillRequest { get; set; } = null!;
     public Profile Profile { get; set; } = null!;
+
+    public ProfileSkillRequest()
+    {
+        Id = SequentialGuid.GenerateSequentialGuid();
+    }
 }

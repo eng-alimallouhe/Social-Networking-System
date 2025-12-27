@@ -1,4 +1,5 @@
 ﻿using SNS.Domain.Abstractions.Common;
+using SNS.Domain.Common.Helpers;
 
 namespace SNS.Domain.Preferences.Entities;
 
@@ -14,4 +15,9 @@ public class TopicInterest : IHardDeletable
     // Navigation
     public Interest Interest { get; set; } = null!;
     public Topic Topic { get; set; } = null!;
+
+    public TopicInterest()
+    {
+        Id = SequentialGuid.GenerateSequentialGuid();
+    }
 }

@@ -1,5 +1,6 @@
 ﻿
 using SNS.Domain.Abstractions.Common;
+using SNS.Domain.Common.Helpers;
 using SNS.Domain.Preferences.Entities;
 using SNS.Domain.QA.Entities;
 
@@ -19,4 +20,9 @@ public class ProblemTag : IHardDeletable
     // Navigation Properties
     public Problem Problem { get; set; } = null!;
     public Tag Tag { get; set; } = null!;
+
+    public ProblemTag()
+    {
+        Id = SequentialGuid.GenerateSequentialGuid();
+    }
 }

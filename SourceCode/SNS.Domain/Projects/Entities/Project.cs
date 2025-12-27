@@ -1,4 +1,5 @@
 ﻿using SNS.Domain.Abstractions.Common;
+using SNS.Domain.Common.Helpers;
 using SNS.Domain.Projects.Bridges;
 using SNS.Domain.Projects.Enums;
 using SNS.Domain.SocialGraph;
@@ -26,8 +27,8 @@ public class Project : ISoftDeletable
     public bool IsActive { get; set; } = true;
 
     // Timestamp
-    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime CreatedAt { get; set; } 
+    public DateTime UpdatedAt { get; set; } 
 
     // Navigation Properties
     public Profile OwnerProfile { get; set; } = null!;
@@ -38,4 +39,13 @@ public class Project : ISoftDeletable
     public ICollection<ProjectRating> Ratings { get; set; } = new List<ProjectRating>();
     public ICollection<ProjectMilestone> Milestones { get; set; } = new List<ProjectMilestone>();
     public ICollection<ProjectView> Views { get; set; } = new List<ProjectView>();
+
+
+    public Project()
+    {
+        Id = SequentialGuid.GenerateSequentialGuid();
+        CreatedAt = DateTime.UtcNow;
+        UpdatedAt = DateTime.UtcNow;
+        IsActive = true;
+    }
 }

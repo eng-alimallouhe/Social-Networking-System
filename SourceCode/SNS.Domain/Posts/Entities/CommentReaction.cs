@@ -1,4 +1,5 @@
 ﻿using SNS.Domain.Abstractions.Common;
+using SNS.Domain.Common.Helpers;
 using SNS.Domain.Content.Enums;
 using SNS.Domain.SocialGraph;
 
@@ -14,12 +15,18 @@ public class CommentReaction : IHardDeletable
     public Guid ReactingProfileId { get; set; }
 
     // General
-    public ReactionType ReactionType { get; set; }
+    public ReactionType Type { get; set; }
 
     // Timestamp
-    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime CreatedAt { get; set; }
 
     // Navigation
     public Comment Comment { get; set; } = null!;
     public Profile Profile { get; set; } = null!;
+
+    public CommentReaction()
+    {
+        Id = SequentialGuid.GenerateSequentialGuid();
+        CreatedAt = DateTime.UtcNow;
+    }
 }
