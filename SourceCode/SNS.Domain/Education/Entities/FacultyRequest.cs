@@ -40,7 +40,7 @@ public class FacultyRequest : IHardDeletable
     public FacultyRequest()
     {
         Id = SequentialGuid.GenerateSequentialGuid();
-        RequestStatus = RequestStatus.Pending;
+        Status = RequestStatus.Pending;
         CreatedAt = DateTime.UtcNow;
     }
 }

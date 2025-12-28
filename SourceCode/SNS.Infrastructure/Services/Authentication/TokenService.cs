@@ -64,7 +64,8 @@ public class TokenService : ITokenService
             // Custom Claims
             // 'sid' is critical for the SessionMiddleware to validate user presence in Redis
             new("sid", sessionId.ToString()),
-            new(ClaimTypes.Role, user.Role?.RoleType ?? "User")
+            new(ClaimTypes.Role, user.Role?.Type ?? "User"), 
+            new("profileId", user.Profile?.Id.ToString() ?? string.Empty)
         };
 
         var tokenDescriptor = new SecurityTokenDescriptor
