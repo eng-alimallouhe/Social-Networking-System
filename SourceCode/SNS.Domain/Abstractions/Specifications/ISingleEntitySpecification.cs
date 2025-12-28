@@ -15,5 +15,15 @@ namespace SNS.Domain.Abstractions.Specifications
         /// These paths are interpreted by the infrastructure layer.
         /// </summary>
         List<string> Includes { get; }
+
+        /// <summary>
+        /// Gets the expression used to order the results in ascending order.
+        /// </summary>
+        Expression<Func<TEntity, object>>? OrderBy { get; }
+
+        /// <summary>
+        /// Gets the expression used to order the results in descending order.
+        /// </summary>
+        Expression<Func<TEntity, object>>? OrderByDescending { get; }
     }
 }
