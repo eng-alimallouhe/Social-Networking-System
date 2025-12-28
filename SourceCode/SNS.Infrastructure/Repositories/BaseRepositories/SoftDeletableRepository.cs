@@ -39,7 +39,7 @@ public class SoftDeletableRepository<TEntity>
     }
 
     public async Task<TEntity?> GetSingleAsync(
-        ISpecification<TEntity> specification)
+        ISingleEntitySpecification<TEntity> specification)
     {
         return await QueryBuilder
             .GetQuery(_dbSet.AsQueryable(), specification)

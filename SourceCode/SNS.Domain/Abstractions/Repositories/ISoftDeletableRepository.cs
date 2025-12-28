@@ -62,7 +62,7 @@ public interface ISoftDeletableRepository<TEntity> where TEntity : class
     /// <returns>
     /// The matching entity if found; otherwise, <c>null</c>.
     /// </returns>
-    Task<TEntity?> GetSingleAsync(ISpecification<TEntity> specification);
+    Task<TEntity?> GetSingleAsync(ISingleEntitySpecification<TEntity> specification);
 
     /// <summary>
     /// Retrieves a collection of entities that match the given specification,
