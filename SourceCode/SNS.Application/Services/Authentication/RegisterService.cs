@@ -1,7 +1,7 @@
 ﻿using SNS.Application.Abstractions.Authentication;
 using SNS.Application.Abstractions.Common;
 using SNS.Application.Abstractions.Security;
-using SNS.Application.DTOs.Authentication.Register.SNS.Domain.DTOs;
+using SNS.Application.DTOs.Authentication.Register;
 using SNS.Application.DTOs.Authentication.Responses;
 using SNS.Common.Results;
 using SNS.Common.StatusCodes;
@@ -84,10 +84,7 @@ public class RegisterService : IRegisterService
         var newUser = new User
         {
             Id = userId,
-            FirstName = dto.FirstName,
-            LastName = dto.LastName,
             UserName = username,
-            Email = dto.Email, // Optional at this stage?
             PhoneNumber = null, // IMPORTANT: Keep null until verified!
             PasswordHash = HashPassword(dto.Password), // Helper method
             IsActive = false,
@@ -240,5 +237,15 @@ public class RegisterService : IRegisterService
     {
         // Use BCrypt.Net.BCrypt.HashPassword(password);
         return BCrypt.Net.BCrypt.HashPassword(password);
+    }
+
+    public Task<Result<Guid>> RegisterAsync(RegisterDto dto)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<Result<AuthenticationResultDto>> ActiveAccountAsync(AccountActivationDto dto)
+    {
+        throw new NotImplementedException();
     }
 }

@@ -16,4 +16,22 @@ public class CreateProfileDto
     /// This value is displayed publicly and can be updated later.
     /// </remarks>
     public string FullName { get; set; } = string.Empty;
+
+
+    /// <summary>
+    /// A short biography describing the profile owner.
+    /// </summary>
+    /// <remarks>
+    /// This field is optional and may be null.
+    /// </remarks>
+    public string? Bio { get; set; }
+
+    /// <summary>
+    /// Primary specialization.
+    /// </summary>
+    /// <remarks>
+    /// This field is optional and may be null.
+    /// </remarks>
+    public string? Specialization { get; set; }
+
 }

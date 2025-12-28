@@ -1,5 +1,4 @@
 ﻿using SNS.Application.DTOs.Authentication.Register;
-using SNS.Application.DTOs.Authentication.Register.SNS.Domain.DTOs;
 using SNS.Application.DTOs.Authentication.Responses; // For AuthResponse
 using SNS.Common.Results;
 

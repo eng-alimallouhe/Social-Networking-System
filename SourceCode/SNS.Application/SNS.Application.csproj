@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\SNS.Common\SNS.Common.csproj" />
     <ProjectReference Include="..\SNS.Domain\SNS.Domain.csproj" />
   </ItemGroup>
 
