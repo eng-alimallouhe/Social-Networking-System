@@ -1,4 +1,5 @@
 ﻿using SNS.Domain.Abstractions.Common;
+using SNS.Domain.Common.Enums;
 using SNS.Domain.Common.Helpers;
 using SNS.Domain.Resumes.Enums;
 using SNS.Domain.SocialGraph;
@@ -27,11 +28,8 @@ public class Resume : ISoftDeletable
     // Soft Delete
     public bool IsActive { get; set; }
 
-<<<<<<< Updated upstream
-    public ResumeLangauge Langauge { get; set; }
-=======
+
     public SupportedLanguage Langauge { get; set; }
->>>>>>> Stashed changes
 
     // Navigation
     public Profile Owner { get; set; } = null!;

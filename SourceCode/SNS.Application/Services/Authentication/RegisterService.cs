@@ -2,16 +2,6 @@
 using SNS.Application.Abstractions.Common;
 using SNS.Application.Abstractions.Loggings;
 using SNS.Application.Abstractions.Security;
-<<<<<<< Updated upstream
-using SNS.Application.DTOs.Authentication.Register.SNS.Domain.DTOs;
-using SNS.Application.DTOs.Authentication.Responses;
-=======
-using SNS.Application.DTOs.Authentication.Common.Responses;
-using SNS.Application.DTOs.Authentication.Register;
-using SNS.Application.DTOs.Authentication.Register.Reponses;
-using SNS.Application.DTOs.Authentication.Register.Requests;
-using SNS.Application.DTOs.Authentication.Verification.Requests;
->>>>>>> Stashed changes
 using SNS.Common.Results;
 using SNS.Common.StatusCodes.Common;
 using SNS.Common.StatusCodes.Security;
@@ -184,68 +174,6 @@ public class RegisterService : IRegisterService
             _logger.LogError("Error while registering a new user.", ex, dto.PhoneNumber);
             return Result<RegisterResponseDto>.Failure(OperationStatusCode.Failure);
         }
-<<<<<<< Updated upstream
-
-        // 3. Generate Unique Username
-        // Logic: FirstName + LastName + Random 4 digits (handled in helper)
-        var username = await GenerateUniqueUsernameAsync(dto.FirstName, dto.LastName);
-
-        // 4. Create User Entity (Inactive)
-        var userId = Guid.NewGuid();
-        var newUser = new User
-        {
-            Id = userId,
-            FirstName = dto.FirstName,
-            LastName = dto.LastName,
-            UserName = username,
-            Email = dto.Email, // Optional at this stage?
-            PhoneNumber = null, // IMPORTANT: Keep null until verified!
-            PasswordHash = HashPassword(dto.Password), // Helper method
-            IsActive = false,
-            CreatedAt = DateTime.UtcNow,
-            Role = null // Set default role if needed, or handle later
-        };
-
-        // 5. Create Empty Profile
-        var newProfile = new UserProfile
-        {
-            Id = Guid.NewGuid(),
-            UserId = userId,
-            FullName = $"{dto.FirstName} {dto.LastName}",
-            Bio = string.Empty
-        };
-
-        // 6. Create Pending Update (The staging area for the phone number)
-        // Using CreateOrReplace to ensure we don't duplicate requests for the same user ID (though ID is new here)
-        var pendingResult = await _pendingUpdateService.CreateOrReplaceAsync(
-            userId,
-            UpdateType.NewRegistration,
-            dto.PhoneNumber);
-
-        var pendingUpdateId = pendingResult.Value;
-
-        // 7. Persist Entities (Transaction Part 1)
-        await _userRepo.AddAsync(newUser);
-        await _profileRepo.AddAsync(newProfile);
-        // PendingUpdate is added inside CreateOrReplaceAsync
-
-        // 8. Send Verification Code (Linked to the Pending Update)
-        var sendResult = await _codeService.SendCodeAsync(
-            dto.PhoneNumber,
-            CodeType.PhoneNumberConfirmation,
-            pendingUpdateId); // Linking the code to this specific update context
-
-        if (!sendResult.IsSuccess)
-        {
-            return Result<Guid>.Failure(sendResult.StatusCode);
-        }
-
-        // 9. Commit Transaction
-        await _unitOfWork.CompleteAsync();
-
-        return Result<Guid>.Success(userId, VerificationStatusCodes.CodeSent);
-=======
->>>>>>> Stashed changes
     }
 
 
@@ -409,14 +337,4 @@ public class RegisterService : IRegisterService
 
         return username;
     }
-<<<<<<< Updated upstream
-
-    // Placeholder for BCrypt or similar
-    private string HashPassword(string password)
-    {
-        // Use BCrypt.Net.BCrypt.HashPassword(password);
-        return BCrypt.Net.BCrypt.HashPassword(password);
-    }
-=======
->>>>>>> Stashed changes
 }

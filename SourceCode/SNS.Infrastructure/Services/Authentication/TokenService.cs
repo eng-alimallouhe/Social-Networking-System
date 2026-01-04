@@ -70,12 +70,8 @@ public class TokenService : ITokenService
             // that the user's session exists in the distributed cache (Redis)
             // and has not been revoked.
             new("sid", sessionId.ToString()),
-<<<<<<< Updated upstream
-            new(ClaimTypes.Role, user.Role?.RoleType ?? "User")
-=======
             new(ClaimTypes.Role, user.Role?.Type.ToString() ?? "User"),
             new("profileId", user.Profile?.Id.ToString() ?? string.Empty)
->>>>>>> Stashed changes
         };
 
         var tokenDescriptor = new SecurityTokenDescriptor

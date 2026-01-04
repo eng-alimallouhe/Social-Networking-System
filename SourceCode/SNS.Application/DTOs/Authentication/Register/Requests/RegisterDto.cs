@@ -12,17 +12,12 @@
 /// </summary>
 public class RegisterDto
 {
-<<<<<<< Updated upstream
-    public string FirstName { get; set; } = string.Empty;
-    public string LastName { get; set; } = string.Empty;
-=======
     /// <summary>
     /// Gets or sets the raw password chosen by the user.
     /// 
-    /// This value is used to establish the initial security credentials 
+    /// This value is used to establish the initial security credentials
     /// (it will be hashed before storage).
     /// </summary>
->>>>>>> Stashed changes
     public string Password { get; set; } = string.Empty;
 
     /// <summary>

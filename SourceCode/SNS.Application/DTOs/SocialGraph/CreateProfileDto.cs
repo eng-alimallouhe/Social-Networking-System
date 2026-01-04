@@ -18,9 +18,6 @@ public class CreateProfileDto
     /// This value is used to display the user's identity publicly.
     /// </summary>
     public string FullName { get; set; } = string.Empty;
-<<<<<<< Updated upstream
-}
-=======
 
     /// <summary>
     /// Gets or sets a short biography describing the profile owner.
@@ -36,4 +33,4 @@ public class CreateProfileDto
     /// </summary>
     public string? Specialization { get; set; }
 }
->>>>>>> Stashed changes
+
