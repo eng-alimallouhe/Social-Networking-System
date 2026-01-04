@@ -1,19 +1,39 @@
 ﻿namespace SNS.Application.DTOs.SocialGraph;
 
 /// <summary>
-/// Represents the data required to create a new user profile.
+/// Represents a data transfer object used to
+/// provide the initial data required to create a new user profile.
+/// 
+/// This DTO is designed to transfer data between
+/// the client and the application layer without exposing
+/// domain entities or internal business logic.
+/// 
+/// It is typically used in commands during the initial onboarding or account creation process.
 /// </summary>
-/// <remarks>
-/// This DTO is typically used during the initial onboarding
-/// or account creation process.
-/// </remarks>
 public class CreateProfileDto
 {
     /// <summary>
-    /// The full name of the profile owner.
+    /// Gets or sets the full name of the profile owner.
+    /// 
+    /// This value is used to display the user's identity publicly.
     /// </summary>
-    /// <remarks>
-    /// This value is displayed publicly and can be updated later.
-    /// </remarks>
     public string FullName { get; set; } = string.Empty;
+<<<<<<< Updated upstream
 }
+=======
+
+    /// <summary>
+    /// Gets or sets a short biography describing the profile owner.
+    /// 
+    /// Optional. This property may be null if the user chooses not to provide a bio initially.
+    /// </summary>
+    public string? Bio { get; set; }
+
+    /// <summary>
+    /// Gets or sets the primary specialization or job title of the user.
+    /// 
+    /// Optional. This property may be null depending on the user's professional status.
+    /// </summary>
+    public string? Specialization { get; set; }
+}
+>>>>>>> Stashed changes

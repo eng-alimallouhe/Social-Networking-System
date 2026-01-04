@@ -13,6 +13,7 @@ using SNS.Domain.QA.Entities;
 using SNS.Domain.Resumes.Bridges;
 using SNS.Domain.Resumes.Entities;
 using SNS.Domain.Security;
+using SNS.Domain.Security.Entities;
 using SNS.Domain.SocialGraph;
 using SNS.Domain.SocialGraph.Bridges;
 

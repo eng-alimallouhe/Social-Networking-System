@@ -3,9 +3,10 @@ using Microsoft.IdentityModel.Tokens;
 using SNS.Application.Abstractions.Authentication;
 using SNS.Application.Abstractions.Common;
 using SNS.Application.Abstractions.Security;
-using SNS.Application.DTOs.Authentication.Responses;
+using SNS.Application.DTOs.Authentication.Common.Responses;
 using SNS.Application.Settings;
 using SNS.Common.Results;
+using SNS.Common.StatusCodes.Common;
 using SNS.Common.StatusCodes.Security;
 using SNS.Domain.Abstractions.Repositories;
 using SNS.Domain.Security.Entities;
@@ -15,6 +16,14 @@ using System.Text;
 
 namespace SNS.Infrastructure.Services.Authentication;
 
+/// <summary>
+/// Represents the implementation of the token service responsible for
+/// the generation, management, and rotation of authentication tokens.
+/// 
+/// This service encapsulates the business logic related to
+/// JWT creation, cryptographic refresh token generation, and the secure
+/// refreshing of user sessions.
+/// </summary>
 public class TokenService : ITokenService
 {
     private readonly JWTSettings _jwtSettings;
@@ -46,9 +55,6 @@ public class TokenService : ITokenService
         _sessionChecker = sessionChecker;
     }
 
-    // ========================================================================
-    // 1. Generate Access Token
-    // ========================================================================
     public string GenerateAccessToken(User user, Guid sessionId)
     {
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.SecretKey));
@@ -56,15 +62,20 @@ public class TokenService : ITokenService
 
         var claims = new List<Claim>
         {
-            // Standard Claims
             new(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
             new(JwtRegisteredClaimNames.Email, user.Email ?? string.Empty),
             new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             
-            // Custom Claims
-            // 'sid' is critical for the SessionMiddleware to validate user presence in Redis
+            // The 'sid' claim is critical for the SessionMiddleware to validate 
+            // that the user's session exists in the distributed cache (Redis)
+            // and has not been revoked.
             new("sid", sessionId.ToString()),
+<<<<<<< Updated upstream
             new(ClaimTypes.Role, user.Role?.RoleType ?? "User")
+=======
+            new(ClaimTypes.Role, user.Role?.Type.ToString() ?? "User"),
+            new("profileId", user.Profile?.Id.ToString() ?? string.Empty)
+>>>>>>> Stashed changes
         };
 
         var tokenDescriptor = new SecurityTokenDescriptor
@@ -82,123 +93,105 @@ public class TokenService : ITokenService
         return tokenHandler.WriteToken(token);
     }
 
-    // ========================================================================
-    // 2. Grant Refresh Token (Login Flow)
-    // ========================================================================
     public async Task<string> GrantRefreshTokenAsync(User user)
     {
-        // Use the centralized generator service for cryptographic randomness
         var newTokenString = _generatorService.GenerateSecureString();
-        var expiresAt = DateTime.UtcNow.AddDays(_jwtSettings.RefreshTokenExpirationDays);
 
-        // Fetch existing token with tracking enabled to allow direct updates
-        var existingToken = await _refreshTokenRepo.GetSingleByExpressionAsync(
-            rt => rt.UserId == user.Id,
-            isTrackingEnable: true);
-
-        if (existingToken != null)
+        var newToken = new RefreshToken
         {
-            // Update Strategy: Modify the existing record to prevent index fragmentation
-            // and reduce I/O overhead compared to Delete/Insert.
-            existingToken.Token = newTokenString;
-            existingToken.ExpiresAt = expiresAt;
-            existingToken.CreatedAt = DateTime.UtcNow;
-        }
-        else
-        {
-            // Insert Strategy: First time login or previous token was manually revoked
-            var newToken = new RefreshToken
-            {
-                Id = Guid.NewGuid(),
-                UserId = user.Id,
-                Token = newTokenString,
-                ExpiresAt = expiresAt,
-                CreatedAt = DateTime.UtcNow
-            };
+            UserId = user.Id,
+            Token = newTokenString,
+        };
 
-            await _refreshTokenRepo.AddAsync(newToken);
-        }
+        await _refreshTokenRepo.AddAsync(newToken);
 
-        // Note: SaveChanges is deferred to the caller (Orchestrator/LoginService)
+        // We do not call SaveChanges here because this method is typically part 
+        // of a larger transaction (like Login or Register) orchestrated by the caller.
         return newTokenString;
     }
 
-    // ========================================================================
-    // 3. Refresh Process (Rotation + Session Renewal)
-    // ========================================================================
-    public async Task<Result<AuthenticationResultDto>> RefreshTokensAsync(string oldAccessToken, string incomingRefreshToken)
+    public async Task<Result<AuthTokensDto>> RefreshTokensAsync(string oldAccessToken, string incomingRefreshToken)
     {
-        // A. Extract User ID
         var userId = _tokenReader.GetUserIdFromToken(oldAccessToken);
-        if (userId == null) return Result<AuthenticationResultDto>.Failure(VerificationStatusCodes.InvalidCode);
+        if (userId == null) return Result<AuthTokensDto>.Failure(VerificationStatusCodes.InvalidCode);
 
-        // B. Fetch Refresh Token
+        // We track the entity here because we intend to update the token string and expiration
+        // (Token Rotation) rather than deleting and re-inserting.
         var storedRefreshToken = await _refreshTokenRepo.GetSingleByExpressionAsync(
             rt => rt.Token == incomingRefreshToken && rt.UserId == userId.Value,
             isTrackingEnable: true);
 
-        if (storedRefreshToken == null) return Result<AuthenticationResultDto>.Failure(VerificationStatusCodes.InvalidCode);
+        if (storedRefreshToken == null) return Result<AuthTokensDto>.Failure(VerificationStatusCodes.InvalidCode);
 
-        if (storedRefreshToken.ExpiresAt < DateTime.UtcNow) return Result<AuthenticationResultDto>.Failure (VerificationStatusCodes.CodeExpired);
+        if (storedRefreshToken.ExpiresAt < DateTime.UtcNow) return Result<AuthTokensDto>.Failure(VerificationStatusCodes.CodeExpired);
 
-        // C. Hydrate User
         var user = await _userRepo.GetByIdAsync(userId.Value);
-        if (user == null) return Result<AuthenticationResultDto>.Failure(UserStatusCodes.UserNotFound);
+        if (user == null) return Result<AuthTokensDto>.Failure(UserStatusCodes.NotFound);
 
-        // ====================================================================
-        // D. Session Handling Logic (Smart Reuse)
-        // ====================================================================
+        // ------------------------------------------------------------------
+        // Session Recovery Logic
+        // ------------------------------------------------------------------
 
         Guid finalSessionId;
 
-        // 1. Try to extract the Session ID from the EXPIRED Access Token
+        // Try to extract the Session ID from the EXPIRED Access Token
         var oldSessionId = _tokenReader.GetSessionIdFromToken(oldAccessToken);
         var isSessionAlive = false;
 
         if (oldSessionId.HasValue)
         {
-            // 2. Check if this session is still active in Redis
-            // We use the lightweight service. If it returns true, it also updates LastSeenAt.
+            // We check if the session is still valid in the cache. 
+            // If valid, this method also refreshes the 'LastSeenAt' timestamp.
             isSessionAlive = await _sessionChecker.ValidateAndUpdateSessionAsync(oldSessionId.Value);
         }
 
         if (isSessionAlive)
         {
-            // CASE 1: Session is valid. Reuse it to keep analytics clean.
+            // The session is still valid; reuse it to maintain continuity in analytics/tracking.
             finalSessionId = oldSessionId!.Value;
         }
         else
         {
-            // CASE 2: Session is missing/expired in Redis. Create a FRESH one.
-            // This covers the "Hybrid Flow" where we recover from a lost session.
+            // The session expired in Redis or was lost. We create a NEW session transparently
+            // so the user does not experience a forced logout (Hybrid Flow).
             var sessionResult = await _sessionService.CreateSessionAsync(userId.Value);
 
             if (!sessionResult.IsSuccess)
-                return Result<AuthenticationResultDto>.Failure(sessionResult.StatusCode);
+                return Result<AuthTokensDto>.Failure(sessionResult.StatusCode);
 
             finalSessionId = sessionResult.Value;
         }
 
-        // ====================================================================
+        // ------------------------------------------------------------------
 
-        // E. Rotate Refresh Token
+        // Rotate Refresh Token
+        // This invalidates the old string immediately, preventing replay attacks if the old token was stolen.
         var newRefreshTokenString = _generatorService.GenerateSecureString();
         storedRefreshToken.Token = newRefreshTokenString;
         storedRefreshToken.ExpiresAt = DateTime.UtcNow.AddDays(_jwtSettings.RefreshTokenExpirationDays);
         storedRefreshToken.CreatedAt = DateTime.UtcNow;
 
-        // F. Generate New Access Token with the DETERMINED Session ID
         var newAccessToken = GenerateAccessToken(user, finalSessionId);
 
-        // G. Commit
         await _unitOfWork.CompleteAsync();
 
-        return Result<AuthenticationResultDto>.Success(
-            new AuthenticationResultDto
+        return Result<AuthTokensDto>.Success(
+            new AuthTokensDto
             {
                 Token = newAccessToken,
                 RefreshToken = newRefreshTokenString
             },
             VerificationStatusCodes.CodeVerified);
+    }
+
+    public async Task<Result> ClearRefreshTokensAsync(User user)
+    {
+        var currentRefreshTokens = await _refreshTokenRepo.GetListByExpressionAsync(
+            rt => rt.UserId == user.Id);
+
+        // This effectively implements "Sign Out Everywhere" by revoking all long-lived credentials.
+        await _refreshTokenRepo.DeleteRangeAsync(currentRefreshTokens);
+
+        return Result.Success(OperationStatusCode.Success);
     }
 }

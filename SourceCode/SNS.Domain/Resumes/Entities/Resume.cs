@@ -27,7 +27,11 @@ public class Resume : ISoftDeletable
     // Soft Delete
     public bool IsActive { get; set; }
 
+<<<<<<< Updated upstream
     public ResumeLangauge Langauge { get; set; }
+=======
+    public SupportedLanguage Langauge { get; set; }
+>>>>>>> Stashed changes
 
     // Navigation
     public Profile Owner { get; set; } = null!;

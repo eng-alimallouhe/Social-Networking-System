@@ -56,7 +56,9 @@ public class UserWithCodesAndUpdatesSpecification
     /// </param>
     public UserWithCodesAndUpdatesSpecification(string identifier)
     {
-        Criteria = u => u.Email == identifier || u.PhoneNumber == identifier;
+        Criteria = u => u.Email == identifier || 
+            u.PhoneNumber == identifier || 
+            u.PendingUpdates.Any(p => p.UpdatedInfo == identifier);
 
         Includes.Add(nameof(User.VerificationCodes));
         Includes.Add(nameof(User.PendingUpdates));

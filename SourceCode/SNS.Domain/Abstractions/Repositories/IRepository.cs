@@ -153,4 +153,13 @@ public interface IRepository<TEntity> where TEntity : class, IHardDeletable
     /// The unique identifier of the entity to delete.
     /// </param>
     Task DeleteAsync(Guid id);
+
+    /// <summary>
+    /// Deletes List of entities.
+    /// </summary>
+    /// <param name="entities">
+    /// The list that contains entities to delete.
+    /// </param>
+
+    Task DeleteRangeAsync(IEnumerable<TEntity> entities);
 }

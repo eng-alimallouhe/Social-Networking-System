@@ -5,5 +5,7 @@ public enum UpdateType
     PhoneNumber,
     Email, 
     PhoneNumberAndPassword, 
-    Password
+    Password,
+    Register,
+    PhoneNumberBySupport
 }

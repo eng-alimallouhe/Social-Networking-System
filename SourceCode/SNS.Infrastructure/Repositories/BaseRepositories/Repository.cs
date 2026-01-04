@@ -97,13 +97,11 @@ public class Repository<TEntity> : IRepository<TEntity>
     public async Task AddAsync(TEntity entity)
     {
         await _dbSet.AddAsync(entity);
-        await _context.SaveChangesAsync();
     }
 
     public async Task AddRangeAsync(IEnumerable<TEntity> entities)
     {
         await _dbSet.AddRangeAsync(entities);
-        await _context.SaveChangesAsync();
     }
 
     public async Task DeleteAsync(Guid id)
@@ -112,6 +110,10 @@ public class Repository<TEntity> : IRepository<TEntity>
         if (entity == null) return;
 
         _dbSet.Remove(entity);
-        await _context.SaveChangesAsync();
+    }
+
+    public async Task DeleteRangeAsync(IEnumerable<TEntity> entities)
+    {
+        _dbSet.RemoveRange(entities);
     }
 }
