@@ -1,36 +1,40 @@
 ﻿using SNS.Domain.Security;
 
-namespace SNS.Application.DTOs.Authentication.Verification.Requests
+namespace SNS.Application.DTOs.Authentication.Verification.Requests;
+
+/// <summary>
+/// Represents a data transfer object used to
+/// submit a verification code for validation.
+/// 
+/// This DTO is designed to transfer data between
+/// the client and the verification service without exposing
+/// domain entities or internal business logic.
+/// 
+/// It is typically used in commands to confirm a user's identity or action (e.g., phone confirmation).
+/// </summary>
+public class VerifyCodeDto
 {
     /// <summary>
-    /// Represents the data required to verify a security code
-    /// sent to a user.
+    /// Gets or sets the unique identifier of the user (e.g., Phone Number or Email).
     /// 
-    /// This object encapsulates the user's identifier, the
-    /// code itself, and the context (type) of the code being verified.
+    /// This value is used to locate the specific user or pending request associated with the code.
     /// </summary>
-    public class VerifyCodeDto
-    {
-        /// <summary>
-        /// The unique identifier of the user attempting verification.
-        /// <br/>
-        /// This could be an email address or a phone number, depending
-        /// on the registration method or the specific flow.
-        /// </summary>
-        public string UserIdentifier { get; set; } = string.Empty;
+    public string UserIdentifier { get; set; } = string.Empty;
 
-        /// <summary>
-        /// The actual verification code received by the user.
-        /// </summary>
-        public string Code { get; set; } = string.Empty;
+    /// <summary>
+    /// Gets or sets the verification code (OTP).
+    /// 
+    /// This value is used to prove possession of the communication channel.
+    /// </summary>
+    public string Code { get; set; } = string.Empty;
 
-        /// <summary>
-        /// The purpose or category of the code being verified
-        /// (e.g., EmailConfirmation, PasswordReset).
-        /// 
-        /// This ensures that a code generated for one purpose cannot
-        /// be maliciously used for another.
-        /// </summary>
-        public CodeType CodeType { get; set; }
-    }
+    /// <summary>
+    /// Gets or sets the type of code being verified.
+    /// 
+    /// This value is used to ensure the code is applied to the correct context (e.g., preventing a registration code from being used for password reset).
+    /// </summary>
+    public CodeType CodeType { get; set; }
+
+
+    public Guid? PendingUpdateId { get; set; }
 }

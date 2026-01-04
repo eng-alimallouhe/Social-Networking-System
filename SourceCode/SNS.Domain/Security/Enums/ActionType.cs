@@ -13,6 +13,7 @@ public enum ActionType
     TwoFactorEnabled,
     TwoFactorDisabled,
     SecurityCodeGenerated,
+    SupportResetPhoneNumber,
 
     // Moderation / Enforcement Actions
     Suspended,

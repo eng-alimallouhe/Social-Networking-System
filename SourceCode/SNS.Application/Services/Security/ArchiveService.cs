@@ -29,7 +29,7 @@ public class ArchiveService : IArchiveService
         {
             Id = Guid.NewGuid(),
             UserId = userId,
-            ActionType = actionType,
+            Type = actionType,
             PerformedBy = performedBy,
             Reason = reason,
             CreatedAt = DateTime.UtcNow,
@@ -38,7 +38,7 @@ public class ArchiveService : IArchiveService
 
         await _userArchiveRepo.AddAsync(archiveEntry);
 
-        return Result.Success(Resources.ResourceFound);
+        return Result.Success(ResourceStatusCode.Found);
     }
 
     public async Task<Result> ArchiveIdentityAsync(Guid userId, string identifier, IdentityType identityType)
@@ -48,13 +48,13 @@ public class ArchiveService : IArchiveService
             Id = Guid.NewGuid(),
             UserId = userId,
             UserIdentifier = identifier,
-            IdentityType = identityType,
-            ChangedAt = DateTime.UtcNow
+            Type = identityType,
+            CreatedAt = DateTime.UtcNow
         };
 
         await _identityArchiveRepo.AddAsync(identityEntry);
 
-        return Result.Success(Resources.ResourceFound);
+        return Result.Success(ResourceStatusCode.Found);
     }
 
     public async Task<Result> ArchivePasswordAsync(Guid userId, string hashedPassword)
@@ -64,11 +64,11 @@ public class ArchiveService : IArchiveService
             Id = Guid.NewGuid(),
             UserId = userId,
             HashedPassword = hashedPassword,
-            ChangedAt = DateTime.UtcNow
+            CreatedAt = DateTime.UtcNow
         };
 
         await _passwordArchiveRepo.AddAsync(passwordEntry);
 
-        return Result.Success(Resources.ResourceFound);
+        return Result.Success(ResourceStatusCode.Found);
     }
 }

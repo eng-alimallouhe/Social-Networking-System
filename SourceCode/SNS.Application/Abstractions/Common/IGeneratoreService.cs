@@ -27,4 +27,14 @@ public interface IGeneratorService
     /// <param name="byteLength">The number of random bytes to generate (Default is 32).</param>
     /// <returns>A Base64 string representation of the random bytes.</returns>
     string GenerateSecureString(int byteLength = 32);
+
+    /// <summary>
+    /// Generates a secure, random string suitable for use as a
+    /// Security Code
+    /// </summary>
+    /// <returns>
+    /// A string containing the generated code (e.g., a 32-digit characters).
+    /// </returns>
+
+    string GenerateSecretKey();
 }

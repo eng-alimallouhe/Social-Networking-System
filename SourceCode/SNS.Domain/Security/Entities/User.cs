@@ -1,4 +1,5 @@
 ﻿using SNS.Domain.Abstractions.Common;
+using SNS.Domain.Common.Enums;
 using SNS.Domain.Common.Helpers;
 using SNS.Domain.SocialGraph;
 
@@ -18,7 +19,7 @@ public class User : ISoftDeletable
     public string? PhoneNumber { get; set; }
     public required string PasswordHash { get; set; }
     public int FailedLoginAttempts { get; set; }
-
+    public SupportedLanguage PreferredLanguage { get; set; }
 
     // Timestamp
     public DateTime CreatedAt { get; set; } 
@@ -44,7 +45,7 @@ public class User : ISoftDeletable
     // Navigation Properties
     public Role Role { get; set; } = null!;
     public Profile Profile { get; set; } = null!;
-    public RefreshToken Token { get; set; } = null!;
+    public ICollection<RefreshToken> Token { get; set; } = new List<RefreshToken>();
     public ICollection<VerificationCode> VerificationCodes { get; set; } = new List<VerificationCode>();
     public ICollection<IdentityArchive> IdentityArchives { get; set; } = new List<IdentityArchive>();
     public ICollection<PasswordArchive> PasswordArchives { get; set; } = new List<PasswordArchive>();
@@ -64,6 +65,7 @@ public class User : ISoftDeletable
         CreatedAt = DateTime.UtcNow;
         UpdatedAt = DateTime.UtcNow;
         LastLogIn = DateTime.UtcNow;
+        PreferredLanguage = SupportedLanguage.English;
         LastPasswordChange = DateTime.UtcNow;
         CodeCreatedAt = DateTime.UtcNow;
         IsActive = true;

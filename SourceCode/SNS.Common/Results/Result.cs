@@ -1,10 +1,14 @@
 ﻿using SNS.Common.StatusCodes;
+using System.Text.Json.Serialization;
 
 namespace SNS.Common.Results
 {
     public class Result
     {
         public bool IsSuccess { get; }
+
+        [JsonIgnore]
+        public bool IsFailure => !IsSuccess;
 
         public StatusCode StatusCode { get; }
 

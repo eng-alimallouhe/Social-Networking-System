@@ -64,12 +64,14 @@ public class ActiveVerificationCodeSpecification
     public ActiveVerificationCodeSpecification(
         Guid userId,
         CodeType type,
-        string code)
+        string code, 
+        Guid? pendingUpdateId = null)
     {
         Criteria = c =>
             c.UserId == userId &&
             c.Type == type &&
             c.Code == code &&
+            c.PendingUpdateId == pendingUpdateId &&
             !c.IsUsed;
     }
 
@@ -89,11 +91,14 @@ public class ActiveVerificationCodeSpecification
     /// </param>
     public ActiveVerificationCodeSpecification(
         Guid userId,
-        CodeType type)
+        CodeType type, 
+        Guid? pendingUpdateId = null)
     {
         Criteria = c =>
             c.UserId == userId &&
             c.Type == type &&
-            !c.IsUsed;
+            c.PendingUpdateId == pendingUpdateId &&
+            !c.IsUsed && 
+            !c.IsRevoked;
     }
 }

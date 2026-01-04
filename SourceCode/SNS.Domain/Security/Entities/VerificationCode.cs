@@ -27,6 +27,7 @@ public class VerificationCode : IHardDeletable
 
 
     public bool IsUsed { get; set; } 
+    public bool IsRevoked { get; set; } 
 
     // Navigation
     public User User { get; set; } = null!;
@@ -37,5 +38,7 @@ public class VerificationCode : IHardDeletable
     {
         Id = SequentialGuid.GenerateSequentialGuid();
         CreatedAt = DateTime.UtcNow;
+        ExpiresAt = DateTime.UtcNow.AddMinutes(10);
+        IsRevoked = false;
     }
 }

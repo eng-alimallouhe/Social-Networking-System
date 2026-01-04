@@ -1,5 +1,4 @@
-﻿using Azure.Core;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using SNS.Application.Abstractions.Authentication;
 using SNS.Application.Settings;
@@ -9,6 +8,12 @@ using System.Text;
 
 namespace SNS.Infrastructure.Services.Authentication;
 
+/// <summary>
+/// Represents the implementation of the token reader service using System.IdentityModel.Tokens.Jwt.
+/// 
+/// This service manually parses JWT strings to extract claims without relying on the 
+/// current HTTP context or the ASP.NET authentication pipeline.
+/// </summary>
 public class TokenReaderService : ITokenReaderService
 {
     private readonly JWTSettings _jwtSettings;
@@ -18,10 +23,12 @@ public class TokenReaderService : ITokenReaderService
         _jwtSettings = options.Value;
     }
 
-
     public string? GetEmail(string accessToken)
     {
         var principal = GetPrincipal(accessToken);
+
+        // We check "NameIdentifier" first as a fallback, but strictly speaking,
+        // we return the specific "Email" claim if present.
         var userIdString = principal?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
         return principal?.FindFirst(ClaimTypes.Email)?.Value;
@@ -46,11 +53,13 @@ public class TokenReaderService : ITokenReaderService
     private ClaimsPrincipal? GetPrincipal(string accessToken)
     {
         string secretKey = _jwtSettings.SecretKey;
-
         var tokenHandler = new JwtSecurityTokenHandler();
-
         var key = Encoding.UTF8.GetBytes(secretKey);
 
+        // We configure the validation parameters loosely here because the goal 
+        // is to read the claims, not to enforce access control.
+        // Critically, ValidateLifetime is set to false to allow extracting user ID 
+        // from expired tokens (e.g., during a Refresh Token flow).
         var parameters = new TokenValidationParameters
         {
             ValidateIssuer = false,
@@ -64,17 +73,19 @@ public class TokenReaderService : ITokenReaderService
         {
             var principal = tokenHandler.ValidateToken(accessToken, parameters, out SecurityToken validatedToken);
 
+            // Debug logging for development visibility
             Console.WriteLine("All Claims:");
             foreach (var claim in principal.Claims)
             {
                 Console.WriteLine($"Type: {claim.Type}, Value: {claim.Value}");
             }
 
-
             return principal;
         }
         catch
         {
+            // If the token is malformed or the signature is invalid, 
+            // we return null rather than throwing to ensure safe "try-get" behavior.
             return null;
         }
     }

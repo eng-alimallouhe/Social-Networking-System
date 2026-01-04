@@ -17,7 +17,7 @@ public static class VerificationStatusCodes
     /// to the user.
     /// </summary>
     public static readonly StatusCode CodeSent =
-        new("Verification", 200);
+        new("Verification", 201);
 
     /// <summary>
     /// Indicates that the verification code was successfully
@@ -25,6 +25,12 @@ public static class VerificationStatusCodes
     /// </summary>
     public static readonly StatusCode CodeVerified =
         new("Verification", 200);
+
+    ///<summary>
+    ///Indicates that code resend operation was successful.
+    /// </summary>
+    public static readonly StatusCode CodeResent =
+        new("Verification", 202);
 
     /// <summary>
     /// Indicates that no active verification code exists

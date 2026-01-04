@@ -3,35 +3,49 @@
 namespace SNS.Application.DTOs.SocialGraph;
 
 /// <summary>
-/// Represents social and external links associated with a profile.
+/// Represents a data transfer object used to
+/// update the social media links of a profile.
+/// 
+/// This DTO is designed to transfer data between
+/// the client and the application layer without exposing
+/// domain entities or internal business logic.
+/// 
+/// It is typically used in commands to modify external profile links.
 /// </summary>
-/// <remarks>
-/// All properties are optional and can be updated independently.
-/// </remarks>
 public class UpdateProfileLinksDto
 {
     /// <summary>
-    /// GitHub profile URL.
+    /// Gets or sets the GitHub profile URL.
+    /// 
+    /// Optional. This value is used to direct visitors to the user's code repositories.
     /// </summary>
     public string? GitHubUrl { get; set; }
 
     /// <summary>
-    /// LinkedIn profile URL.
+    /// Gets or sets the LinkedIn profile URL.
+    /// 
+    /// Optional. This value is used to direct visitors to the user's professional network.
     /// </summary>
     public string? LinkedInUrl { get; set; }
 
     /// <summary>
-    /// Twitter (X) profile URL.
+    /// Gets or sets the X (formerly Twitter) profile URL.
+    /// 
+    /// Optional. This value is used to direct visitors to the user's microblogging feed.
     /// </summary>
     public string? XUrl { get; set; }
 
     /// <summary>
-    /// Facebook profile URL.
+    /// Gets or sets the Facebook profile URL.
+    /// 
+    /// Optional. This value is used to direct visitors to the user's social page.
     /// </summary>
     public string? FacebookUrl { get; set; }
 
     /// <summary>
-    /// Personal or portfolio website URL.
+    /// Gets or sets the personal website URL.
+    /// 
+    /// Optional. This value is used to direct visitors to the user's portfolio or blog.
     /// </summary>
     public string? Website { get; set; }
 }

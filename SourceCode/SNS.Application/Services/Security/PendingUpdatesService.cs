@@ -16,7 +16,11 @@ public class PendingUpdatesService : IPendingUpdatesService
         _pendingRepo = pendingRepo;
     }
 
-    public async Task<Result<Guid>> CreateOrReplaceAsync(Guid userId, UpdateType type, string info)
+    public async Task<Result<Guid>> CreateOrReplaceAsync(
+        Guid userId, 
+        UpdateType type, 
+        string info, 
+        Guid? supportId = null)
     {
         // 1. Check for existing pending update of the same type for this user
         // We assume we want to enforce: "One pending update of Type X per User"
@@ -36,13 +40,14 @@ public class PendingUpdatesService : IPendingUpdatesService
             UserId = userId,
             UpdateType = type,
             UpdatedInfo = info,
-            RequestedAt = DateTime.UtcNow
+            RequestedAt = DateTime.UtcNow,
+            SupportId = supportId
         };
 
         // 4. Add to repository
         await _pendingRepo.AddAsync(newUpdate);
 
-        return Result<Guid>.Success(newUpdate.Id, Resources.ResourceFound);
+        return Result<Guid>.Success(newUpdate.Id, ResourceStatusCode.Found);
     }
 
     public async Task<Result<PendingUpdate>> GetPendingByInfoAsync(string info, UpdateType type)
@@ -52,10 +57,10 @@ public class PendingUpdatesService : IPendingUpdatesService
 
         if (update == null)
         {
-            return Result<PendingUpdate>.Failure(Resources.ResourceNotFound);
+            return Result<PendingUpdate>.Failure(ResourceStatusCode.NotFound);
         }
 
-        return Result<PendingUpdate>.Success(update, Resources.ResourceFound);
+        return Result<PendingUpdate>.Success(update, ResourceStatusCode.Found);
     }
 
     public async Task<Result<PendingUpdate>> GetPendingByUserAsync(Guid userId, UpdateType type)
@@ -65,15 +70,15 @@ public class PendingUpdatesService : IPendingUpdatesService
 
         if (update == null)
         {
-            return Result<PendingUpdate>.Failure(Resources.ResourceNotFound);
+            return Result<PendingUpdate>.Failure(ResourceStatusCode.NotFound);
         }
 
-        return Result<PendingUpdate>.Success(update, Resources.ResourceFound);
+        return Result<PendingUpdate>.Success(update, ResourceStatusCode.Found);
     }
 
     public async Task<Result> DeleteAsync(Guid id)
     {
         await _pendingRepo.DeleteAsync(id);
-        return Result.Success(Resources.ResourceFound);
+        return Result.Success(ResourceStatusCode.Found);
     }
 }

@@ -8,25 +8,29 @@ public class PendingUpdate : IHardDeletable
 {
     // Primary Key
     public Guid Id { get; set; }
-
+    
 
     // Foreign Key: One(User) To Many(PendingUpdates)
     public Guid UserId { get; set; }
+    public Guid? SupportId { get; set; }
 
     public required string UpdatedInfo { get; set; }
     public UpdateType UpdateType { get; set; }
 
+    public bool IsCompleted { get; set; }
 
     // Timestamp
     public DateTime RequestedAt { get; set; }
 
     // Navigation
     public User User { get; set; } = null!;
+    public User? Support { get; set; }
     public VerificationCode? VerificationCode { get; set; }
 
     public PendingUpdate()
     {
         Id = SequentialGuid.GenerateSequentialGuid();
         RequestedAt = DateTime.UtcNow;
+        IsCompleted = false;
     }
 }

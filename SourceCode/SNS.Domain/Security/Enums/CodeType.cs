@@ -1,9 +1,10 @@
 ﻿namespace SNS.Domain.Security;
 
-public enum CodeType { 
-    NewAnnouncement,
-    NewLogin,
-    PasswordChanged,
-    TwoFactorEnabled,
-    TwoFactorDisabled
+public enum CodeType {
+    AccountActivation,
+    LoginTwoFactor,
+    PasswordReset,
+    ChangeEmail,
+    ChangePhoneNumber,
+    SupportChangePhoneNumber
 }

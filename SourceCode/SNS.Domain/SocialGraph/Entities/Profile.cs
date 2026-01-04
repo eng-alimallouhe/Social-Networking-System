@@ -4,6 +4,10 @@ using SNS.Domain.Content.Entities;
 using SNS.Domain.Education.Entities;
 using SNS.Domain.Jobs.Entities;
 using SNS.Domain.ProfileContext.Bridges;
+using SNS.Domain.Projects.Bridges;
+using SNS.Domain.Projects.Entities;
+using SNS.Domain.QA.Bridges;
+using SNS.Domain.QA.Entities;
 using SNS.Domain.Resumes.Entities;
 using SNS.Domain.SocialGraph.Bridges;
 
@@ -57,9 +61,9 @@ public class Profile : ISoftDeletable
     public ICollection<Follow> Followers { get; set; } = new List<Follow>();   
     public ICollection<Follow> Followings { get; set; } = new List<Follow>();  
     public ICollection<Block> BlackList { get; set; } = new List<Block>();
-    ICollection<ProfileSkill> ProfileSkills { get; set; } = new List<ProfileSkill>();
-    ICollection<ProfileSkillRequest> ProfileSkillRequests { get; set; } = new List<ProfileSkillRequest>();
-    ICollection<ProfileTopic> ProfileTopics { get; set; } = new List<ProfileTopic>();
+    public ICollection<ProfileSkill> ProfileSkills { get; set; } = new List<ProfileSkill>();
+    public ICollection<ProfileSkillRequest> ProfileSkillRequests { get; set; } = new List<ProfileSkillRequest>();
+    public ICollection<ProfileTopic> ProfileTopics { get; set; } = new List<ProfileTopic>();
     public ICollection<Resume> Resumes { get; set; } = new List<Resume>();
     public ICollection<UniversityRequest> UniversityRequests { get; set; } = new List<UniversityRequest>();
     public ICollection<FacultyRequest> FacultyRequests { get; set; } = new List<FacultyRequest>();
@@ -73,7 +77,14 @@ public class Profile : ISoftDeletable
     public ICollection<CommentReaction> CommentReactions { get; set; } = new List<CommentReaction>();
     public ICollection<ProfileView> Views { get; set; } = new List<ProfileView>();
     public ICollection<ProfileView> Vieweds { get; set; } = new List<ProfileView>();
-
+    public ICollection<Project> Projects { get; set; } = new List<Project>();
+    public ICollection<ProjectContributor> ProjectContributors { get; set; } = new List<ProjectContributor>();
+    public ICollection<ProjectView> ProjectViews { get; set; } = new List<ProjectView>();
+    public ICollection<Problem> Problems { get; set; } = new List<Problem>();
+    public ICollection<Solution> Solutions { get; set; } = new List<Solution>();
+    public ICollection<ProblemVote> ProblemVotes { get; set; } = new List<ProblemVote>();
+    public ICollection<SolutionVote> SolutionVotes { get; set; } = new List<SolutionVote>();
+    public ICollection<ProblemView> ProblemViews { get; set; } = new List<ProblemView>();
 
     public Profile()
     {

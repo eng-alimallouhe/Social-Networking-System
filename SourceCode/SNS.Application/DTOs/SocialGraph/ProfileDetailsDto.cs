@@ -5,140 +5,175 @@ using SNS.Application.DTOs.ProfileContext;
 namespace SNS.Application.DTOs.SocialGraph;
 
 /// <summary>
-/// Represents full public profile details.
+/// Represents a data transfer object used to
+/// provide a comprehensive view of a user's profile.
+/// 
+/// This DTO is designed to transfer data between
+/// the application layer and the client for the main profile page display,
+/// aggregating data from multiple domain contexts (Core, Education, Preferences).
+/// 
+/// It is typically used in responses when viewing a specific user profile.
 /// </summary>
-/// <remarks>
-/// Returned when viewing a complete profile page.
-/// </remarks>
 public class ProfileDetailsDto
 {
     /// <summary>
-    /// Unique profile identifier.
+    /// Gets or sets the unique identifier of the profile.
     /// </summary>
-    public Guid ProfileId { get; set; }
+    public Guid Id { get; set; }
 
     /// <summary>
-    /// Full name of the profile owner.
+    /// Gets or sets the full name of the profile owner.
+    /// 
+    /// This value is used as the primary display name on the profile page.
     /// </summary>
     public string FullName { get; set; } = string.Empty;
 
     /// <summary>
-    /// Profile biography.
+    /// Gets or sets the biography text.
+    /// 
+    /// Optional. This value is used to provide a short introduction about the user.
     /// </summary>
     public string? Bio { get; set; }
 
     /// <summary>
-    /// Profile picture URL.
+    /// Gets or sets the URL of the profile picture.
+    /// 
+    /// Optional. This value is used to render the user's avatar.
     /// </summary>
     public string? ProfilePictureUrl { get; set; }
 
     /// <summary>
-    /// Cover image URL.
+    /// Gets or sets the URL of the cover image.
+    /// 
+    /// Optional. This value is used to render the profile header background.
     /// </summary>
     public string? CoverImageUrl { get; set; }
 
     /// <summary>
-    /// Primary specialization.
+    /// Gets or sets the primary specialization.
+    /// 
+    /// Optional. This value is used to display the user's professional title.
     /// </summary>
     public string? Specialization { get; set; }
 
     /// <summary>
-    /// Number of followers.
+    /// Gets or sets the total number of followers.
+    /// 
+    /// This value is used to indicate the user's audience size.
     /// </summary>
     public int FollowersCount { get; set; }
 
     /// <summary>
-    /// Number of followed profiles.
+    /// Gets or sets the total number of profiles this user is following.
     /// </summary>
     public int FollowingCount { get; set; }
 
     /// <summary>
-    /// Number of profile views.
+    /// Gets or sets the total number of times the profile has been viewed.
     /// </summary>
     public int ViewsCount { get; set; }
 
     /// <summary>
-    /// Number of projects associated with the profile.
+    /// Gets or sets the total number of projects associated with the profile.
     /// </summary>
     public int ProjectsCount { get; set; }
 
+
     /// <summary>
-    /// Number of published solutions.
+    /// Gets or sets the total number of contributors across all projects.
+    /// </summary>
+    public int ProjectContributorsCount { get; set; }
+
+
+    /// <summary>
+    /// Gets or sets the total number of solutions published by the user.
     /// </summary>
     public int SolutionsCount { get; set; }
 
     /// <summary>
-    /// List of skills.
+    /// Gets or sets the list of professional skills.
+    /// 
+    /// This collection is used to display the user's technical competencies.
     /// </summary>
     public List<ProfileSkillDto> Skills { get; set; } = new List<ProfileSkillDto>();
 
     /// <summary>
-    /// List of interests.
+    /// Gets or sets the list of personal interests.
+    /// 
+    /// This collection is used to display what the user is passionate about.
     /// </summary>
     public List<InterestSummaryDto> Interests { get; set; } = new();
 
+    
     /// <summary>
-    /// Country of residence.
-    /// </summary>
-    public string? Country { get; set; }
-
-    /// <summary>
-    /// City of residence.
+    /// Gets or sets the city of residence.
     /// </summary>
     public string? City { get; set; }
 
     /// <summary>
-    /// include university name and identifier.
+    /// Gets or sets the associated university details.
+    /// 
+    /// Optional. This value is used to display the user's academic background.
     /// </summary>
     public UniversityLookupDto? University { get; set; }
 
     /// <summary>
-    /// include Faculty name and identifier..
+    /// Gets or sets the associated faculty details.
+    /// 
+    /// Optional. This value is used to display the user's specific field of study.
     /// </summary>
     public FacultyLookupDto? Faculty { get; set; }
 
     /// <summary>
-    /// GitHub profile URL.
+    /// Gets or sets the GitHub profile URL.
     /// </summary>
     public string? GitHubUrl { get; set; }
 
     /// <summary>
-    /// LinkedIn profile URL.
+    /// Gets or sets the LinkedIn profile URL.
     /// </summary>
     public string? LinkedInUrl { get; set; }
 
     /// <summary>
-    /// Twitter (X) profile URL.
+    /// Gets or sets the X (formerly Twitter) profile URL.
     /// </summary>
     public string? XUrl { get; set; }
 
     /// <summary>
-    /// Facebook profile URL.
+    /// Gets or sets the Facebook profile URL.
     /// </summary>
     public string? FacebookUrl { get; set; }
 
     /// <summary>
-    /// Personal website URL.
+    /// Gets or sets the personal website URL.
     /// </summary>
     public string? Website { get; set; }
 
     /// <summary>
-    /// Indicates whether the viewer follows this profile.
+    /// Indicates whether the current viewer is following this profile.
+    /// 
+    /// This value is used to toggle the "Follow/Unfollow" button state.
     /// </summary>
     public bool IsFollowedByViewer { get; set; }
 
     /// <summary>
     /// Indicates whether the profile is blocked by the viewer.
+    /// 
+    /// This value is used to manage UI visibility and block actions.
     /// </summary>
     public bool IsBlocked { get; set; }
 
     /// <summary>
-    /// Indicates whether the profile owner blocks the viewer.
+    /// Indicates whether the profile owner has blocked the viewer.
+    /// 
+    /// This value is used to restrict access to profile content.
     /// </summary>
     public bool IsBlockingViewer { get; set; }
 
     /// <summary>
-    /// The counter of the profile views 
+    /// Gets or sets the detailed profile view counter.
+    /// 
+    /// This duplicate property (see ViewsCount) serves as a specific metric for analytics.
     /// </summary>
     public int ProfileViews { get; set; }
 }

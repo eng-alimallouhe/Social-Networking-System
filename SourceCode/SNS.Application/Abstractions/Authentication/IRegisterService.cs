@@ -1,50 +1,83 @@
+<<<<<<< Updated upstream
 ﻿using SNS.Application.DTOs.Authentication.Register;
 using SNS.Application.DTOs.Authentication.Responses; // For AuthResponse
+=======
+﻿using SNS.Application.DTOs.Authentication.Common.Responses;
+using SNS.Application.DTOs.Authentication.Register;
+using SNS.Application.DTOs.Authentication.Register.Reponses;
+using SNS.Application.DTOs.Authentication.Register.Requests;
+>>>>>>> Stashed changes
 using SNS.Common.Results;
 
 namespace SNS.Application.Abstractions.Authentication;
 
 /// <summary>
-/// Defines a domain-level service responsible for handling user registration 
-/// and account activation workflows.
+/// Represents a domain service responsible for
+/// handling user registration and account activation workflows.
 /// 
-/// This service acts as an orchestrator, coordinating between Repositories,
-/// CodeService, PendingUpdateService, and TokenService to ensure a transactional
-/// and secure onboarding process.
+/// This service encapsulates the business logic related to
+/// onboarding new users, orchestrating entity creation, and managing the transition
+/// from inactive to active states, while keeping the Application layer
+/// decoupled from infrastructure and implementation details.
 /// </summary>
 public interface IRegisterService
 {
+    // ------------------------------------------------------------------
+    // Command operations
+    // ------------------------------------------------------------------
+
     /// <summary>
     /// Initiates the registration process for a new user.
     /// 
-    /// Logic:
-    /// 1. Checks if the phone number is already taken by an active user.
-    /// 2. Checks if the phone number is currently locked in a pending verification state.
-    /// 3. Creates the User and Profile entities (Inactive State).
-    /// 4. Creates a 'NewRegistration' pending update request for the phone number.
-    /// 5. Dispatches a verification code linked to that pending request.
+    /// This operation is responsible for:
+    /// - Validating that the provided phone number is unique and not currently locked.
+    /// - Creating the initial User and Profile entities in an inactive state.
+    /// - Initiating the verification workflow by creating a pending update request.
+    /// - Dispatching a verification code to the user.
     /// </summary>
-    /// <param name="dto">The registration payload (Name, Phone, Password).</param>
+    /// <param name="dto">
+    /// The registration payload containing the user's basic information (Name, Phone, Password).
+    /// </param>
     /// <returns>
-    /// A <see cref="Result{Guid}"/> containing the <see cref="Guid"/> of the newly created User.
-    /// This ID is required for the subsequent activation step.
+    /// A <see cref="Result{RegisterResponseDto}"/> containing the newly created User's ID
+    /// and security context if the operation completed successfully; otherwise, a failure result.
     /// </returns>
-    Task<Result<Guid>> RegisterAsync(RegisterDto dto);
+    Task<Result<RegisterResponseDto>> RegisterAsync(
+        RegisterDto dto);
 
     /// <summary>
-    /// Finalizes the registration by verifying the activation code and 
-    /// transitioning the user to an Active state.
+    /// Finalizes the registration by verifying the activation code and transitioning the user to an active state.
     /// 
-    /// Logic:
-    /// 1. Verifies the code against the PendingUpdate context.
-    /// 2. Moves the phone number from PendingUpdate to the User entity.
-    /// 3. Activates the user.
-    /// 4. Creates a new Session, Archives Identity, and Archives Password.
-    /// 5. Generates and returns Authentication Tokens.
+    /// This operation is responsible for:
+    /// - Validating the provided code against the pending registration request.
+    /// - Activating the user account and confirming the phone number.
+    /// - Establishing the initial security context (Session, Password Archive).
+    /// - Generating and returning the initial set of authentication tokens.
     /// </summary>
-    /// <param name="dto">Contains UserID and the Verification Code.</param>
+    /// <param name="dto">
+    /// The data transfer object containing the User ID and the Verification Code.
+    /// </param>
     /// <returns>
-    /// A <see cref="Result{AuthenticationResultDto}"/> containing the Access and Refresh tokens.
+    /// A <see cref="Result{AuthTokensDto}"/> containing the Access and Refresh tokens
+    /// if the activation is successful; otherwise, a failure result.
     /// </returns>
-    Task<Result<AuthenticationResultDto>> ActiveAccountAsync(AccountActivationDto dto);
+    Task<Result<AuthTokensDto>> ActiveAccountAsync(
+        AccountActivationDto dto);
+
+    /// <summary>
+    /// Re-initiates the activation request for a user who has not yet completed registration.
+    /// 
+    /// This operation is responsible for:
+    /// - Resending the activation code to users who may have lost the previous one.
+    /// - Ensuring the account is still in a valid state to receive a new activation request.
+    /// </summary>
+    /// <param name="dto">
+    /// The data transfer object identifying the pending activation request.
+    /// </param>
+    /// <returns>
+    /// A <see cref="Result{RegisterResponseDto}"/> confirming the request was processed
+    /// and the notification has been re-queued.
+    /// </returns>
+    Task<Result<RegisterResponseDto>> ResendActiveRequestAsync(
+        ResendActiveRequestDto dto);
 }

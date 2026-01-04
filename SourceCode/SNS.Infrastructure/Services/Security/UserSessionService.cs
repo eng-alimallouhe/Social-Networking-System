@@ -8,9 +8,11 @@ using SNS.Common.StatusCodes.Common;
 using SNS.Domain.Abstractions.Repositories;
 using SNS.Domain.Abstractions.Specifications;
 using SNS.Domain.Security.Entities;
+using SNS.Domain.Specifications.Security.UserSessions;
 using UAParser;
 
-namespace SNS.Application.Services.Security;
+
+namespace SNS.Infrastructure.Services.Security;
 
 public class UserSessionService : IUserSessionService
 {
@@ -41,7 +43,7 @@ public class UserSessionService : IUserSessionService
         // This check handles edge cases like background jobs invoking the service without an HTTP request
         if (context == null)
         {
-            return Result<Guid>.Failure(Resources.ResourceReadError);
+            return Result<Guid>.Failure(ResourceStatusCode.ReadError);
         }
 
         var ipAddress = GetIpAddress(context);
@@ -99,7 +101,7 @@ public class UserSessionService : IUserSessionService
             $"user:sessions:{userId}",
             sessionId.ToString());
 
-        return Result<Guid>.Success(sessionId, Resources.ResourceFound);
+        return Result<Guid>.Success(sessionId, ResourceStatusCode.Found);
     }
 
     public async Task<Result<Paged<UserSessionSummaryDto>>> GetSessionsAsync(ISpecification<UserSession> specification)
@@ -132,7 +134,7 @@ public class UserSessionService : IUserSessionService
 
         var pagedResult = new Paged<UserSessionSummaryDto>(dtos, count, pageSize, currentPage);
 
-        return Result<Paged<UserSessionSummaryDto>>.Success(pagedResult, Resources.ResourceFound);
+        return Result<Paged<UserSessionSummaryDto>>.Success(pagedResult, ResourceStatusCode.Found);
     }
 
     // --- Helpers ---
@@ -162,5 +164,22 @@ public class UserSessionService : IUserSessionService
             return guid;
         }
         return null;
+    }
+
+
+    public async Task<Result> ClearSessionsByUserIdAsync(Guid userId)
+    {
+        var spec = new CurrentUserSessionSpecification(userId);
+
+        var currentSessionsForUser = (await _sessionRepo.GetListAsync(spec)).items;
+
+        foreach (var item in currentSessionsForUser)
+        {
+            item.LogoutAt = DateTime.UtcNow;
+            item.IsActive = false;
+            await _cacheService.RemoveAsync($"session:{item.Id}");
+        }
+
+        return Result.Success(OperationStatusCode.Success);
     }
 }
