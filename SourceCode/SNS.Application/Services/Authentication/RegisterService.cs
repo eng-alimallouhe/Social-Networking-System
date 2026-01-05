@@ -2,6 +2,11 @@
 using SNS.Application.Abstractions.Common;
 using SNS.Application.Abstractions.Loggings;
 using SNS.Application.Abstractions.Security;
+using SNS.Application.DTOs.Authentication.Common.Responses;
+using SNS.Application.DTOs.Authentication.Register;
+using SNS.Application.DTOs.Authentication.Register.Reponses;
+using SNS.Application.DTOs.Authentication.Register.Requests;
+using SNS.Application.DTOs.Authentication.Verification.Requests;
 using SNS.Common.Results;
 using SNS.Common.StatusCodes.Common;
 using SNS.Common.StatusCodes.Security;
