@@ -1,8 +1,11 @@
 ﻿using SNS.Domain.Abstractions.Common;
 using SNS.Domain.Common.Helpers;
+using SNS.Domain.Communities.Entities;
 using SNS.Domain.Content.Entities;
 using SNS.Domain.Education.Entities;
 using SNS.Domain.Jobs.Entities;
+using SNS.Domain.Posts.Bridges;
+using SNS.Domain.Preferences.Entities;
 using SNS.Domain.ProfileContext.Bridges;
 using SNS.Domain.Projects.Bridges;
 using SNS.Domain.Projects.Entities;
@@ -58,33 +61,90 @@ public class Profile : ISoftDeletable
 
 
     // Navigation
-    public ICollection<Follow> Followers { get; set; } = new List<Follow>();   
-    public ICollection<Follow> Followings { get; set; } = new List<Follow>();  
-    public ICollection<Block> BlackList { get; set; } = new List<Block>();
-    public ICollection<ProfileSkill> ProfileSkills { get; set; } = new List<ProfileSkill>();
-    public ICollection<ProfileSkillRequest> ProfileSkillRequests { get; set; } = new List<ProfileSkillRequest>();
-    public ICollection<ProfileTopic> ProfileTopics { get; set; } = new List<ProfileTopic>();
-    public ICollection<Resume> Resumes { get; set; } = new List<Resume>();
-    public ICollection<UniversityRequest> UniversityRequests { get; set; } = new List<UniversityRequest>();
-    public ICollection<FacultyRequest> FacultyRequests { get; set; } = new List<FacultyRequest>();
-    public ICollection<ProfileUniversityRequest> ProfileUniversityRequests { get; set; } = new List<ProfileUniversityRequest>();
-    public ICollection<ProfileFacultyRequest> ProfileFacultyRequests { get; set; } = new List<ProfileFacultyRequest>();
-    public ICollection<JobApplication> JobApplications { get; set; } = new List<JobApplication>();
-    public ICollection<Job> Jobs { get; set; } = new List<Job>();
-    public ICollection<Post> Posts { get; set; } = new List<Post>();
-    public ICollection<PostReaction> PostReactions { get; set; } = new List<PostReaction>();
-    public ICollection<Comment> Comments { get; set; } = new List<Comment>();
-    public ICollection<CommentReaction> CommentReactions { get; set; } = new List<CommentReaction>();
-    public ICollection<ProfileView> Views { get; set; } = new List<ProfileView>();
-    public ICollection<ProfileView> Vieweds { get; set; } = new List<ProfileView>();
-    public ICollection<Project> Projects { get; set; } = new List<Project>();
-    public ICollection<ProjectContributor> ProjectContributors { get; set; } = new List<ProjectContributor>();
-    public ICollection<ProjectView> ProjectViews { get; set; } = new List<ProjectView>();
-    public ICollection<Problem> Problems { get; set; } = new List<Problem>();
-    public ICollection<Solution> Solutions { get; set; } = new List<Solution>();
-    public ICollection<ProblemVote> ProblemVotes { get; set; } = new List<ProblemVote>();
-    public ICollection<SolutionVote> SolutionVotes { get; set; } = new List<SolutionVote>();
-    public ICollection<ProblemView> ProblemViews { get; set; } = new List<ProblemView>();
+    public ICollection<Follow> Followers { get; set; } 
+        = new List<Follow>();   
+    
+    public ICollection<Follow> Followings { get; set; } 
+        = new List<Follow>();  
+    
+    public ICollection<Block> BlackList { get; set; } 
+        = new List<Block>();
+    
+    public ICollection<ProfileSkill> ProfileSkills { get; set; } 
+        = new List<ProfileSkill>();
+    
+    public ICollection<ProfileTopic> ProfileTopics { get; set; } 
+        = new List<ProfileTopic>();
+    
+    public ICollection<Resume> Resumes { get; set; } 
+        = new List<Resume>();
+        
+    public ICollection<JobApplication> JobApplications { get; set; } 
+        = new List<JobApplication>();
+    
+    public ICollection<Job> Jobs { get; set; } 
+        = new List<Job>();
+    
+    public ICollection<Post> Posts { get; set; } 
+        = new List<Post>();
+    
+    public ICollection<ProfileInterest> ProfileInterests { get; set; } 
+        = new List<ProfileInterest>();
+    
+    public ICollection<PostReaction> PostReactions { get; set; } 
+        = new List<PostReaction>();
+    
+    public ICollection<Comment> Comments { get; set; } 
+        = new List<Comment>();
+    
+    public ICollection<CommentReaction> CommentReactions { get; set; }
+        = new List<CommentReaction>();
+    
+    public ICollection<ProfileView> Views { get; set; } 
+        = new List<ProfileView>();
+    
+    public ICollection<ProfileView> Vieweds { get; set; } 
+        = new List<ProfileView>();
+    
+    public ICollection<Project> Projects { get; set; }
+        = new List<Project>();
+
+    public ICollection<ProjectView> ProjectViews { get; set; } 
+        = new List<ProjectView>();
+
+    public ICollection<ProjectRating> ProjectRatings { get; set; } 
+        = new List<ProjectRating>();
+    
+    public ICollection<Problem> Problems { get; set; } 
+        = new List<Problem>();
+    
+    public ICollection<Solution> Solutions { get; set; } 
+        = new List<Solution>();
+    
+    public ICollection<ProblemVote> ProblemVotes { get; set; } 
+        = new List<ProblemVote>();
+    
+    public ICollection<SolutionVote> SolutionVotes { get; set; } 
+        = new List<SolutionVote>();
+    
+    public ICollection<ProblemView> ProblemViews { get; set; } 
+        = new List<ProblemView>();
+    
+    
+    public ICollection<PostView> PostViews { get; set; }
+        = new List<PostView>();
+    
+    public ICollection<Discussion> Discussions { get; set; } 
+        = new List<Discussion>();
+    
+    public ICollection<ProjectContributor> Contributors { get; set; } 
+        = new List<ProjectContributor>();
+
+    public ICollection<Community> Communities { get; set; } =
+        new List<Community>();
+
+    public ICollection<CommunityMembership> CommunityMemberships { get; set; }
+        = new List<CommunityMembership>();
 
     public Profile()
     {

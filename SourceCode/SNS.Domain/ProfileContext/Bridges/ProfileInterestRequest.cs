@@ -11,11 +11,11 @@ public class ProfileInterestRequest : IHardDeletable
     public Guid Id { get; set; }
 
     // Foreign Keys
-    public Guid ProfileId { get; set; }
+    public Guid JoinerId { get; set; }
     public Guid InterestRequestId { get; set; }
 
     // Navigation
-    public Profile Profile { get; set; } = null!;
+    public Profile Joiner { get; set; } = null!;
     public InterestRequest InterestRequest { get; set; } = null!;
 
     public ProfileInterestRequest()

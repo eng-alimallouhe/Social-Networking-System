@@ -13,7 +13,7 @@ public class Problem : ISoftDeletable
     public Guid Id { get; set; }
 
     // Foreign Key: One(Profile) → Many(Problems)
-    public Guid AuthorProfileId { get; set; }
+    public Guid AuthorId { get; set; }
 
     // Foreign Key: One(Community) → Many(Problems) == Optional
     public Guid? CommunityId { get; set; }
@@ -32,14 +32,27 @@ public class Problem : ISoftDeletable
     public bool IsActive { get; set; }
 
     // Navigation Properties
-    public Profile AuthorProfile { get; set; } = null!;
+    public Profile Author { get; set; } = null!;
+    
     public Community? Community { get; set; }
-    public ICollection<ProblemContentBlock> ContentBlocks { get; set; } = new List<ProblemContentBlock>();
-    public ICollection<ProblemVote> Votes { get; set; } = new List<ProblemVote>();
-    public ICollection<ProblemTag> Tags { get; set; } = new List<ProblemTag>();
-    public ICollection<ProblemTopic> Topics { get; set; } = new List<ProblemTopic>();
-    public ICollection<Solution> Solutions { get; set; } = new List<Solution>();
-    public ICollection<ProblemView> Views { get; set; } = new List<ProblemView>();
+    
+    public ICollection<ProblemContentBlock> ContentBlocks { get; set; } 
+        = new List<ProblemContentBlock>();
+    
+    public ICollection<ProblemVote> Votes { get; set; } 
+        = new List<ProblemVote>();
+    
+    public ICollection<ProblemTag> Tags { get; set; } 
+        = new List<ProblemTag>();
+    
+    public ICollection<ProblemTopic> Topics { get; set; } 
+        = new List<ProblemTopic>();
+    
+    public ICollection<Solution> Solutions { get; set; } 
+        = new List<Solution>();
+    
+    public ICollection<ProblemView> Views { get; set; } 
+        = new List<ProblemView>();
 
     public Problem()
     {

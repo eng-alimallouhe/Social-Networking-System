@@ -15,14 +15,16 @@ public class SkillRequest : IHardDeletable
     public string SkillName { get; set; } = default!;
 
     // Foreign Key: One(Profile) To Many(SkillRequests)
-    public Guid RequestedByProfileId { get; set; }
+    public Guid SubmitterId { get; set; }
 
     public ProficiencyLevel Level { get; set; }
     public RequestStatus Status { get; set; }
     
     // Navigation
-    public ICollection<ProfileSkillRequest> Requests { get; set; } = new List<ProfileSkillRequest>();
-    public Profile RequestedByProfile { get; set; } = null!;
+    public ICollection<ProfileSkillRequest> ProfileSkillRequests { get; set; } 
+        = new List<ProfileSkillRequest>();
+    
+    public Profile Submitter { get; set; } = null!;
 
     public SkillRequest()
     {

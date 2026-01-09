@@ -13,7 +13,7 @@ public class Project : ISoftDeletable
     public Guid Id { get; set; }
 
     // Foreign Key: One(Profile) → Many(Projects)
-    public Guid OwnerProfileId { get; set; }
+    public Guid OwnerId { get; set; }
 
     // General Properties
     public string Title { get; set; } = string.Empty;
@@ -31,14 +31,28 @@ public class Project : ISoftDeletable
     public DateTime UpdatedAt { get; set; } 
 
     // Navigation Properties
-    public Profile OwnerProfile { get; set; } = null!;
-    public ICollection<ProjectSkill> Skills { get; set; } = new List<ProjectSkill>();
-    public ICollection<ProjectTag> Tags { get; set; } = new List<ProjectTag>();
-    public ICollection<ProjectContributor> Contributors { get; set; } = new List<ProjectContributor>();
-    public ICollection<ProjectMedia> Media { get; set; } = new List<ProjectMedia>();
-    public ICollection<ProjectRating> Ratings { get; set; } = new List<ProjectRating>();
-    public ICollection<ProjectMilestone> Milestones { get; set; } = new List<ProjectMilestone>();
-    public ICollection<ProjectView> Views { get; set; } = new List<ProjectView>();
+    public Profile Owner { get; set; } = null!;
+
+    public ICollection<ProjectSkill> Skills { get; set; }
+        = new List<ProjectSkill>();
+    
+    public ICollection<ProjectTag> Tags { get; set; } 
+        = new List<ProjectTag>();
+    
+    public ICollection<ProjectContributor> Contributors { get; set; } 
+        = new List<ProjectContributor>();
+    
+    public ICollection<ProjectMedia> Media { get; set; } 
+        = new List<ProjectMedia>();
+    
+    public ICollection<ProjectRating> Ratings { get; set; } 
+        = new List<ProjectRating>();
+    
+    public ICollection<ProjectMilestone> Milestones { get; set; } 
+        = new List<ProjectMilestone>();
+    
+    public ICollection<ProjectView> Views { get; set; } 
+        = new List<ProjectView>();
 
 
     public Project()

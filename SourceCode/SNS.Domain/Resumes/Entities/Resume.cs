@@ -1,6 +1,7 @@
 ﻿using SNS.Domain.Abstractions.Common;
 using SNS.Domain.Common.Enums;
 using SNS.Domain.Common.Helpers;
+using SNS.Domain.Resumes.Bridges;
 using SNS.Domain.Resumes.Enums;
 using SNS.Domain.SocialGraph;
 
@@ -12,7 +13,7 @@ public class Resume : ISoftDeletable
     public Guid Id { get; set; }
 
     // Foreign Key: One(Profile) To Many(Resumes)
-    public Guid OwnerProfileId { get; set; }
+    public Guid OwnerId { get; set; }
 
     public string? PersonalPictureUrl { get; set; }
     public bool SyncProfilePicture { get; set; }
@@ -37,6 +38,8 @@ public class Resume : ISoftDeletable
     public ICollection<ResumeExperience> Experiences { get; set; } = new List<ResumeExperience>();
     public ICollection<ResumeCertificate> Certificates { get; set; } = new List<ResumeCertificate>();
     public ICollection<ResumeLanguage> Languages { get; set; } = new List<ResumeLanguage>();
+    public ICollection<ResumeSkill> Skills { get; set; } = new List<ResumeSkill>();
+    public ICollection<ResumeProject> Projects { get; set; } = new List<ResumeProject>();
 
     public Resume()
     {

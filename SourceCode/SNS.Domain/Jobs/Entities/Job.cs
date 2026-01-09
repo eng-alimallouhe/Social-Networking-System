@@ -12,7 +12,7 @@ public class Job : ISoftDeletable
     public Guid Id { get; set; }
 
     // Foreign Key: One(Profile) → Many(Jobs)
-    public Guid OwnerProfileId { get; set; }
+    public Guid OwnerId { get; set; }
 
     public string Title { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
@@ -33,7 +33,7 @@ public class Job : ISoftDeletable
     public bool IsActive { get; set; }
 
     //Navigation Properties
-    public Profile OwnerProfile { get; set; } = null!;
+    public Profile Owner { get; set; } = null!;
     public ICollection<JobApplication> Applications { get; set; } = new List<JobApplication>();
     public ICollection<JobSkill> JobSkills { get; set; } = new List<JobSkill>();
 

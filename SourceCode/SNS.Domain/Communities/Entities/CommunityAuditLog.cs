@@ -13,7 +13,7 @@ public class CommunityAuditLog : IHardDeletable
     public Guid CommunityId { get; set; }
 
     // Foreign Key: One(Profile) → Many(AuditLogs) == Optional
-    public Guid? ProfileId { get; set; }
+    public Guid? ActorId { get; set; }
 
     public string Action { get; set; } = string.Empty;
 
@@ -24,7 +24,7 @@ public class CommunityAuditLog : IHardDeletable
     public Community Community { get; set; } = null!;
 
     // Navigation Properties (Optional)
-    public Profile? Profile { get; set; }
+    public Profile? Actor { get; set; }
 
     public CommunityAuditLog()
     {

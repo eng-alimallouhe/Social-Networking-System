@@ -17,10 +17,10 @@ public class InterestRequest : IHardDeletable
     public RequestStatus Status { get; set; }
     
     // Foreign Key
-    public Guid? RequestedByProfileId { get; set; }
+    public Guid? SubmitterId { get; set; }
 
     // Navigation
-    public Profile? RequestedByProfile { get; set; }
+    public Profile? Submitter { get; set; }
     public ICollection<ProfileInterestRequest> ProfileInterestRequests { get; set; } = new List<ProfileInterestRequest>();
 
     public InterestRequest()

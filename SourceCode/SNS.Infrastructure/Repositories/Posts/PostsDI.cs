@@ -11,16 +11,38 @@ public static class PostsDI
         this IServiceCollection services)
     {
         // Soft Delete
-        services.AddScoped<ISoftDeletableRepository<Post>, PostRepository>();
-        services.AddScoped<ISoftDeletableRepository<Comment>, CommentRepository>();
+        services.AddScoped<
+            ISoftDeletableRepository<Post>, 
+            PostRepository>();
+
+        services.AddScoped<
+            ISoftDeletableRepository<Comment>, 
+            CommentRepository>();
 
         // Hard Delete
-        services.AddScoped<IRepository<CommentReaction>, CommentReactionRepository>();
-        services.AddScoped<IRepository<PostMedia>, PostMediaRepository>();
-        services.AddScoped<IRepository<PostReaction>, PostReactionRepository>();
-        services.AddScoped<IRepository<PostTag>, PostTagRepository>();
-        services.AddScoped<IRepository<PostTopic>, PostTopicRepository>();
-        services.AddScoped<IRepository<PostView>, PostViewRepository>();
+        services.AddScoped<
+            IRepository<CommentReaction>, 
+            CommentReactionRepository>();
+
+        services.AddScoped<
+            IRepository<PostMedia>, 
+            PostMediaRepository>();
+
+        services.AddScoped<
+            IRepository<PostReaction>, 
+            PostReactionRepository>();
+
+        services.AddScoped<
+            IRepository<PostTag>, 
+            PostTagRepository>();
+
+        services.AddScoped<
+            IRepository<PostTopic>, 
+            PostTopicRepository>();
+
+        services.AddScoped<
+            ISoftDeletableRepository<PostView>, 
+            PostViewRepository>();
 
         return services;
     }

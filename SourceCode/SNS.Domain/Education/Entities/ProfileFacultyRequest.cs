@@ -10,7 +10,7 @@ public class ProfileFacultyRequest : IHardDeletable
     public Guid Id { get; set; }
 
     // Foreign Key: One(Profile) → Many(ProfileFacultyRequest)
-    public Guid ProfileId { get; set; }
+    public Guid JoinerId { get; set; }
 
     // Foreign Key: One(FacultyRequest) → Many(ProfileFacultyRequest)
     public Guid FacultyRequestId { get; set; }
@@ -22,7 +22,7 @@ public class ProfileFacultyRequest : IHardDeletable
     public DateTime UpdatedAt { get; set; }
 
     // Navigation Properties
-    public Profile Profile { get; set; } = null!;
+    public Profile Joiner { get; set; } = null!;
     public FacultyRequest FacultyRequest { get; set; } = null!;
 
     public ProfileFacultyRequest()

@@ -16,6 +16,7 @@ using SNS.Domain.Security;
 using SNS.Domain.Security.Entities;
 using SNS.Domain.SocialGraph;
 using SNS.Domain.SocialGraph.Bridges;
+using System.Reflection;
 
 namespace SNS.Infrastructure.Data;
 
@@ -137,5 +138,15 @@ public class SNSDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+
+        // This single line automatically scans the current assembly (Infrastructure)
+        // and applies every class that implements IEntityTypeConfiguration<T>.
+        // This includes all the Post, Job, Education, and Community configurations we created.
+        modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+    }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        base.OnConfiguring(optionsBuilder);
     }
 }

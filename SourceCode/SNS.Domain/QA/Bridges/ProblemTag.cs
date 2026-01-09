@@ -8,7 +8,6 @@ namespace SNS.Domain.QA.Bridges;
 
 public class ProblemTag : IHardDeletable
 {
-    // Primary Key
     public Guid Id { get; set; }
 
     // Foreign Key: One(Problem) → Many(ProblemTags)

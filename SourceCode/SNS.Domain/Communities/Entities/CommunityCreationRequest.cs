@@ -12,7 +12,7 @@ public class CommunityCreationRequest : IHardDeletable
     public Guid Id { get; set; }
 
     // Foreign Key: One(Profile) → Many(CreationRequests)
-    public Guid SubmitterProfileId { get; set; }
+    public Guid SubmitterId { get; set; }
 
     public string Name { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
@@ -28,7 +28,7 @@ public class CommunityCreationRequest : IHardDeletable
     public string ReviewNotes { get; set; } = string.Empty;
 
     // Navigation Properties (Required)
-    public Profile SubmitterProfile { get; set; } = null!;
+    public Profile Submitter { get; set; } = null!;
 
     public CommunityCreationRequest()
     {

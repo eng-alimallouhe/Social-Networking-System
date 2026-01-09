@@ -13,7 +13,7 @@ public class ProjectContributor : IHardDeletable
 
     // Foreign Keys
     public Guid ProjectId { get; set; }
-    public Guid ContributorProfileId { get; set; }
+    public Guid ContributorId { get; set; }
 
     // General Properties
     public InvitingStatus InvitingStatus { get; set; }
@@ -26,7 +26,7 @@ public class ProjectContributor : IHardDeletable
 
     // Navigation
     public Project Project { get; set; } = null!;
-    public Profile ContributorProfile { get; set; } = null!;
+    public Profile Contributor { get; set; } = null!;
 
     public ProjectContributor()
     {

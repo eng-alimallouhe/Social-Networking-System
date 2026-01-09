@@ -9,10 +9,10 @@ public class Block : IHardDeletable
     public Guid Id { get; set; }
 
     // Foreign Key: One(Profile) → Many(Blocked Profiles)
-    public Guid BlockerProfileId { get; set; }
+    public Guid BlockerId { get; set; }
 
     // Foreign Key: One(Profile) → Many(Profiles that blocked him)
-    public Guid BlockedProfileId { get; set; }
+    public Guid BlockedId { get; set; }
 
     // Timestamp
     public DateTime CreatedAt { get; set; }

@@ -11,7 +11,7 @@ public class UniversityRequest : IHardDeletable
     public Guid Id { get; set; }
 
     // Foreign Key: One(Profile) → Many(UniversityRequest)
-    public Guid SubmitterProfileId { get; set; }
+    public Guid SubmitterId { get; set; }
 
     // Properties
     public string Name { get; set; } = string.Empty;
@@ -25,7 +25,7 @@ public class UniversityRequest : IHardDeletable
     public DateTime? ReviewedAt { get; set; }
 
     // Navigation Properties
-    public Profile SubmitterProfile { get; set; } = null!;
+    public Profile Submitter { get; set; } = null!;
     public ICollection<ProfileUniversityRequest> Requests { get; set; } = new List<ProfileUniversityRequest>();
 
     public UniversityRequest()
