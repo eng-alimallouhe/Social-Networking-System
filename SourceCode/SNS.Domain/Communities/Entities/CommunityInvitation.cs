@@ -14,10 +14,10 @@ public class CommunityInvitation : IHardDeletable
     public Guid CommunityId { get; set; }
 
     // Foreign Key: One(Profile) → Many(SentInvitations)
-    public Guid InviterProfileId { get; set; }
+    public Guid InviterId { get; set; }
 
     // Foreign Key: One(Profile) → Many(ReceivedInvitations)
-    public Guid InviteeProfileId { get; set; }
+    public Guid InviteeId { get; set; }
 
     // Timestamp
     public DateTime SentAt { get; set; }
@@ -27,8 +27,8 @@ public class CommunityInvitation : IHardDeletable
 
     // Navigation Properties (Required)
     public Community Community { get; set; } = null!;
-    public Profile InviterProfile { get; set; } = null!;
-    public Profile InviteeProfile { get; set; } = null!;
+    public Profile Inviter { get; set; } = null!;
+    public Profile Invitee { get; set; } = null!;
 
     public CommunityInvitation()
     {

@@ -3,7 +3,7 @@ using SNS.Infrastructure.Data;
 
 namespace SNS.Infrastructure.Repositories;
 
-public class ProjectViewRepository : Repository<ProjectView>
+public class ProjectViewRepository : SoftDeletableRepository<ProjectView>
 {
     public ProjectViewRepository(SNSDbContext context) : base(context) { }
 }

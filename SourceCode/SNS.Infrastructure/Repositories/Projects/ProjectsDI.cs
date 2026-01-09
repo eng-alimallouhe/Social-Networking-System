@@ -41,7 +41,7 @@ public static class ProjectsDI
             ProjectTagRepository>();
 
         services.AddScoped<
-            IRepository<ProjectView>, 
+            ISoftDeletableRepository<ProjectView>, 
             ProjectViewRepository>();
 
         return services;

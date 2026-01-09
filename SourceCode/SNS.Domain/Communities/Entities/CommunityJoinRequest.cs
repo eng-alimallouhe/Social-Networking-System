@@ -14,7 +14,7 @@ public class CommunityJoinRequest : IHardDeletable
     public Guid CommunityId { get; set; }
 
     // Foreign Key: One(Profile) → Many(JoinRequests)
-    public Guid ProfileId { get; set; }
+    public Guid SubmitterId { get; set; }
 
     public JoinRequestStatus Status { get; set; }
     public string Notes { get; set; } = string.Empty;
@@ -25,7 +25,7 @@ public class CommunityJoinRequest : IHardDeletable
 
     // Navigation Properties (Required)
     public Community Community { get; set; } = null!;
-    public Profile Profile { get; set; } = null!;
+    public Profile Submitter { get; set; } = null!;
 
 
     public CommunityJoinRequest()

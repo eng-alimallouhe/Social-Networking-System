@@ -6,14 +6,14 @@ using SNS.Domain.SocialGraph;
 
 namespace SNS.Domain.Projects.Bridges;
 
-public class ProjectView : IHardDeletable
+public class ProjectView : ISoftDeletable
 {
     // Primary Key
     public Guid Id { get; set; }
 
     // Foreign Keys
     public Guid ProjectId { get; set; }
-    public Guid ViewerProfileId { get; set; }
+    public Guid ViewerId { get; set; }
 
     // Timestamp
     public DateTime ViewedAt { get; set; }
@@ -22,14 +22,18 @@ public class ProjectView : IHardDeletable
     public DeviceType? DeviceType { get; set; }
     public string? IpHash { get; set; }
     public string? Country { get; set; }
+    
+    // Soft Delete:
+    public bool IsActive { get; set; }
 
     // Navigation
     public Project Project { get; set; } = null!;
-    public Profile ViewerProfile { get; set; } = null!;
+    public Profile Viewer { get; set; } = null!;
 
     public ProjectView()
     {
         Id = SequentialGuid.GenerateSequentialGuid();
         ViewedAt = DateTime.UtcNow;
+        IsActive = true;
     }
 }

@@ -15,6 +15,9 @@ public static class SocialGraphDI
             ProfileRepository>();
 
         services.AddScoped<
+            ISoftDeletableRepository<ProfileView>, ProfileViewRepository>();
+
+        services.AddScoped<
             IRepository<Follow>, 
             FollowRepository>();
         

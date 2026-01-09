@@ -15,7 +15,7 @@ public class SolutionVote : IHardDeletable
     public Guid SolutionId { get; set; }
 
     // Foreign Key: One(Profile) → Many(SolutionVotes)
-    public Guid VoterProfileId { get; set; }
+    public Guid VoterId { get; set; }
 
     // General Properties
     public VoteType Type { get; set; }
@@ -25,7 +25,7 @@ public class SolutionVote : IHardDeletable
 
     // Navigation Properties
     public Solution Solution { get; set; } = null!;
-    public Profile VoterProfile { get; set; } = null!;
+    public Profile Voter { get; set; } = null!;
 
     public SolutionVote()
     {

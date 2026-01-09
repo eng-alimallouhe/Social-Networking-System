@@ -3,7 +3,7 @@ using SNS.Infrastructure.Data;
 
 namespace SNS.Infrastructure.Repositories.Posts;
 
-public class PostViewRepository : Repository<PostView>
+public class PostViewRepository : SoftDeletableRepository<PostView>
 {
     public PostViewRepository(SNSDbContext context) : base(context) { }
 }

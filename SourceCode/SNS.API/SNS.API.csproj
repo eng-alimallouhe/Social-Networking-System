@@ -8,20 +8,30 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Asp.Versioning.Mvc" Version="8.1.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.1" />
-    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.1" />
-    <PackageReference Include="Microsoft.AspNetCore.SignalR.Core" Version="1.2.0" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="10.0.1" />
+    <Compile Remove="Controllers\Authentication\**" />
+    <Content Remove="Controllers\Authentication\**" />
+    <EmbeddedResource Remove="Controllers\Authentication\**" />
+    <None Remove="Controllers\Authentication\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
+    <PackageReference Include="Asp.Versioning.Mvc" Version="8.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="10.0.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\SNS.Application\SNS.Application.csproj" />
     <ProjectReference Include="..\SNS.Infrastructure\SNS.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Controllers\" />
   </ItemGroup>
 
 </Project>

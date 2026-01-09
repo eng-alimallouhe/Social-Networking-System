@@ -11,7 +11,7 @@ public class ProjectRating : IHardDeletable
     public Guid Id { get; set; }
 
     // Foreign Keys
-    public Guid ReactingProfileId { get; set; }
+    public Guid RaterId { get; set; }
     public Guid ProjectId { get; set; }
 
     // General
@@ -23,7 +23,7 @@ public class ProjectRating : IHardDeletable
 
     // Navigation
     public Project Project { get; set; } = null!;
-    public Profile User { get; set; } = null!;
+    public Profile Rater { get; set; } = null!;
 
     public ProjectRating()
     {

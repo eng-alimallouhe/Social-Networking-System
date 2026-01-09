@@ -1,12 +1,7 @@
-<<<<<<< Updated upstream
-﻿using SNS.Application.DTOs.Authentication.Register;
-using SNS.Application.DTOs.Authentication.Responses; // For AuthResponse
-=======
-﻿using SNS.Application.DTOs.Authentication.Common.Responses;
 using SNS.Application.DTOs.Authentication.Register;
+using SNS.Application.DTOs.Authentication.Common.Responses;
 using SNS.Application.DTOs.Authentication.Register.Reponses;
 using SNS.Application.DTOs.Authentication.Register.Requests;
->>>>>>> Stashed changes
 using SNS.Common.Results;
 
 namespace SNS.Application.Abstractions.Authentication;

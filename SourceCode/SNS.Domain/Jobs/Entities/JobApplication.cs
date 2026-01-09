@@ -13,7 +13,7 @@ public class JobApplication : ISoftDeletable
     public Guid Id { get; set; }
 
     // Foreign Key: One(Profile) → Many(JobApplications)
-    public Guid ApplicantProfileId { get; set; }
+    public Guid ApplicantId { get; set; }
 
     // Foreign Key: One(Job) → Many(JobApplications)
     public Guid JobId { get; set; }
@@ -35,7 +35,7 @@ public class JobApplication : ISoftDeletable
 
     //Navigation Properties
     public Job Job { get; set; } = null!;
-    public Profile ApplicantProfile { get; set; } = null!;
+    public Profile Applicant { get; set; } = null!;
 
     // Optional Relationship
     public Resume? Resume { get; set; }

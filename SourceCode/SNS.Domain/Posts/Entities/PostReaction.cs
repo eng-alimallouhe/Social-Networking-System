@@ -12,7 +12,7 @@ public class PostReaction : IHardDeletable
 
     // Foreign Keys
     public Guid PostId { get; set; }
-    public Guid ReactingProfileId { get; set; }
+    public Guid ReactorId { get; set; }
 
     // General
     public ReactionType Type { get; set; }
@@ -22,7 +22,7 @@ public class PostReaction : IHardDeletable
 
     // Navigation
     public Post Post { get; set; } = null!;
-    public Profile Profile { get; set; } = null!;
+    public Profile Reactor { get; set; } = null!;
 
     public PostReaction()
     {

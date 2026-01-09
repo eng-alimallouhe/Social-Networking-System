@@ -13,7 +13,7 @@ public class Post : ISoftDeletable
     public Guid Id { get; set; }
 
     // Foreign Keys
-    public Guid AuthorProfileId { get; set; }
+    public Guid AuthorId { get; set; }
     public Guid? CommunityId { get; set; }
 
     // General Fields
@@ -34,7 +34,7 @@ public class Post : ISoftDeletable
     public DateTime UpdatedAt { get; set; }
 
     // Navigation Properties
-    public Profile AuthorProfile { get; set; } = null!;
+    public Profile Author { get; set; } = null!;
     public Community? Community { get; set; }
     public ICollection<PostMedia> Media { get; set; } = new List<PostMedia>();
     public ICollection<Comment> Comments { get; set; } = new List<Comment>();

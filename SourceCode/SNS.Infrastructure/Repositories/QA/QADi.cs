@@ -42,7 +42,7 @@ public static class QADi
             ProblemTopicRepository>();
 
         services.AddScoped<
-            IRepository<ProblemView>, 
+            ISoftDeletableRepository<ProblemView>, 
             ProblemViewRepository>();
 
         services.AddScoped<

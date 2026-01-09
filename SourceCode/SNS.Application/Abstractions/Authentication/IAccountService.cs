@@ -4,6 +4,7 @@ using SNS.Application.DTOs.Authentication.Common.Responses;
 using SNS.Application.DTOs.Authentication.Login.Requests;
 using SNS.Application.DTOs.Authentication.Password.Requests;
 using SNS.Application.DTOs.Authentication.TwoFactor.Requests;
+using SNS.Application.DTOs.Authentication.Verification.Requests;
 using SNS.Common.Results;
 
 namespace SNS.Application.Abstractions.Authentication;
@@ -11,9 +12,9 @@ namespace SNS.Application.Abstractions.Authentication;
 /// <summary>
 /// Represents a domain service responsible for
 /// managing user account security, session lifecycles, and identity updates.
-/// 
+///
 /// This service encapsulates the business logic related to
-/// authentication (login/logout), credential management (password resets), 
+/// authentication (login/logout), credential management (password resets),
 /// and critical account modifications, while keeping the Application layer
 /// decoupled from infrastructure and implementation details.
 /// </summary>
@@ -25,7 +26,7 @@ public interface IAccountService
 
     /// <summary>
     /// Authenticates a user based on provided credentials and establishes a session.
-    /// 
+    ///
     /// This operation is responsible for:
     /// - Validating the username and password.
     /// - Checking account status (e.g., locked, banned, or requiring 2FA).
@@ -42,7 +43,7 @@ public interface IAccountService
 
     /// <summary>
     /// Terminates the user's active session.
-    /// 
+    ///
     /// This operation is responsible for:
     /// - Revoking the current refresh token.
     /// - Marking the session as inactive to prevent further access.
@@ -58,7 +59,7 @@ public interface IAccountService
 
     /// <summary>
     /// Updates the password for an already authenticated user.
-    /// 
+    ///
     /// This operation is responsible for:
     /// - Verifying the user's current password.
     /// - Enforcing password complexity policies on the new password.
@@ -75,7 +76,7 @@ public interface IAccountService
 
     /// <summary>
     /// Initiates the password recovery process for a user who cannot log in.
-    /// 
+    ///
     /// This operation is responsible for:
     /// - Verifying that the provided identifier matches an existing account.
     /// - Generating a secure recovery code.
@@ -91,7 +92,7 @@ public interface IAccountService
 
     /// <summary>
     /// Verifies the validity of a password reset code.
-    /// 
+    ///
     /// This operation is responsible for:
     /// - Checking if the provided code is valid and has not expired.
     /// - Returning a temporary token or identifier to authorize the actual password reset.
@@ -106,7 +107,7 @@ public interface IAccountService
 
     /// <summary>
     /// Finalizes the password recovery process using a verification code.
-    /// 
+    ///
     /// This operation is responsible for:
     /// - Validating the recovery context.
     /// - Updating the password to the new value.
@@ -124,7 +125,7 @@ public interface IAccountService
 
     /// <summary>
     /// Validates a Two-Factor Authentication (2FA) code to complete a login attempt.
-    /// 
+    ///
     /// This operation is responsible for:
     /// - Verifying the time-based or SMS-based code.
     /// - Transitioning the pending login session to fully active.
@@ -139,7 +140,7 @@ public interface IAccountService
 
     /// <summary>
     /// Re-sends the Two-Factor Authentication (2FA) code.
-    /// 
+    ///
     /// This operation is responsible for:
     /// - Handling cases where the code expired or was not received.
     /// - Enforcing rate limiting to prevent abuse.
@@ -154,7 +155,7 @@ public interface IAccountService
 
     /// <summary>
     /// Initiates the process of changing a critical account identifier (Email/Phone).
-    /// 
+    ///
     /// This operation is responsible for:
     /// - Verifying that the new identifier is not already in use.
     /// - Generating a verification code sent specifically to the *new* identifier.
@@ -170,7 +171,7 @@ public interface IAccountService
 
     /// <summary>
     /// Finalizes the identifier change by verifying the code sent to the new identifier.
-    /// 
+    ///
     /// This operation is responsible for:
     /// - Validating the code against the pending update request.
     /// - Atomically updating the user's contact information.
@@ -189,7 +190,7 @@ public interface IAccountService
 
     /// <summary>
     /// Performs an administrative request to reset a user's phone number.
-    /// 
+    ///
     /// This operation is responsible for:
     /// - Auditing the support action performed by an administrator.
     /// - Initiating a secure flow for the user to reclaim their account with a new number.
@@ -203,8 +204,22 @@ public interface IAccountService
     Task<Result<string>> InitiateSupportPhoneChangeAsync(SupportResetPhoneNumberDto dto);
 
     /// <summary>
+    /// Resends the verification code for a support-initiated phone change request.
+    ///
+    /// This allows the user to request a new code if the original one expired or was not received,
+    /// using the context of the existing pending update.
+    /// </summary>
+    /// <param name="dto">
+    /// The data transfer object containing the user ID, new identifier, and pending update ID.
+    /// </param>
+    /// <returns>
+    /// A <see cref="Result"/> indicating success or failure of the resend operation.
+    /// </returns>
+    Task<Result> ResendSupportCodeAsync(ResendSupportCodeDto dto);
+
+    /// <summary>
     /// Finalizes the phone number change initiated by support.
-    /// 
+    ///
     /// This operation is responsible for:
     /// - Validating the special token or code generated by the support action.
     /// - Updating the user's phone number.
@@ -219,7 +234,7 @@ public interface IAccountService
 
     /// <summary>
     /// Recovers an account using a pre-generated security code.
-    /// 
+    ///
     /// This operation is responsible for:
     /// - Validating a backup or emergency security code.
     /// - Bypassing standard 2FA or password flows in emergency scenarios.

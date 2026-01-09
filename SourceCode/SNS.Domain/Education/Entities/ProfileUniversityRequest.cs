@@ -13,7 +13,7 @@ public class ProfileUniversityRequest : IHardDeletable
     public Guid UniversityRequestId { get; set; }
 
     // Foreign Key: One(Profile) → Many(ProfileUniversityRequest)
-    public Guid ProfileId { get; set; }
+    public Guid JoinerId { get; set; }
 
     // Properties
 
@@ -23,7 +23,7 @@ public class ProfileUniversityRequest : IHardDeletable
 
 
     // Navigation Properties
-    public Profile Profile { get; set; } = null!;
+    public Profile Joiner { get; set; } = null!;
     public UniversityRequest UniversityRequest { get; set; } = null!;
 
     public ProfileUniversityRequest()

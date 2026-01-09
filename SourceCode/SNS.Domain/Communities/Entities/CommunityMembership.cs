@@ -11,7 +11,7 @@ public class CommunityMembership : IHardDeletable
     public Guid Id { get; set; }
 
     // Foreign Key: One(Profile) → Many(Memberships)
-    public Guid ProfileId { get; set; }
+    public Guid MemberId { get; set; }
 
     // Foreign Key: One(Community) → Many(Memberships)
     public Guid CommunityId { get; set; }
@@ -21,7 +21,7 @@ public class CommunityMembership : IHardDeletable
     public DateTime JoinedDate { get; set; } = DateTime.UtcNow;
 
     // Navigation Properties (Required)
-    public Profile Profile { get; set; } = null!;
+    public Profile Member { get; set; } = null!;
     public Community Community { get; set; } = null!;
 
 

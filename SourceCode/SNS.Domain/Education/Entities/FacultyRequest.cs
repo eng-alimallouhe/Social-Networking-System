@@ -11,7 +11,7 @@ public class FacultyRequest : IHardDeletable
     public Guid Id { get; set; }
 
     // Foreign Key: One(Profile) → Many(FacultyRequest)
-    public Guid SubmitterProfileId { get; set; }
+    public Guid SubmitterId { get; set; }
 
     // Foreign Key: One(UniversityRequest) → Many(FacultyRequest) == Optional
     public Guid? UniversityRequestId { get; set; }
@@ -32,7 +32,7 @@ public class FacultyRequest : IHardDeletable
     public bool IsActive { get; set; }
 
     // Navigation Properties
-    public Profile SubmitterProfile { get; set; } = null!;
+    public Profile Submitter { get; set; } = null!;
     public University? University { get; set; }
     public UniversityRequest? UniversityRequest { get; set; }
     public ICollection<ProfileFacultyRequest> Requests { get; set; } = new List<ProfileFacultyRequest>();

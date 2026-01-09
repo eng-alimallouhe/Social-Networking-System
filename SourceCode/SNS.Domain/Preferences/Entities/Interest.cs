@@ -9,6 +9,9 @@ public class Interest : ISoftDeletable
     // Primary Key
     public Guid Id { get; set; }
 
+    // Foreign Key:
+    public Guid CategoryId { get; set; }
+
     public string Name { get; set; } = default!;
     public string? Description { get; set; }
 
@@ -17,6 +20,9 @@ public class Interest : ISoftDeletable
 
     // Navigation
     public ICollection<ProfileInterest> ProfileInterests { get; set; } = new List<ProfileInterest>();
+    public InterestCategory Category { get; set; } = null!;
+    public ICollection<TopicInterest>  TopicInterests { get; set; } 
+        = new List<TopicInterest>();
 
     public Interest()
     {

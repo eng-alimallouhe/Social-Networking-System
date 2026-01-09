@@ -1,4 +1,5 @@
 ﻿using SNS.Domain.Abstractions.Common;
+using SNS.Domain.Common.Helpers;
 using SNS.Domain.Content.Entities;
 using SNS.Domain.Preferences.Entities;
 
@@ -6,6 +7,7 @@ namespace SNS.Domain.Posts.Bridges;
 
 public class PostTag : IHardDeletable
 {
+    public Guid Id { get; set; }
     public Guid PostId { get; set; }
     public Guid TagId { get; set; }
     public float? Confidence { get; set; }
@@ -13,4 +15,9 @@ public class PostTag : IHardDeletable
     // Navigation
     public Post Post { get; set; } = null!;
     public Tag Tag { get; set; } = null!;
+
+    public PostTag()
+    {
+        Id = SequentialGuid.GenerateSequentialGuid();
+    }
 }

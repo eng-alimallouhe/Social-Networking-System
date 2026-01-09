@@ -12,7 +12,7 @@ public class CommentReaction : IHardDeletable
 
     // Foreign Keys
     public Guid CommentId { get; set; }
-    public Guid ReactingProfileId { get; set; }
+    public Guid ReactorId { get; set; }
 
     // General
     public ReactionType Type { get; set; }
@@ -22,7 +22,7 @@ public class CommentReaction : IHardDeletable
 
     // Navigation
     public Comment Comment { get; set; } = null!;
-    public Profile Profile { get; set; } = null!;
+    public Profile Reactor { get; set; } = null!;
 
     public CommentReaction()
     {

@@ -12,7 +12,7 @@ public class ProfileSkillRequest : IHardDeletable
     public Guid Id { get; set; }
 
     // Foreign Keys
-    public Guid ProfileId { get; set; }
+    public Guid JoinerId { get; set; }
     public Guid SkillRequestId { get; set; }
 
     // Timestamp
@@ -22,7 +22,7 @@ public class ProfileSkillRequest : IHardDeletable
 
     // Navigation
     public SkillRequest SkillRequest { get; set; } = null!;
-    public Profile Profile { get; set; } = null!;
+    public Profile Joiner { get; set; } = null!;
 
     public ProfileSkillRequest()
     {

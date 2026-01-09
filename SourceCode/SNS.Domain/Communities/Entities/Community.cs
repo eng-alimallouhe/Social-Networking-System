@@ -1,6 +1,8 @@
 ﻿using SNS.Domain.Abstractions.Common;
 using SNS.Domain.Common.Helpers;
 using SNS.Domain.Communities.Enums;
+using SNS.Domain.Content.Entities;
+using SNS.Domain.QA.Entities;
 using SNS.Domain.SocialGraph;
 
 namespace SNS.Domain.Communities.Entities;
@@ -37,6 +39,12 @@ public class Community : ISoftDeletable
     public ICollection<CommunityRule> Rules { get; set; } = new List<CommunityRule>();
     public ICollection<CommunityAuditLog> AuditLogs { get; set; } = new List<CommunityAuditLog>();
     public ICollection<CommunityCreationRequest> CreationRequests { get; set; } = new List<CommunityCreationRequest>();
+    
+    public ICollection<Problem> Problems { get; set; } = new List<Problem>();
+    
+    public ICollection<Post> Posts { get; set; } 
+        = new List<Post>();
+
 
     public Community()
     {
