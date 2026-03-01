@@ -27,7 +27,7 @@ public class InterestRequestConfigurations :
         builder.Property(ir => ir.Status)
                .HasConversion<int>();
 
-        builder.HasOne(ir => ir.Submitter)
+        builder.HasOne<SNS.Domain.SocialGraph.Profile>()
                .WithMany()
                .HasForeignKey(ir => ir.SubmitterId)
                .IsRequired(false)

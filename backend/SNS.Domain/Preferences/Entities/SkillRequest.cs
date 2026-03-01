@@ -1,9 +1,7 @@
-﻿using SNS.Domain.Abstractions.Common;
-using SNS.Domain.Common.Enums;
 using SNS.Domain.Common.Helpers;
+using SNS.Domain.Abstractions.Common;
+using SNS.Domain.Common.Enums;
 using SNS.Domain.Preferences.Enums;
-using SNS.Domain.ProfileContext.Bridges;
-using SNS.Domain.SocialGraph;
 
 namespace SNS.Domain.Preferences.Entities;
 
@@ -21,10 +19,6 @@ public class SkillRequest : IHardDeletable
     public RequestStatus Status { get; set; }
     
     // Navigation
-    public ICollection<ProfileSkillRequest> ProfileSkillRequests { get; set; } 
-        = new List<ProfileSkillRequest>();
-    
-    public Profile Submitter { get; set; } = null!;
 
     public SkillRequest()
     {
@@ -32,3 +26,4 @@ public class SkillRequest : IHardDeletable
         Status = RequestStatus.Pending;
     }
 }
+

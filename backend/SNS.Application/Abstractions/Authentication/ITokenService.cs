@@ -36,7 +36,7 @@ public interface ITokenService
     /// <returns>
     /// The generated JWT access token string.
     /// </returns>
-    string GenerateAccessToken(User user, Guid sessionId);
+    Task<string> GenerateAccessTokenAsync(User user, Guid sessionId);
 
     /// <summary>
     /// Generates a cryptographically secure random string for use as a Refresh Token.

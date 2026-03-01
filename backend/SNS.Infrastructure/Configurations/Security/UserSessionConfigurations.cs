@@ -34,8 +34,8 @@ public class UserSessionConfigurations :
                .HasMaxLength(100)
                .HasColumnType("nvarchar(100)");
 
-        builder.HasOne(us => us.User)
-               .WithMany(u => u.Sessions)
+        builder.HasOne<User>()
+               .WithMany()
                .HasForeignKey(us => us.UserId)
                .IsRequired();
     }

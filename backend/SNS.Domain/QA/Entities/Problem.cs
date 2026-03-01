@@ -1,9 +1,7 @@
-﻿using SNS.Domain.Abstractions.Common;
 using SNS.Domain.Common.Helpers;
-using SNS.Domain.Communities.Entities;
+using SNS.Domain.Abstractions.Common;
 using SNS.Domain.QA.Bridges;
 using SNS.Domain.QA.Enums;
-using SNS.Domain.SocialGraph;
 
 namespace SNS.Domain.QA.Entities;
 
@@ -12,10 +10,10 @@ public class Problem : ISoftDeletable
     // Primary Key
     public Guid Id { get; set; }
 
-    // Foreign Key: One(Profile) → Many(Problems)
+    // Foreign Key: One(Profile) ? Many(Problems)
     public Guid AuthorId { get; set; }
 
-    // Foreign Key: One(Community) → Many(Problems) == Optional
+    // Foreign Key: One(Community) ? Many(Problems) == Optional
     public Guid? CommunityId { get; set; }
 
     // General Properties
@@ -32,10 +30,6 @@ public class Problem : ISoftDeletable
     public bool IsActive { get; set; }
 
     // Navigation Properties
-    public Profile Author { get; set; } = null!;
-    
-    public Community? Community { get; set; }
-    
     public ICollection<ProblemContentBlock> ContentBlocks { get; set; } 
         = new List<ProblemContentBlock>();
     
@@ -63,3 +57,4 @@ public class Problem : ISoftDeletable
         IsActive = true;
     }
 }
+

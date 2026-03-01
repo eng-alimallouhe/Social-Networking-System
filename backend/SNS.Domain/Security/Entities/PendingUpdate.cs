@@ -23,8 +23,8 @@ public class PendingUpdate : IHardDeletable
     public DateTime RequestedAt { get; set; }
 
     // Navigation
-    public User User { get; set; } = null!;
-    public User? Support { get; set; }
+
+
     public VerificationCode? VerificationCode { get; set; }
 
     public PendingUpdate()

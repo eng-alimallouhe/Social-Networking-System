@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SNS.Domain.QA.Entities;
+using SNS.Domain.SocialGraph;
 
 namespace SNS.Infrastructure.Configurations.QA;
 
@@ -28,20 +29,20 @@ public class DiscussionConfigurations :
                .HasColumnType("varchar(50)");
 
         // Relationships
-        builder.HasOne(d => d.Solution)
+        builder.HasOne<Solution>()
                .WithMany(s => s.Discussions)
                .HasForeignKey(d => d.SolutionId)
                .IsRequired()
                .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasOne(d => d.Author)
-               .WithMany(p => p.Discussions)
+        builder.HasOne<Profile>()
+               .WithMany()
                .HasForeignKey(d => d.AuthorId)
                .IsRequired()
                .OnDelete(DeleteBehavior.Restrict);
 
         // Self-referencing relationship (Replies)
-        builder.HasOne(d => d.ParentDiscussion)
+        builder.HasOne<Discussion>()
                .WithMany(p => p.Replies)
                .HasForeignKey(d => d.ParentDiscussionId)
                .IsRequired(false)

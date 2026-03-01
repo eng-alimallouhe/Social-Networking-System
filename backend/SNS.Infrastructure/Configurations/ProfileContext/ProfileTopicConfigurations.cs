@@ -30,13 +30,13 @@ public class ProfileTopicConfigurations :
                .HasColumnType("float");
 
         // Relationships
-        builder.HasOne(pt => pt.Profile)
+        builder.HasOne<SNS.Domain.SocialGraph.Profile>()
                .WithMany(p => p.ProfileTopics)
                .HasForeignKey(pt => pt.ProfileId)
                .IsRequired()
                .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasOne(pt => pt.Topic)
+        builder.HasOne<SNS.Domain.Preferences.Entities.Topic>()
                .WithMany()
                .HasForeignKey(pt => pt.TopicId)
                .IsRequired()

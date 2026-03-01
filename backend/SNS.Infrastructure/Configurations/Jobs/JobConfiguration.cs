@@ -40,7 +40,7 @@ public class JobConfiguration :
         builder.HasIndex(j => j.Title);
 
         // Relationships
-        builder.HasOne(j => j.Owner)
+        builder.HasOne<SNS.Domain.SocialGraph.Profile>()
                .WithMany() // Assuming Profile doesn't have a Jobs collection
                .HasForeignKey(j => j.OwnerId)
                .OnDelete(DeleteBehavior.Restrict);

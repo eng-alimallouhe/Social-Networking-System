@@ -1,9 +1,7 @@
-﻿using SNS.Domain.Abstractions.Common;
 using SNS.Domain.Common.Helpers;
-using SNS.Domain.Communities.Entities;
+using SNS.Domain.Abstractions.Common;
 using SNS.Domain.Content.Enums;
 using SNS.Domain.Posts.Bridges;
-using SNS.Domain.SocialGraph;
 
 namespace SNS.Domain.Content.Entities;
 
@@ -34,8 +32,6 @@ public class Post : ISoftDeletable
     public DateTime UpdatedAt { get; set; }
 
     // Navigation Properties
-    public Profile Author { get; set; } = null!;
-    public Community? Community { get; set; }
     public ICollection<PostMedia> Media { get; set; } = new List<PostMedia>();
     public ICollection<Comment> Comments { get; set; } = new List<Comment>();
     public ICollection<PostReaction> Reactions { get; set; } = new List<PostReaction>();
@@ -50,3 +46,4 @@ public class Post : ISoftDeletable
         UpdatedAt = DateTime.UtcNow;
     }
 }
+

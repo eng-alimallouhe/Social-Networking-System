@@ -32,7 +32,7 @@ public class ResumeEducationConfigurations :
                .HasMaxLength(150)
                .HasColumnType("nvarchar(150)");
 
-        builder.HasOne(re => re.Resume)
+        builder.HasOne<SNS.Domain.Resumes.Entities.Resume>()
                .WithMany(r => r.Educations)
                .HasForeignKey(re => re.ResumeId)
                .IsRequired()

@@ -27,13 +27,13 @@ public class BlockConfigurations :
 
         // Relationships
 
-        builder.HasOne(b => b.Blocker)
-               .WithMany(p => p.BlackList)
+        builder.HasOne<SNS.Domain.SocialGraph.Profile>()
+               .WithMany()
                .HasForeignKey(b => b.BlockerId)
                .IsRequired()
                .OnDelete(DeleteBehavior.Restrict);
 
-        builder.HasOne(b => b.Blocked)
+        builder.HasOne<SNS.Domain.SocialGraph.Profile>()
                .WithMany()
                .HasForeignKey(b => b.BlockedId)
                .IsRequired()

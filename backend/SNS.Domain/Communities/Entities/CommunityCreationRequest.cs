@@ -1,7 +1,6 @@
-﻿using SNS.Domain.Abstractions.Common;
+using SNS.Domain.Abstractions.Common;
 using SNS.Domain.Common.Helpers;
 using SNS.Domain.Communities.Enums;
-using SNS.Domain.SocialGraph;
 
 namespace SNS.Domain.Communities.Entities;
 
@@ -11,7 +10,7 @@ public class CommunityCreationRequest : IHardDeletable
     // Primary Key
     public Guid Id { get; set; }
 
-    // Foreign Key: One(Profile) → Many(CreationRequests)
+    // Foreign Key: One(Profile) ? Many(CreationRequests)
     public Guid SubmitterId { get; set; }
 
     public string Name { get; set; } = string.Empty;
@@ -26,9 +25,6 @@ public class CommunityCreationRequest : IHardDeletable
     public DateTime? ReviewedAt { get; set; }
 
     public string ReviewNotes { get; set; } = string.Empty;
-
-    // Navigation Properties (Required)
-    public Profile Submitter { get; set; } = null!;
 
     public CommunityCreationRequest()
     {

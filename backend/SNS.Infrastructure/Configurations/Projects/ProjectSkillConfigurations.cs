@@ -25,13 +25,13 @@ public class ProjectSkillConfigurations :
                 ps.SkillId 
             }).IsUnique();
 
-        builder.HasOne(ps => ps.Project)
-               .WithMany(p => p.Skills)
+        builder.HasOne<SNS.Domain.Projects.Entities.Project>()
+               .WithMany()
                .HasForeignKey(ps => ps.ProjectId)
                .IsRequired()
                .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasOne(ps => ps.Skill)
+        builder.HasOne<SNS.Domain.Preferences.Entities.Skill>()
                .WithMany()
                .HasForeignKey(ps => ps.SkillId)
                .IsRequired()

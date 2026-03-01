@@ -1,11 +1,11 @@
-﻿    using global::SNS.Domain.Abstractions.Repositories;
-    using global::SNS.Domain.Abstractions.Specifications;
-    using Microsoft.EntityFrameworkCore;
+﻿using SNS.Domain.Abstractions.Repositories;
+using SNS.Domain.Abstractions.Specifications;
+using Microsoft.EntityFrameworkCore;
 using SNS.Domain.Abstractions.Common;
 using SNS.Infrastructure.Specifications.QueryBuilders;
 using System.Linq.Expressions;
 
-    namespace SNS.Infrastructure.Repositories;
+namespace SNS.Infrastructure.Repositories;
 
 public class Repository<TEntity> : IRepository<TEntity>
     where TEntity : class, IHardDeletable

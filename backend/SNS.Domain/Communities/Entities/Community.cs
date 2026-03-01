@@ -1,7 +1,6 @@
-﻿using SNS.Domain.Abstractions.Common;
 using SNS.Domain.Common.Helpers;
+using SNS.Domain.Abstractions.Common;
 using SNS.Domain.Communities.Enums;
-using SNS.Domain.Content.Entities;
 using SNS.Domain.QA.Entities;
 using SNS.Domain.SocialGraph;
 
@@ -12,7 +11,7 @@ public class Community : ISoftDeletable
     // Primary Key
     public Guid Id { get; set; }
 
-    // Foreign Key: One(Profile) → Many(Communities)
+    // Foreign Key: One(Profile) ? Many(Communities)
     public Guid OwnerId { get; set; }
 
     public string Name { get; set; } = string.Empty;
@@ -31,7 +30,6 @@ public class Community : ISoftDeletable
     public bool IsActive { get; set; } = true;
 
     // Navigation Properties (Required)
-    public Profile Owner { get; set; } = default!;
     public CommunitySettings Settings { get; set; } = null!;
 
     // Navigation Properties
@@ -39,11 +37,6 @@ public class Community : ISoftDeletable
     public ICollection<CommunityRule> Rules { get; set; } = new List<CommunityRule>();
     public ICollection<CommunityAuditLog> AuditLogs { get; set; } = new List<CommunityAuditLog>();
     public ICollection<CommunityCreationRequest> CreationRequests { get; set; } = new List<CommunityCreationRequest>();
-    
-    public ICollection<Problem> Problems { get; set; } = new List<Problem>();
-    
-    public ICollection<Post> Posts { get; set; } 
-        = new List<Post>();
 
 
     public Community()
@@ -54,3 +47,5 @@ public class Community : ISoftDeletable
         UpdateAt = DateTime.UtcNow;
     }
 }
+
+

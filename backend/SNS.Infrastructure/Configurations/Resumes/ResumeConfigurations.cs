@@ -40,8 +40,8 @@ public class ResumeConfigurations :
                .HasConversion<int>();
 
         // Relationship: Profile -> Resumes
-        builder.HasOne(r => r.Owner)
-               .WithMany(p => p.Resumes)
+        builder.HasOne<SNS.Domain.SocialGraph.Profile>()
+               .WithMany()
                .HasForeignKey(r => r.OwnerId)
                .IsRequired()
                .OnDelete(DeleteBehavior.Cascade);

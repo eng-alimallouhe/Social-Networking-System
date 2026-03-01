@@ -29,8 +29,8 @@ public class PostMediaConfigurations :
 
         builder.Property(pm => pm.Type).HasConversion<int>();
 
-        builder.HasOne(pm => pm.Post)
-               .WithMany(p => p.Media)
+        builder.HasOne<SNS.Domain.Content.Entities.Post>()
+               .WithMany()
                .HasForeignKey(pm => pm.PostId)
                .IsRequired()
                .OnDelete(DeleteBehavior.Cascade);

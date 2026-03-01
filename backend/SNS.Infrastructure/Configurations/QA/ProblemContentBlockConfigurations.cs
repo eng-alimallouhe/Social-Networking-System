@@ -25,7 +25,7 @@ public class ProblemContentBlockConfigurations :
                .HasMaxLength(100)
                .HasColumnType("nvarchar(100)");
 
-        builder.HasOne(pcb => pcb.Problem)
+        builder.HasOne<Problem>()
                .WithMany(p => p.ContentBlocks)
                .HasForeignKey(pcb => pcb.ProblemId)
                .IsRequired()

@@ -32,19 +32,19 @@ public class FacultyRequestConfiguration :
         builder.Property(fr => fr.Status).HasConversion<int>();
 
         // Relationships
-        builder.HasOne(fr => fr.Submitter)
+        builder.HasOne<SNS.Domain.SocialGraph.Profile>()
                .WithMany()
                .HasForeignKey(fr => fr.SubmitterId)
                .IsRequired()
                .OnDelete(DeleteBehavior.Restrict);
 
-        builder.HasOne(fr => fr.University)
+        builder.HasOne<SNS.Domain.Education.Entities.University>()
                .WithMany(u => u.FacultyRequests)
                .HasForeignKey(fr => fr.UniversityId)
                .IsRequired(false)
                .OnDelete(DeleteBehavior.SetNull);
 
-        builder.HasOne(fr => fr.UniversityRequest)
+        builder.HasOne<SNS.Domain.Education.Entities.UniversityRequest>()
                .WithMany() // Assuming UniversityRequest doesn't have FacultyRequests collection
                .HasForeignKey(fr => fr.UniversityRequestId)
                .IsRequired(false)

@@ -23,7 +23,7 @@ public class ResumeCertificateConfigurations :
                .HasMaxLength(150)
                .HasColumnType("nvarchar(150)");
 
-        builder.HasOne(rc => rc.Resume)
+        builder.HasOne<SNS.Domain.Resumes.Entities.Resume>()
                .WithMany(r => r.Certificates)
                .HasForeignKey(rc => rc.ResumeId)
                .IsRequired()

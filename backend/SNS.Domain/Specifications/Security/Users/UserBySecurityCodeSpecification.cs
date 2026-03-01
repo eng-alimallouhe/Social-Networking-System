@@ -24,10 +24,10 @@ public class UserBySecurityCodeSpecification : ISingleEntitySpecification<User>
     /// <summary>
     /// Gets the list of related entities to include in the query result.
     /// 
-    /// Includes <see cref="User.Role"/> and <see cref="User.Profile"/> to ensure
+    /// Includes <see cref="User.Role"/> to ensure
     /// the returned user entity is fully populated for security context operations.
     /// </summary>
-    public List<string> Includes { get; }
+    public List<string> Includes { get; } = new();
 
     /// <inheritdoc/>
     public Expression<Func<User, object>>? OrderBy => null;
@@ -44,6 +44,6 @@ public class UserBySecurityCodeSpecification : ISingleEntitySpecification<User>
     public UserBySecurityCodeSpecification(string codeFromUserHash)
     {
         Criteria = u => u.SecurityCode == codeFromUserHash;
-        Includes = [nameof(User.Role), nameof(User.Profile)];
+
     }
 }

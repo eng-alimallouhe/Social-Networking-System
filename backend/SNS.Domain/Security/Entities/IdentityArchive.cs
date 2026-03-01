@@ -23,7 +23,7 @@ public class IdentityArchive : IHardDeletable
 
 
     // Navigation
-    public User User { get; set; } = null!;
+
 
     public IdentityArchive()
     {

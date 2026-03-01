@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SNS.Domain.QA.Bridges;
+using SNS.Domain.QA.Entities;
 
 namespace SNS.Infrastructure.Configurations.QA;
 
@@ -36,14 +37,14 @@ public class ProblemViewConfigurations :
         builder.Property(pv => pv.DeviceType)
                .HasConversion<int>();
 
-        builder.HasOne(pv => pv.Problem)
+        builder.HasOne<Problem>()
                .WithMany(p => p.Views)
                .HasForeignKey(pv => pv.ProblemId)
                .IsRequired()
                .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasOne(pv => pv.Viewer)
-               .WithMany(p => p.ProblemViews)
+        builder.HasOne<SNS.Domain.SocialGraph.Profile>()
+               .WithMany()
                .HasForeignKey(pv => pv.ViewerId)
                .IsRequired()
                .OnDelete(DeleteBehavior.Restrict);

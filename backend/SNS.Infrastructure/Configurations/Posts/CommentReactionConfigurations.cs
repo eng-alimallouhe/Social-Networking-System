@@ -27,14 +27,14 @@ public class CommentReactionConfigurations :
 
         builder.Property(cr => cr.Type).HasConversion<int>();
 
-        builder.HasOne(cr => cr.Comment)
-               .WithMany(c => c.Reactions)
+        builder.HasOne<SNS.Domain.Content.Entities.Comment>()
+               .WithMany()
                .HasForeignKey(cr => cr.CommentId)
                .IsRequired()
                .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasOne(cr => cr.Reactor)
-               .WithMany(p => p.CommentReactions)
+        builder.HasOne<SNS.Domain.SocialGraph.Profile>()
+               .WithMany()
                .HasForeignKey(cr => cr.ReactorId)
                .IsRequired()
                .OnDelete(DeleteBehavior.Restrict);

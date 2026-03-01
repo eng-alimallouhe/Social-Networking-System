@@ -1,4 +1,4 @@
-﻿using SNS.Domain.Abstractions.Common;
+using SNS.Domain.Abstractions.Common;
 using SNS.Domain.Common.Helpers;
 
 namespace SNS.Domain.Resumes.Entities;
@@ -20,9 +20,6 @@ public class ResumeEducation : IHardDeletable
     public DateTime? EndDate { get; set; }
 
     public double? GPA { get; set; }
-
-    // Navigation
-    public Resume Resume { get; set; } = null!;
 
     public ResumeEducation()
     {

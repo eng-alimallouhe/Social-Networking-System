@@ -1,7 +1,6 @@
-﻿using SNS.Domain.Abstractions.Common;
+using SNS.Domain.Abstractions.Common;
 using SNS.Domain.Common.Helpers;
 using SNS.Domain.Communities.Enums;
-using SNS.Domain.SocialGraph;
 
 namespace SNS.Domain.Communities.Entities;
 
@@ -10,13 +9,13 @@ public class CommunityInvitation : IHardDeletable
     // Primary Key
     public Guid Id { get; set; }
 
-    // Foreign Key: One(Community) → Many(Invitations)
+    // Foreign Key: One(Community) ? Many(Invitations)
     public Guid CommunityId { get; set; }
 
-    // Foreign Key: One(Profile) → Many(SentInvitations)
+    // Foreign Key: One(Profile) ? Many(SentInvitations)
     public Guid InviterId { get; set; }
 
-    // Foreign Key: One(Profile) → Many(ReceivedInvitations)
+    // Foreign Key: One(Profile) ? Many(ReceivedInvitations)
     public Guid InviteeId { get; set; }
 
     // Timestamp
@@ -25,11 +24,6 @@ public class CommunityInvitation : IHardDeletable
 
     public InvitationStatus Status { get; set; }
 
-    // Navigation Properties (Required)
-    public Community Community { get; set; } = null!;
-    public Profile Inviter { get; set; } = null!;
-    public Profile Invitee { get; set; } = null!;
-
     public CommunityInvitation()
     {
         Id = SequentialGuid.GenerateSequentialGuid();
@@ -37,3 +31,4 @@ public class CommunityInvitation : IHardDeletable
         SentAt = DateTime.UtcNow;
     }
 }
+

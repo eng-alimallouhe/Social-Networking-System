@@ -19,8 +19,8 @@ public class Block : IHardDeletable
     public DateTime UpdatedAt { get; set; }
 
     // Navigation
-    public Profile Blocker { get; set; } = default!;
-    public Profile Blocked { get; set; } = default!;
+
+
 
     public Block()
     {

@@ -25,8 +25,8 @@ public class CommentMediaConfigurations :
 
         builder.Property(cm => cm.Type).HasConversion<int>();
 
-        builder.HasOne(cm => cm.Comment)
-               .WithMany(c => c.Medias)
+        builder.HasOne<SNS.Domain.Content.Entities.Comment>()
+               .WithMany()
                .HasForeignKey(cm => cm.CommentId)
                .IsRequired()
                .OnDelete(DeleteBehavior.Cascade);

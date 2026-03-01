@@ -12,7 +12,6 @@ namespace SNS.Infrastructure.Configurations.QA
 
             builder.HasKey(pt => pt.Id);
 
-            // Define Composite Key (Entity does not have 'Id')
             builder.HasIndex(
                 pt => new 
                 { 
@@ -22,15 +21,15 @@ namespace SNS.Infrastructure.Configurations.QA
                 .IsUnique();
 
             builder.Property(pt => pt.Confidence)
-                   .HasColumnType("real"); // SQL 'real' maps to C# float
+                   .HasColumnType("real"); 
 
-            builder.HasOne(pt => pt.Problem)
-                   .WithMany(p => p.Topics)
+            builder.HasOne<SNS.Domain.QA.Entities.Problem>()
+                   .WithMany()
                    .HasForeignKey(pt => pt.ProblemId)
                    .IsRequired()
                    .OnDelete(DeleteBehavior.Cascade);
 
-            builder.HasOne(pt => pt.Topic)
+            builder.HasOne<SNS.Domain.Preferences.Entities.Topic>()
                    .WithMany() // Assuming Topic entity exists
                    .HasForeignKey(pt => pt.TopicId)
                    .IsRequired()

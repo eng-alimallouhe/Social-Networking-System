@@ -30,14 +30,14 @@ public class ProjectContributorConfigurations :
         builder.Property(pc => pc.InvitingStatus).HasConversion<int>();
         builder.Property(pc => pc.Role).HasConversion<int>();
 
-        builder.HasOne(pc => pc.Project)
-               .WithMany(p => p.Contributors)
+        builder.HasOne<SNS.Domain.Projects.Entities.Project>()
+               .WithMany()
                .HasForeignKey(pc => pc.ProjectId)
                .IsRequired()
                .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasOne(pc => pc.Contributor)
-               .WithMany(p => p.Contributors)
+        builder.HasOne<SNS.Domain.SocialGraph.Profile>()
+               .WithMany()
                .HasForeignKey(pc => pc.ContributorId)
                .IsRequired()
                .OnDelete(DeleteBehavior.Restrict);

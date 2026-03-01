@@ -10,6 +10,7 @@ using SNS.Common.StatusCodes.Common;
 using SNS.Common.StatusCodes.Security;
 using SNS.Domain.Abstractions.Repositories;
 using SNS.Domain.Security.Entities;
+using SNS.Domain.SocialGraph;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -34,6 +35,8 @@ public class TokenService : ITokenService
     private readonly IUnitOfWork _unitOfWork;
     private readonly ISessionService _sessionChecker;
     private readonly IGeneratorService _generatorService;
+    private readonly ISoftDeletableRepository<Role> _roleRepo;
+    private readonly ISoftDeletableRepository<Profile> _profileRepo;
 
     public TokenService(
         IOptions<JWTSettings> jwtSettings,
@@ -43,7 +46,9 @@ public class TokenService : ITokenService
         IUserSessionService sessionService,
         IUnitOfWork unitOfWork,
         IGeneratorService generatorService,
-        ISessionService sessionChecker)
+        ISessionService sessionChecker,
+        ISoftDeletableRepository<Role> roleRepo,
+        ISoftDeletableRepository<Profile> profileRepo)
     {
         _jwtSettings = jwtSettings.Value;
         _tokenReader = tokenReader;
@@ -53,10 +58,15 @@ public class TokenService : ITokenService
         _unitOfWork = unitOfWork;
         _generatorService = generatorService;
         _sessionChecker = sessionChecker;
+        _roleRepo = roleRepo;
+        _profileRepo = profileRepo;
     }
 
-    public string GenerateAccessToken(User user, Guid sessionId)
+    public async Task<string> GenerateAccessTokenAsync(User user, Guid sessionId)
     {
+        var role = await _roleRepo.GetByIdAsync(user.RoleId);
+        var profile = await _profileRepo.GetByIdAsync(user.Id);
+
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.SecretKey));
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
@@ -70,8 +80,8 @@ public class TokenService : ITokenService
             // that the user's session exists in the distributed cache (Redis)
             // and has not been revoked.
             new("sid", sessionId.ToString()),
-            new(ClaimTypes.Role, user.Role?.Type.ToString() ?? "User"),
-            new("profileId", user.Profile?.Id.ToString() ?? string.Empty)
+            new(ClaimTypes.Role, role?.Type.ToString() ?? "User"),
+            new("profileId", profile?.Id.ToString() ?? string.Empty)
         };
 
         var tokenDescriptor = new SecurityTokenDescriptor
@@ -167,7 +177,7 @@ public class TokenService : ITokenService
         storedRefreshToken.ExpiresAt = DateTime.UtcNow.AddDays(_jwtSettings.RefreshTokenExpirationDays);
         storedRefreshToken.CreatedAt = DateTime.UtcNow;
 
-        var newAccessToken = GenerateAccessToken(user, finalSessionId);
+        var newAccessToken = await GenerateAccessTokenAsync(user, finalSessionId);
 
         await _unitOfWork.CompleteAsync();
 

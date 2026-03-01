@@ -37,14 +37,14 @@ namespace SNS.Infrastructure.Configurations.QA
                    .HasConversion<int>();
 
             // Relationships
-            builder.HasOne(p => p.Author)
-                   .WithMany(profile => profile.Problems) 
+            builder.HasOne<Profile>()
+                   .WithMany() 
                    .HasForeignKey(p => p.AuthorId)
                    .IsRequired()
                    .OnDelete(DeleteBehavior.Restrict);
 
-            builder.HasOne(p => p.Community)
-                   .WithMany(c => c.Problems)
+            builder.HasOne<Community>()
+                   .WithMany()
                    .HasForeignKey(p => p.CommunityId)
                    .IsRequired(false)
                    .OnDelete(DeleteBehavior.SetNull);

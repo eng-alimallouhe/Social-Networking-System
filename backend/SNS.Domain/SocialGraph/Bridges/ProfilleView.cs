@@ -13,8 +13,8 @@ public class ProfileView : ISoftDeletable
     //Soft Delete:
     public bool IsActive { get; set; }
 
-    public Profile Viewer { get; set; } = null!;
-    public Profile Viewed { get; set; } = null!;
+
+
 
     public ProfileView()
     {

@@ -25,13 +25,13 @@ public class PostTopicConfigurations :
 
         builder.Property(pt => pt.Confidence).HasColumnType("real");
 
-        builder.HasOne(pt => pt.Post)
-               .WithMany(p => p.Topics)
+        builder.HasOne<SNS.Domain.Content.Entities.Post>()
+               .WithMany()
                .HasForeignKey(pt => pt.PostId)
                .IsRequired()
                .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasOne(pt => pt.Topic)
+        builder.HasOne<SNS.Domain.Preferences.Entities.Topic>()
                .WithMany()
                .HasForeignKey(pt => pt.TopicId)
                .IsRequired()

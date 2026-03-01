@@ -14,8 +14,8 @@ public class PostTopic : IHardDeletable
     public float? Confidence { get; set; }
 
     // Navigation
-    public Post Post { get; set; } = null!;
-    public Topic Topic { get; set; } = null!;
+
+
 
     public PostTopic()
     {

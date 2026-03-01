@@ -28,7 +28,7 @@ public class ResumeExperienceConfigurations :
                .HasMaxLength(4000) // Job descriptions can be very detailed
                .HasColumnType("nvarchar(4000)");
 
-        builder.HasOne(re => re.Resume)
+        builder.HasOne<SNS.Domain.Resumes.Entities.Resume>()
                .WithMany(r => r.Experiences)
                .HasForeignKey(re => re.ResumeId)
                .IsRequired()

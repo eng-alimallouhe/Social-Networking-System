@@ -23,7 +23,7 @@ public class ProjectMilestoneConfigurations :
                .HasMaxLength(1000)
                .HasColumnType("nvarchar(1000)");
 
-        builder.HasOne(pm => pm.Project)
+        builder.HasOne<SNS.Domain.Projects.Entities.Project>()
                .WithMany(p => p.Milestones)
                .HasForeignKey(pm => pm.ProjectId)
                .IsRequired()

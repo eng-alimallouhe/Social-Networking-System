@@ -51,8 +51,8 @@ public class ProjectConfigurations :
             .HasConversion<int>();
 
         // Relationships
-        builder.HasOne(p => p.Owner)
-               .WithMany(p => p.Projects)
+        builder.HasOne<SNS.Domain.SocialGraph.Profile>()
+               .WithMany()
                .HasForeignKey(p => p.OwnerId)
                .IsRequired()
                .OnDelete(DeleteBehavior.Restrict);

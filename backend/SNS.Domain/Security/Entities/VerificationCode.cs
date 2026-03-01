@@ -30,7 +30,7 @@ public class VerificationCode : IHardDeletable
     public bool IsRevoked { get; set; } 
 
     // Navigation
-    public User User { get; set; } = null!;
+
     public PendingUpdate? PendingUpdate { get; set; }
 
 

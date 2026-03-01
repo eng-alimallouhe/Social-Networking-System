@@ -1,4 +1,4 @@
-﻿using SNS.Domain.Abstractions.Common;
+using SNS.Domain.Abstractions.Common;
 using SNS.Domain.Common.Enums;
 using SNS.Domain.Common.Helpers;
 using SNS.Domain.Content.Entities;
@@ -23,11 +23,9 @@ public class CommentMedia : IHardDeletable
     public int? Width { get; set; }
     public int? Height { get; set; }
 
-    // Navigation
-    public Comment Comment { get; set; } = null!;
-
     public CommentMedia()
     {
         Id = SequentialGuid.GenerateSequentialGuid();
     }
 }
+

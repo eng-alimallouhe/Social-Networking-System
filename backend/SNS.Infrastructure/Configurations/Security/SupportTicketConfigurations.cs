@@ -43,7 +43,7 @@ public class SupportTicketConfigurations :
 
         // Relationships
         builder.HasOne<User>()
-               .WithMany(u => u.SupportTickets)
+               .WithMany()
                .HasForeignKey(st => st.ApplicantId)
                .IsRequired()
                .OnDelete(DeleteBehavior.Restrict);

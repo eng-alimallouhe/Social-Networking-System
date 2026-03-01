@@ -41,14 +41,14 @@ public class PostViewConfigurations :
 
         builder.Property(pv => pv.DeviceType).HasConversion<int>();
 
-        builder.HasOne(pv => pv.Post)
-               .WithMany(p => p.Views)
+        builder.HasOne<SNS.Domain.Content.Entities.Post>()
+               .WithMany()
                .HasForeignKey(pv => pv.PostId)
                .IsRequired()
                .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasOne(pv => pv.Viewer)
-               .WithMany(p => p.PostViews) 
+        builder.HasOne<SNS.Domain.SocialGraph.Profile>()
+               .WithMany() 
                .HasForeignKey(pv => pv.ViewerId)
                .IsRequired()
                .OnDelete(DeleteBehavior.Restrict);

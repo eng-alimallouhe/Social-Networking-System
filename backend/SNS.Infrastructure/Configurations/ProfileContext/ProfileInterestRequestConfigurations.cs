@@ -25,14 +25,14 @@ public class ProfileInterestRequestConfigurations :
                 pir.InterestRequestId 
             }).IsUnique();
 
-        builder.HasOne(pir => pir.Joiner)
+        builder.HasOne<SNS.Domain.SocialGraph.Profile>()
                .WithMany()
                .HasForeignKey(pir => pir.JoinerId)
                .IsRequired()
                .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasOne(pir => pir.InterestRequest)
-               .WithMany(ir => ir.ProfileInterestRequests)
+        builder.HasOne<SNS.Domain.Preferences.Entities.InterestRequest>()
+               .WithMany()
                .HasForeignKey(pir => pir.InterestRequestId)
                .IsRequired()
                .OnDelete(DeleteBehavior.Cascade);

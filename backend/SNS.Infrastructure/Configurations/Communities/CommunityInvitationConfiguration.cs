@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SNS.Domain.Communities.Entities;
+using SNS.Domain.SocialGraph;
 
 namespace SNS.Infrastructure.Configurations.Communities;
 
@@ -19,25 +20,21 @@ public class CommunityInvitationConfigurations :
         builder.HasIndex(ci => ci.InviteeId)
             .IsUnique();
 
-        // Optional: Unique constraint to prevent duplicate pending invitations?
-        // Usually good to enforce uniqueness on pending ones, but let's keep standard index for now.
-
-
         builder.Property(ci => ci.Status).HasConversion<int>();
 
-        builder.HasOne(ci => ci.Community)
-               .WithMany() // Assuming Community doesn't track *invitations* explicitly in a collection (entity says 'Invitations' collection is missing in Community class snippet provided, or I missed it. If it exists, add logic)
+        builder.HasOne<Community>()
+               .WithMany()
                .HasForeignKey(ci => ci.CommunityId)
                .IsRequired()
                .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasOne(ci => ci.Inviter)
+        builder.HasOne<Profile>()
                .WithMany()
                .HasForeignKey(ci => ci.InviterId)
                .IsRequired()
                .OnDelete(DeleteBehavior.Restrict);
 
-        builder.HasOne(ci => ci.Invitee)
+        builder.HasOne<Profile>()
                .WithMany()
                .HasForeignKey(ci => ci.InviteeId)
                .IsRequired()

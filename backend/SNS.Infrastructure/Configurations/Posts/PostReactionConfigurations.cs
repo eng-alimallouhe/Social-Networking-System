@@ -26,14 +26,14 @@ public class PostReactionConfigurations :
 
         builder.Property(pr => pr.Type).HasConversion<int>();
 
-        builder.HasOne(pr => pr.Post)
-               .WithMany(p => p.Reactions)
+        builder.HasOne<SNS.Domain.Content.Entities.Post>()
+               .WithMany()
                .HasForeignKey(pr => pr.PostId)
                .IsRequired()
                .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasOne(pr => pr.Reactor)
-               .WithMany(p => p.PostReactions)
+        builder.HasOne<SNS.Domain.SocialGraph.Profile>()
+               .WithMany()
                .HasForeignKey(pr => pr.ReactorId)
                .IsRequired()
                .OnDelete(DeleteBehavior.Restrict);

@@ -30,8 +30,8 @@ public class ProblemView : ISoftDeletable
     public bool IsActive { get; set; }
 
     // Navigation Properties
-    public Problem Problem { get; set; } = null!;
-    public Profile Viewer { get; set; } = null!;
+
+
 
     public ProblemView()
     {

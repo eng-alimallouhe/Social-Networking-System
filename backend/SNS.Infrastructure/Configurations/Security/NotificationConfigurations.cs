@@ -17,7 +17,7 @@ public class NotificationConfigurations :
         builder.HasIndex(n => n.TargetId);
 
         builder.HasOne<User>()
-               .WithMany(u => u.Notification)
+               .WithMany()
                .HasForeignKey(n => n.UserId)
                .IsRequired();
     }

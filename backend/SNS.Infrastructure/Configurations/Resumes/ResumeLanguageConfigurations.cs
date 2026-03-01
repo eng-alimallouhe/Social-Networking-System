@@ -27,7 +27,7 @@ public class ResumeLanguageConfigurations :
         builder.Property(rl => rl.Level)
                .HasConversion<int>();
 
-        builder.HasOne(rl => rl.Resume)
+        builder.HasOne<SNS.Domain.Resumes.Entities.Resume>()
                .WithMany(r => r.Languages)
                .HasForeignKey(rl => rl.ResumeId)
                .IsRequired()

@@ -1,8 +1,6 @@
-﻿using SNS.Domain.Abstractions.Common;
+using SNS.Domain.Abstractions.Common;
 using SNS.Domain.Common.Helpers;
-using SNS.Domain.Preferences.Entities;
 using SNS.Domain.Preferences.Enums;
-using SNS.Domain.SocialGraph;
 
 namespace SNS.Domain.ProfileContext.Bridges;
 
@@ -21,8 +19,6 @@ public class ProfileSkillRequest : IHardDeletable
     public ProficiencyLevel Level { get; set; }
 
     // Navigation
-    public SkillRequest SkillRequest { get; set; } = null!;
-    public Profile Joiner { get; set; } = null!;
 
     public ProfileSkillRequest()
     {

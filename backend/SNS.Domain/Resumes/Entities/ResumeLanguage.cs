@@ -1,4 +1,4 @@
-﻿using SNS.Domain.Abstractions.Common;
+using SNS.Domain.Abstractions.Common;
 using SNS.Domain.Common.Helpers;
 using SNS.Domain.Resumes.Enums;
 
@@ -14,9 +14,6 @@ public class ResumeLanguage : IHardDeletable
 
     public LanguageLevel Level { get; set; }
     public Language Language { get; set; }
-
-    // Navigation
-    public Resume Resume { get; set; } = null!;
 
     public ResumeLanguage()
     {
