@@ -15,8 +15,8 @@ public class ProjectSkill : IHardDeletable
     public Guid SkillId { get; set; }
 
     // Navigation
-    public Project Project { get; set; } = null!;
-    public Skill Skill { get; set; } = null!;
+
+
 
     public ProjectSkill()
     {

@@ -19,8 +19,8 @@ public class PasswordArchiveConfigurations :
                .HasMaxLength(512)
                .HasColumnType("nvarchar(512)");
 
-        builder.HasOne(pa => pa.User)
-               .WithMany(u => u.PasswordArchives)
+        builder.HasOne<User>()
+               .WithMany()
                .HasForeignKey(pa => pa.UserId)
                .IsRequired();
     }

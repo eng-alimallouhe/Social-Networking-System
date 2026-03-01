@@ -18,13 +18,13 @@ public class ProjectTagConfigurations :
 
         builder.HasIndex(pt => new { pt.ProjectId, pt.TagId }).IsUnique();
 
-        builder.HasOne(pt => pt.Project)
-               .WithMany(p => p.Tags)
+        builder.HasOne<SNS.Domain.Projects.Entities.Project>()
+               .WithMany()
                .HasForeignKey(pt => pt.ProjectId)
                .IsRequired()
                .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasOne(pt => pt.Tag)
+        builder.HasOne<SNS.Domain.Preferences.Entities.Tag>()
                .WithMany()
                .HasForeignKey(pt => pt.TagId)
                .IsRequired()

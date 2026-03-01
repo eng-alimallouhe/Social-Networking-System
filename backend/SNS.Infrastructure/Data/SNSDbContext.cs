@@ -4,6 +4,7 @@ using SNS.Domain.Content.Entities;
 using SNS.Domain.Education.Entities;
 using SNS.Domain.Jobs.Entities;
 using SNS.Domain.Posts.Bridges;
+using SNS.Domain.Posts.Entities;
 using SNS.Domain.Preferences.Entities;
 using SNS.Domain.ProfileContext.Bridges;
 using SNS.Domain.Projects.Bridges;
@@ -56,6 +57,7 @@ public class SNSDbContext : DbContext
     public DbSet<CommentReaction> CommentReactions { get; set; }
     public DbSet<PostMedia> PostMedia { get; set; }
     public DbSet<PostReaction> PostReactions { get; set; }
+    public DbSet<CommentMedia> CommentMedias { get; set; }
     // Bridges
     public DbSet<PostTag> PostTags { get; set; }
     public DbSet<PostTopic> PostTopics { get; set; }

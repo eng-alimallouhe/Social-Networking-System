@@ -28,14 +28,14 @@ public class ProfileSkillRequestConfigurations :
         builder.Property(psr => psr.Level)
                .HasConversion<int>();
 
-        builder.HasOne(psr => psr.Joiner)
+        builder.HasOne<SNS.Domain.SocialGraph.Profile>()
                .WithMany()
                .HasForeignKey(psr => psr.JoinerId)
                .IsRequired()
                .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasOne(psr => psr.SkillRequest)
-               .WithMany(sr => sr.ProfileSkillRequests)
+        builder.HasOne<SNS.Domain.Preferences.Entities.SkillRequest>()
+               .WithMany()
                .HasForeignKey(psr => psr.SkillRequestId)
                .IsRequired()
                .OnDelete(DeleteBehavior.Cascade);

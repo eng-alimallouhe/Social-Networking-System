@@ -22,8 +22,8 @@ public class ProjectRating : IHardDeletable
     public DateTime CreatedAt { get; set; }
 
     // Navigation
-    public Project Project { get; set; } = null!;
-    public Profile Rater { get; set; } = null!;
+
+
 
     public ProjectRating()
     {

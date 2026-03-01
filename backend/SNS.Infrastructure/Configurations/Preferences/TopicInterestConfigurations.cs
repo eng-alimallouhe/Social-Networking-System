@@ -19,13 +19,13 @@ public class TopicInterestConfigurations :
         // Unique Bridge
         builder.HasIndex(ti => new { ti.TopicId, ti.InterestId }).IsUnique();
 
-        builder.HasOne(ti => ti.Topic)
+        builder.HasOne<SNS.Domain.Preferences.Entities.Topic>()
                .WithMany(t => t.TopicInterests)
                .HasForeignKey(ti => ti.TopicId)
                .IsRequired()
                .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasOne(ti => ti.Interest)
+        builder.HasOne<SNS.Domain.Preferences.Entities.Interest>()
                .WithMany(i => i.TopicInterests)
                .HasForeignKey(ti => ti.InterestId)
                .IsRequired()

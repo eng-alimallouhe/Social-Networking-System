@@ -1,17 +1,6 @@
-﻿using SNS.Domain.Abstractions.Common;
 using SNS.Domain.Common.Helpers;
-using SNS.Domain.Communities.Entities;
-using SNS.Domain.Content.Entities;
-using SNS.Domain.Education.Entities;
-using SNS.Domain.Jobs.Entities;
-using SNS.Domain.Posts.Bridges;
-using SNS.Domain.Preferences.Entities;
+using SNS.Domain.Abstractions.Common;
 using SNS.Domain.ProfileContext.Bridges;
-using SNS.Domain.Projects.Bridges;
-using SNS.Domain.Projects.Entities;
-using SNS.Domain.QA.Bridges;
-using SNS.Domain.QA.Entities;
-using SNS.Domain.Resumes.Entities;
 using SNS.Domain.SocialGraph.Bridges;
 
 namespace SNS.Domain.SocialGraph;
@@ -21,13 +10,13 @@ public class Profile : ISoftDeletable
     // Primary Key
     public Guid Id { get; set; }
 
-    // Foreign Key: One(User) → One(Profile)
+    // Foreign Key: One(User) ? One(Profile)
     public Guid UserId { get; set; }
 
-    // Foreign Key: One(Faculty) → Many(Profile) == Optional 
+    // Foreign Key: One(Faculty) ? Many(Profile) == Optional 
     public Guid? FacultyId { get; set; }
     
-    // Foreign Key: One(University) → Many(Profile) == Optional 
+    // Foreign Key: One(University) ? Many(Profile) == Optional 
     public Guid? UniversityId { get; set; }
 
 
@@ -55,11 +44,6 @@ public class Profile : ISoftDeletable
     public bool IsActive { get; set; }
 
 
-    // Navigation Properties (Optional Relationships)
-    public Faculty? Faculty { get; set; }
-    public University? University { get; set; }
-
-
     // Navigation
     public ICollection<Follow> Followers { get; set; } 
         = new List<Follow>();   
@@ -76,75 +60,14 @@ public class Profile : ISoftDeletable
     public ICollection<ProfileTopic> ProfileTopics { get; set; } 
         = new List<ProfileTopic>();
     
-    public ICollection<Resume> Resumes { get; set; } 
-        = new List<Resume>();
-        
-    public ICollection<JobApplication> JobApplications { get; set; } 
-        = new List<JobApplication>();
-    
-    public ICollection<Job> Jobs { get; set; } 
-        = new List<Job>();
-    
-    public ICollection<Post> Posts { get; set; } 
-        = new List<Post>();
-    
     public ICollection<ProfileInterest> ProfileInterests { get; set; } 
         = new List<ProfileInterest>();
-    
-    public ICollection<PostReaction> PostReactions { get; set; } 
-        = new List<PostReaction>();
-    
-    public ICollection<Comment> Comments { get; set; } 
-        = new List<Comment>();
-    
-    public ICollection<CommentReaction> CommentReactions { get; set; }
-        = new List<CommentReaction>();
     
     public ICollection<ProfileView> Views { get; set; } 
         = new List<ProfileView>();
     
     public ICollection<ProfileView> Vieweds { get; set; } 
         = new List<ProfileView>();
-    
-    public ICollection<Project> Projects { get; set; }
-        = new List<Project>();
-
-    public ICollection<ProjectView> ProjectViews { get; set; } 
-        = new List<ProjectView>();
-
-    public ICollection<ProjectRating> ProjectRatings { get; set; } 
-        = new List<ProjectRating>();
-    
-    public ICollection<Problem> Problems { get; set; } 
-        = new List<Problem>();
-    
-    public ICollection<Solution> Solutions { get; set; } 
-        = new List<Solution>();
-    
-    public ICollection<ProblemVote> ProblemVotes { get; set; } 
-        = new List<ProblemVote>();
-    
-    public ICollection<SolutionVote> SolutionVotes { get; set; } 
-        = new List<SolutionVote>();
-    
-    public ICollection<ProblemView> ProblemViews { get; set; } 
-        = new List<ProblemView>();
-    
-    
-    public ICollection<PostView> PostViews { get; set; }
-        = new List<PostView>();
-    
-    public ICollection<Discussion> Discussions { get; set; } 
-        = new List<Discussion>();
-    
-    public ICollection<ProjectContributor> Contributors { get; set; } 
-        = new List<ProjectContributor>();
-
-    public ICollection<Community> Communities { get; set; } =
-        new List<Community>();
-
-    public ICollection<CommunityMembership> CommunityMemberships { get; set; }
-        = new List<CommunityMembership>();
 
     public Profile()
     {
@@ -154,3 +77,5 @@ public class Profile : ISoftDeletable
         IsActive = true;
     }
 }
+
+

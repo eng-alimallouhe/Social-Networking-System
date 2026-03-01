@@ -13,8 +13,8 @@ public class PostTag : IHardDeletable
     public float? Confidence { get; set; }
 
     // Navigation
-    public Post Post { get; set; } = null!;
-    public Tag Tag { get; set; } = null!;
+
+
 
     public PostTag()
     {

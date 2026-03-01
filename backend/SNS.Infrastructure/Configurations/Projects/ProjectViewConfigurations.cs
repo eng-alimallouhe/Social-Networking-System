@@ -41,14 +41,14 @@ namespace SNS.Infrastructure.Configurations.Projects
             builder.Property(pv => pv.DeviceType)
                    .HasConversion<int>();
 
-            builder.HasOne(pv => pv.Project)
+            builder.HasOne<SNS.Domain.Projects.Entities.Project>()
                    .WithMany(p => p.Views)
                    .HasForeignKey(pv => pv.ProjectId)
                    .IsRequired()
                    .OnDelete(DeleteBehavior.Cascade);
 
-            builder.HasOne(pv => pv.Viewer)
-                   .WithMany(p => p.ProjectViews)
+            builder.HasOne<SNS.Domain.SocialGraph.Profile>()
+                   .WithMany()
                    .HasForeignKey(pv => pv.ViewerId)
                    .IsRequired()
                    .OnDelete(DeleteBehavior.Restrict);

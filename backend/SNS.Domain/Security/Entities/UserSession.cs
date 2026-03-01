@@ -29,7 +29,7 @@ public class UserSession : IHardDeletable
 
 
     // Navigation
-    public User User { get; set; } = null!;
+
 
     public UserSession()
     {

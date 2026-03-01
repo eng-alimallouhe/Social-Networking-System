@@ -19,7 +19,7 @@ public class ResumeProjectConfigurations :
                 rp.ProjectId 
             });
 
-        builder.HasOne(rp => rp.Resume)
+        builder.HasOne<SNS.Domain.Resumes.Entities.Resume>()
                .WithMany(r => r.Projects)
                .HasForeignKey(rp => rp.ResumeId)
                .IsRequired()

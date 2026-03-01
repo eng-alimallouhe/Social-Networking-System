@@ -55,19 +55,19 @@ public class ProfileConfigurations :
 
         // 1. One-to-One with User (Profile depends on User)
         builder.HasOne<User>()
-               .WithOne(u => u.Profile)
+               .WithOne()
                .HasForeignKey<Profile>(p => p.UserId)
                .IsRequired();
 
         // 2. Optional Education Relationships
-        builder.HasOne(p => p.Faculty)
-               .WithMany(f => f.Profiles)
+        builder.HasOne<SNS.Domain.Education.Entities.Faculty>()
+               .WithMany()
                .HasForeignKey(p => p.FacultyId)
                .IsRequired(false)
                .OnDelete(DeleteBehavior.SetNull);
 
-        builder.HasOne(p => p.University)
-               .WithMany(u => u.Profiles)
+        builder.HasOne<SNS.Domain.Education.Entities.University>()
+               .WithMany()
                .HasForeignKey(p => p.UniversityId)
                .IsRequired(false)
                .OnDelete(DeleteBehavior.SetNull);

@@ -63,8 +63,8 @@ public class ProfileMappingProfile : AutoMapper.Profile
         // 4. Editable Education
         // (Assumes University and Faculty have their own mappings defined elsewhere)
         CreateMap<Profile, EditableProfileEducationDto>()
-            .ForMember(dest => dest.University, opt => opt.MapFrom(src => src.University))
-            .ForMember(dest => dest.Faculty, opt => opt.MapFrom(src => src.Faculty));
+            .ForMember(dest => dest.University, opt => opt.Ignore())
+            .ForMember(dest => dest.Faculty, opt => opt.Ignore());
 
         // 5. Profile Summary (For Lists/Search)
         CreateMap<Profile, ProfileSummaryDto>()
@@ -83,12 +83,12 @@ public class ProfileMappingProfile : AutoMapper.Profile
             .ForMember(dest => dest.FollowingCount, opt => opt.MapFrom(src => src.Followings.Count))
             .ForMember(dest => dest.ViewsCount, opt => opt.MapFrom(src => src.Views.Count))
             .ForMember(dest => dest.ProfileViews, opt => opt.MapFrom(src => src.Views.Count))
-            .ForMember(dest => dest.ProjectsCount, opt => opt.MapFrom(src => src.Projects.Count())) 
-            .ForMember(dest => dest.SolutionsCount, opt => opt.MapFrom(src => src.Solutions.Count()))
+            .ForMember(dest => dest.ProjectsCount, opt => opt.Ignore()) 
+            .ForMember(dest => dest.SolutionsCount, opt => opt.Ignore())
                                                                         
             .ForMember(dest => dest.Skills, opt => opt.MapFrom(src => src.ProfileSkills))
-            .ForMember(dest => dest.University, opt => opt.MapFrom(src => src.University))
-            .ForMember(dest => dest.Faculty, opt => opt.MapFrom(src => src.Faculty))
+            .ForMember(dest => dest.University, opt => opt.Ignore())
+            .ForMember(dest => dest.Faculty, opt => opt.Ignore())
             // Viewer Context properties (must be handled in Service/Query)
             .ForMember(dest => dest.IsFollowedByViewer, opt => opt.Ignore())
             .ForMember(dest => dest.IsBlocked, opt => opt.Ignore())

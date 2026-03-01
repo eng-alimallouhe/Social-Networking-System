@@ -1,7 +1,6 @@
-﻿using SNS.Domain.Abstractions.Common;
+using SNS.Domain.Abstractions.Common;
 using SNS.Domain.Common.Helpers;
 using SNS.Domain.Posts.Entities;
-using SNS.Domain.SocialGraph;
 
 namespace SNS.Domain.Content.Entities;
 
@@ -27,8 +26,6 @@ public class Comment : ISoftDeletable
     public DateTime UpdatedAt { get; set; }
 
     // Navigation Properties
-    public Post Post { get; set; } = null!;
-    public Profile Author { get; set; } = null!;
     public Comment? ParentComment { get; set; }
     public ICollection<Comment> Replies { get; set; } = new List<Comment>();
     public ICollection<CommentReaction> Reactions { get; set; } = new List<CommentReaction>();

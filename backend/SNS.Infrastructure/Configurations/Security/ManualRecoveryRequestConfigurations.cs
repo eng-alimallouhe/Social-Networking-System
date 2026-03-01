@@ -31,14 +31,14 @@ public class ManualRecoveryRequestConfigurations :
                .HasMaxLength(1000)
                .HasColumnType("nvarchar(1000)");
 
-        builder.HasOne(mr => mr.Submitter)
-               .WithMany(u => u.RecoveryRequests)
+        builder.HasOne<User>()
+               .WithMany()
                .HasForeignKey(mr => mr.SubmitterId)
                .IsRequired()
                .OnDelete(DeleteBehavior.Restrict);
 
-        builder.HasOne(mr => mr.Reviewer)
-               .WithMany(u => u.RecoveryReviews)
+        builder.HasOne<User>()
+               .WithMany()
                .HasForeignKey(mr => mr.ReviewerId)
                .IsRequired(false)
                .OnDelete(DeleteBehavior.Restrict);

@@ -22,8 +22,8 @@ namespace SNS.Infrastructure.Configurations.Security
                    .HasMaxLength(1000)
                    .HasColumnType("nvarchar(1000)");
 
-            builder.HasOne(pu => pu.User)
-                   .WithMany(u => u.PendingUpdates)
+            builder.HasOne<User>()
+                   .WithMany()
                    .HasForeignKey(pu => pu.UserId)
                    .IsRequired();
         }

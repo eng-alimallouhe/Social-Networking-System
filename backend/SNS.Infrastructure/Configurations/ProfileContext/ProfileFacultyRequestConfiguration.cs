@@ -23,13 +23,13 @@ namespace SNS.Infrastructure.Configurations.ProfileContext
                 })
                 .IsUnique();
 
-            builder.HasOne(pfr => pfr.Joiner)
+            builder.HasOne<SNS.Domain.SocialGraph.Profile>()
                    .WithMany()
                    .HasForeignKey(pfr => pfr.JoinerId)
                    .IsRequired()
                    .OnDelete(DeleteBehavior.Restrict);
 
-            builder.HasOne(pfr => pfr.FacultyRequest)
+            builder.HasOne<SNS.Domain.Education.Entities.FacultyRequest>()
                    .WithMany(fr => fr.Requests)
                    .HasForeignKey(pfr => pfr.FacultyRequestId)
                    .IsRequired()

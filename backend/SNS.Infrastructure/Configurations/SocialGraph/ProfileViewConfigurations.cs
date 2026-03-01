@@ -25,14 +25,14 @@ public class ProfileViewConfigurations :
         .IsUnique()
         .HasFilter("[IsActive] = 1");
 
-        builder.HasOne(pv => pv.Viewer)
-               .WithMany(p => p.Vieweds) 
+        builder.HasOne<SNS.Domain.SocialGraph.Profile>()
+               .WithMany() 
                .HasForeignKey(pv => pv.ViewerId)
                .IsRequired()
                .OnDelete(DeleteBehavior.Restrict);
 
-        builder.HasOne(pv => pv.Viewed)
-               .WithMany(p => p.Views) 
+        builder.HasOne<SNS.Domain.SocialGraph.Profile>()
+               .WithMany() 
                .HasForeignKey(pv => pv.ViewedId)
                .IsRequired()
                .OnDelete(DeleteBehavior.Restrict);

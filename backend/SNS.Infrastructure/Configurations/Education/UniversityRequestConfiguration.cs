@@ -37,7 +37,7 @@ public class UniversityRequestConfiguration :
 
         builder.Property(ur => ur.Status).HasConversion<int>();
 
-        builder.HasOne(ur => ur.Submitter)
+        builder.HasOne<SNS.Domain.SocialGraph.Profile>()
                .WithMany()
                .HasForeignKey(ur => ur.SubmitterId)
                .IsRequired()

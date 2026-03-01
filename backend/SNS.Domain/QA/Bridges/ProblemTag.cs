@@ -17,8 +17,8 @@ public class ProblemTag : IHardDeletable
     public Guid TagId { get; set; }
 
     // Navigation Properties
-    public Problem Problem { get; set; } = null!;
-    public Tag Tag { get; set; } = null!;
+
+
 
     public ProblemTag()
     {

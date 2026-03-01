@@ -26,7 +26,7 @@ public class ProjectMediaConfigurations :
         builder.Property(pm => pm.Type)
                .HasConversion<int>();
 
-        builder.HasOne(pm => pm.Project)
+        builder.HasOne<SNS.Domain.Projects.Entities.Project>()
                .WithMany(p => p.Media)
                .HasForeignKey(pm => pm.ProjectId)
                .IsRequired()

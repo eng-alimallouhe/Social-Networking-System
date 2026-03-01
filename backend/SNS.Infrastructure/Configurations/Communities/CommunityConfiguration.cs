@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SNS.Domain.Communities.Entities;
+using SNS.Domain.SocialGraph;
 
 namespace SNS.Infrastructure.Configurations.Communities;
 
@@ -42,15 +43,15 @@ public class CommunityConfigurations :
         builder.Property(c => c.Status).HasConversion<int>();
 
         // Relationships
-        builder.HasOne(c => c.Owner)
-               .WithMany(p => p.Communities)
+        builder.HasOne<Profile>()
+               .WithMany()
                .HasForeignKey(c => c.OwnerId)
                .IsRequired()
                .OnDelete(DeleteBehavior.Restrict);
 
         // 1:1 Relationship with Settings
         builder.HasOne(c => c.Settings)
-               .WithOne(s => s.Community)
+               .WithOne()
                .HasForeignKey<CommunitySettings>(s => s.CommunityId)
                .IsRequired()
                .OnDelete(DeleteBehavior.Cascade);

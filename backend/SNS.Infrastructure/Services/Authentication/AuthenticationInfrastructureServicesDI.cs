@@ -11,9 +11,6 @@ public static class AuthenticationInfrastructureServicesDI
         services.AddScoped<
             ITokenService, TokenService>();
 
-        services.AddScoped<
-            ITokenReaderService, TokenReaderService>();
-
         return services;
     }
 }

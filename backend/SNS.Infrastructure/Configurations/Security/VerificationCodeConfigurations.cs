@@ -20,8 +20,8 @@ public class VerificationCodeConfigurations :
                .HasMaxLength(10)
                .HasColumnType("varchar(10)");
 
-        builder.HasOne(vc => vc.User)
-               .WithMany(u => u.VerificationCodes)
+        builder.HasOne<User>()
+               .WithMany()
                .HasForeignKey(vc => vc.UserId)
                .IsRequired();
 

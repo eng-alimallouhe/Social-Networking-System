@@ -1,6 +1,5 @@
-﻿using SNS.Domain.Abstractions.Common;
+using SNS.Domain.Abstractions.Common;
 using SNS.Domain.Common.Helpers;
-using SNS.Domain.SocialGraph;
 
 namespace SNS.Domain.Education.Entities;
 
@@ -9,7 +8,7 @@ public class Faculty : ISoftDeletable
     // Primary Key
     public Guid Id { get; set; }
 
-    // Foreign Key: One(University) → Many(Faculty)
+    // Foreign Key: One(University) ? Many(Faculty)
     public Guid UniversityId { get; set; }
 
     // Properties
@@ -23,8 +22,6 @@ public class Faculty : ISoftDeletable
     public bool IsActive { get; set; }
 
     // Navigation Properties
-    public University University { get; set; } = null!;
-    public ICollection<Profile> Profiles { get; set; } = new List<Profile>();
 
     public Faculty()
     {

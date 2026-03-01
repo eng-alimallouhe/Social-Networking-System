@@ -28,7 +28,7 @@ public class FacultyConfiguration :
                .HasMaxLength(150)
                .HasColumnType("nvarchar(150)");
 
-        builder.HasOne(f => f.University)
+        builder.HasOne<SNS.Domain.Education.Entities.University>()
                .WithMany(u => u.Faculties)
                .HasForeignKey(f => f.UniversityId)
                .IsRequired()

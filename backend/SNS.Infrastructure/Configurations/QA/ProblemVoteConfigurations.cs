@@ -28,14 +28,14 @@ public class ProblemVoteConfigurations :
         builder.Property(pv => pv.Type)
                .HasConversion<int>();
 
-        builder.HasOne(pv => pv.Problem)
+        builder.HasOne<Problem>()
                .WithMany(p => p.Votes)
                .HasForeignKey(pv => pv.ProblemId)
                .IsRequired()
                .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasOne(pv => pv.Voter)
-               .WithMany(p => p.ProblemVotes)
+        builder.HasOne<SNS.Domain.SocialGraph.Profile>()
+               .WithMany()
                .HasForeignKey(pv => pv.VoterId)
                .IsRequired()
                .OnDelete(DeleteBehavior.Cascade);

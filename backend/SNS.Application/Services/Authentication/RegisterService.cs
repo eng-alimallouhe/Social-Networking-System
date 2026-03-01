@@ -233,7 +233,7 @@ public class RegisterService : IRegisterService
 
             // 6. Generate Tokens
             var refreshTokenString = await _tokenService.GrantRefreshTokenAsync(user);
-            var accessTokenString = _tokenService.GenerateAccessToken(user, sessionId);
+            var accessTokenString = await _tokenService.GenerateAccessTokenAsync(user, sessionId);
 
             // 7. Archiving & Logging
             await _archiveService.ArchiveIdentityAsync(userId, user.PhoneNumber, IdentityType.PhoneNumber);

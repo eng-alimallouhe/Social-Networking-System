@@ -23,7 +23,7 @@ public class UserWithProfileAndRoleSpecification : ISingleEntitySpecification<Us
     /// <summary>
     /// Gets the list of related entities to include in the query result.
     /// 
-    /// Includes <see cref="User.Profile"/> and <see cref="User.Role"/> to ensure
+    /// Includes <see cref="User.Role"/> to ensure
     /// the returned entity has all necessary context for domain logic.
     /// </summary>
     public List<string> Includes { get; } = new();
@@ -43,7 +43,6 @@ public class UserWithProfileAndRoleSpecification : ISingleEntitySpecification<Us
     public UserWithProfileAndRoleSpecification(Guid userId)
     {
         Criteria = u => u.Id == userId;
-        Includes.Add(nameof(User.Profile));
-        Includes.Add(nameof(User.Role));
+
     }
 }

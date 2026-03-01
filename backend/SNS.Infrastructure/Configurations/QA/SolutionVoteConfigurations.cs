@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using SNS.Domain.QA.Bridges; // For SolutionVote
+using SNS.Domain.QA.Bridges;
+using SNS.Domain.QA.Entities;
+using SNS.Domain.SocialGraph; // For SolutionVote
 
 namespace SNS.Infrastructure.Configurations.QA;
 
@@ -26,14 +28,14 @@ public class SolutionVoteConfigurations :
         builder.Property(sv => sv.Type)
                .HasConversion<int>();
 
-        builder.HasOne(sv => sv.Solution)
+        builder.HasOne<Solution>()
                .WithMany(s => s.Votes)
                .HasForeignKey(sv => sv.SolutionId)
                .IsRequired()
                .OnDelete(DeleteBehavior.Restrict);
 
-        builder.HasOne(sv => sv.Voter)
-               .WithMany(p => p.SolutionVotes)
+        builder.HasOne<Profile>()
+               .WithMany()
                .HasForeignKey(sv => sv.VoterId)
                .IsRequired()
                .OnDelete(DeleteBehavior.Restrict);

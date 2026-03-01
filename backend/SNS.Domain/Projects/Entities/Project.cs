@@ -1,8 +1,7 @@
-﻿using SNS.Domain.Abstractions.Common;
 using SNS.Domain.Common.Helpers;
+using SNS.Domain.Abstractions.Common;
 using SNS.Domain.Projects.Bridges;
 using SNS.Domain.Projects.Enums;
-using SNS.Domain.SocialGraph;
 
 
 namespace SNS.Domain.Projects.Entities;
@@ -12,7 +11,7 @@ public class Project : ISoftDeletable
     // Primary Key
     public Guid Id { get; set; }
 
-    // Foreign Key: One(Profile) → Many(Projects)
+    // Foreign Key: One(Profile) ? Many(Projects)
     public Guid OwnerId { get; set; }
 
     // General Properties
@@ -29,9 +28,6 @@ public class Project : ISoftDeletable
     // Timestamp
     public DateTime CreatedAt { get; set; } 
     public DateTime UpdatedAt { get; set; } 
-
-    // Navigation Properties
-    public Profile Owner { get; set; } = null!;
 
     public ICollection<ProjectSkill> Skills { get; set; }
         = new List<ProjectSkill>();
@@ -63,3 +59,5 @@ public class Project : ISoftDeletable
         IsActive = true;
     }
 }
+
+

@@ -1,4 +1,4 @@
-﻿using SNS.Domain.Abstractions.Common;
+using SNS.Domain.Abstractions.Common;
 using SNS.Domain.Common.Helpers;
 
 namespace SNS.Domain.Resumes.Entities;
@@ -14,9 +14,6 @@ public class ResumeCertificate : IHardDeletable
     public string Issuer { get; set; } = string.Empty;
 
     public DateTime IssueDate { get; set; }
-
-    // Navigation
-    public Resume Resume { get; set; } = null!;
 
     public ResumeCertificate()
     {

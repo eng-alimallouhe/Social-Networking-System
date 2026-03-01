@@ -17,7 +17,7 @@ public class PasswordArchive : IHardDeletable
     public DateTime CreatedAt { get; set; }
 
     // Navigation
-    public User User { get; set; } = null!;
+
 
     public PasswordArchive()
     {

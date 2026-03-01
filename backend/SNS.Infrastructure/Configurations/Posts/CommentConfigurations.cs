@@ -23,15 +23,15 @@ public class CommentConfigurations :
                .HasColumnType("nvarchar(2000)");
 
         // Relationships
-        builder.HasOne(c => c.Post)
-               .WithMany(p => p.Comments)
+        builder.HasOne<SNS.Domain.Content.Entities.Post>()
+               .WithMany()
                .HasForeignKey(c => c.PostId)
                .IsRequired()
                .OnDelete(DeleteBehavior.Cascade); 
 
 
-        builder.HasOne(c => c.Author)
-               .WithMany(p => p.Comments)
+        builder.HasOne<SNS.Domain.SocialGraph.Profile>()
+               .WithMany()
                .HasForeignKey(c => c.AuthorId)
                .IsRequired()
                .OnDelete(DeleteBehavior.Restrict);

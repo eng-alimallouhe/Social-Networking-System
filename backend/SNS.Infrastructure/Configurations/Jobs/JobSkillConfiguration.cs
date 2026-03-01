@@ -22,11 +22,11 @@ public class JobSkillConfiguration :
             })
             .IsUnique();
 
-        builder.HasOne(js => js.Job)
-               .WithMany(j => j.JobSkills)
+        builder.HasOne<SNS.Domain.Jobs.Entities.Job>()
+               .WithMany()
                .HasForeignKey(js => js.JobId);
 
-        builder.HasOne(js => js.Skill)
+        builder.HasOne<SNS.Domain.Preferences.Entities.Skill>()
                .WithMany()
                .HasForeignKey(js => js.SkillId);
     }

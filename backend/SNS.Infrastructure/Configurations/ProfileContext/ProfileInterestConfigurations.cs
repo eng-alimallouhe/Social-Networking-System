@@ -27,14 +27,14 @@ public class ProfileInterestConfigurations :
             .IsUnique();
 
         // Relationships
-        builder.HasOne(pi => pi.Profile)
+        builder.HasOne<SNS.Domain.SocialGraph.Profile>()
                .WithMany(p => p.ProfileInterests)
                .HasForeignKey(pi => pi.ProfileId)
                .IsRequired()
                .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasOne(pi => pi.Interest)
-               .WithMany(i => i.ProfileInterests)
+        builder.HasOne<SNS.Domain.Preferences.Entities.Interest>()
+               .WithMany()
                .HasForeignKey(pi => pi.InterestId)
                .IsRequired()
                .OnDelete(DeleteBehavior.Cascade);

@@ -29,13 +29,13 @@ public class ProfileSkillConfigurations :
                .HasConversion<int>();
 
         // Relationships
-        builder.HasOne(ps => ps.Profile)
+        builder.HasOne<SNS.Domain.SocialGraph.Profile>()
                .WithMany(p => p.ProfileSkills)
                .HasForeignKey(ps => ps.ProfileId)
                .IsRequired()
                .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasOne(ps => ps.Skill)
+        builder.HasOne<SNS.Domain.Preferences.Entities.Skill>()
                .WithMany()
                .HasForeignKey(ps => ps.SkillId)
                .IsRequired()

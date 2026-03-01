@@ -27,8 +27,8 @@ public class ProjectView : ISoftDeletable
     public bool IsActive { get; set; }
 
     // Navigation
-    public Project Project { get; set; } = null!;
-    public Profile Viewer { get; set; } = null!;
+
+
 
     public ProjectView()
     {

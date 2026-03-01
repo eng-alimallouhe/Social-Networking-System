@@ -1,4 +1,4 @@
-﻿using SNS.Domain.Abstractions.Common;
+using SNS.Domain.Abstractions.Common;
 using SNS.Domain.Common.Enums;
 using SNS.Domain.Common.Helpers;
 
@@ -21,9 +21,6 @@ public class PostMedia : IHardDeletable
     public double? Duration { get; set; }
     public int? Width { get; set; }
     public int? Height { get; set; }
-
-    // Navigation
-    public Post Post { get; set; } = null!;
 
     public PostMedia()
     {

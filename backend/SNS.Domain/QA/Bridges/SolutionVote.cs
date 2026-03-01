@@ -24,8 +24,8 @@ public class SolutionVote : IHardDeletable
     public DateTime CreatedAt { get; set; }
 
     // Navigation Properties
-    public Solution Solution { get; set; } = null!;
-    public Profile Voter { get; set; } = null!;
+
+
 
     public SolutionVote()
     {

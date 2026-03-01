@@ -20,6 +20,6 @@ public class ProblemTopic : IHardDeletable
     public float? Confidence { get; set; }
 
     // Navigation Properties
-    public Problem Problem { get; set; } = null!;
-    public Topic Topic { get; set; } = null!;
+
+
 }

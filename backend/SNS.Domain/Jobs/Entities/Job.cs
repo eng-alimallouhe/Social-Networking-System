@@ -1,7 +1,6 @@
-﻿using SNS.Domain.Abstractions.Common;
 using SNS.Domain.Common.Helpers;
+using SNS.Domain.Abstractions.Common;
 using SNS.Domain.QA.Enums;
-using SNS.Domain.SocialGraph;
 
 namespace SNS.Domain.Jobs.Entities;
 
@@ -11,7 +10,7 @@ public class Job : ISoftDeletable
     // Primary Key
     public Guid Id { get; set; }
 
-    // Foreign Key: One(Profile) → Many(Jobs)
+    // Foreign Key: One(Profile) ? Many(Jobs)
     public Guid OwnerId { get; set; }
 
     public string Title { get; set; } = string.Empty;
@@ -33,7 +32,6 @@ public class Job : ISoftDeletable
     public bool IsActive { get; set; }
 
     //Navigation Properties
-    public Profile Owner { get; set; } = null!;
     public ICollection<JobApplication> Applications { get; set; } = new List<JobApplication>();
     public ICollection<JobSkill> JobSkills { get; set; } = new List<JobSkill>();
 
@@ -43,3 +41,4 @@ public class Job : ISoftDeletable
         CreatedAt = DateTime.UtcNow;
     }
 }
+

@@ -1,6 +1,5 @@
-﻿using SNS.Domain.Abstractions.Common;
+using SNS.Domain.Abstractions.Common;
 using SNS.Domain.Common.Helpers;
-using SNS.Domain.ProfileContext.Bridges;
 
 namespace SNS.Domain.Preferences.Entities;
 
@@ -19,7 +18,6 @@ public class Interest : ISoftDeletable
     public bool IsActive { get; set; }
 
     // Navigation
-    public ICollection<ProfileInterest> ProfileInterests { get; set; } = new List<ProfileInterest>();
     public InterestCategory Category { get; set; } = null!;
     public ICollection<TopicInterest>  TopicInterests { get; set; } 
         = new List<TopicInterest>();
@@ -30,3 +28,4 @@ public class Interest : ISoftDeletable
         IsActive = true;
     }
 }
+

@@ -26,7 +26,7 @@ public class SolutionContentBlockConfigurations :
                .HasMaxLength(100)
                .HasColumnType("nvarchar(100)");
 
-        builder.HasOne(scb => scb.Solution)
+        builder.HasOne<Solution>()
                .WithMany(s => s.ContentBlocks)
                .HasForeignKey(scb => scb.SolutionId)
                .IsRequired()

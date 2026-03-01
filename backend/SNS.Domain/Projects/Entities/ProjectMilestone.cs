@@ -1,4 +1,4 @@
-﻿using SNS.Domain.Abstractions.Common;
+using SNS.Domain.Abstractions.Common;
 using SNS.Domain.Common.Helpers;
 
 namespace SNS.Domain.Projects.Entities;
@@ -17,9 +17,6 @@ public class ProjectMilestone : IHardDeletable
 
     // Timestamp
     public DateTime CreatedAt { get; set; }
-
-    // Navigation
-    public Project Project { get; set; } = null!;
 
     public ProjectMilestone()
     {

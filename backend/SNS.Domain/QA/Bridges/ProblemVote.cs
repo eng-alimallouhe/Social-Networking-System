@@ -23,8 +23,8 @@ public class ProblemVote : IHardDeletable
     public DateTime CreatedAt { get; set; }
 
     // Navigation Properties
-    public Problem Problem { get; set; } = null!;
-    public Profile Voter { get; set; } = null!;
+
+
 
     public ProblemVote()
     {

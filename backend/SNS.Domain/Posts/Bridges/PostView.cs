@@ -27,8 +27,8 @@ public class PostView : ISoftDeletable
     public bool IsActive { get; set; }
 
     // Navigation
-    public Post Post { get; set; } = null!;
-    public Profile Viewer { get; set; } = null!;
+
+
 
     public PostView()
     {

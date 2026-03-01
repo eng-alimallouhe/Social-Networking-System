@@ -1,7 +1,6 @@
-﻿using SNS.Domain.Abstractions.Common;
+using SNS.Domain.Abstractions.Common;
 using SNS.Domain.Common.Enums;
 using SNS.Domain.Common.Helpers;
-using SNS.Domain.SocialGraph;
 
 namespace SNS.Domain.Education.Entities;
 
@@ -10,13 +9,13 @@ public class FacultyRequest : IHardDeletable
     // Primary Key
     public Guid Id { get; set; }
 
-    // Foreign Key: One(Profile) → Many(FacultyRequest)
+    // Foreign Key: One(Profile) ? Many(FacultyRequest)
     public Guid SubmitterId { get; set; }
 
-    // Foreign Key: One(UniversityRequest) → Many(FacultyRequest) == Optional
+    // Foreign Key: One(UniversityRequest) ? Many(FacultyRequest) == Optional
     public Guid? UniversityRequestId { get; set; }
 
-    // Foreign Key: One(University) → Many(FacultyRequest) == Optional
+    // Foreign Key: One(University) ? Many(FacultyRequest) == Optional
     public Guid? UniversityId { get; set; }
 
     // Properties
@@ -32,9 +31,6 @@ public class FacultyRequest : IHardDeletable
     public bool IsActive { get; set; }
 
     // Navigation Properties
-    public Profile Submitter { get; set; } = null!;
-    public University? University { get; set; }
-    public UniversityRequest? UniversityRequest { get; set; }
     public ICollection<ProfileFacultyRequest> Requests { get; set; } = new List<ProfileFacultyRequest>();
 
     public FacultyRequest()

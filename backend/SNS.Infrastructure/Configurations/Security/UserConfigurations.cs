@@ -42,7 +42,7 @@ public class UserConfigurations :
                 .HasColumnType("varchar(10)");
 
         // Relationship: User -> Role
-        builder.HasOne(u => u.Role)
+        builder.HasOne<Role>()
                 .WithMany() // Assuming Role doesn't have a Users collection based on your class
                 .HasForeignKey(u => u.RoleId)
                 .IsRequired();

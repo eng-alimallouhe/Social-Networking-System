@@ -19,8 +19,8 @@ public class IdentityArchiveConfigurations :
                .HasMaxLength(255)
                .HasColumnType("nvarchar(255)");
 
-        builder.HasOne(ia => ia.User)
-               .WithMany(u => u.IdentityArchives)
+        builder.HasOne<User>()
+               .WithMany()
                .HasForeignKey(ia => ia.UserId)
                .IsRequired();
     }

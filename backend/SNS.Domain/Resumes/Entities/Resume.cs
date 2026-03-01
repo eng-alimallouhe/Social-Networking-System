@@ -1,9 +1,8 @@
-﻿using SNS.Domain.Abstractions.Common;
-using SNS.Domain.Common.Enums;
 using SNS.Domain.Common.Helpers;
+using SNS.Domain.Abstractions.Common;
+using SNS.Domain.Common.Enums;
 using SNS.Domain.Resumes.Bridges;
 using SNS.Domain.Resumes.Enums;
-using SNS.Domain.SocialGraph;
 
 namespace SNS.Domain.Resumes.Entities;
 
@@ -33,7 +32,6 @@ public class Resume : ISoftDeletable
     public SupportedLanguage Langauge { get; set; }
 
     // Navigation
-    public Profile Owner { get; set; } = null!;
     public ICollection<ResumeEducation> Educations { get; set; } = new List<ResumeEducation>();
     public ICollection<ResumeExperience> Experiences { get; set; } = new List<ResumeExperience>();
     public ICollection<ResumeCertificate> Certificates { get; set; } = new List<ResumeCertificate>();
@@ -49,3 +47,4 @@ public class Resume : ISoftDeletable
         IsActive = true;
     }
 }
+

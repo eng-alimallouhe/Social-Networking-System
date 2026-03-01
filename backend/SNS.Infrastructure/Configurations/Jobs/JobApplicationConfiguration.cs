@@ -28,12 +28,12 @@ public class JobApplicationConfiguration :
             .IsUnique()
             .HasFilter("[IsActive] = 1");
 
-        builder.HasOne(ja => ja.Job)
+        builder.HasOne<SNS.Domain.Jobs.Entities.Job>()
                .WithMany(j => j.Applications)
                .HasForeignKey(ja => ja.JobId)
                .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasOne(ja => ja.Applicant)
+        builder.HasOne<SNS.Domain.SocialGraph.Profile>()
                .WithMany() // Or p.JobApplications if defined in Profile
                .HasForeignKey(ja => ja.ApplicantId)
                .OnDelete(DeleteBehavior.Restrict);

@@ -1,7 +1,6 @@
-﻿using SNS.Domain.Abstractions.Common;
+using SNS.Domain.Abstractions.Common;
 using SNS.Domain.Common.Enums;
 using SNS.Domain.Common.Helpers;
-using SNS.Domain.SocialGraph;
 
 namespace SNS.Domain.Security.Entities;
 
@@ -43,8 +42,7 @@ public class User : ISoftDeletable
 
 
     // Navigation Properties
-    public Role Role { get; set; } = null!;
-    public Profile Profile { get; set; } = null!;
+
     public ICollection<RefreshToken> Token { get; set; } = new List<RefreshToken>();
     public ICollection<VerificationCode> VerificationCodes { get; set; } = new List<VerificationCode>();
     public ICollection<IdentityArchive> IdentityArchives { get; set; } = new List<IdentityArchive>();

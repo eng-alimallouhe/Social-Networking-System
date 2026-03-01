@@ -19,7 +19,7 @@ public class RefreshTokenConfigurations : IEntityTypeConfiguration<RefreshToken>
                .HasColumnType("varchar(512)");
 
         builder.HasOne<User>()
-               .WithMany(u => u.Token)
+               .WithMany()
                .HasForeignKey(rt => rt.UserId)
                .OnDelete(DeleteBehavior.Cascade)
                .IsRequired();

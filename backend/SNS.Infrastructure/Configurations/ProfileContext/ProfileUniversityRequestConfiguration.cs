@@ -19,13 +19,13 @@ public class ProfileUniversityRequestConfiguration :
         // Unique Constraint: A profile can support a university request only once
         builder.HasIndex(pur => new { pur.JoinerId, pur.UniversityRequestId }).IsUnique();
 
-        builder.HasOne(pur => pur.Joiner)
+        builder.HasOne<SNS.Domain.SocialGraph.Profile>()
                .WithMany()
                .HasForeignKey(pur => pur.JoinerId)
                .IsRequired()
                .OnDelete(DeleteBehavior.Restrict);
 
-        builder.HasOne(pur => pur.UniversityRequest)
+        builder.HasOne<SNS.Domain.Education.Entities.UniversityRequest>()
                .WithMany(ur => ur.Requests)
                .HasForeignKey(pur => pur.UniversityRequestId)
                .IsRequired()

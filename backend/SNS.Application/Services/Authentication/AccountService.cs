@@ -41,6 +41,7 @@ public class AccountService : IAccountService
     private readonly ICodeService _codeService;
     private readonly IRepository<RefreshToken> _refreshTokenRepo;
     private readonly IRepository<UserSession> _sessionRepo;
+    private readonly ISoftDeletableRepository<SNS.Domain.SocialGraph.Profile> _profileRepo;
     private readonly ICacheService _cacheService;
     private readonly ICurrentUserService _currentUserService;
     private readonly IArchiveService _archiveService;
@@ -50,6 +51,7 @@ public class AccountService : IAccountService
     private readonly IRepository<PendingUpdate> _pendingUpdateRepo;
     private readonly ISmsSenderService _smsSenderService;
     private readonly AppSettings _appSettings;
+    private readonly ISoftDeletableRepository<Role> _roleRepo;
 
     public AccountService(
         ICacheService cacheService,
@@ -68,7 +70,9 @@ public class AccountService : IAccountService
         IRepository<PendingUpdate> pendingUpdateRepo,
         ISmsSenderService smsSenderService,
         IOptions<AppSettings> options,
-        ISessionService sessionChecker)
+        ISoftDeletableRepository<SNS.Domain.SocialGraph.Profile> profileRepo,
+        ISessionService sessionChecker,
+        ISoftDeletableRepository<Role> roleRepo)
     {
         _cacheService = cacheService;
         _sessionRepo = sessionRepo;
@@ -81,12 +85,14 @@ public class AccountService : IAccountService
         _tokenService = tokenService;
         _archiveService = archiveService;
         _userSessionService = userSessionService;
+        _profileRepo = profileRepo;
         _logger = logger;
         _pendingUpdatesService = pendingUpdatesService;
         _pendingUpdateRepo = pendingUpdateRepo;
         _smsSenderService = smsSenderService;
         _appSettings = options.Value;
         _sessionChecker = sessionChecker;
+        _roleRepo = roleRepo;
     }
 
     // ========================================================================
@@ -592,7 +598,11 @@ public class AccountService : IAccountService
             var supportSpec = new UserWithRoleSpecification(supportId);
             var supportUser = await _userRepo.GetSingleAsync(supportSpec);
 
-            if (supportUser == null || supportUser.Role.Type != RoleType.Support)
+            if (supportUser == null)
+                return Result<string>.Failure(OperationStatusCode.AccessDenied);
+
+            var supportRole = await _roleRepo.GetByIdAsync(supportUser.RoleId);
+            if (supportRole == null || supportRole.Type != RoleType.Support)
                 return Result<string>.Failure(OperationStatusCode.AccessDenied);
 
             // Check Conflicts
@@ -739,10 +749,12 @@ public class AccountService : IAccountService
 
         var sessionId = sessionResult.Value;
         var refreshToken = await _tokenService.GrantRefreshTokenAsync(user);
-        var accessToken = _tokenService.GenerateAccessToken(user, sessionId);
+        var accessToken = await _tokenService.GenerateAccessTokenAsync(user, sessionId);
 
         // Check if profile is incomplete (Business Rule)
-        var statusCode = (user.Role.Type == RoleType.User && user.Profile == null)
+        var hasProfile = await _profileRepo.GetByIdAsync(user.Id) != null;
+        var userRole = await _roleRepo.GetByIdAsync(user.RoleId);
+        var statusCode = (userRole?.Type == RoleType.User && !hasProfile)
             ? UserStatusCodes.ProfileNotCompleted
             : OperationStatusCode.Success;
 

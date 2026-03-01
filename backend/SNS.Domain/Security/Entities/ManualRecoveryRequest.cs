@@ -26,8 +26,8 @@ public class ManualRecoveryRequest : IHardDeletable
     public DateTime? ReviewedAt { get; set; }
 
     // Navigation Properties
-    public User Submitter { get; set; } = null!;
-    public User Reviewer { get; set; } = null!;
+
+
 
     public ManualRecoveryRequest()
     {

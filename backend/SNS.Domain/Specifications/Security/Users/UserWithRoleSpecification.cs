@@ -44,6 +44,6 @@ public class UserWithRoleSpecification : ISingleEntitySpecification<User>
     public UserWithRoleSpecification(Guid userId)
     {
         Criteria = u => u.Id == userId;
-        Includes.Add(nameof(User.Role));
+
     }
 }

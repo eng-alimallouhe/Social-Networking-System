@@ -31,14 +31,14 @@ public class CommunityMembershipConfigurations :
         builder.Property(cm => cm.Role)
             .HasConversion<int>();
 
-        builder.HasOne(cm => cm.Community)
+        builder.HasOne<SNS.Domain.Communities.Entities.Community>()
                .WithMany(c => c.Memberships)
                .HasForeignKey(cm => cm.CommunityId)
                .IsRequired()
                .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasOne(cm => cm.Member)
-               .WithMany(p => p.CommunityMemberships) 
+        builder.HasOne<SNS.Domain.SocialGraph.Profile>()
+               .WithMany() 
                .HasForeignKey(cm => cm.MemberId)
                .IsRequired()
                .OnDelete(DeleteBehavior.Cascade);

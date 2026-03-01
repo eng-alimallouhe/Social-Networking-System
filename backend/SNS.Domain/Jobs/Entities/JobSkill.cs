@@ -16,12 +16,8 @@ public class JobSkill : IHardDeletable
     // Foreign Key: One(Skill) → Many(JobSkills)
     public Guid SkillId { get; set; }
 
-    //Navigation Properties
-    public Job Job { get; set; } = null!;
-    public Skill Skill { get; set; } = null!;
-
     public JobSkill()
     {
         Id = SequentialGuid.GenerateSequentialGuid();
     }
-}
+}ن

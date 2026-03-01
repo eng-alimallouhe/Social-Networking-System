@@ -20,13 +20,13 @@ namespace SNS.Infrastructure.Configurations.Security
 
             
             builder.HasOne<User>()
-                   .WithMany(u => u.Archives)
+                   .WithMany()
                    .HasForeignKey(ua => ua.UserId)
                    .IsRequired()
                    .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne<User>()
-                   .WithMany(u => u.ActionPerformed)
+                   .WithMany()
                    .HasForeignKey(ua => ua.PerformedBy)
                    .IsRequired()
                    .OnDelete(DeleteBehavior.Restrict);

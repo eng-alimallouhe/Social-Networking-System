@@ -28,14 +28,14 @@ public class ProjectRatingConfigurations :
                .HasMaxLength(1000)
                .HasColumnType("nvarchar(1000)");
 
-        builder.HasOne(pr => pr.Project)
-               .WithMany(p => p.Ratings)
+        builder.HasOne<SNS.Domain.Projects.Entities.Project>()
+               .WithMany()
                .HasForeignKey(pr => pr.ProjectId)
                .IsRequired()
                .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasOne(pr => pr.Rater)
-               .WithMany(p => p.ProjectRatings)
+        builder.HasOne<SNS.Domain.SocialGraph.Profile>()
+               .WithMany()
                .HasForeignKey(pr => pr.RaterId)
                .IsRequired()
                .OnDelete(DeleteBehavior.Restrict);

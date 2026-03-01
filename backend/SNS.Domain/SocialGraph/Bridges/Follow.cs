@@ -15,8 +15,8 @@ public class Follow : IHardDeletable
     // Foreign Key: One(Profile) → Many(Follows as Followings)
     public Guid FollowingId { get; set; }
 
-    public Profile Following { get; set; } = default!;
-    public Profile Follower { get; set; } = default!;
+
+
 
 
     // Timestamp

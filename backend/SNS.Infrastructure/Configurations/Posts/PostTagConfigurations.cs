@@ -25,13 +25,13 @@ public class PostTagConfigurations :
 
         builder.Property(pt => pt.Confidence).HasColumnType("real");
 
-        builder.HasOne(pt => pt.Post)
-               .WithMany(p => p.Tags)
+        builder.HasOne<SNS.Domain.Content.Entities.Post>()
+               .WithMany()
                .HasForeignKey(pt => pt.PostId)
                .IsRequired()
                .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasOne(pt => pt.Tag)
+        builder.HasOne<SNS.Domain.Preferences.Entities.Tag>()
                .WithMany()
                .HasForeignKey(pt => pt.TagId)
                .IsRequired()

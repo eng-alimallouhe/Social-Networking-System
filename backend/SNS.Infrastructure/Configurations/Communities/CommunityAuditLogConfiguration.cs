@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SNS.Domain.Communities.Entities;
+using SNS.Domain.SocialGraph;
 
 namespace SNS.Infrastructure.Configurations.Communities;
 
@@ -20,13 +21,13 @@ public class CommunityAuditLogConfigurations :
                .HasMaxLength(255)
                .HasColumnType("nvarchar(255)");
 
-        builder.HasOne(cal => cal.Community)
+        builder.HasOne<Community>()
                .WithMany(c => c.AuditLogs)
                .HasForeignKey(cal => cal.CommunityId)
                .IsRequired()
                .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasOne(cal => cal.Actor)
+        builder.HasOne<Profile>()
                .WithMany()
                .HasForeignKey(cal => cal.ActorId)
                .IsRequired(false)

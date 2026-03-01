@@ -25,8 +25,8 @@ public class ProjectContributor : IHardDeletable
     public string InvitationMessage { get; set; } = string.Empty;
 
     // Navigation
-    public Project Project { get; set; } = null!;
-    public Profile Contributor { get; set; } = null!;
+
+
 
     public ProjectContributor()
     {

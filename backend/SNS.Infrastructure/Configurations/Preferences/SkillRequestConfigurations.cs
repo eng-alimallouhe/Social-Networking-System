@@ -22,7 +22,7 @@ public class SkillRequestConfigurations :
         builder.Property(sr => sr.Level).HasConversion<int>();
         builder.Property(sr => sr.Status).HasConversion<int>();
 
-        builder.HasOne(sr => sr.Submitter)
+        builder.HasOne<SNS.Domain.SocialGraph.Profile>()
                .WithMany()
                .HasForeignKey(sr => sr.SubmitterId)
                .IsRequired()

@@ -27,15 +27,15 @@ public class FollowConfigurations : IEntityTypeConfiguration<Follow>
         // Relationships
 
         // Follower side
-        builder.HasOne(f => f.Follower)
-               .WithMany(p => p.Followings)
+        builder.HasOne<SNS.Domain.SocialGraph.Profile>()
+               .WithMany()
                .HasForeignKey(f => f.FollowerId)
                .IsRequired()
                .OnDelete(DeleteBehavior.Restrict); // Prevent Cascade Cycles
 
         // Following side
-        builder.HasOne(f => f.Following)
-               .WithMany(p => p.Followers)
+        builder.HasOne<SNS.Domain.SocialGraph.Profile>()
+               .WithMany()
                .HasForeignKey(f => f.FollowingId)
                .IsRequired()
                .OnDelete(DeleteBehavior.Restrict); // Prevent Cascade Cycles
