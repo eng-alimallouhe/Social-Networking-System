@@ -40,8 +40,8 @@ public class User : Entity, IHardDeletable
     public DateTime? DeactivatedAt { get; private set; }
 
     // Soft Delete
-    public bool IsVerified { get; private set; }
-
+    public bool IsVerified { get; private set; } = false;
+    public bool PurgeAllContentOnHardDelete { get; private set; } =  false;
 
     // Security Code
     public DateTime CodeCreatedAt { get; private set; }
@@ -84,6 +84,23 @@ public class User : Entity, IHardDeletable
         entity.PasswordHash = passwordHash;
         return entity;
     }
+
+    public static User CreateSystemUser(Guid userId, Guid roleId, string userName, string email, string passwordHash)
+    {
+        var entity = new User();
+        entity.Id = userId;
+        entity.RoleId = roleId;
+        entity.UserName = userName;
+        entity.Email = email;
+        entity.PasswordHash = passwordHash;
+        entity.CreatedAt = new DateTime(1, 1, 1);
+        entity.UpdatedAt = new DateTime(1, 1, 1);
+        entity.LastLogIn = new DateTime(1, 1, 1);
+        entity.LastPasswordChange = new DateTime(1, 1, 1);
+        entity.CodeCreatedAt = new DateTime(1, 1, 1);
+        return entity;
+    }
+
 
     public void ChangePassword(string hashedPassword)
     {

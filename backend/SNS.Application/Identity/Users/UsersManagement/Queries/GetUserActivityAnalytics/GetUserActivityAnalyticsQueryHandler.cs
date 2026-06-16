@@ -2,21 +2,15 @@
 using SNS.Application.Identity.Shared.Abstractions;
 using SNS.Application.Shared.Abstractions.Data;
 using SNS.Application.Shared.Abstractions.Messaging;
-using SNS.Domain.Identity.Users.Enums; // تأكد من الـ Namespace الخاص بـ ActivityType
 using SNS.Domain.Projects.Enums;
 using SNS.Shared.Results;
 using SNS.Shared.StatusCodes;
 using SNS.Shared.StatusCodes.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace SNS.Application.Identity.Users.UsersManagement.Queries.GetUserActivityAnalytics;
 
 public sealed class GetUserActivityAnalyticsQueryHandler
-    : IQueryHandler<UserActivityAnalyticsResult, UserActivityAnalyticsResult>
+    : IQueryHandler<GetUserActivityAnalyticsQuery, UserActivityAnalyticsResult>
 {
     private readonly IApplicationDbContext _dbContext;
     private readonly ICurrentUserService _currentUserService;
@@ -30,7 +24,7 @@ public sealed class GetUserActivityAnalyticsQueryHandler
     }
 
     public async Task<Result<UserActivityAnalyticsResult>> Handle(
-        UserActivityAnalyticsResult request,
+        GetUserActivityAnalyticsQuery request,
         CancellationToken cancellationToken)
     {
         // 1️⃣ حارس بوابة الأمان والتحقق من صلاحية الـ Admin

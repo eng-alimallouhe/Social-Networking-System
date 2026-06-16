@@ -14,6 +14,7 @@ using SNS.Domain.Identity.ArchiveManagement.Entities;
 using SNS.Domain.Identity.Notifications.Entities;
 using SNS.Domain.Identity.SecuritySessions.Entities;
 using SNS.Domain.Identity.SecuritySettings.Entities;
+using SNS.Domain.Identity.Users.Constants;
 using SNS.Domain.Identity.Users.Entities;
 using SNS.Domain.Jobs.Entities;
 using SNS.Domain.Jobs.Relations;
@@ -282,6 +283,22 @@ public class SNSDbContext : DbContext, IApplicationDbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<Role>().HasData(
+            Role.CreateSystemUserRole(SystemUsers.GhostRoleId));
+
+        modelBuilder.Entity<User>().HasData(User.CreateSystemUser(
+            SystemUsers.GhostUserId, 
+            SystemUsers.GhostRoleId,
+            "deleted_user", 
+            "deleted_user@system.sns", 
+            SystemUsers.GhostUserPassword));
+
+        modelBuilder.Entity<Profile>().HasData(Profile.CreateSystemProfile(
+            SystemUsers.GhostProfileId,
+            SystemUsers.GhostUserId, 
+            "Deleted User",
+            SystemUsers.GhostProfilePicture));
 
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
     }

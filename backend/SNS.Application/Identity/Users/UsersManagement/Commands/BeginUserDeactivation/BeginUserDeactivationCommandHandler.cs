@@ -6,6 +6,8 @@ using SNS.Application.Identity.Shared.DTOs.Users;
 using SNS.Application.Identity.Shared.DTOs.VerificationCodes;
 using SNS.Application.Shared.Abstractions.Data;
 using SNS.Domain.Identity.Shared.Enums;
+using SNS.Domain.Identity.Users.Entities;
+using SNS.Domain.Shared.Abstractions.Repositories;
 using SNS.Shared.Results;
 using SNS.Shared.StatusCodes;
 using SNS.Shared.StatusCodes.Identity;
@@ -17,6 +19,7 @@ public sealed class BeginUserDeactivationCommandHandler :
 {
     private readonly IApplicationDbContext _dbContext;
     private readonly ICodeService _codeService;
+    private readonly IRepository<User> _userRepo;
     private readonly IUrlGeneratorService _urlGeneratorService;
     private readonly ICurrentUserService _currentUserService;
     private readonly IGeneratorService _generatorService;
@@ -24,12 +27,14 @@ public sealed class BeginUserDeactivationCommandHandler :
     public BeginUserDeactivationCommandHandler(
         IApplicationDbContext dbContext,
         ICodeService codeService,
+        IRepository<User> userRepo,
         IGeneratorService generatorService,
         IUrlGeneratorService urlGeneratorService,
         ICurrentUserService currentUserService)
     {
         _dbContext = dbContext;
         _generatorService = generatorService;
+        _userRepo = userRepo;
         _codeService = codeService;
         _urlGeneratorService = urlGeneratorService;
         _currentUserService = currentUserService;
@@ -44,16 +49,7 @@ public sealed class BeginUserDeactivationCommandHandler :
             return Result<BeginUserDeactivationResponse>.Failure(OperationStatusCode.AuthenticationRequired);
         }
 
-        var user = await _dbContext.Users
-            .Where(u => u.Id == userId)
-            .Select(u => new UserBaseDto(
-                Id: u.Id,
-                UserName: u.UserName,
-                DefaultCommunicationMethod: u.UserSecuritySettings.DefaultCommunicationMethod,
-                PreferredLanguage: u.PreferredLanguage,
-                RecoveryEmail: u.UserSecuritySettings.RecoveryEmail,
-                Email: u.Email))
-            .FirstOrDefaultAsync(cancellationToken);
+        var user = await _userRepo.GetByIdAsync(userId.Value, cancellationToken);
 
         if (user == null)
         {
