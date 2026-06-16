@@ -25,8 +25,8 @@ public class UserConfigurations :
 
 
         builder.Property(u => u.Email)
-                .HasMaxLength(20)
-                .HasColumnType("varchar(20)");
+                .HasMaxLength(100)
+                .HasColumnType("varchar(100)");
 
         builder.Property(u => u.PasswordHash)
                 .IsRequired()

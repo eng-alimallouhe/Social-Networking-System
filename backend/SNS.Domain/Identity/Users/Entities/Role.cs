@@ -28,6 +28,14 @@ public class Role : Entity, ISoftDeletable
         return entity;
     }
 
+    public static Role CreateSystemUserRole(Guid id)
+    {
+        var entity = new Role();
+        entity.Id = id;
+        entity.Type = RoleType.SystemUser;
+        return entity;
+    }
+
     public void SoftDelete()
     {
         this.IsActive = false;

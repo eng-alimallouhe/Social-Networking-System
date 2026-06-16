@@ -6,5 +6,6 @@ public enum RoleType
     User = 1,
     Moderator = 2,
     Guest = 3,
-    Support = 4
+    Support = 4,
+    SystemUser = 5,
 }

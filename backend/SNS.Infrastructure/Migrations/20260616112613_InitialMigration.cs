@@ -195,7 +195,7 @@ namespace SNS.Infrastructure.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     RoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Email = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: false),
+                    Email = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
                     PasswordHash = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: false),
                     FailedLoginAttempts = table.Column<int>(type: "int", nullable: false),
                     PreferredLanguage = table.Column<int>(type: "int", nullable: false),
@@ -203,14 +203,12 @@ namespace SNS.Infrastructure.Migrations
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     LastLogIn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     LastPasswordChange = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IsBanned = table.Column<bool>(type: "bit", nullable: false),
-                    IsSuspended = table.Column<bool>(type: "bit", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false),
                     SuspendedUntil = table.Column<DateTime>(type: "datetime2", nullable: true),
                     SuspensionReason = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsDeactivated = table.Column<bool>(type: "bit", nullable: false),
                     DeactivatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false),
                     IsVerified = table.Column<bool>(type: "bit", nullable: false),
+                    PurgeAllContentOnHardDelete = table.Column<bool>(type: "bit", nullable: false),
                     CodeCreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
@@ -268,6 +266,30 @@ namespace SNS.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ExportDataRequest",
+                schema: "Identity",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    DownloadUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CompletedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ExportDataRequest", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ExportDataRequest_Users_UserId",
+                        column: x => x.UserId,
+                        principalSchema: "Identity",
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "IdentityArchives",
                 schema: "Identity",
                 columns: table => new
@@ -302,6 +324,7 @@ namespace SNS.Infrastructure.Migrations
                     Source = table.Column<int>(type: "int", nullable: false),
                     Type = table.Column<int>(type: "int", nullable: false),
                     TargetId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    RedirectUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsRead = table.Column<bool>(type: "bit", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -473,6 +496,7 @@ namespace SNS.Infrastructure.Migrations
                 schema: "Identity",
                 columns: table => new
                 {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     RecoveryEmail = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     FailedLoginNotifications = table.Column<bool>(type: "bit", nullable: false),
@@ -484,7 +508,7 @@ namespace SNS.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UsersSecuritySettings", x => x.UserId);
+                    table.PrimaryKey("PK_UsersSecuritySettings", x => x.Id);
                     table.ForeignKey(
                         name: "FK_UsersSecuritySettings_Users_UserId",
                         column: x => x.UserId,
@@ -989,17 +1013,17 @@ namespace SNS.Infrastructure.Migrations
                     IsTrusted = table.Column<bool>(type: "bit", nullable: false),
                     FirstSeenAt = table.Column<DateTime>(type: "DATETIME", nullable: false),
                     LastSeenAt = table.Column<DateTime>(type: "DATETIME", nullable: false),
-                    UserSecuritySettingsUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    UserSecuritySettingsId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Devices", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Devices_UsersSecuritySettings_UserSecuritySettingsUserId",
-                        column: x => x.UserSecuritySettingsUserId,
+                        name: "FK_Devices_UsersSecuritySettings_UserSecuritySettingsId",
+                        column: x => x.UserSecuritySettingsId,
                         principalSchema: "Identity",
                         principalTable: "UsersSecuritySettings",
-                        principalColumn: "UserId");
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Devices_Users_UserId",
                         column: x => x.UserId,
@@ -1028,7 +1052,7 @@ namespace SNS.Infrastructure.Migrations
                         column: x => x.UserSecuritySettingsId,
                         principalSchema: "Identity",
                         principalTable: "UsersSecuritySettings",
-                        principalColumn: "UserId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -1228,7 +1252,8 @@ namespace SNS.Infrastructure.Migrations
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    LastInteractedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    LastInteractedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ProfileId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -1247,6 +1272,12 @@ namespace SNS.Infrastructure.Migrations
                         principalTable: "Profiles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ContentManagement_Profiles_ProfileId",
+                        column: x => x.ProfileId,
+                        principalSchema: "Profiles",
+                        principalTable: "Profiles",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -1703,7 +1734,8 @@ namespace SNS.Infrastructure.Migrations
                     Content = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ProfileId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -1729,6 +1761,12 @@ namespace SNS.Infrastructure.Migrations
                         principalTable: "Profiles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Comments_Profiles_ProfileId",
+                        column: x => x.ProfileId,
+                        principalSchema: "Profiles",
+                        principalTable: "Profiles",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -2323,6 +2361,24 @@ namespace SNS.Infrastructure.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.InsertData(
+                schema: "Identity",
+                table: "Roles",
+                columns: new[] { "Id", "IsActive", "Type" },
+                values: new object[] { new Guid("00000000-0000-0000-0000-000000000001"), true, 5 });
+
+            migrationBuilder.InsertData(
+                schema: "Identity",
+                table: "Users",
+                columns: new[] { "Id", "CodeCreatedAt", "CreatedAt", "DeactivatedAt", "Email", "FailedLoginAttempts", "IsVerified", "LastLogIn", "LastPasswordChange", "PasswordHash", "PreferredLanguage", "PurgeAllContentOnHardDelete", "RoleId", "Status", "SuspendedUntil", "SuspensionReason", "UpdatedAt", "UserName" },
+                values: new object[] { new Guid("00000000-0000-0000-0000-000000000001"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "deleted_user@system.sns", 0, false, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "094567865465asd-asdasjbnas-eieufj-sdjfkfiddsk", 2, false, new Guid("00000000-0000-0000-0000-000000000001"), 0, null, null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "deleted_user" });
+
+            migrationBuilder.InsertData(
+                schema: "Profiles",
+                table: "Profiles",
+                columns: new[] { "Id", "Bio", "CreatedAt", "FacebookUrl", "FullName", "GitHubUrl", "IsActive", "LinkedInUrl", "Location", "ProfilePictureUrl", "Reputation", "SkillsSummary", "Specialization", "UpdatedAt", "UserId", "Website", "XUrl" },
+                values: new object[] { new Guid("00000000-0000-0000-0000-000000000001"), null, new DateTime(1999, 12, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Deleted User", null, true, null, null, "", 0, null, null, new DateTime(1999, 12, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new Guid("00000000-0000-0000-0000-000000000001"), null, null });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AcademicRecords_ProfileId",
                 schema: "Education",
@@ -2403,6 +2459,12 @@ namespace SNS.Infrastructure.Migrations
                 schema: "ContentManagement",
                 table: "Comments",
                 column: "PostId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Comments_ProfileId",
+                schema: "ContentManagement",
+                table: "Comments",
+                column: "ProfileId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Communities_Name",
@@ -2526,6 +2588,12 @@ namespace SNS.Infrastructure.Migrations
                 column: "CommunityId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ContentManagement_ProfileId",
+                schema: "ContentManagement",
+                table: "ContentManagement",
+                column: "ProfileId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ContentManagement_Title",
                 schema: "ContentManagement",
                 table: "ContentManagement",
@@ -2545,10 +2613,10 @@ namespace SNS.Infrastructure.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Devices_UserSecuritySettingsUserId",
+                name: "IX_Devices_UserSecuritySettingsId",
                 schema: "Identity",
                 table: "Devices",
-                column: "UserSecuritySettingsUserId");
+                column: "UserSecuritySettingsId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_DiscussionsDI_AuthorId",
@@ -2567,6 +2635,12 @@ namespace SNS.Infrastructure.Migrations
                 schema: "QA",
                 table: "DiscussionsDI",
                 column: "SolutionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ExportDataRequest_UserId",
+                schema: "Identity",
+                table: "ExportDataRequest",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Follows_FollowerId",
@@ -3347,6 +3421,13 @@ namespace SNS.Infrastructure.Migrations
                 column: "RecoveryEmail",
                 unique: true,
                 filter: "[RecoveryEmail] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UsersSecuritySettings_UserId",
+                schema: "Identity",
+                table: "UsersSecuritySettings",
+                column: "UserId",
+                unique: true);
         }
 
         /// <inheritdoc />
@@ -3399,6 +3480,10 @@ namespace SNS.Infrastructure.Migrations
             migrationBuilder.DropTable(
                 name: "DiscussionsDI",
                 schema: "QA");
+
+            migrationBuilder.DropTable(
+                name: "ExportDataRequest",
+                schema: "Identity");
 
             migrationBuilder.DropTable(
                 name: "Follows",

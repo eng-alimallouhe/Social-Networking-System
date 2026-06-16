@@ -86,8 +86,6 @@ public class Profile : Entity, ISoftDeletable
     public ICollection<ProblemVote> ProblemVotes { get; private set; }
         = new List<ProblemVote>();
 
-    public ICollection<ProblemVote> ProblemVotesBy { get; private set; }
-        = new List<ProblemVote>();
 
     public ICollection<ProfileView> Views { get; private set; } 
         = new List<ProfileView>();
@@ -136,6 +134,18 @@ public class Profile : Entity, ISoftDeletable
         entity.Website = website;
         entity.Location = location;
         entity.SkillsSummary = skillsSummary;
+        return entity;
+    }
+
+    public static Profile CreateSystemProfile(Guid id, Guid userId, string fullName, string? profilePictureUrl)
+    {
+        var entity = new Profile();
+        entity.Id = id;
+        entity.UserId = userId;
+        entity.FullName = fullName;
+        entity.ProfilePictureUrl = profilePictureUrl;
+        entity.CreatedAt = new DateTime(year: 1999, month: 12, day: 1);
+        entity.UpdatedAt = new DateTime(year: 1999, month: 12, day: 1);
         return entity;
     }
 

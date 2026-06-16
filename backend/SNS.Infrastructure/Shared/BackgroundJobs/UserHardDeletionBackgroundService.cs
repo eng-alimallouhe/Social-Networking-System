@@ -2,6 +2,8 @@
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using SNS.Application.Shared.Abstractions.Data;
+using SNS.Domain.Identity.Users.Enums;
+using Microsoft.EntityFrameworkCore;
 
 namespace SNS.Infrastructure.Shared.BackgroundJobs;
 
@@ -53,7 +55,7 @@ public sealed class UserHardDeletionBackgroundService : BackgroundService
                 // 4️⃣ ضربة الحسم النفاثة $O(1)$ بقوة الـ ExecuteDeleteAsync 💥
                 // حذف الحسابات المعطلة التي تجاوزت فترة النعمة (60 يوماً) مباشرة من الـ DB
                 int deletedUsersCount = await dbContext.Users
-                    .Where(u => !u.IsActive && u.DeactivatedAt.HasValue && u.DeactivatedAt.Value <= thresholdDate)
+                    .Where(u => u.Status != UserStatus.Active && u.DeactivatedAt.HasValue && u.DeactivatedAt.Value <= thresholdDate)
                     .ExecuteDeleteAsync(stoppingToken);
 
                 _logger.LogInformation("Successfully hard deleted {Count} deactivated users from the system.", deletedUsersCount);
