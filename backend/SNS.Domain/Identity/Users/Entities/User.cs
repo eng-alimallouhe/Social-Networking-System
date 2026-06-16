@@ -187,7 +187,23 @@ public class User : Entity, IHardDeletable
         this.FailedLoginAttempts++;
     }
 
+    public void SetPurgeAllContentOnHardDelete()
+    {
+        if (this.PurgeAllContentOnHardDelete)
+        {
+            throw new DomainException("user already used this behivior!");
+        } 
+        this.PurgeAllContentOnHardDelete = true;
+    }
 
+    public void UnSetPurgeAllContentOnHardDelete()
+    {
+        if (!this.PurgeAllContentOnHardDelete)
+        {
+            throw new DomainException("user already used this behivior!");
+        }
+        this.PurgeAllContentOnHardDelete = false;
+    }
 
     public void ChangePreferredLanguage(SupportedLanguage language)
     {
