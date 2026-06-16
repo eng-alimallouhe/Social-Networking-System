@@ -1,12 +1,10 @@
-using Microsoft.EntityFrameworkCore;
 using SNS.Application.Abstractions.Common;
 using SNS.Application.Abstractions.Messaging;
 using SNS.Application.Identity.Shared.Abstractions;
-using SNS.Application.Identity.Shared.DTOs.Users;
 using SNS.Application.Identity.Shared.DTOs.VerificationCodes;
-using SNS.Application.Shared.Abstractions.Data;
 using SNS.Domain.Identity.Shared.Enums;
 using SNS.Domain.Identity.Users.Entities;
+using SNS.Domain.Identity.Users.Specifications;
 using SNS.Domain.Shared.Abstractions.Repositories;
 using SNS.Shared.Results;
 using SNS.Shared.StatusCodes;
@@ -17,7 +15,7 @@ namespace SNS.Application.Identity.Users.UsersManagement.Commands.BeginUserDeact
 public sealed class BeginUserDeactivationCommandHandler :
     ICommandHandler<BeginUserDeactivationCommand, BeginUserDeactivationResponse>
 {
-    private readonly IApplicationDbContext _dbContext;
+    private readonly IUnitOfWork _unitOfWork;
     private readonly ICodeService _codeService;
     private readonly IRepository<User> _userRepo;
     private readonly IUrlGeneratorService _urlGeneratorService;
@@ -25,14 +23,14 @@ public sealed class BeginUserDeactivationCommandHandler :
     private readonly IGeneratorService _generatorService;
 
     public BeginUserDeactivationCommandHandler(
-        IApplicationDbContext dbContext,
+        IUnitOfWork unitOfWork,
         ICodeService codeService,
         IRepository<User> userRepo,
         IGeneratorService generatorService,
         IUrlGeneratorService urlGeneratorService,
         ICurrentUserService currentUserService)
     {
-        _dbContext = dbContext;
+        _unitOfWork = unitOfWork;
         _generatorService = generatorService;
         _userRepo = userRepo;
         _codeService = codeService;
@@ -48,8 +46,8 @@ public sealed class BeginUserDeactivationCommandHandler :
         {
             return Result<BeginUserDeactivationResponse>.Failure(OperationStatusCode.AuthenticationRequired);
         }
-
-        var user = await _userRepo.GetByIdAsync(userId.Value, cancellationToken);
+        var spec = new UserWithRoleAndSettingsSpecification(userId.Value);
+        var user = await _userRepo.GetSingleAsync(spec, cancellationToken);
 
         if (user == null)
         {
@@ -60,9 +58,9 @@ public sealed class BeginUserDeactivationCommandHandler :
 
         var redirectUrl = _urlGeneratorService.GenerateUserDeletingUrl(userId: user.Id, token: token);
 
-        var recipientAddress = user.DefaultCommunicationMethod switch
+        var recipientAddress = user.UserSecuritySettings.DefaultCommunicationMethod switch
         {
-            CommunicationMethod.RecoveryEmail => user.RecoveryEmail!,
+            CommunicationMethod.RecoveryEmail => user.UserSecuritySettings.RecoveryEmail!,
             CommunicationMethod.Email => user.Email,
             _ => user.Email
         };
@@ -72,7 +70,7 @@ public sealed class BeginUserDeactivationCommandHandler :
             UserName: user.UserName,
             RecipientAddress: recipientAddress,
             Purpose: SendPurpose.UserDeleting,
-            SendMethod: user.DefaultCommunicationMethod,
+            SendMethod: user.UserSecuritySettings.DefaultCommunicationMethod,
             SendLanguage: user.PreferredLanguage,
             RedirectUrl: redirectUrl,
             Token: token);
@@ -83,6 +81,10 @@ public sealed class BeginUserDeactivationCommandHandler :
         {
             return Result<BeginUserDeactivationResponse>.Failure(sendResult.StatusCode);
         }
+
+        user.SetPurgeAllContentOnHardDelete();
+
+        await _unitOfWork.CompleteAsync(cancellationToken);
 
         return Result<BeginUserDeactivationResponse>.Success(
             new BeginUserDeactivationResponse(
