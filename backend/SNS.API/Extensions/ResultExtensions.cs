@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using SNS.Common.Results;
+using Microsoft.AspNetCore.Mvc;
+using SNS.Shared.Results;
 
 namespace SNS.API.Extensions;
 

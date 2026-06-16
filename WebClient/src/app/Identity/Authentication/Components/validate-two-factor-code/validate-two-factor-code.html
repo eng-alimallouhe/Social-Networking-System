@@ -1,0 +1,26 @@
+<form class="two-factor-form" (submit)="$event.preventDefault()">
+    <div class="header-section">
+        <span class="material-symbols-outlined security-icon">shield_person</span>
+        <h2>{{ 'Identity.Authentication.Two_Factor.Title' | translate }}</h2>
+        <p class="description">{{ 'Identity.Authentication.Two_Factor.Subtitle' | translate }}</p>
+    </div>
+
+    <div class="otp-container">
+        @for (field of otpFields; track $index) {
+        <input #otpInput type="text" maxlength="1" class="otp-input" inputmode="numeric" autocomplete="one-time-code"
+            (input)="onInput($event, $index)" (keydown)="onKeyDown($event, $index)" (focus)="onFocus($event)"
+            (paste)="$index === 0 ? onPaste($event) : null" />
+        }
+    </div>
+
+    <div class="options-container">
+        <button type="button" class="alt-method-btn">
+            {{ 'Identity.Authentication.Two_Factor.Try_Another_Way' | translate }}
+        </button>
+    </div>
+
+    <button type="submit" class="submit-btn">
+        <span>{{ 'Identity.Authentication.Two_Factor.Verify' | translate }}</span>
+        <span class="material-symbols-outlined">verified</span>
+    </button>
+</form>

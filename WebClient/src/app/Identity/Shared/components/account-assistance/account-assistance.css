@@ -1,0 +1,108 @@
+.assistance-card {
+    background: var(--secondary-bg);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    padding: 2.5rem;
+    border-radius: var(--border-radius-lg);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    width: 100%;
+    max-width: 500px; /* أعرض قليلاً من الفورم العادي لراحة العين */
+    margin: 0 auto;
+    animation: formEntry 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.header-section {
+    text-align: center;
+    margin-bottom: 2.5rem;
+}
+
+.main-icon {
+    font-size: 4rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    opacity: 0.8;
+}
+
+.assistance-card h2 {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--text-color);
+    margin-bottom: 0.5rem;
+}
+
+.options-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.option-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--border-radius-md);
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.option-item:hover {
+    background: rgba(var(--accent-color-rgb), 0.1);
+    border-color: var(--accent-color);
+    transform: translateX(5px);
+}
+
+.option-info {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+}
+
+.option-info .icon {
+    font-size: 2rem;
+    color: var(--accent-color);
+}
+
+.text-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.text-group .title {
+    color: var(--text-color);
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.text-group .subtitle {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+}
+
+.arrow {
+    color: var(--text-muted);
+    transition: transform 0.3s ease;
+}
+
+.option-item:hover .arrow {
+    transform: translateX(3px);
+    color: var(--accent-color);
+}
+
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 2rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s;
+}
+
+.back-link:hover {
+    color: var(--primary-color);
+}

@@ -1,0 +1,77 @@
+[
+  {
+      "id": "p11",
+      "content": "Fascinating developments in neural plasticity research. Our latest findings suggest that long-term cognitive flexibility is significantly enhanced by interdisciplinary study environments. This has massive implications for future curriculum design. We are seeing unprecedented results in neuro-feedback integration within standard educational frameworks.",
+      "authorId": "u10",
+      "communityId": null,
+      "communityName": null,
+      "communityLogoUrl": null,
+      "authorName": "Prof. Elena Moretti",
+      "authorProfilePictureUrl": "https://i.pravatar.cc/150?u=elena",
+      "authorSpecialization": "Behavioral Science",
+      "createdAt": "2025-01-01T12:00:00Z",
+      "updatedAt": "2025-01-01T12:00:00Z",
+      "reactionsCount": 124,
+      "commentsCount": 18,
+      "mediaCount": 3,
+      "firstMediaUrl": "https://i.pravatar.cc/150?u=community1",
+      "savesCount": 5,
+      "tags": [
+        "AI",
+        "Machine Learning",
+        "Deep Learning"
+      ],
+      "currentUserReactionType": 2,
+      "viewsCount": 1205
+    },
+    {
+      "id": "p12",
+      "content": "Looking for a talented UI/UX designer to join our growing team in Damascus. Must have experience with Figma and a passion for creating modern, clean interfaces.",
+      "authorId": "u11",
+      "communityId": "c1",
+      "communityName": "TechSyria",
+      "communityLogoUrl": "https://i.pravatar.cc/150?u=community1",
+      "authorName": "Sarah Mansour",
+      "authorProfilePictureUrl": "https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah",
+      "authorSpecialization": "Product Manager",
+      "createdAt": "2026-03-27T12:00:00Z",
+      "updatedAt": "2026-03-27T12:00:00Z",
+      "reactionsCount": 45,
+      "commentsCount": 32,
+      "mediaCount": 1,
+      "savesCount": 12,
+      "tags": [
+        "UI/UX",
+        "Figma",
+        "Design"
+      ],
+      "firstMediaUrl": "https://i.pravatar.cc/150?u=community1",
+      "currentUserReactionType": 4,
+      "viewsCount": 3420
+    }
+    ,
+    {
+      "id": "p13",
+      "content": "Hello, When I was working on this project I faced a lot of challenges, but I managed to overcome them and complete the project successfully.",
+      "authorId": "u12",
+      "communityId": null,
+      "communityName": null,
+      "communityLogoUrl": null,
+      "authorName": "Mansour Ramadan",
+      "authorProfilePictureUrl": "https://i.pravatar.cc/150?u=mansour",
+      "authorSpecialization": "Full Stack Developer",
+      "createdAt": "2026-05-01T12:00:00Z",
+      "reactionsCount": 45,
+      "commentsCount": 32,
+      "mediaCount": 0,
+      "savesCount": 12,
+      "firstMediaUrl": null,
+      "currentUserReactionType": 0,
+      "tags": [
+        "AI",
+        "Machine Learning",
+        "Deep Learning"
+      ],
+      "viewsCount": 3420
+    }
+]

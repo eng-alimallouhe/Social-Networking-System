@@ -1,0 +1,210 @@
+{
+    "App": {
+        "Site_Name": "Syrian Developers Network",
+        "Site_Name_1": "Syrian",
+        "Site_Name_2": "Developers",
+        "Site_Name_3": "Platform",
+        "Layout": {
+            "Home": "Home",
+            "Profile": "Profile",
+            "Settings": "Settings",
+            "Logout": "Logout",
+            "Search": "Search",
+            "Forum": "Q&A",
+            "Projects": "Projects",
+            "Notifications": "Notifications"
+        },
+        "Menu": {
+            "Welcome": "Welcome to the Syrian Developers Platform, please select an action",
+            "Community": "Community",
+            "Content_Settings": "Content Settings",
+            "Jobs": "Jobs",
+            "Account_Settings": "Account Settings",
+            "Logout": "Logout",
+            "Login": "Login",
+            "Register": "Register"
+        }
+    },
+    "Identity": {
+        "Shared": {
+            "Account_Assistance": "Account Assistance",
+            "Select_an_option_below_to_help_you_get_back_into_your_account": "Select an option below to help you get back into your account.",
+            "Activate_Account": "Activate Account",
+            "Reset_Password_Title": "I forgot my password but I still have access to my account identifier",
+            "Reset_Password_Subtitle": "Use the verification code sent to your email or phone number to reset your password.",
+            "Recover_Account_By_Security_Code_Title": "I forgot my password and I don't have access to any of my account identifiers",
+            "Recover_Account_By_Security_Code_Subtitle": "Use the verification code sent to your email or phone number to reset your password.",
+            "Update_Identifier_Title": "Update Account Recovery Method",
+            "Update_Identifier_Subtitle": "Update the email or phone number associated with the account",
+            "Contact_Support": "Contact Support",
+            "Contact_Support_Subtitle": "Talk to technical support team",
+            "Back_to_Login": "Back to Login"
+        },
+        "Authentication": {
+            "Login": {
+                "Title": "Welcome back",
+                "Identifier": "User Identifier",
+                "Identifier_Placeholder": "Email or Phone Number or Username",
+                "Password": "Password",
+                "Password_Placeholder": "Enter your password",
+                "Remember_Me": "Remember me",
+                "Forgot_Password": "Forgot Password",
+                "Login": "Login",
+                "Divider": "Or continue with",
+                "Social_Login": "Login with",
+                "Register_Prompt": "Don't have an account?",
+                "Register_Link": "Create an account"
+            },
+            "Two_Factor": {
+                "Title": "Two-Factor Authentication",
+                "Subtitle": "Please enter the 6-digit verification code from your authenticator app.",
+                "Verify": "Verify Identity",
+                "Try_Another_Way": "Try another way?"
+            }
+        },
+        "Registeration": {
+            "Title": "Create New Account",
+            "Phone_Number": "Phone Number",
+            "Phone_Number_Placeholder": "Enter your phone number",
+            "Password": "Password",
+            "Password_Placeholder": "Enter your password",
+            "Confirm_Password": "Confirm Password",
+            "Confirm_Password_Placeholder": "Enter your password",
+            "Agree": "I agree to",
+            "Terms": "Terms and Conditions",
+            "And": "And",
+            "Privacy_Policy": "Privacy Policy",
+            "Register": "Create Account",
+            "Divider": "Or continue with",
+            "Social_Login": "Login with",
+            "Login_Prompt": "Already have an account?",
+            "Login_Link": "Login",
+            "Activate_Account": {
+                "Title": "Activate Account",
+                "Subtitle": "We have sent a verification code to your phone number. Please enter it below to continue.",
+                "Resend_Code": "Resend Code",
+                "Submit": "Activate Account"
+            }
+        },
+        "Account_Recovery": {
+            "Security_Code_Recovery": {
+                "Title": "Account Recovery Using Security Code",
+                "Description": "Enter one of the 16-digit security codes. Remember that each code can be used only once.",
+                "Security_Code": "Security Code",
+                "Security_Code_Placeholder": "XXXX-XXXX-XXXX-XXXX",
+                "Helper_Text": "Format: 16 digits provided during setup",
+                "Verify_and_Recover": "Verify and Recover",
+                "Remembered_your_password": "Remembered your password?",
+                "Back_to_Login": "Back to Login"
+            }
+        }
+    },
+    "Time": {
+        "Just_Now": "Just Now",
+        "Minute_Ago": "Minute Ago",
+        "Hour_Ago": "Hour Ago",
+        "Day_Ago": "Day Ago",
+        "Week_Ago": "Week Ago",
+        "Month_Ago": "Month Ago",
+        "Year_Ago": "Year Ago"
+    },
+    "Social_Graph": {
+        "Follow": {
+            "Follow": "Follow",
+            "Unfollow": "Unfollow"
+        }
+    },
+    "Content": {
+        "Feed": {
+            "Trending_Communities": "Trending Communities",
+            "Suggested_Followings": "Suggested Followings"
+        },
+        "Creation_Hub": {
+            "Post_Section_Title_1": "Write",
+            "Post_Section_Title_2": "Post",
+            "Problem_Section_Title_1": "Ask",
+            "Problem_Section_Title_2": "Problem",
+            "Project_Section_Title_1": "Share",
+            "Project_Section_Title_2": "Project",
+            "Cancel": "Cancel"
+        },
+        "Reactions": {
+            "Liked": "Liked",
+            "Loved": "Loved",
+            "Haha": "Hahaha",
+            "Wow": "Wow",
+            "Sad": "Sad",
+            "Angry": "Angry",
+            "Disgust": "Disgust",
+            "Support": "Support"
+        },
+        "Posts": {
+            "Menu": {
+                "Post_Owner_Options": {
+                    "Edit": "Edit",
+                    "Unpin": "Unpin",
+                    "Pin": "Pin",
+                    "Archive": "Archive",
+                    "Delete": "Delete",
+                    "Publish_Link": "Publish Link",
+                    "Disable_Comments": "Disable Comments",
+                    "Enable_Comments": "Enable Comments"
+                },
+                "Post_Viewer_Options": {
+                    "Save": "Save post to bookmark",
+                    "Unsave": "Unsave post from bookmark",
+                    "Copy_Link": "Copy post link",
+                    "Hide_Post": "Hide this post",
+                    "Mute_User": "Mute",
+                    "Report": "Report this post"
+                }
+            }
+        }
+    },
+    "Communities": {
+        "Trending": "Trending Communities",
+        "Suggested_Communities": "Suggested Communities",
+        "Members": "Members"
+    },
+    "Shared": {
+        "Buttons": {
+            "Explore_All": "Explore All",
+            "View_More": "View More",
+            "View_Less": "View Less"
+        }
+    },
+    "Project": {
+        "Github": "Github",
+        "View_Live": "Live View",
+        "View_Project": "View Project",
+        "Collaburators": "Collaburators",
+        "Tech_Stack": "Tech Stack",
+        "Status": {
+            "0": "Draft",
+            "1": "Published",
+            "2": "Archived",
+            "3": "Deleted",
+            "4": "Rejected",
+            "5": "Completed",
+            "6": "InProgress",
+            "7": "OnHold"
+        },
+        "Type": {
+            "0": "Personal",
+            "1": "Team",
+            "2": "Company",
+            "3": "Freelance"
+        }
+    },
+    "Search": {
+        "Categories": {
+            "0": "All",
+            "1": "People",
+            "2": "Posts",
+            "3": "Projects",
+            "4": "Communities",
+            "5": "Jobs",
+            "6": "Problems"
+        }
+    }
+}

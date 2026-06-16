@@ -1,5 +1,5 @@
-using SNS.Domain.Abstractions.Common;
-using SNS.Domain.Common.Helpers;
+using SNS.Domain.Shared.Abstractions.IDeletable;
+using SNS.Domain.Shared.Helpers;
 using SNS.Domain.Resumes.Enums;
 
 namespace SNS.Domain.Resumes.Entities;
@@ -7,16 +7,26 @@ namespace SNS.Domain.Resumes.Entities;
 public class ResumeLanguage : IHardDeletable
 {
     // Primary Key
-    public Guid Id { get; set; }
+    public Guid Id { get; private set; }
 
     // FK
-    public Guid ResumeId { get; set; }
+    public Guid ResumeId { get; private set; }
 
-    public LanguageLevel Level { get; set; }
-    public Language Language { get; set; }
+    public LanguageLevel Level { get; private set; }
+    public Language Language { get; private set; }
 
-    public ResumeLanguage()
+    private ResumeLanguage()
     {
         Id = SequentialGuid.GenerateSequentialGuid();
+    }
+
+    public static ResumeLanguage Create(Guid resumeId, Language language, LanguageLevel level)
+    {
+        return new ResumeLanguage
+        {
+            ResumeId = resumeId,
+            Language = language,
+            Level = level
+        };
     }
 }

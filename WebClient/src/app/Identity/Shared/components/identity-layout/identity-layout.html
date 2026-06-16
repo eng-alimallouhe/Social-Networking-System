@@ -1,0 +1,34 @@
+<canvas #particleCanvas class="bg-canvas"></canvas>
+
+<span class="material-symbols-outlined more-options" (click)="toggleControls()">
+  more_horiz
+</span>
+
+<div class="top-controls" [class.show]="showControls">
+  <button class="theme-toggle" (click)="toggleTheme()">
+    <span *ngIf="isDarkMode()" class="material-symbols-outlined">dark_mode</span>
+    <span *ngIf="!isDarkMode()" class="material-symbols-outlined">light_mode</span>
+  </button>
+  <div class="support-link">
+    <a href="#">
+      <span class="material-symbols-outlined">support_agent</span>
+    </a>
+  </div>
+</div>
+
+<div class="identity-wrapper">
+  <div class="branding-area">
+    <div class="logo-circle">
+      <img src="../../../../../assets/icons/logo.png" alt="Syrian Developers Network">
+    </div>
+    <div class="site-name">
+      <span>{{ 'App.Site_Name_1' | translate }}</span>
+      <span>{{ 'App.Site_Name_2' | translate }}</span>
+      <span>{{ 'App.Site_Name_3' | translate }}</span>
+    </div>
+  </div>
+
+  <div class="form-container">
+    <router-outlet></router-outlet>
+  </div>
+</div>

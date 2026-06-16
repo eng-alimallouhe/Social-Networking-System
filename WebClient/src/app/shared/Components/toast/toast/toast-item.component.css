@@ -1,0 +1,144 @@
+.toast {
+    width: var(--toast-width);
+    background: var(--toast-bg);
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+    display: flex;
+    align-items: flex-start;
+    padding: 15px 20px;
+    position: relative;
+    overflow: hidden;
+    pointer-events: auto;
+    animation: slideInRight 0.4s ease forwards;
+    border-left: 6px solid;
+    backdrop-filter: blur(10px);
+}
+
+/* 🎯 الكلاس الخاص بأنيميشن الإغلاق */
+.toast.closing {
+    animation: fadeOut 0.4s ease forwards !important;
+}
+
+/* الألوان حسب النوع */
+.toast.success {
+    border-color: var(--success-color);
+}
+
+.toast.error {
+    border-color: var(--error-color);
+}
+
+.toast.warning {
+    border-color: var(--warning-color);
+}
+
+.toast.info {
+    border-color: var(--info-color);
+}
+
+.toast-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+    font-size: 24px;
+    margin-top: 2px;
+    flex-shrink: 0;
+}
+
+.toast.success .toast-icon {
+    color: var(--success-color);
+}
+
+.toast.error .toast-icon {
+    color: var(--error-color);
+}
+
+.toast.warning .toast-icon {
+    color: var(--warning-color);
+}
+
+.toast.info .toast-icon {
+    color: var(--info-color);
+}
+
+.toast-content {
+    flex: 1;
+}
+
+.toast-title {
+    font-weight: 700;
+    margin-bottom: 4px;
+    color: #111;
+    font-size: 16px;
+}
+
+.toast-message {
+    font-size: 14px;
+    color: #666;
+    margin: 0;
+    line-height: 1.4;
+}
+
+.toast-close {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+    color: #aaa;
+    padding: 0;
+    margin-left: 10px;
+    margin-top: -2px;
+    width: auto;
+    flex: 0 0 auto;
+    transition: color 0.3s;
+}
+
+.toast-close:hover {
+    color: #333;
+}
+
+.progress-track {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 4px;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.progress-bar {
+    height: 100%;
+    width: 100%;
+    animation-name: timer;
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
+}
+
+.toast.success .progress-bar {
+    background-color: var(--success-color);
+}
+
+.toast.error .progress-bar {
+    background-color: var(--error-color);
+}
+
+.toast.warning .progress-bar {
+    background-color: var(--warning-color);
+}
+
+.toast.info .progress-bar {
+    background-color: var(--info-color);
+}
+
+.toast:hover .progress-bar {
+    animation-play-state: paused !important;
+}
+
+@media screen and (max-width: 480px) {
+    .toast {
+        animation: slideInTop 0.4s ease forwards;
+        width: 60%;
+        margin: 0 auto;
+    }
+}

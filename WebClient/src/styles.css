@@ -1,0 +1,284 @@
+:root {
+    /* ==== 1. Core Brand Colors (Sophisticated Blue) ==== */
+    --primary-color: #0C4A6E;
+    --secondary-color: #2F6685;
+    --tertiary-color: #4589B0;
+    --neutral-color: #F8FAFC;
+
+    --primary-light: #38BDF8;
+    --primary-dark: #00668A;
+    --accent-color: #34D399;
+    --accent-glow: rgba(56, 189, 248, 0.5);
+
+
+    /* ==== 2. Semantic Colors ==== */
+    --success: #10b981;
+    --error: #ef4444;
+    --warning: #f6a720;
+    --info: #3b82f6;
+
+    /* ==== 3. Backgrounds & Surfaces (Glassmorphic) ==== */
+    --primary-bg: #f6f8fa;
+    --secondary-bg: #FFFFFF;
+    --surface-bg: #f2f7fd;
+    --bg-hover: rgba(51, 65, 85, 0.05);
+    --menu-bg: #f6f8fa;
+    --button-bg: #2F6685;
+    --button-secondary-bg: #ECEEF0;
+
+
+    /* ==== 4. Glassmorphism Utilities ==== */
+    --glass-bg: rgba(255, 255, 255, 0.7);
+    --glass-border: rgba(255, 255, 255, 0.2);
+    --glass-blur: 12px;
+    --glass-shadow: 0 8px 32px 0 rgba(15, 23, 42, 0.08);
+
+
+    /* ==== 5. Text Colors (Deep & Premium) ==== */
+    --text-color: #191C1E;
+    --text-main: #475569;
+    --text-muted: #94A3B8;
+    --button-text-color: #F1F5F9;
+    --button-secondary-text-color: #000000;
+
+    /* --text-dim: #94A3B8;
+    --text-light: #FFFFFF; */
+
+    /* ==== 6. Navbar & Menu ==== */
+    --navbar-bg: rgba(255, 255, 255, 0.8);
+    --navbar-desktop-height: 70px;
+    --navbar-mobile-height: 60px;
+    --sidebar-width: 280px;
+    --nav-z-index: 1000;
+    --menu-active: rgba(224, 242, 254, 0.5);
+    --menu-hover: rgba(224, 242, 254, 0.5);
+
+    /* ==== 7. Borders & Shadows ==== */
+    --border-color: rgba(226, 232, 240, 0.8);
+    --border-radius-sm: 8px;
+    --border-radius-md: 12px;
+    --border-radius-lg: 20px;
+    --border-radius-xl: 32px;
+    --border-radius-pill: 9999px;
+
+    --shadow-soft: 0 2px 15px rgba(0, 0, 0, 0.03);
+    --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.1);
+    --shadow-glow: 0 0 20px rgba(47, 102, 133, 0.15);
+
+    /* ==== 8. Typography ==== */
+    --font-main: 'Manrope', sans-serif;
+    --arabic-font: 'Tajawal', sans-serif;
+    --text-xs: clamp(0.75rem, 1.5vw, 12px);
+    --text-sm: clamp(0.875rem, 2vw, 14px);
+    --text-base: (1rem, 2vw, 16px);
+    --text-lg: clamp(1.25rem, 2.5vw, 22px);
+    --header-1: clamp(1.2rem, 3vw, 24px);
+    --header-2: clamp(1.3rem, 4vw, 26px);
+    --header-3: clamp(2rem, 6vw, 40px);
+
+    --font-weight-regular: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+    --font-weight-extrabold: 800;
+
+    --toast-width: min(400px, 90vw);
+    --toast-bg: #ffffff;
+    --success-color: #2ecc71;
+    --error-color: #e74c3c;
+    --warning-color: #f1c40f;
+    --info-color: #3498db;
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+
+
+    /* ==== 9. Transitions ==== */
+    --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-base: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    --header-height: 80px;
+}
+
+
+/* ==== Dark Mode Overrides (Deep & Premium) ==== */
+.dark-mode {
+    /* ==== 3. Backgrounds & Surfaces (Glassmorphic) ==== */
+    --primary-bg: #0b0f1a;
+    --secondary-bg: #151b27;
+    --surface-bg: #1b1e26;
+    --bg-hover: rgba(51, 65, 85, 0.1);
+    --menu-bg: #1b1e26;
+    --button-bg: #38BDF8;
+    --button-secondary-bg: #2D3446;
+
+
+    --primary-color: #FFFFFF;
+    --secondary-color: #94A3B8;
+    --tertiary-color: #94A3B8;
+    --neutral-color: #151b27;
+    --primary-light: #e2e8f0;
+    --primary-dark: #cbd5e1;
+    --accent-color: #38bdf8;
+
+
+    --text-color: #E2E8F0;
+    --text-main: #475569;
+    --text-muted: #64748B;
+    --button-text-color: #000000;
+    --button-secondary-text-color: #F1F5F9;
+
+
+    --navbar-bg: rgba(11, 15, 26, 0.8);
+    --menu-active: rgba(56, 189, 248, 0.6);
+    --menu-hover: rgba(56, 189, 248, 0.6);
+
+    --glass-bg: rgba(17, 24, 39, 0.7);
+    --glass-border: rgba(255, 255, 255, 0.05);
+    --border-color: rgba(51, 65, 85, 0.5);
+
+    --shadow-soft: 0 2px 15px rgba(0, 0, 0, 0.2);
+    --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.6);
+}
+
+.toast.closing {
+    animation: fadeOut 0.4s ease forwards !important;
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(110%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideInTop {
+    from {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    to {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+}
+
+@keyframes timer {
+    from {
+        width: 100%;
+    }
+
+    to {
+        width: 0%;
+    }
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+
+body {
+    font-family: var(--font-main);
+    background-color: var(--primary-bg);
+    color: var(--text-main);
+    transition: var(--transition-base);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+}
+
+.intro-loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--secondary-bg);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    transition: 0.5s;
+}
+
+.logo-container {
+    width: 200px;
+    height: 200px;
+    background-color: var(--glass-bg);
+    backdrop-filter: blur(50px);
+    -webkit-backdrop-filter: blur(50px);
+    border: 1px solid var(--border-color);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.intro-loader img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.intro-loader h1 {
+    margin-top: 20px;
+    font-size: var(--header-2);
+    font-weight: 800;
+    color: var(--primary-color);
+    letter-spacing: 2px;
+}
+
+.logo-anim {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeIn 1.2s ease forwards 0.2s;
+}
+
+.name-anim {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeIn 1.2s ease forwards 0.2s;
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.intro-loader.fade-out {
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.5s;
+}
+
+
+body.no-scroll {
+    overflow: hidden;
+    padding-right: var(--scrollbar-width, 0px);
+}

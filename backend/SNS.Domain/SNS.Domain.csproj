@@ -1,9 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+  <ItemGroup>
+    <ProjectReference Include="..\SNS.Shared\SNS.Shared.csproj" />
+  </ItemGroup>
+
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+	<TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+	<NuGetAudit>false</NuGetAudit>
   </PropertyGroup>
-
 </Project>
