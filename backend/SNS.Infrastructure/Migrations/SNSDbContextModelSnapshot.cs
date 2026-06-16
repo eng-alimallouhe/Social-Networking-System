@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using SNS.Infrastructure.Data;
+using SNS.Infrastructure.Persistence;
 
 #nullable disable
 
@@ -17,12 +17,126 @@ namespace SNS.Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "10.0.1")
+                .HasAnnotation("ProductVersion", "10.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("SNS.Domain.Communities.Entities.Community", b =>
+            modelBuilder.Entity("SNS.Domain.ContentManagement.Comments.Entities.Comment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("AuthorId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid?>("ParentCommentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("PostId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AuthorId");
+
+                    b.HasIndex("ParentCommentId");
+
+                    b.HasIndex("PostId");
+
+                    b.ToTable("Comments", "ContentManagement");
+                });
+
+            modelBuilder.Entity("SNS.Domain.ContentManagement.Comments.Entities.CommentMedia", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CommentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<double?>("Duration")
+                        .HasColumnType("float");
+
+                    b.Property<int?>("Height")
+                        .HasColumnType("int");
+
+                    b.Property<string>("MimeType")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ThumbnailUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasMaxLength(512)
+                        .HasColumnType("varchar(512)");
+
+                    b.Property<int?>("Width")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CommentId");
+
+                    b.ToTable("CommentMedias", "ContentManagement");
+                });
+
+            modelBuilder.Entity("SNS.Domain.ContentManagement.Comments.Entities.CommentReaction", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CommentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("ReactorId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CommentId");
+
+                    b.HasIndex("ReactorId");
+
+                    b.HasIndex("CommentId", "ReactorId")
+                        .IsUnique();
+
+                    b.ToTable("CommentReactions", "ContentManagement");
+                });
+
+            modelBuilder.Entity("SNS.Domain.ContentManagement.Communities.Entities.Community", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -70,14 +184,16 @@ namespace SNS.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Name");
+                    b.HasIndex("Name")
+                        .IsUnique()
+                        .HasFilter("[IsActive] = 1");
 
                     b.HasIndex("OwnerId");
 
-                    b.ToTable("Communities", (string)null);
+                    b.ToTable("Communities", "Communities");
                 });
 
-            modelBuilder.Entity("SNS.Domain.Communities.Entities.CommunityAuditLog", b =>
+            modelBuilder.Entity("SNS.Domain.ContentManagement.Communities.Entities.CommunityAuditLog", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -103,62 +219,10 @@ namespace SNS.Infrastructure.Migrations
 
                     b.HasIndex("CommunityId");
 
-                    b.ToTable("CommunityAuditLogs", (string)null);
+                    b.ToTable("CommunityAuditLogs", "Communities");
                 });
 
-            modelBuilder.Entity("SNS.Domain.Communities.Entities.CommunityCreationRequest", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("CommunityId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Policy")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("RequestedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ReviewNotes")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("ReviewedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("RulesText")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("SubmitterId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CommunityId");
-
-                    b.HasIndex("SubmitterId");
-
-                    b.ToTable("CommunityCreationRequests");
-                });
-
-            modelBuilder.Entity("SNS.Domain.Communities.Entities.CommunityInvitation", b =>
+            modelBuilder.Entity("SNS.Domain.ContentManagement.Communities.Entities.CommunityInvitation", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -186,15 +250,17 @@ namespace SNS.Infrastructure.Migrations
 
                     b.HasIndex("CommunityId");
 
-                    b.HasIndex("InviteeId")
-                        .IsUnique();
+                    b.HasIndex("InviteeId");
 
                     b.HasIndex("InviterId");
 
-                    b.ToTable("CommunityInvitations", (string)null);
+                    b.HasIndex("CommunityId", "InviteeId")
+                        .IsUnique();
+
+                    b.ToTable("CommunityInvitations", "Communities");
                 });
 
-            modelBuilder.Entity("SNS.Domain.Communities.Entities.CommunityJoinRequest", b =>
+            modelBuilder.Entity("SNS.Domain.ContentManagement.Communities.Entities.CommunityJoinRequest", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -208,7 +274,8 @@ namespace SNS.Infrastructure.Migrations
 
                     b.Property<string>("Notes")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<DateTime?>("ReviewedAt")
                         .HasColumnType("datetime2");
@@ -221,14 +288,15 @@ namespace SNS.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CommunityId");
-
                     b.HasIndex("SubmitterId");
 
-                    b.ToTable("CommunityJoinRequests");
+                    b.HasIndex("CommunityId", "SubmitterId")
+                        .IsUnique();
+
+                    b.ToTable("CommunityJoinRequests", "Communities");
                 });
 
-            modelBuilder.Entity("SNS.Domain.Communities.Entities.CommunityMembership", b =>
+            modelBuilder.Entity("SNS.Domain.ContentManagement.Communities.Entities.CommunityMembership", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -258,10 +326,10 @@ namespace SNS.Infrastructure.Migrations
                     b.HasIndex("CommunityId", "MemberId")
                         .IsUnique();
 
-                    b.ToTable("CommunityMemberships", (string)null);
+                    b.ToTable("CommunityMemberships", "Communities");
                 });
 
-            modelBuilder.Entity("SNS.Domain.Communities.Entities.CommunityRule", b =>
+            modelBuilder.Entity("SNS.Domain.ContentManagement.Communities.Entities.CommunityRule", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -287,10 +355,10 @@ namespace SNS.Infrastructure.Migrations
 
                     b.HasIndex("CommunityId");
 
-                    b.ToTable("CommunityRules", (string)null);
+                    b.ToTable("CommunityRules", "Communities");
                 });
 
-            modelBuilder.Entity("SNS.Domain.Communities.Entities.CommunitySettings", b =>
+            modelBuilder.Entity("SNS.Domain.ContentManagement.Communities.Entities.CommunitySettings", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -316,80 +384,10 @@ namespace SNS.Infrastructure.Migrations
                     b.HasIndex("CommunityId")
                         .IsUnique();
 
-                    b.ToTable("CommunitySettings", (string)null);
+                    b.ToTable("CommunitySettings", "Communities");
                 });
 
-            modelBuilder.Entity("SNS.Domain.Content.Entities.Comment", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("AuthorId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasMaxLength(2000)
-                        .HasColumnType("nvarchar(2000)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<Guid?>("ParentCommentId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("PostId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AuthorId");
-
-                    b.HasIndex("ParentCommentId");
-
-                    b.HasIndex("PostId");
-
-                    b.ToTable("Comments", (string)null);
-                });
-
-            modelBuilder.Entity("SNS.Domain.Content.Entities.CommentReaction", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("CommentId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("ReactorId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CommentId");
-
-                    b.HasIndex("ReactorId");
-
-                    b.HasIndex("CommentId", "ReactorId")
-                        .IsUnique();
-
-                    b.ToTable("CommentReactions", (string)null);
-                });
-
-            modelBuilder.Entity("SNS.Domain.Content.Entities.Post", b =>
+            modelBuilder.Entity("SNS.Domain.ContentManagement.Posts.Entities.Post", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -408,13 +406,19 @@ namespace SNS.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("EngagementScore")
+                        .HasColumnType("int");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsPinned")
                         .HasColumnType("bit");
 
-                    b.Property<int>("Status")
+                    b.Property<DateTime?>("LastInteractedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("Status")
                         .HasColumnType("int");
 
                     b.Property<string>("Title")
@@ -436,10 +440,10 @@ namespace SNS.Infrastructure.Migrations
 
                     b.HasIndex("Title");
 
-                    b.ToTable("Posts", (string)null);
+                    b.ToTable("ContentManagement", "ContentManagement");
                 });
 
-            modelBuilder.Entity("SNS.Domain.Content.Entities.PostMedia", b =>
+            modelBuilder.Entity("SNS.Domain.ContentManagement.Posts.Entities.PostMedia", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -481,10 +485,10 @@ namespace SNS.Infrastructure.Migrations
 
                     b.HasIndex("PostId");
 
-                    b.ToTable("PostMedias", (string)null);
+                    b.ToTable("PostMedias", "ContentManagement");
                 });
 
-            modelBuilder.Entity("SNS.Domain.Content.Entities.PostReaction", b =>
+            modelBuilder.Entity("SNS.Domain.ContentManagement.Posts.Entities.PostReaction", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -511,383 +515,10 @@ namespace SNS.Infrastructure.Migrations
                     b.HasIndex("PostId", "ReactorId")
                         .IsUnique();
 
-                    b.ToTable("PostReactions", (string)null);
+                    b.ToTable("PostReactions", "ContentManagement");
                 });
 
-            modelBuilder.Entity("SNS.Domain.Education.Entities.Faculty", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
-                    b.Property<Guid>("UniversityId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UniversityId");
-
-                    b.HasIndex("UniversityId", "Name")
-                        .IsUnique()
-                        .HasFilter("[IsActive] = 1");
-
-                    b.ToTable("Faculties", (string)null);
-                });
-
-            modelBuilder.Entity("SNS.Domain.Education.Entities.FacultyRequest", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
-                    b.Property<string>("ReviewComment")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<DateTime?>("ReviewedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("SubmitterId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("UniversityId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("UniversityRequestId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SubmitterId");
-
-                    b.HasIndex("UniversityId");
-
-                    b.HasIndex("UniversityRequestId");
-
-                    b.ToTable("FacultyRequests", (string)null);
-                });
-
-            modelBuilder.Entity("SNS.Domain.Education.Entities.ProfileFacultyRequest", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("FacultyRequestId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("JoinerId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("FacultyRequestId");
-
-                    b.HasIndex("JoinerId");
-
-                    b.HasIndex("JoinerId", "FacultyRequestId")
-                        .IsUnique();
-
-                    b.ToTable("ProfileFacultyRequests", (string)null);
-                });
-
-            modelBuilder.Entity("SNS.Domain.Education.Entities.ProfileUniversityRequest", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("JoinerId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("UniversityRequestId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("JoinerId");
-
-                    b.HasIndex("UniversityRequestId");
-
-                    b.HasIndex("JoinerId", "UniversityRequestId")
-                        .IsUnique();
-
-                    b.ToTable("ProfileUniversityRequests", (string)null);
-                });
-
-            modelBuilder.Entity("SNS.Domain.Education.Entities.University", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("City")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("Country")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Name");
-
-                    b.ToTable("Universities", (string)null);
-                });
-
-            modelBuilder.Entity("SNS.Domain.Education.Entities.UniversityRequest", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("City")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("Country")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
-                    b.Property<string>("ReviewComment")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<DateTime?>("ReviewedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("SubmitterId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SubmitterId");
-
-                    b.ToTable("UniversityRequests", (string)null);
-                });
-
-            modelBuilder.Entity("SNS.Domain.Jobs.Entities.Job", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime?>("ClosedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Company")
-                        .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CurrencyCode")
-                        .IsRequired()
-                        .HasMaxLength(3)
-                        .HasColumnType("nchar(3)")
-                        .IsFixedLength();
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("KeyResponsibilitiesText")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Location")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("MaxSalary")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("MinSalary")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<Guid>("OwnerId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("ProfileId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("SalaryType")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OwnerId");
-
-                    b.HasIndex("ProfileId");
-
-                    b.HasIndex("Title");
-
-                    b.ToTable("Jobs", (string)null);
-                });
-
-            modelBuilder.Entity("SNS.Domain.Jobs.Entities.JobApplication", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ApplicantId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("CoverLetterText")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<Guid>("JobId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("ProfileId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("ResumeFileUrl")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<Guid?>("ResumeId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ApplicantId");
-
-                    b.HasIndex("ProfileId");
-
-                    b.HasIndex("ResumeId");
-
-                    b.HasIndex("JobId", "ApplicantId")
-                        .IsUnique()
-                        .HasFilter("[IsActive] = 1");
-
-                    b.ToTable("JobApplications", (string)null);
-                });
-
-            modelBuilder.Entity("SNS.Domain.Jobs.Entities.JobSkill", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("JobId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("SkillId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SkillId");
-
-                    b.HasIndex("JobId", "SkillId")
-                        .IsUnique();
-
-                    b.ToTable("JobSkills", (string)null);
-                });
-
-            modelBuilder.Entity("SNS.Domain.Posts.Bridges.PostTag", b =>
+            modelBuilder.Entity("SNS.Domain.ContentManagement.Posts.Entities.PostTag", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -909,10 +540,10 @@ namespace SNS.Infrastructure.Migrations
                     b.HasIndex("PostId", "TagId")
                         .IsUnique();
 
-                    b.ToTable("PostTags", (string)null);
+                    b.ToTable("PostTags", "ContentManagement");
                 });
 
-            modelBuilder.Entity("SNS.Domain.Posts.Bridges.PostTopic", b =>
+            modelBuilder.Entity("SNS.Domain.ContentManagement.Posts.Entities.PostTopic", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -934,14 +565,17 @@ namespace SNS.Infrastructure.Migrations
                     b.HasIndex("PostId", "TopicId")
                         .IsUnique();
 
-                    b.ToTable("PostTopics", (string)null);
+                    b.ToTable("PostTopics", "ContentManagement");
                 });
 
-            modelBuilder.Entity("SNS.Domain.Posts.Bridges.PostView", b =>
+            modelBuilder.Entity("SNS.Domain.ContentManagement.Posts.Entities.PostView", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("City")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Country")
                         .HasMaxLength(100)
@@ -976,356 +610,10 @@ namespace SNS.Infrastructure.Migrations
                         .IsUnique()
                         .HasFilter("[IsActive] = 1");
 
-                    b.ToTable("PostViews", (string)null);
+                    b.ToTable("PostViews", "ContentManagement");
                 });
 
-            modelBuilder.Entity("SNS.Domain.Posts.Entities.CommentMedia", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("CommentId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<double?>("Duration")
-                        .HasColumnType("float");
-
-                    b.Property<int?>("Height")
-                        .HasColumnType("int");
-
-                    b.Property<string>("MimeType")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
-
-                    b.Property<int>("Order")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ThumbnailUrl")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Url")
-                        .IsRequired()
-                        .HasMaxLength(512)
-                        .HasColumnType("varchar(512)");
-
-                    b.Property<int?>("Width")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CommentId");
-
-                    b.ToTable("CommentMedias", (string)null);
-                });
-
-            modelBuilder.Entity("SNS.Domain.Preferences.Entities.Interest", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("CategoryId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Description")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
-
-                    b.HasIndex("Name")
-                        .IsUnique();
-
-                    b.ToTable("Interests", (string)null);
-                });
-
-            modelBuilder.Entity("SNS.Domain.Preferences.Entities.InterestCategory", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Description")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Name")
-                        .IsUnique();
-
-                    b.ToTable("InterestCategories", (string)null);
-                });
-
-            modelBuilder.Entity("SNS.Domain.Preferences.Entities.InterestRequest", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Description")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.Property<Guid?>("SubmitterId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SubmitterId");
-
-                    b.ToTable("InterestRequests", (string)null);
-                });
-
-            modelBuilder.Entity("SNS.Domain.Preferences.Entities.Skill", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("CategoryId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
-
-                    b.HasIndex("Name")
-                        .IsUnique();
-
-                    b.ToTable("Skills", (string)null);
-                });
-
-            modelBuilder.Entity("SNS.Domain.Preferences.Entities.SkillRequest", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("Level")
-                        .HasColumnType("int");
-
-                    b.Property<string>("SkillName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("SubmitterId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SubmitterId");
-
-                    b.ToTable("SkillRequests", (string)null);
-                });
-
-            modelBuilder.Entity("SNS.Domain.Preferences.Entities.SkillsCategory", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Description")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Name")
-                        .IsUnique();
-
-                    b.ToTable("SkillsCategories", (string)null);
-                });
-
-            modelBuilder.Entity("SNS.Domain.Preferences.Entities.Tag", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Name")
-                        .IsUnique();
-
-                    b.ToTable("Tags", (string)null);
-                });
-
-            modelBuilder.Entity("SNS.Domain.Preferences.Entities.Topic", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Name")
-                        .IsUnique();
-
-                    b.ToTable("Topics", (string)null);
-                });
-
-            modelBuilder.Entity("SNS.Domain.Preferences.Entities.TopicInterest", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("InterestId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("TopicId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("InterestId");
-
-                    b.HasIndex("TopicId");
-
-                    b.HasIndex("TopicId", "InterestId")
-                        .IsUnique();
-
-                    b.ToTable("TopicInterests", (string)null);
-                });
-
-            modelBuilder.Entity("SNS.Domain.ProfileContext.Bridges.ProfileInterest", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("InterestId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ProfileId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("InterestId");
-
-                    b.HasIndex("ProfileId");
-
-                    b.HasIndex("ProfileId", "InterestId")
-                        .IsUnique();
-
-                    b.ToTable("ProfileInterests", (string)null);
-                });
-
-            modelBuilder.Entity("SNS.Domain.ProfileContext.Bridges.ProfileInterestRequest", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("InterestRequestId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("JoinerId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("InterestRequestId");
-
-                    b.HasIndex("JoinerId");
-
-                    b.HasIndex("JoinerId", "InterestRequestId")
-                        .IsUnique();
-
-                    b.ToTable("ProfileInterestRequests", (string)null);
-                });
-
-            modelBuilder.Entity("SNS.Domain.ProfileContext.Bridges.ProfileSkill", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("Level")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("ProfileId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("SkillId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProfileId");
-
-                    b.HasIndex("SkillId");
-
-                    b.HasIndex("ProfileId", "SkillId")
-                        .IsUnique();
-
-                    b.ToTable("ProfileSkills", (string)null);
-                });
-
-            modelBuilder.Entity("SNS.Domain.ProfileContext.Bridges.ProfileSkillRequest", b =>
+            modelBuilder.Entity("SNS.Domain.ContentManagement.Posts.Entities.SavedPost", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -1334,302 +622,83 @@ namespace SNS.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("JoinerId")
+                    b.Property<Guid>("PostId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("Level")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("SkillRequestId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("JoinerId");
-
-                    b.HasIndex("SkillRequestId");
-
-                    b.HasIndex("JoinerId", "SkillRequestId")
-                        .IsUnique();
-
-                    b.ToTable("ProfileSkillRequests", (string)null);
-                });
-
-            modelBuilder.Entity("SNS.Domain.ProfileContext.Bridges.ProfileTopic", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("LastUpdate")
-                        .HasColumnType("datetime2");
 
                     b.Property<Guid>("ProfileId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<double>("Score")
-                        .HasColumnType("float");
-
-                    b.Property<Guid>("TopicId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("ProfileId");
+                    b.HasIndex("PostId");
 
-                    b.HasIndex("TopicId");
-
-                    b.HasIndex("ProfileId", "TopicId")
+                    b.HasIndex("ProfileId", "PostId")
                         .IsUnique();
 
-                    b.ToTable("ProfileTopics", (string)null);
+                    b.ToTable("SavedPosts", "ContentManagement");
                 });
 
-            modelBuilder.Entity("SNS.Domain.Projects.Bridges.ProjectContributor", b =>
+            modelBuilder.Entity("SNS.Domain.Discussions.Problems.Entities.Problem", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("ContributorId")
+                    b.Property<Guid>("AuthorId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("InvitationMessage")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<DateTime>("InvitationSentAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("InvitingStatus")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("ProjectId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime?>("RespondedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Role")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ContributorId");
-
-                    b.HasIndex("ProjectId");
-
-                    b.HasIndex("ProjectId", "ContributorId")
-                        .IsUnique();
-
-                    b.ToTable("ProjectContributors", (string)null);
-                });
-
-            modelBuilder.Entity("SNS.Domain.Projects.Bridges.ProjectRating", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Comment")
-                        .IsRequired()
-                        .HasMaxLength(1000)
-                        .HasColumnType("nvarchar(1000)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("ProjectId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("RaterId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("RatingValue")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProjectId");
-
-                    b.HasIndex("RaterId");
-
-                    b.HasIndex("ProjectId", "RaterId")
-                        .IsUnique();
-
-                    b.ToTable("ProjectRatings", (string)null);
-                });
-
-            modelBuilder.Entity("SNS.Domain.Projects.Bridges.ProjectSkill", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ProjectId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("SkillId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProjectId");
-
-                    b.HasIndex("SkillId");
-
-                    b.HasIndex("ProjectId", "SkillId")
-                        .IsUnique();
-
-                    b.ToTable("ProjectSkills", (string)null);
-                });
-
-            modelBuilder.Entity("SNS.Domain.Projects.Bridges.ProjectTag", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ProjectId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("TagId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProjectId");
-
-                    b.HasIndex("TagId");
-
-                    b.HasIndex("ProjectId", "TagId")
-                        .IsUnique();
-
-                    b.ToTable("ProjectTags", (string)null);
-                });
-
-            modelBuilder.Entity("SNS.Domain.Projects.Bridges.ProjectView", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Country")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<int?>("DeviceType")
-                        .HasColumnType("int");
-
-                    b.Property<string>("IpHash")
-                        .HasMaxLength(128)
-                        .HasColumnType("varchar(128)");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<Guid>("ProjectId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("ViewedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("ViewerId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProjectId");
-
-                    b.HasIndex("ViewerId");
-
-                    b.HasIndex("ProjectId", "ViewerId")
-                        .IsUnique()
-                        .HasFilter("[IsActive] = 1");
-
-                    b.ToTable("ProjectViews", (string)null);
-                });
-
-            modelBuilder.Entity("SNS.Domain.Projects.Entities.Project", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<Guid?>("CommunityId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("GitHubUrl")
-                        .IsRequired()
-                        .HasMaxLength(512)
-                        .HasColumnType("varchar(512)");
-
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<string>("LiveDemoUrl")
-                        .IsRequired()
-                        .HasMaxLength(512)
-                        .HasColumnType("varchar(512)");
-
-                    b.Property<string>("MainImageUrl")
-                        .IsRequired()
-                        .HasMaxLength(512)
-                        .HasColumnType("varchar(512)");
-
-                    b.Property<Guid>("OwnerId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("ReadmeContent")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ShortDescription")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                    b.Property<int>("Level")
+                        .HasColumnType("int");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OwnerId");
+                    b.HasIndex("AuthorId");
+
+                    b.HasIndex("CommunityId");
 
                     b.HasIndex("Title");
 
-                    b.ToTable("Projects", (string)null);
+                    b.ToTable("Problems", "QA");
                 });
 
-            modelBuilder.Entity("SNS.Domain.Projects.Entities.ProjectMedia", b =>
+            modelBuilder.Entity("SNS.Domain.Discussions.Problems.Entities.ProblemContentBlock", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Caption")
+                    b.Property<string>("Content")
                         .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("MediaUrl")
-                        .IsRequired()
-                        .HasMaxLength(512)
-                        .HasColumnType("varchar(512)");
+                    b.Property<string>("ExtraInfo")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
-                    b.Property<Guid>("ProjectId")
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("ProblemId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Type")
@@ -1637,41 +706,12 @@ namespace SNS.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProjectId");
+                    b.HasIndex("ProblemId");
 
-                    b.ToTable("ProjectMedias", (string)null);
+                    b.ToTable("ProblemContentBlocks", "QA");
                 });
 
-            modelBuilder.Entity("SNS.Domain.Projects.Entities.ProjectMilestone", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(1000)
-                        .HasColumnType("nvarchar(1000)");
-
-                    b.Property<Guid>("ProjectId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProjectId");
-
-                    b.ToTable("ProjectMilestones", (string)null);
-                });
-
-            modelBuilder.Entity("SNS.Domain.QA.Bridges.ProblemTag", b =>
+            modelBuilder.Entity("SNS.Domain.Discussions.Problems.Relations.ProblemTag", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -1692,10 +732,10 @@ namespace SNS.Infrastructure.Migrations
                     b.HasIndex("ProblemId", "TagId")
                         .IsUnique();
 
-                    b.ToTable("ProblemTags", (string)null);
+                    b.ToTable("ProblemTags", "QA");
                 });
 
-            modelBuilder.Entity("SNS.Domain.QA.Bridges.ProblemTopic", b =>
+            modelBuilder.Entity("SNS.Domain.Discussions.Problems.Relations.ProblemTopic", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -1717,10 +757,10 @@ namespace SNS.Infrastructure.Migrations
                     b.HasIndex("ProblemId", "TopicId")
                         .IsUnique();
 
-                    b.ToTable("ProblemTopics", (string)null);
+                    b.ToTable("ProblemTopics", "QA");
                 });
 
-            modelBuilder.Entity("SNS.Domain.QA.Bridges.ProblemView", b =>
+            modelBuilder.Entity("SNS.Domain.Discussions.Problems.Relations.ProblemView", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -1758,10 +798,10 @@ namespace SNS.Infrastructure.Migrations
                     b.HasIndex("ProblemId", "ViewerId")
                         .IsUnique();
 
-                    b.ToTable("ProblemViews", (string)null);
+                    b.ToTable("ProblemViews", "QA");
                 });
 
-            modelBuilder.Entity("SNS.Domain.QA.Bridges.SolutionVote", b =>
+            modelBuilder.Entity("SNS.Domain.Discussions.Problems.Relations.ProblemVote", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -1770,7 +810,7 @@ namespace SNS.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("SolutionId")
+                    b.Property<Guid>("ProblemId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Type")
@@ -1781,17 +821,44 @@ namespace SNS.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SolutionId");
+                    b.HasIndex("ProblemId");
 
                     b.HasIndex("VoterId");
 
-                    b.HasIndex("SolutionId", "VoterId")
+                    b.HasIndex("ProblemId", "VoterId")
                         .IsUnique();
 
-                    b.ToTable("SolutionVotes", (string)null);
+                    b.ToTable("ProblemVotes", "QA");
                 });
 
-            modelBuilder.Entity("SNS.Domain.QA.Entities.Discussion", b =>
+            modelBuilder.Entity("SNS.Domain.Discussions.Problems.Relations.SavedProblem", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ProblemId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ProfileId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("SavedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProblemId");
+
+                    b.HasIndex("ProfileId", "ProblemId")
+                        .IsUnique();
+
+                    b.HasIndex("ProfileId", "SavedAt");
+
+                    b.ToTable("SavedProblems", "QA");
+                });
+
+            modelBuilder.Entity("SNS.Domain.Discussions.Solutions.Entities.Discussion", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -1836,117 +903,10 @@ namespace SNS.Infrastructure.Migrations
 
                     b.HasIndex("SolutionId");
 
-                    b.ToTable("Discussions", (string)null);
+                    b.ToTable("DiscussionsDI", "QA");
                 });
 
-            modelBuilder.Entity("SNS.Domain.QA.Entities.Problem", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("AuthorId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("CommunityId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("Level")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ReadmeContent")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AuthorId");
-
-                    b.HasIndex("CommunityId");
-
-                    b.HasIndex("Title");
-
-                    b.ToTable("Problems", (string)null);
-                });
-
-            modelBuilder.Entity("SNS.Domain.QA.Entities.ProblemContentBlock", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ExtraInfo")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<int>("Order")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("ProblemId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProblemId");
-
-                    b.ToTable("ProblemContentBlocks", (string)null);
-                });
-
-            modelBuilder.Entity("SNS.Domain.QA.Entities.ProblemVote", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("ProblemId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("VoterId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProblemId");
-
-                    b.HasIndex("VoterId");
-
-                    b.HasIndex("ProblemId", "VoterId")
-                        .IsUnique();
-
-                    b.ToTable("ProblemVotes", (string)null);
-                });
-
-            modelBuilder.Entity("SNS.Domain.QA.Entities.Solution", b =>
+            modelBuilder.Entity("SNS.Domain.Discussions.Solutions.Entities.Solution", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -1976,10 +936,10 @@ namespace SNS.Infrastructure.Migrations
 
                     b.HasIndex("ProblemId");
 
-                    b.ToTable("Solutions", (string)null);
+                    b.ToTable("Solutions", "QA");
                 });
 
-            modelBuilder.Entity("SNS.Domain.QA.Entities.SolutionContentBlock", b =>
+            modelBuilder.Entity("SNS.Domain.Discussions.Solutions.Entities.SolutionContentBlock", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -2006,7 +966,1652 @@ namespace SNS.Infrastructure.Migrations
 
                     b.HasIndex("SolutionId");
 
-                    b.ToTable("SolutionContentBlocks", (string)null);
+                    b.ToTable("SolutionContentBlocks", "QA");
+                });
+
+            modelBuilder.Entity("SNS.Domain.Discussions.Solutions.Relations.SavedSolution", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ProfileId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("SavedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("SolutionId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SolutionId");
+
+                    b.HasIndex("ProfileId", "SavedAt");
+
+                    b.HasIndex("ProfileId", "SolutionId")
+                        .IsUnique();
+
+                    b.ToTable("SavedSolutions", "QA");
+                });
+
+            modelBuilder.Entity("SNS.Domain.Discussions.Solutions.Relations.SolutionVote", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("SolutionId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("VoterId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SolutionId");
+
+                    b.HasIndex("VoterId");
+
+                    b.HasIndex("SolutionId", "VoterId")
+                        .IsUnique();
+
+                    b.ToTable("SolutionVotes", "QA");
+                });
+
+            modelBuilder.Entity("SNS.Domain.Educations.Entities.AcademicRecord", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Degree")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<DateTime?>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("FieldOfStudy")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("Grade")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<bool>("IsCurrent")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("ProfileId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("UniversityId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProfileId");
+
+                    b.HasIndex("UniversityId");
+
+                    b.HasIndex("UniversityId", "ProfileId")
+                        .IsUnique();
+
+                    b.ToTable("AcademicRecords", "Education");
+                });
+
+            modelBuilder.Entity("SNS.Domain.Educations.Entities.University", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name");
+
+                    b.ToTable("Universities", "Education");
+                });
+
+            modelBuilder.Entity("SNS.Domain.Identity.ArchiveManagement.Entities.IdentityArchive", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("NewUserIdentifier")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("OldUserIdentifier")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("IdentityArchives", "Identity");
+                });
+
+            modelBuilder.Entity("SNS.Domain.Identity.ArchiveManagement.Entities.PasswordArchive", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("PasswordArchives", "Identity");
+                });
+
+            modelBuilder.Entity("SNS.Domain.Identity.ArchiveManagement.Entities.UserArchive", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Parameters")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("PerformedById")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Reason")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<Guid>("TargetId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("TimeStamp")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PerformedById");
+
+                    b.HasIndex("TargetId");
+
+                    b.ToTable("UserArchives", "Identity");
+                });
+
+            modelBuilder.Entity("SNS.Domain.Identity.Notifications.Entities.Notification", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("ActorProfileId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsRead")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("Source")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("TargetId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TargetId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Notifications", "Identity");
+                });
+
+            modelBuilder.Entity("SNS.Domain.Identity.Notifications.Entities.UserNotificationPreferences", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("CommentReplies")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("CommunityAnnouncements")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("CommunityPosts")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("EnableEmailNotifications")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("EnableInAppNotifications")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("EnablePushNotifications")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("EnableSmsNotifications")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("LoginAlerts")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Mentions")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Messages")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("NewFollower")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("PasswordChanged")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("PostComments")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("PostLikes")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("ProblemSolutions")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("ProjectInvitations")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("ProjectUpdates")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("UserNotificationPreferences", "Identity");
+                });
+
+            modelBuilder.Entity("SNS.Domain.Identity.SecuritySessions.Entities.Device", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Browser")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("DeviceModel")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("DeviceToken")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<string>("DeviceVendor")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("FingerprintHash")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<DateTime>("FirstSeenAt")
+                        .HasColumnType("DATETIME");
+
+                    b.Property<string>("FriendlyName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<bool>("IsTrusted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("LastSeenAt")
+                        .HasColumnType("DATETIME");
+
+                    b.Property<string>("OperatingSystem")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("UserSecuritySettingsUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DeviceToken")
+                        .IsUnique();
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("UserSecuritySettingsUserId");
+
+                    b.ToTable("Devices", "Identity");
+                });
+
+            modelBuilder.Entity("SNS.Domain.Identity.SecuritySessions.Entities.RefreshToken", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("ExpiresAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsRevoked")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsUsed")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("SecuritySessionId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasMaxLength(512)
+                        .HasColumnType("varchar(512)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SecuritySessionId");
+
+                    b.ToTable("RefreshTokens", "Identity");
+                });
+
+            modelBuilder.Entity("SNS.Domain.Identity.SecuritySessions.Entities.SecuritySession", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<Guid>("DeviceId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("DurationMinutes")
+                        .HasColumnType("int");
+
+                    b.Property<string>("IpAddress")
+                        .IsRequired()
+                        .HasMaxLength(45)
+                        .HasColumnType("varchar(45)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsRevoked")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("LastSeenAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double>("Latitude")
+                        .HasColumnType("float");
+
+                    b.Property<DateTime>("LoginAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("LogoutAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double>("Longitude")
+                        .HasColumnType("float");
+
+                    b.Property<DateTime?>("RevokedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("RevokedReason")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DeviceId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("SecuritySessions", "Identity");
+                });
+
+            modelBuilder.Entity("SNS.Domain.Identity.SecuritySettings.Entities.RecoveryCode", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CodeHash")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsUsed")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("UserSecuritySettingsId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CodeHash")
+                        .IsUnique();
+
+                    b.HasIndex("UserSecuritySettingsId");
+
+                    b.ToTable("RecoveryCodes", "Identity");
+                });
+
+            modelBuilder.Entity("SNS.Domain.Identity.SecuritySettings.Entities.UserPasskey", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<byte[]>("CredentialId")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<string>("DeviceName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("PublicKey")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<long>("SignatureCounter")
+                        .HasColumnType("bigint");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UserPassKeys", "Identity");
+                });
+
+            modelBuilder.Entity("SNS.Domain.Identity.SecuritySettings.Entities.UserSecuritySettings", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("AuthenticatorSecretKey")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DefaultCommunicationMethod")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("FailedLoginNotifications")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("LoginAlerts")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("MfaProvider")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("PasswordChangeAlerts")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("RecoveryEmail")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.HasKey("UserId");
+
+                    b.HasIndex("RecoveryEmail")
+                        .IsUnique()
+                        .HasFilter("[RecoveryEmail] IS NOT NULL");
+
+                    b.ToTable("UsersSecuritySettings", "Identity");
+                });
+
+            modelBuilder.Entity("SNS.Domain.Identity.Users.Entities.Role", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Roles", "Identity");
+                });
+
+            modelBuilder.Entity("SNS.Domain.Identity.Users.Entities.User", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CodeCreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeactivatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)");
+
+                    b.Property<int>("FailedLoginAttempts")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDeactivated")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsSuspended")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsVerified")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("LastLogIn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("LastPasswordChange")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PasswordHash")
+                        .IsRequired()
+                        .HasMaxLength(512)
+                        .HasColumnType("nvarchar(512)");
+
+                    b.Property<int>("PreferredLanguage")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("SuspendedUntil")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("SuspensionReason")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Email");
+
+                    b.HasIndex("RoleId");
+
+                    b.HasIndex("UserName")
+                        .IsUnique();
+
+                    b.ToTable("Users", "Identity");
+                });
+
+            modelBuilder.Entity("SNS.Domain.Jobs.Entities.Company", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Industry")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LogoUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("WebsiteUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Companies", "Jobs");
+                });
+
+            modelBuilder.Entity("SNS.Domain.Jobs.Entities.CompanyAdministrator", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("AdminRole")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("CompanyId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ProfileId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CompanyId");
+
+                    b.HasIndex("ProfileId", "CompanyId")
+                        .IsUnique();
+
+                    b.ToTable("CompanyAdministrators", "Jobs");
+                });
+
+            modelBuilder.Entity("SNS.Domain.Jobs.Entities.Job", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("ClosedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("CompanyId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CurrencyCode")
+                        .IsRequired()
+                        .HasMaxLength(3)
+                        .HasColumnType("nchar(3)")
+                        .IsFixedLength();
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("KeyResponsibilitiesText")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Location")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("MaxSalary")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("MinSalary")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("SalaryType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CompanyId");
+
+                    b.HasIndex("Title");
+
+                    b.ToTable("Jobs", "Jobs");
+                });
+
+            modelBuilder.Entity("SNS.Domain.Jobs.Entities.JobApplication", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ApplicantId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CoverLetterText")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("JobId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ResumeFileUrl")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<Guid?>("ResumeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicantId");
+
+                    b.HasIndex("JobId", "ApplicantId")
+                        .IsUnique()
+                        .HasFilter("[IsActive] = 1");
+
+                    b.ToTable("JobApplications", "Jobs");
+                });
+
+            modelBuilder.Entity("SNS.Domain.Jobs.Entities.JobSkill", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("JobId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("SkillId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SkillId");
+
+                    b.HasIndex("JobId", "SkillId")
+                        .IsUnique();
+
+                    b.ToTable("JobSkills", "Jobs");
+                });
+
+            modelBuilder.Entity("SNS.Domain.Jobs.Relations.SavedJob", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("JobId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ProfileId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("SavedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("JobId");
+
+                    b.HasIndex("ProfileId", "JobId")
+                        .IsUnique();
+
+                    b.HasIndex("ProfileId", "SavedAt");
+
+                    b.ToTable("SavedJobs", "Jobs");
+                });
+
+            modelBuilder.Entity("SNS.Domain.Preferences.Entities.Skill", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CategoryId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("Skills", "Preferences");
+                });
+
+            modelBuilder.Entity("SNS.Domain.Preferences.Entities.SkillsCategory", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("SkillsCategories", "Preferences");
+                });
+
+            modelBuilder.Entity("SNS.Domain.Preferences.Entities.Tag", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("Tags", "Preferences");
+                });
+
+            modelBuilder.Entity("SNS.Domain.Preferences.Entities.Topic", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("Topics", "Preferences");
+                });
+
+            modelBuilder.Entity("SNS.Domain.Preferences.Entities.TopicInterest", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("InterestId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("TopicId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TopicId");
+
+                    b.ToTable("TopicInterest");
+                });
+
+            modelBuilder.Entity("SNS.Domain.Profiles.Profiles.Entities.Profile", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Bio")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("FacebookUrl")
+                        .HasMaxLength(512)
+                        .HasColumnType("varchar(512)");
+
+                    b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("GitHubUrl")
+                        .HasMaxLength(512)
+                        .HasColumnType("varchar(512)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LinkedInUrl")
+                        .HasMaxLength(512)
+                        .HasColumnType("varchar(512)");
+
+                    b.Property<string>("Location")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("ProfilePictureUrl")
+                        .HasMaxLength(512)
+                        .HasColumnType("varchar(512)");
+
+                    b.Property<int>("Reputation")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SkillsSummary")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<string>("Specialization")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Website")
+                        .HasMaxLength(512)
+                        .HasColumnType("varchar(512)");
+
+                    b.Property<string>("XUrl")
+                        .HasMaxLength(512)
+                        .HasColumnType("varchar(512)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FullName");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("Profiles", "Profiles");
+                });
+
+            modelBuilder.Entity("SNS.Domain.Profiles.Profiles.Entities.ProfileView", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("ViewedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("ViewedId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ViewerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ViewedId");
+
+                    b.HasIndex("ViewerId");
+
+                    b.HasIndex("ViewedId", "ViewerId")
+                        .IsUnique()
+                        .HasFilter("[IsActive] = 1");
+
+                    b.ToTable("ProfileViews", "Profiles");
+                });
+
+            modelBuilder.Entity("SNS.Domain.Profiles.Profiles.Entities.ReputationLedger", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("ActionType")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("PointsDelta")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("ProfileId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("SourceEntityId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProfileId");
+
+                    b.ToTable("ReputationLedgers", "Profiles");
+                });
+
+            modelBuilder.Entity("SNS.Domain.Profiles.Profiles.Entities.SavedProfile", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("SavedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("SavedId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("SaverId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SavedId");
+
+                    b.HasIndex("SaverId", "SavedId")
+                        .IsUnique();
+
+                    b.ToTable("SavedProfiles", "Profiles");
+                });
+
+            modelBuilder.Entity("SNS.Domain.Profiles.Profiles.Relations.ProfileSkill", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Level")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("ProfileId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("SkillId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProfileId");
+
+                    b.HasIndex("SkillId");
+
+                    b.HasIndex("ProfileId", "SkillId")
+                        .IsUnique();
+
+                    b.ToTable("ProfileSkills", "ProfileContext");
+                });
+
+            modelBuilder.Entity("SNS.Domain.Profiles.Profiles.Relations.ProfileTopic", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("LastUpdate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("ProfileId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<double>("Score")
+                        .HasColumnType("float");
+
+                    b.Property<Guid>("TopicId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProfileId");
+
+                    b.HasIndex("TopicId");
+
+                    b.HasIndex("ProfileId", "TopicId")
+                        .IsUnique();
+
+                    b.ToTable("ProfileTopics", "ProfileContext");
+                });
+
+            modelBuilder.Entity("SNS.Domain.Profiles.SocialGraph.Entities.Block", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("BlockedId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("BlockerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BlockedId");
+
+                    b.HasIndex("BlockerId");
+
+                    b.HasIndex("BlockerId", "BlockedId")
+                        .IsUnique();
+
+                    b.ToTable("Blocks", "Profiles");
+                });
+
+            modelBuilder.Entity("SNS.Domain.Profiles.SocialGraph.Entities.Follow", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("FollowerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("FollowingId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FollowerId");
+
+                    b.HasIndex("FollowingId");
+
+                    b.HasIndex("FollowerId", "FollowingId")
+                        .IsUnique();
+
+                    b.ToTable("Follows", "Profiles");
+                });
+
+            modelBuilder.Entity("SNS.Domain.Profiles.SocialGraph.Entities.Mute", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("MutedId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("MuterId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MutedId");
+
+                    b.HasIndex("MuterId", "MutedId")
+                        .IsUnique();
+
+                    b.ToTable("Mutes", "Profiles");
+                });
+
+            modelBuilder.Entity("SNS.Domain.Projects.Bridges.ProjectContributor", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ContributorId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("InvitationMessage")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<DateTime>("InvitationSentAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("InvitingStatus")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("ProjectId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("RespondedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Role")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ContributorId");
+
+                    b.HasIndex("ProjectId");
+
+                    b.HasIndex("ProjectId", "ContributorId")
+                        .IsUnique();
+
+                    b.ToTable("ProjectContributors", "Projects");
+                });
+
+            modelBuilder.Entity("SNS.Domain.Projects.Bridges.ProjectRating", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Comment")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("ProjectId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("RaterId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("RatingValue")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProjectId");
+
+                    b.HasIndex("RaterId");
+
+                    b.HasIndex("ProjectId", "RaterId")
+                        .IsUnique();
+
+                    b.ToTable("ProjectRatings", "Projects");
+                });
+
+            modelBuilder.Entity("SNS.Domain.Projects.Bridges.ProjectSkill", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ProjectId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("SkillId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProjectId");
+
+                    b.HasIndex("SkillId");
+
+                    b.HasIndex("ProjectId", "SkillId")
+                        .IsUnique();
+
+                    b.ToTable("ProjectSkills", "Projects");
+                });
+
+            modelBuilder.Entity("SNS.Domain.Projects.Bridges.ProjectTag", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ProjectId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("TagId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProjectId");
+
+                    b.HasIndex("TagId");
+
+                    b.HasIndex("ProjectId", "TagId")
+                        .IsUnique();
+
+                    b.ToTable("ProjectTags", "Projects");
+                });
+
+            modelBuilder.Entity("SNS.Domain.Projects.Bridges.ProjectView", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Country")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int?>("DeviceType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("IpHash")
+                        .HasMaxLength(128)
+                        .HasColumnType("varchar(128)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("ProjectId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("ViewedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("ViewerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProjectId");
+
+                    b.HasIndex("ViewerId");
+
+                    b.HasIndex("ProjectId", "ViewerId")
+                        .IsUnique()
+                        .HasFilter("[IsActive] = 1");
+
+                    b.ToTable("ProjectViews", "Projects");
+                });
+
+            modelBuilder.Entity("SNS.Domain.Projects.Bridges.SavedProject", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ProfileId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ProjectId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("SavedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProjectId");
+
+                    b.HasIndex("ProfileId", "ProjectId")
+                        .IsUnique();
+
+                    b.HasIndex("ProfileId", "SavedAt");
+
+                    b.ToTable("SavedProjects", "Projects");
+                });
+
+            modelBuilder.Entity("SNS.Domain.Projects.Entities.Project", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("GitHubUrl")
+                        .IsRequired()
+                        .HasMaxLength(512)
+                        .HasColumnType("varchar(512)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LiveDemoUrl")
+                        .IsRequired()
+                        .HasMaxLength(512)
+                        .HasColumnType("varchar(512)");
+
+                    b.Property<string>("MainImageUrl")
+                        .IsRequired()
+                        .HasMaxLength(512)
+                        .HasColumnType("varchar(512)");
+
+                    b.Property<Guid>("OwnerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("PublishedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ReadmeContent")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ShortDescription")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("SourceCodeTree")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OwnerId");
+
+                    b.HasIndex("Title");
+
+                    b.ToTable("Projects", "Projects");
+                });
+
+            modelBuilder.Entity("SNS.Domain.Projects.Entities.ProjectMedia", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Caption")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("MediaUrl")
+                        .IsRequired()
+                        .HasMaxLength(512)
+                        .HasColumnType("varchar(512)");
+
+                    b.Property<Guid>("ProjectId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProjectId");
+
+                    b.ToTable("ProjectMedias", "Projects");
+                });
+
+            modelBuilder.Entity("SNS.Domain.Projects.Entities.ProjectMilestone", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<Guid>("ProjectId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProjectId");
+
+                    b.ToTable("ProjectMilestones", "Projects");
                 });
 
             modelBuilder.Entity("SNS.Domain.Resumes.Bridges.ResumeSkill", b =>
@@ -2033,7 +2638,7 @@ namespace SNS.Infrastructure.Migrations
                     b.HasIndex("ResumeId", "SkillName")
                         .IsUnique();
 
-                    b.ToTable("ResumeSkills", (string)null);
+                    b.ToTable("ResumeSkills", "Resumes");
                 });
 
             modelBuilder.Entity("SNS.Domain.Resumes.Entities.Resume", b =>
@@ -2083,7 +2688,7 @@ namespace SNS.Infrastructure.Migrations
 
                     b.HasIndex("Title");
 
-                    b.ToTable("Resumes", (string)null);
+                    b.ToTable("Resumes", "Resumes");
                 });
 
             modelBuilder.Entity("SNS.Domain.Resumes.Entities.ResumeCertificate", b =>
@@ -2112,7 +2717,7 @@ namespace SNS.Infrastructure.Migrations
 
                     b.HasIndex("ResumeId");
 
-                    b.ToTable("ResumeCertificates", (string)null);
+                    b.ToTable("ResumeCertificates", "Resumes");
                 });
 
             modelBuilder.Entity("SNS.Domain.Resumes.Entities.ResumeEducation", b =>
@@ -2157,7 +2762,7 @@ namespace SNS.Infrastructure.Migrations
 
                     b.HasIndex("ResumeId");
 
-                    b.ToTable("ResumeEducations", (string)null);
+                    b.ToTable("ResumeEducations", "Resumes");
                 });
 
             modelBuilder.Entity("SNS.Domain.Resumes.Entities.ResumeExperience", b =>
@@ -2194,7 +2799,7 @@ namespace SNS.Infrastructure.Migrations
 
                     b.HasIndex("ResumeId");
 
-                    b.ToTable("ResumeExperiences", (string)null);
+                    b.ToTable("ResumeExperiences", "Resumes");
                 });
 
             modelBuilder.Entity("SNS.Domain.Resumes.Entities.ResumeLanguage", b =>
@@ -2219,7 +2824,7 @@ namespace SNS.Infrastructure.Migrations
                     b.HasIndex("ResumeId", "Language")
                         .IsUnique();
 
-                    b.ToTable("ResumeLanguages", (string)null);
+                    b.ToTable("ResumeLanguages", "Resumes");
                 });
 
             modelBuilder.Entity("SNS.Domain.Resumes.Entities.ResumeProject", b =>
@@ -2232,1091 +2837,236 @@ namespace SNS.Infrastructure.Migrations
 
                     b.HasKey("ResumeId", "ProjectId");
 
-                    b.ToTable("ResumeProjects", (string)null);
+                    b.ToTable("ResumeProjects", "Resumes");
                 });
 
-            modelBuilder.Entity("SNS.Domain.Security.Entities.IdentityArchive", b =>
+            modelBuilder.Entity("SNS.Domain.Shared.Entities.OutboxMessage", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("UserIdentifier")
+                    b.Property<string>("Content")
                         .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("IdentityArchives", (string)null);
-                });
-
-            modelBuilder.Entity("SNS.Domain.Security.Entities.ManualRecoveryRequest", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("ContactEmail")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<string>("ContactPhone")
-                        .HasMaxLength(20)
-                        .HasColumnType("varchar(20)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ProvidedInfoJson")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("ReviewedAt")
+                    b.Property<string>("Error")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("OccurredOnUtc")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid?>("ReviewerId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("ReviewerNotes")
-                        .HasMaxLength(1000)
-                        .HasColumnType("nvarchar(1000)");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("SubmitterId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ReviewerId");
-
-                    b.HasIndex("SubmitterId");
-
-                    b.ToTable("ManualRecoveryRequests", (string)null);
-                });
-
-            modelBuilder.Entity("SNS.Domain.Security.Entities.Notification", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("ActorProfileId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedAt")
+                    b.Property<DateTime?>("ProcessedOnUtc")
                         .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsRead")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("Source")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("TargetId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TargetId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Notifications", (string)null);
-                });
-
-            modelBuilder.Entity("SNS.Domain.Security.Entities.PasswordArchive", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("HashedPassword")
-                        .IsRequired()
-                        .HasMaxLength(512)
-                        .HasColumnType("nvarchar(512)");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("PasswordArchives", (string)null);
-                });
-
-            modelBuilder.Entity("SNS.Domain.Security.Entities.PendingUpdate", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("IsCompleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("RequestedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("SupportId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("UpdateType")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UpdatedInfo")
-                        .IsRequired()
-                        .HasMaxLength(1000)
-                        .HasColumnType("nvarchar(1000)");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SupportId");
-
-                    b.HasIndex("UpdatedInfo");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("PendingUpdates", (string)null);
-                });
-
-            modelBuilder.Entity("SNS.Domain.Security.Entities.RefreshToken", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("ExpiresAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Token")
-                        .IsRequired()
-                        .HasMaxLength(512)
-                        .HasColumnType("varchar(512)");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("RefreshTokens", (string)null);
-                });
-
-            modelBuilder.Entity("SNS.Domain.Security.Entities.Role", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
 
                     b.Property<string>("Type")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Roles", (string)null);
-                });
-
-            modelBuilder.Entity("SNS.Domain.Security.Entities.SupportResponse", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Attachments")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsFromSupport")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Message")
-                        .IsRequired()
-                        .HasMaxLength(2000)
-                        .HasColumnType("nvarchar(2000)");
-
-                    b.Property<Guid?>("ParentResponseId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("SenderId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("TicketId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ParentResponseId");
-
-                    b.HasIndex("SenderId");
-
-                    b.HasIndex("TicketId");
-
-                    b.ToTable("SupportResponses", (string)null);
-                });
-
-            modelBuilder.Entity("SNS.Domain.Security.Entities.SupportTicket", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ApplicantId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Attachments")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("ClosedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("ClosedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(2000)
-                        .HasColumnType("nvarchar(2000)");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ApplicantId");
-
-                    b.HasIndex("ClosedBy");
-
-                    b.ToTable("SupportTickets", (string)null);
-                });
-
-            modelBuilder.Entity("SNS.Domain.Security.Entities.User", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CodeCreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(255)
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<int>("FailedLoginAttempts")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsBanned")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsSuspended")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsTwoFactorEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("LastLogIn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("LastPasswordChange")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("PasswordHash")
-                        .IsRequired()
-                        .HasMaxLength(512)
-                        .HasColumnType("nvarchar(512)");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasMaxLength(20)
-                        .HasColumnType("varchar(20)");
-
-                    b.Property<int>("PreferredLanguage")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("RoleId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("SecurityCode")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("varchar(10)");
-
-                    b.Property<DateTime?>("SuspendedUntil")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("UserName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Email")
-                        .IsUnique()
-                        .HasFilter("[Email] IS NOT NULL");
-
-                    b.HasIndex("PhoneNumber");
-
-                    b.HasIndex("RoleId");
-
-                    b.HasIndex("UserName")
-                        .IsUnique();
-
-                    b.ToTable("Users", (string)null);
-                });
-
-            modelBuilder.Entity("SNS.Domain.Security.Entities.UserArchive", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("PerformedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Reason")
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
-                    b.Property<DateTime>("TimeStamp")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("PerformedBy");
+                    b.HasIndex("ProcessedOnUtc", "OccurredOnUtc")
+                        .HasDatabaseName("IX_OutboxMessages_Unprocessed");
 
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserArchives", (string)null);
+                    b.ToTable("OutboxMessages", "EventsHolder");
                 });
 
-            modelBuilder.Entity("SNS.Domain.Security.Entities.UserSession", b =>
+            modelBuilder.Entity("SNS.Domain.ContentManagement.Comments.Entities.Comment", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Browser")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("Country")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("Device")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<int?>("DurationMinutes")
-                        .HasColumnType("int");
-
-                    b.Property<string>("IpAddress")
-                        .IsRequired()
-                        .HasMaxLength(45)
-                        .HasColumnType("varchar(45)");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("LastSeenAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("LoginAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("LogoutAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserSessions", (string)null);
-                });
-
-            modelBuilder.Entity("SNS.Domain.Security.Entities.VerificationCode", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("varchar(10)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("ExpiresAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("FailedAttempts")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsRevoked")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsUsed")
-                        .HasColumnType("bit");
-
-                    b.Property<Guid?>("PendingUpdateId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PendingUpdateId")
-                        .IsUnique()
-                        .HasFilter("[PendingUpdateId] IS NOT NULL");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("VerificationCodes", (string)null);
-                });
-
-            modelBuilder.Entity("SNS.Domain.SocialGraph.Bridges.Block", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("BlockedId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("BlockerId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BlockedId");
-
-                    b.HasIndex("BlockerId");
-
-                    b.HasIndex("BlockerId", "BlockedId")
-                        .IsUnique();
-
-                    b.ToTable("Blocks", (string)null);
-                });
-
-            modelBuilder.Entity("SNS.Domain.SocialGraph.Bridges.Follow", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("FollowerId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("FollowingId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("FollowerId");
-
-                    b.HasIndex("FollowingId");
-
-                    b.HasIndex("FollowerId", "FollowingId")
-                        .IsUnique();
-
-                    b.ToTable("Follows", (string)null);
-                });
-
-            modelBuilder.Entity("SNS.Domain.SocialGraph.Bridges.ProfileView", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("ViewedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("ViewedId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ViewerId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ViewedId");
-
-                    b.HasIndex("ViewerId");
-
-                    b.HasIndex("ViewedId", "ViewerId")
-                        .IsUnique()
-                        .HasFilter("[IsActive] = 1");
-
-                    b.ToTable("ProfileViews", (string)null);
-                });
-
-            modelBuilder.Entity("SNS.Domain.SocialGraph.Profile", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Bio")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("FacebookUrl")
-                        .HasMaxLength(512)
-                        .HasColumnType("varchar(512)");
-
-                    b.Property<Guid?>("FacultyId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("FullName")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("GitHubUrl")
-                        .HasMaxLength(512)
-                        .HasColumnType("varchar(512)");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("LinkedInUrl")
-                        .HasMaxLength(512)
-                        .HasColumnType("varchar(512)");
-
-                    b.Property<string>("Location")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("ProfilePictureUrl")
-                        .HasMaxLength(512)
-                        .HasColumnType("varchar(512)");
-
-                    b.Property<string>("SkillsSummary")
-                        .HasMaxLength(1000)
-                        .HasColumnType("nvarchar(1000)");
-
-                    b.Property<string>("Specialization")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<Guid?>("UniversityId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Website")
-                        .HasMaxLength(512)
-                        .HasColumnType("varchar(512)");
-
-                    b.Property<string>("XUrl")
-                        .HasMaxLength(512)
-                        .HasColumnType("varchar(512)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("FacultyId");
-
-                    b.HasIndex("FullName");
-
-                    b.HasIndex("UniversityId");
-
-                    b.HasIndex("UserId")
-                        .IsUnique();
-
-                    b.ToTable("Profiles", (string)null);
-                });
-
-            modelBuilder.Entity("SNS.Domain.Communities.Entities.Community", b =>
-                {
-                    b.HasOne("SNS.Domain.SocialGraph.Profile", "Owner")
-                        .WithMany("Communities")
-                        .HasForeignKey("OwnerId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Owner");
-                });
-
-            modelBuilder.Entity("SNS.Domain.Communities.Entities.CommunityAuditLog", b =>
-                {
-                    b.HasOne("SNS.Domain.SocialGraph.Profile", "Actor")
+                    b.HasOne("SNS.Domain.Profiles.Profiles.Entities.Profile", null)
                         .WithMany()
-                        .HasForeignKey("ActorId")
-                        .OnDelete(DeleteBehavior.SetNull);
-
-                    b.HasOne("SNS.Domain.Communities.Entities.Community", "Community")
-                        .WithMany("AuditLogs")
-                        .HasForeignKey("CommunityId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Actor");
-
-                    b.Navigation("Community");
-                });
-
-            modelBuilder.Entity("SNS.Domain.Communities.Entities.CommunityCreationRequest", b =>
-                {
-                    b.HasOne("SNS.Domain.Communities.Entities.Community", null)
-                        .WithMany("CreationRequests")
-                        .HasForeignKey("CommunityId");
-
-                    b.HasOne("SNS.Domain.SocialGraph.Profile", "Submitter")
-                        .WithMany()
-                        .HasForeignKey("SubmitterId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Submitter");
-                });
-
-            modelBuilder.Entity("SNS.Domain.Communities.Entities.CommunityInvitation", b =>
-                {
-                    b.HasOne("SNS.Domain.Communities.Entities.Community", "Community")
-                        .WithMany()
-                        .HasForeignKey("CommunityId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SNS.Domain.SocialGraph.Profile", "Invitee")
-                        .WithMany()
-                        .HasForeignKey("InviteeId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("SNS.Domain.SocialGraph.Profile", "Inviter")
-                        .WithMany()
-                        .HasForeignKey("InviterId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Community");
-
-                    b.Navigation("Invitee");
-
-                    b.Navigation("Inviter");
-                });
-
-            modelBuilder.Entity("SNS.Domain.Communities.Entities.CommunityJoinRequest", b =>
-                {
-                    b.HasOne("SNS.Domain.Communities.Entities.Community", "Community")
-                        .WithMany()
-                        .HasForeignKey("CommunityId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SNS.Domain.SocialGraph.Profile", "Submitter")
-                        .WithMany()
-                        .HasForeignKey("SubmitterId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Community");
-
-                    b.Navigation("Submitter");
-                });
-
-            modelBuilder.Entity("SNS.Domain.Communities.Entities.CommunityMembership", b =>
-                {
-                    b.HasOne("SNS.Domain.Communities.Entities.Community", "Community")
-                        .WithMany("Memberships")
-                        .HasForeignKey("CommunityId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SNS.Domain.SocialGraph.Profile", "Member")
-                        .WithMany("CommunityMemberships")
-                        .HasForeignKey("MemberId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Community");
-
-                    b.Navigation("Member");
-                });
-
-            modelBuilder.Entity("SNS.Domain.Communities.Entities.CommunityRule", b =>
-                {
-                    b.HasOne("SNS.Domain.Communities.Entities.Community", "Community")
-                        .WithMany("Rules")
-                        .HasForeignKey("CommunityId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Community");
-                });
-
-            modelBuilder.Entity("SNS.Domain.Communities.Entities.CommunitySettings", b =>
-                {
-                    b.HasOne("SNS.Domain.Communities.Entities.Community", "Community")
-                        .WithOne("Settings")
-                        .HasForeignKey("SNS.Domain.Communities.Entities.CommunitySettings", "CommunityId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Community");
-                });
-
-            modelBuilder.Entity("SNS.Domain.Content.Entities.Comment", b =>
-                {
-                    b.HasOne("SNS.Domain.SocialGraph.Profile", "Author")
-                        .WithMany("Comments")
                         .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("SNS.Domain.Content.Entities.Comment", "ParentComment")
+                    b.HasOne("SNS.Domain.ContentManagement.Comments.Entities.Comment", "ParentComment")
                         .WithMany("Replies")
                         .HasForeignKey("ParentCommentId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("SNS.Domain.Content.Entities.Post", "Post")
+                    b.HasOne("SNS.Domain.ContentManagement.Posts.Entities.Post", null)
                         .WithMany("Comments")
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Author");
-
                     b.Navigation("ParentComment");
-
-                    b.Navigation("Post");
                 });
 
-            modelBuilder.Entity("SNS.Domain.Content.Entities.CommentReaction", b =>
+            modelBuilder.Entity("SNS.Domain.ContentManagement.Comments.Entities.CommentMedia", b =>
                 {
-                    b.HasOne("SNS.Domain.Content.Entities.Comment", "Comment")
+                    b.HasOne("SNS.Domain.ContentManagement.Comments.Entities.Comment", null)
+                        .WithMany("Medias")
+                        .HasForeignKey("CommentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("SNS.Domain.ContentManagement.Comments.Entities.CommentReaction", b =>
+                {
+                    b.HasOne("SNS.Domain.ContentManagement.Comments.Entities.Comment", null)
                         .WithMany("Reactions")
                         .HasForeignKey("CommentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SNS.Domain.SocialGraph.Profile", "Reactor")
-                        .WithMany("CommentReactions")
+                    b.HasOne("SNS.Domain.Profiles.Profiles.Entities.Profile", null)
+                        .WithMany()
                         .HasForeignKey("ReactorId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.Navigation("Comment");
-
-                    b.Navigation("Reactor");
                 });
 
-            modelBuilder.Entity("SNS.Domain.Content.Entities.Post", b =>
+            modelBuilder.Entity("SNS.Domain.ContentManagement.Communities.Entities.Community", b =>
                 {
-                    b.HasOne("SNS.Domain.SocialGraph.Profile", "Author")
-                        .WithMany("Posts")
+                    b.HasOne("SNS.Domain.Profiles.Profiles.Entities.Profile", null)
+                        .WithMany()
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("SNS.Domain.ContentManagement.Communities.Entities.CommunityAuditLog", b =>
+                {
+                    b.HasOne("SNS.Domain.Profiles.Profiles.Entities.Profile", null)
+                        .WithMany()
+                        .HasForeignKey("ActorId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("SNS.Domain.ContentManagement.Communities.Entities.Community", null)
+                        .WithMany("AuditLogs")
+                        .HasForeignKey("CommunityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("SNS.Domain.ContentManagement.Communities.Entities.CommunityInvitation", b =>
+                {
+                    b.HasOne("SNS.Domain.ContentManagement.Communities.Entities.Community", null)
+                        .WithMany()
+                        .HasForeignKey("CommunityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SNS.Domain.Profiles.Profiles.Entities.Profile", null)
+                        .WithMany()
+                        .HasForeignKey("InviteeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("SNS.Domain.Profiles.Profiles.Entities.Profile", null)
+                        .WithMany()
+                        .HasForeignKey("InviterId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("SNS.Domain.ContentManagement.Communities.Entities.CommunityJoinRequest", b =>
+                {
+                    b.HasOne("SNS.Domain.ContentManagement.Communities.Entities.Community", null)
+                        .WithMany()
+                        .HasForeignKey("CommunityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SNS.Domain.Profiles.Profiles.Entities.Profile", null)
+                        .WithMany()
+                        .HasForeignKey("SubmitterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("SNS.Domain.ContentManagement.Communities.Entities.CommunityMembership", b =>
+                {
+                    b.HasOne("SNS.Domain.ContentManagement.Communities.Entities.Community", null)
+                        .WithMany("Memberships")
+                        .HasForeignKey("CommunityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SNS.Domain.Profiles.Profiles.Entities.Profile", null)
+                        .WithMany()
+                        .HasForeignKey("MemberId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("SNS.Domain.ContentManagement.Communities.Entities.CommunityRule", b =>
+                {
+                    b.HasOne("SNS.Domain.ContentManagement.Communities.Entities.Community", null)
+                        .WithMany("Rules")
+                        .HasForeignKey("CommunityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("SNS.Domain.ContentManagement.Communities.Entities.CommunitySettings", b =>
+                {
+                    b.HasOne("SNS.Domain.ContentManagement.Communities.Entities.Community", null)
+                        .WithOne("Settings")
+                        .HasForeignKey("SNS.Domain.ContentManagement.Communities.Entities.CommunitySettings", "CommunityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("SNS.Domain.ContentManagement.Posts.Entities.Post", b =>
+                {
+                    b.HasOne("SNS.Domain.Profiles.Profiles.Entities.Profile", null)
+                        .WithMany()
                         .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("SNS.Domain.Communities.Entities.Community", "Community")
-                        .WithMany("Posts")
+                    b.HasOne("SNS.Domain.ContentManagement.Communities.Entities.Community", null)
+                        .WithMany()
                         .HasForeignKey("CommunityId")
                         .OnDelete(DeleteBehavior.SetNull);
-
-                    b.Navigation("Author");
-
-                    b.Navigation("Community");
                 });
 
-            modelBuilder.Entity("SNS.Domain.Content.Entities.PostMedia", b =>
+            modelBuilder.Entity("SNS.Domain.ContentManagement.Posts.Entities.PostMedia", b =>
                 {
-                    b.HasOne("SNS.Domain.Content.Entities.Post", "Post")
+                    b.HasOne("SNS.Domain.ContentManagement.Posts.Entities.Post", null)
                         .WithMany("Media")
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Post");
                 });
 
-            modelBuilder.Entity("SNS.Domain.Content.Entities.PostReaction", b =>
+            modelBuilder.Entity("SNS.Domain.ContentManagement.Posts.Entities.PostReaction", b =>
                 {
-                    b.HasOne("SNS.Domain.Content.Entities.Post", "Post")
+                    b.HasOne("SNS.Domain.ContentManagement.Posts.Entities.Post", null)
                         .WithMany("Reactions")
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SNS.Domain.SocialGraph.Profile", "Reactor")
-                        .WithMany("PostReactions")
+                    b.HasOne("SNS.Domain.Profiles.Profiles.Entities.Profile", null)
+                        .WithMany()
                         .HasForeignKey("ReactorId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.Navigation("Post");
-
-                    b.Navigation("Reactor");
                 });
 
-            modelBuilder.Entity("SNS.Domain.Education.Entities.Faculty", b =>
+            modelBuilder.Entity("SNS.Domain.ContentManagement.Posts.Entities.PostTag", b =>
                 {
-                    b.HasOne("SNS.Domain.Education.Entities.University", "University")
-                        .WithMany("Faculties")
-                        .HasForeignKey("UniversityId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("University");
-                });
-
-            modelBuilder.Entity("SNS.Domain.Education.Entities.FacultyRequest", b =>
-                {
-                    b.HasOne("SNS.Domain.SocialGraph.Profile", "Submitter")
+                    b.HasOne("SNS.Domain.ContentManagement.Posts.Entities.Post", null)
                         .WithMany()
-                        .HasForeignKey("SubmitterId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("SNS.Domain.Education.Entities.University", "University")
-                        .WithMany("FacultyRequests")
-                        .HasForeignKey("UniversityId")
-                        .OnDelete(DeleteBehavior.SetNull);
-
-                    b.HasOne("SNS.Domain.Education.Entities.UniversityRequest", "UniversityRequest")
-                        .WithMany()
-                        .HasForeignKey("UniversityRequestId")
-                        .OnDelete(DeleteBehavior.SetNull);
-
-                    b.Navigation("Submitter");
-
-                    b.Navigation("University");
-
-                    b.Navigation("UniversityRequest");
-                });
-
-            modelBuilder.Entity("SNS.Domain.Education.Entities.ProfileFacultyRequest", b =>
-                {
-                    b.HasOne("SNS.Domain.Education.Entities.FacultyRequest", "FacultyRequest")
-                        .WithMany("Requests")
-                        .HasForeignKey("FacultyRequestId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SNS.Domain.SocialGraph.Profile", "Joiner")
-                        .WithMany()
-                        .HasForeignKey("JoinerId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("FacultyRequest");
-
-                    b.Navigation("Joiner");
-                });
-
-            modelBuilder.Entity("SNS.Domain.Education.Entities.ProfileUniversityRequest", b =>
-                {
-                    b.HasOne("SNS.Domain.SocialGraph.Profile", "Joiner")
-                        .WithMany()
-                        .HasForeignKey("JoinerId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("SNS.Domain.Education.Entities.UniversityRequest", "UniversityRequest")
-                        .WithMany("Requests")
-                        .HasForeignKey("UniversityRequestId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Joiner");
-
-                    b.Navigation("UniversityRequest");
-                });
-
-            modelBuilder.Entity("SNS.Domain.Education.Entities.UniversityRequest", b =>
-                {
-                    b.HasOne("SNS.Domain.SocialGraph.Profile", "Submitter")
-                        .WithMany()
-                        .HasForeignKey("SubmitterId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Submitter");
-                });
-
-            modelBuilder.Entity("SNS.Domain.Jobs.Entities.Job", b =>
-                {
-                    b.HasOne("SNS.Domain.SocialGraph.Profile", "Owner")
-                        .WithMany()
-                        .HasForeignKey("OwnerId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("SNS.Domain.SocialGraph.Profile", null)
-                        .WithMany("Jobs")
-                        .HasForeignKey("ProfileId");
-
-                    b.Navigation("Owner");
-                });
-
-            modelBuilder.Entity("SNS.Domain.Jobs.Entities.JobApplication", b =>
-                {
-                    b.HasOne("SNS.Domain.SocialGraph.Profile", "Applicant")
-                        .WithMany()
-                        .HasForeignKey("ApplicantId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("SNS.Domain.Jobs.Entities.Job", "Job")
-                        .WithMany("Applications")
-                        .HasForeignKey("JobId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SNS.Domain.SocialGraph.Profile", null)
-                        .WithMany("JobApplications")
-                        .HasForeignKey("ProfileId");
-
-                    b.HasOne("SNS.Domain.Resumes.Entities.Resume", "Resume")
-                        .WithMany()
-                        .HasForeignKey("ResumeId");
-
-                    b.Navigation("Applicant");
-
-                    b.Navigation("Job");
-
-                    b.Navigation("Resume");
-                });
-
-            modelBuilder.Entity("SNS.Domain.Jobs.Entities.JobSkill", b =>
-                {
-                    b.HasOne("SNS.Domain.Jobs.Entities.Job", "Job")
-                        .WithMany("JobSkills")
-                        .HasForeignKey("JobId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SNS.Domain.Preferences.Entities.Skill", "Skill")
-                        .WithMany()
-                        .HasForeignKey("SkillId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Job");
-
-                    b.Navigation("Skill");
-                });
-
-            modelBuilder.Entity("SNS.Domain.Posts.Bridges.PostTag", b =>
-                {
-                    b.HasOne("SNS.Domain.Content.Entities.Post", "Post")
-                        .WithMany("Tags")
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SNS.Domain.Preferences.Entities.Tag", "Tag")
+                    b.HasOne("SNS.Domain.Preferences.Entities.Tag", null)
                         .WithMany()
                         .HasForeignKey("TagId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Post");
-
-                    b.Navigation("Tag");
                 });
 
-            modelBuilder.Entity("SNS.Domain.Posts.Bridges.PostTopic", b =>
+            modelBuilder.Entity("SNS.Domain.ContentManagement.Posts.Entities.PostTopic", b =>
                 {
-                    b.HasOne("SNS.Domain.Content.Entities.Post", "Post")
-                        .WithMany("Topics")
+                    b.HasOne("SNS.Domain.ContentManagement.Posts.Entities.Post", "Post")
+                        .WithMany("PostTopics")
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -3332,55 +3082,435 @@ namespace SNS.Infrastructure.Migrations
                     b.Navigation("Topic");
                 });
 
-            modelBuilder.Entity("SNS.Domain.Posts.Bridges.PostView", b =>
+            modelBuilder.Entity("SNS.Domain.ContentManagement.Posts.Entities.PostView", b =>
                 {
-                    b.HasOne("SNS.Domain.Content.Entities.Post", "Post")
+                    b.HasOne("SNS.Domain.ContentManagement.Posts.Entities.Post", null)
                         .WithMany("Views")
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SNS.Domain.SocialGraph.Profile", "Viewer")
-                        .WithMany("PostViews")
+                    b.HasOne("SNS.Domain.Profiles.Profiles.Entities.Profile", null)
+                        .WithMany()
                         .HasForeignKey("ViewerId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.Navigation("Post");
-
-                    b.Navigation("Viewer");
                 });
 
-            modelBuilder.Entity("SNS.Domain.Posts.Entities.CommentMedia", b =>
+            modelBuilder.Entity("SNS.Domain.ContentManagement.Posts.Entities.SavedPost", b =>
                 {
-                    b.HasOne("SNS.Domain.Content.Entities.Comment", "Comment")
-                        .WithMany("Medias")
-                        .HasForeignKey("CommentId")
+                    b.HasOne("SNS.Domain.ContentManagement.Posts.Entities.Post", null)
+                        .WithMany("SavedPosts")
+                        .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Comment");
+                    b.HasOne("SNS.Domain.Profiles.Profiles.Entities.Profile", null)
+                        .WithMany()
+                        .HasForeignKey("ProfileId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
-            modelBuilder.Entity("SNS.Domain.Preferences.Entities.Interest", b =>
+            modelBuilder.Entity("SNS.Domain.Discussions.Problems.Entities.Problem", b =>
                 {
-                    b.HasOne("SNS.Domain.Preferences.Entities.InterestCategory", "Category")
-                        .WithMany("Interests")
-                        .HasForeignKey("CategoryId")
+                    b.HasOne("SNS.Domain.Profiles.Profiles.Entities.Profile", null)
+                        .WithMany("Problems")
+                        .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("Category");
-                });
-
-            modelBuilder.Entity("SNS.Domain.Preferences.Entities.InterestRequest", b =>
-                {
-                    b.HasOne("SNS.Domain.SocialGraph.Profile", "Submitter")
+                    b.HasOne("SNS.Domain.ContentManagement.Communities.Entities.Community", "Community")
                         .WithMany()
-                        .HasForeignKey("SubmitterId")
+                        .HasForeignKey("CommunityId")
                         .OnDelete(DeleteBehavior.SetNull);
 
-                    b.Navigation("Submitter");
+                    b.Navigation("Community");
+                });
+
+            modelBuilder.Entity("SNS.Domain.Discussions.Problems.Entities.ProblemContentBlock", b =>
+                {
+                    b.HasOne("SNS.Domain.Discussions.Problems.Entities.Problem", null)
+                        .WithMany("ContentBlocks")
+                        .HasForeignKey("ProblemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("SNS.Domain.Discussions.Problems.Relations.ProblemTag", b =>
+                {
+                    b.HasOne("SNS.Domain.Discussions.Problems.Entities.Problem", null)
+                        .WithMany()
+                        .HasForeignKey("ProblemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SNS.Domain.Preferences.Entities.Tag", null)
+                        .WithMany()
+                        .HasForeignKey("TagId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("SNS.Domain.Discussions.Problems.Relations.ProblemTopic", b =>
+                {
+                    b.HasOne("SNS.Domain.Discussions.Problems.Entities.Problem", null)
+                        .WithMany()
+                        .HasForeignKey("ProblemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SNS.Domain.Preferences.Entities.Topic", null)
+                        .WithMany()
+                        .HasForeignKey("TopicId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("SNS.Domain.Discussions.Problems.Relations.ProblemView", b =>
+                {
+                    b.HasOne("SNS.Domain.Discussions.Problems.Entities.Problem", null)
+                        .WithMany("Views")
+                        .HasForeignKey("ProblemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SNS.Domain.Profiles.Profiles.Entities.Profile", null)
+                        .WithMany()
+                        .HasForeignKey("ViewerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("SNS.Domain.Discussions.Problems.Relations.ProblemVote", b =>
+                {
+                    b.HasOne("SNS.Domain.Discussions.Problems.Entities.Problem", null)
+                        .WithMany("Votes")
+                        .HasForeignKey("ProblemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SNS.Domain.Profiles.Profiles.Entities.Profile", null)
+                        .WithMany()
+                        .HasForeignKey("VoterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("SNS.Domain.Discussions.Problems.Relations.SavedProblem", b =>
+                {
+                    b.HasOne("SNS.Domain.Discussions.Problems.Entities.Problem", "Problem")
+                        .WithMany()
+                        .HasForeignKey("ProblemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SNS.Domain.Profiles.Profiles.Entities.Profile", null)
+                        .WithMany()
+                        .HasForeignKey("ProfileId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Problem");
+                });
+
+            modelBuilder.Entity("SNS.Domain.Discussions.Solutions.Entities.Discussion", b =>
+                {
+                    b.HasOne("SNS.Domain.Profiles.Profiles.Entities.Profile", null)
+                        .WithMany()
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("SNS.Domain.Discussions.Solutions.Entities.Discussion", null)
+                        .WithMany("Replies")
+                        .HasForeignKey("ParentDiscussionId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("SNS.Domain.Discussions.Solutions.Entities.Solution", null)
+                        .WithMany("Discussions")
+                        .HasForeignKey("SolutionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("SNS.Domain.Discussions.Solutions.Entities.Solution", b =>
+                {
+                    b.HasOne("SNS.Domain.Profiles.Profiles.Entities.Profile", null)
+                        .WithMany("Solutions")
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("SNS.Domain.Discussions.Problems.Entities.Problem", null)
+                        .WithMany("Solutions")
+                        .HasForeignKey("ProblemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("SNS.Domain.Discussions.Solutions.Entities.SolutionContentBlock", b =>
+                {
+                    b.HasOne("SNS.Domain.Discussions.Solutions.Entities.Solution", null)
+                        .WithMany("ContentBlocks")
+                        .HasForeignKey("SolutionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("SNS.Domain.Discussions.Solutions.Relations.SavedSolution", b =>
+                {
+                    b.HasOne("SNS.Domain.Profiles.Profiles.Entities.Profile", null)
+                        .WithMany()
+                        .HasForeignKey("ProfileId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SNS.Domain.Discussions.Solutions.Entities.Solution", "Solution")
+                        .WithMany()
+                        .HasForeignKey("SolutionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Solution");
+                });
+
+            modelBuilder.Entity("SNS.Domain.Discussions.Solutions.Relations.SolutionVote", b =>
+                {
+                    b.HasOne("SNS.Domain.Discussions.Solutions.Entities.Solution", null)
+                        .WithMany("Votes")
+                        .HasForeignKey("SolutionId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("SNS.Domain.Profiles.Profiles.Entities.Profile", null)
+                        .WithMany()
+                        .HasForeignKey("VoterId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("SNS.Domain.Educations.Entities.AcademicRecord", b =>
+                {
+                    b.HasOne("SNS.Domain.Profiles.Profiles.Entities.Profile", "Profile")
+                        .WithMany("AcademicRecords")
+                        .HasForeignKey("ProfileId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("SNS.Domain.Educations.Entities.University", "University")
+                        .WithMany()
+                        .HasForeignKey("UniversityId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Profile");
+
+                    b.Navigation("University");
+                });
+
+            modelBuilder.Entity("SNS.Domain.Identity.ArchiveManagement.Entities.IdentityArchive", b =>
+                {
+                    b.HasOne("SNS.Domain.Identity.Users.Entities.User", null)
+                        .WithMany("IdentityArchives")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("SNS.Domain.Identity.ArchiveManagement.Entities.PasswordArchive", b =>
+                {
+                    b.HasOne("SNS.Domain.Identity.Users.Entities.User", null)
+                        .WithMany("PasswordArchives")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("SNS.Domain.Identity.ArchiveManagement.Entities.UserArchive", b =>
+                {
+                    b.HasOne("SNS.Domain.Identity.Users.Entities.User", null)
+                        .WithMany("ActionPerformed")
+                        .HasForeignKey("PerformedById")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("SNS.Domain.Identity.Users.Entities.User", null)
+                        .WithMany("Archives")
+                        .HasForeignKey("TargetId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("SNS.Domain.Identity.Notifications.Entities.Notification", b =>
+                {
+                    b.HasOne("SNS.Domain.Identity.Users.Entities.User", null)
+                        .WithMany("Notifications")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("SNS.Domain.Identity.Notifications.Entities.UserNotificationPreferences", b =>
+                {
+                    b.HasOne("SNS.Domain.Identity.Users.Entities.User", null)
+                        .WithOne("NotificationPreferences")
+                        .HasForeignKey("SNS.Domain.Identity.Notifications.Entities.UserNotificationPreferences", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("SNS.Domain.Identity.SecuritySessions.Entities.Device", b =>
+                {
+                    b.HasOne("SNS.Domain.Identity.Users.Entities.User", null)
+                        .WithMany("Devices")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SNS.Domain.Identity.SecuritySettings.Entities.UserSecuritySettings", null)
+                        .WithMany("Devices")
+                        .HasForeignKey("UserSecuritySettingsUserId");
+                });
+
+            modelBuilder.Entity("SNS.Domain.Identity.SecuritySessions.Entities.RefreshToken", b =>
+                {
+                    b.HasOne("SNS.Domain.Identity.SecuritySessions.Entities.SecuritySession", null)
+                        .WithMany("RefreshTokens")
+                        .HasForeignKey("SecuritySessionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("SNS.Domain.Identity.SecuritySessions.Entities.SecuritySession", b =>
+                {
+                    b.HasOne("SNS.Domain.Identity.SecuritySessions.Entities.Device", "Device")
+                        .WithMany("Sessions")
+                        .HasForeignKey("DeviceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SNS.Domain.Identity.Users.Entities.User", null)
+                        .WithMany("Sessions")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Device");
+                });
+
+            modelBuilder.Entity("SNS.Domain.Identity.SecuritySettings.Entities.RecoveryCode", b =>
+                {
+                    b.HasOne("SNS.Domain.Identity.SecuritySettings.Entities.UserSecuritySettings", null)
+                        .WithMany("RecoveryCodes")
+                        .HasForeignKey("UserSecuritySettingsId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("SNS.Domain.Identity.SecuritySettings.Entities.UserPasskey", b =>
+                {
+                    b.HasOne("SNS.Domain.Identity.Users.Entities.User", null)
+                        .WithMany("Passkeys")
+                        .HasForeignKey("Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("SNS.Domain.Identity.SecuritySettings.Entities.UserSecuritySettings", b =>
+                {
+                    b.HasOne("SNS.Domain.Identity.Users.Entities.User", null)
+                        .WithOne("UserSecuritySettings")
+                        .HasForeignKey("SNS.Domain.Identity.SecuritySettings.Entities.UserSecuritySettings", "UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("SNS.Domain.Identity.Users.Entities.User", b =>
+                {
+                    b.HasOne("SNS.Domain.Identity.Users.Entities.Role", "Role")
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Role");
+                });
+
+            modelBuilder.Entity("SNS.Domain.Jobs.Entities.CompanyAdministrator", b =>
+                {
+                    b.HasOne("SNS.Domain.Jobs.Entities.Company", "Company")
+                        .WithMany("Administrators")
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SNS.Domain.Profiles.Profiles.Entities.Profile", "Profile")
+                        .WithMany()
+                        .HasForeignKey("ProfileId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Company");
+
+                    b.Navigation("Profile");
+                });
+
+            modelBuilder.Entity("SNS.Domain.Jobs.Entities.Job", b =>
+                {
+                    b.HasOne("SNS.Domain.Jobs.Entities.Company", "Company")
+                        .WithMany("PostedJobs")
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Company");
+                });
+
+            modelBuilder.Entity("SNS.Domain.Jobs.Entities.JobApplication", b =>
+                {
+                    b.HasOne("SNS.Domain.Profiles.Profiles.Entities.Profile", null)
+                        .WithMany()
+                        .HasForeignKey("ApplicantId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("SNS.Domain.Jobs.Entities.Job", null)
+                        .WithMany("Applications")
+                        .HasForeignKey("JobId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("SNS.Domain.Jobs.Entities.JobSkill", b =>
+                {
+                    b.HasOne("SNS.Domain.Jobs.Entities.Job", null)
+                        .WithMany("JobSkills")
+                        .HasForeignKey("JobId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SNS.Domain.Preferences.Entities.Skill", null)
+                        .WithMany()
+                        .HasForeignKey("SkillId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("SNS.Domain.Jobs.Relations.SavedJob", b =>
+                {
+                    b.HasOne("SNS.Domain.Jobs.Entities.Job", "Job")
+                        .WithMany()
+                        .HasForeignKey("JobId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SNS.Domain.Profiles.Profiles.Entities.Profile", null)
+                        .WithMany()
+                        .HasForeignKey("ProfileId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Job");
                 });
 
             modelBuilder.Entity("SNS.Domain.Preferences.Entities.Skill", b =>
@@ -3394,77 +3524,70 @@ namespace SNS.Infrastructure.Migrations
                     b.Navigation("Category");
                 });
 
-            modelBuilder.Entity("SNS.Domain.Preferences.Entities.SkillRequest", b =>
-                {
-                    b.HasOne("SNS.Domain.SocialGraph.Profile", "Submitter")
-                        .WithMany()
-                        .HasForeignKey("SubmitterId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Submitter");
-                });
-
             modelBuilder.Entity("SNS.Domain.Preferences.Entities.TopicInterest", b =>
                 {
-                    b.HasOne("SNS.Domain.Preferences.Entities.Interest", "Interest")
-                        .WithMany("TopicInterests")
-                        .HasForeignKey("InterestId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SNS.Domain.Preferences.Entities.Topic", "Topic")
+                    b.HasOne("SNS.Domain.Preferences.Entities.Topic", null)
                         .WithMany("TopicInterests")
                         .HasForeignKey("TopicId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Interest");
-
-                    b.Navigation("Topic");
                 });
 
-            modelBuilder.Entity("SNS.Domain.ProfileContext.Bridges.ProfileInterest", b =>
+            modelBuilder.Entity("SNS.Domain.Profiles.Profiles.Entities.Profile", b =>
                 {
-                    b.HasOne("SNS.Domain.Preferences.Entities.Interest", "Interest")
-                        .WithMany("ProfileInterests")
-                        .HasForeignKey("InterestId")
+                    b.HasOne("SNS.Domain.Identity.Users.Entities.User", null)
+                        .WithOne()
+                        .HasForeignKey("SNS.Domain.Profiles.Profiles.Entities.Profile", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
 
-                    b.HasOne("SNS.Domain.SocialGraph.Profile", "Profile")
-                        .WithMany("ProfileInterests")
+            modelBuilder.Entity("SNS.Domain.Profiles.Profiles.Entities.ProfileView", b =>
+                {
+                    b.HasOne("SNS.Domain.Profiles.Profiles.Entities.Profile", null)
+                        .WithMany("Vieweds")
+                        .HasForeignKey("ViewedId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("SNS.Domain.Profiles.Profiles.Entities.Profile", null)
+                        .WithMany("Views")
+                        .HasForeignKey("ViewerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("SNS.Domain.Profiles.Profiles.Entities.ReputationLedger", b =>
+                {
+                    b.HasOne("SNS.Domain.Profiles.Profiles.Entities.Profile", null)
+                        .WithMany("ReputationHistory")
                         .HasForeignKey("ProfileId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Interest");
-
-                    b.Navigation("Profile");
                 });
 
-            modelBuilder.Entity("SNS.Domain.ProfileContext.Bridges.ProfileInterestRequest", b =>
+            modelBuilder.Entity("SNS.Domain.Profiles.Profiles.Entities.SavedProfile", b =>
                 {
-                    b.HasOne("SNS.Domain.Preferences.Entities.InterestRequest", "InterestRequest")
-                        .WithMany("ProfileInterestRequests")
-                        .HasForeignKey("InterestRequestId")
+                    b.HasOne("SNS.Domain.Profiles.Profiles.Entities.Profile", "Saved")
+                        .WithMany("SavedByProfiles")
+                        .HasForeignKey("SavedId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("SNS.Domain.Profiles.Profiles.Entities.Profile", "Saver")
+                        .WithMany("SavedProfiles")
+                        .HasForeignKey("SaverId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SNS.Domain.SocialGraph.Profile", "Joiner")
-                        .WithMany()
-                        .HasForeignKey("JoinerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Saved");
 
-                    b.Navigation("InterestRequest");
-
-                    b.Navigation("Joiner");
+                    b.Navigation("Saver");
                 });
 
-            modelBuilder.Entity("SNS.Domain.ProfileContext.Bridges.ProfileSkill", b =>
+            modelBuilder.Entity("SNS.Domain.Profiles.Profiles.Relations.ProfileSkill", b =>
                 {
-                    b.HasOne("SNS.Domain.SocialGraph.Profile", "Profile")
+                    b.HasOne("SNS.Domain.Profiles.Profiles.Entities.Profile", null)
                         .WithMany("ProfileSkills")
                         .HasForeignKey("ProfileId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -3476,90 +3599,108 @@ namespace SNS.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Profile");
-
                     b.Navigation("Skill");
                 });
 
-            modelBuilder.Entity("SNS.Domain.ProfileContext.Bridges.ProfileSkillRequest", b =>
+            modelBuilder.Entity("SNS.Domain.Profiles.Profiles.Relations.ProfileTopic", b =>
                 {
-                    b.HasOne("SNS.Domain.SocialGraph.Profile", "Joiner")
-                        .WithMany()
-                        .HasForeignKey("JoinerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SNS.Domain.Preferences.Entities.SkillRequest", "SkillRequest")
-                        .WithMany("ProfileSkillRequests")
-                        .HasForeignKey("SkillRequestId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Joiner");
-
-                    b.Navigation("SkillRequest");
-                });
-
-            modelBuilder.Entity("SNS.Domain.ProfileContext.Bridges.ProfileTopic", b =>
-                {
-                    b.HasOne("SNS.Domain.SocialGraph.Profile", "Profile")
+                    b.HasOne("SNS.Domain.Profiles.Profiles.Entities.Profile", null)
                         .WithMany("ProfileTopics")
                         .HasForeignKey("ProfileId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SNS.Domain.Preferences.Entities.Topic", "Topic")
+                    b.HasOne("SNS.Domain.Preferences.Entities.Topic", null)
                         .WithMany()
                         .HasForeignKey("TopicId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
 
-                    b.Navigation("Profile");
+            modelBuilder.Entity("SNS.Domain.Profiles.SocialGraph.Entities.Block", b =>
+                {
+                    b.HasOne("SNS.Domain.Profiles.Profiles.Entities.Profile", null)
+                        .WithMany()
+                        .HasForeignKey("BlockedId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
-                    b.Navigation("Topic");
+                    b.HasOne("SNS.Domain.Profiles.Profiles.Entities.Profile", null)
+                        .WithMany("BlackList")
+                        .HasForeignKey("BlockerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("SNS.Domain.Profiles.SocialGraph.Entities.Follow", b =>
+                {
+                    b.HasOne("SNS.Domain.Profiles.Profiles.Entities.Profile", null)
+                        .WithMany("Followings")
+                        .HasForeignKey("FollowerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("SNS.Domain.Profiles.Profiles.Entities.Profile", null)
+                        .WithMany("Followers")
+                        .HasForeignKey("FollowingId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("SNS.Domain.Profiles.SocialGraph.Entities.Mute", b =>
+                {
+                    b.HasOne("SNS.Domain.Profiles.Profiles.Entities.Profile", "Muted")
+                        .WithMany()
+                        .HasForeignKey("MutedId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SNS.Domain.Profiles.Profiles.Entities.Profile", "Muter")
+                        .WithMany()
+                        .HasForeignKey("MuterId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Muted");
+
+                    b.Navigation("Muter");
                 });
 
             modelBuilder.Entity("SNS.Domain.Projects.Bridges.ProjectContributor", b =>
                 {
-                    b.HasOne("SNS.Domain.SocialGraph.Profile", "Contributor")
-                        .WithMany("Contributors")
+                    b.HasOne("SNS.Domain.Profiles.Profiles.Entities.Profile", "Contributor")
+                        .WithMany("ProjectContributors")
                         .HasForeignKey("ContributorId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("SNS.Domain.Projects.Entities.Project", "Project")
+                    b.HasOne("SNS.Domain.Projects.Entities.Project", null)
                         .WithMany("Contributors")
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Contributor");
-
-                    b.Navigation("Project");
                 });
 
             modelBuilder.Entity("SNS.Domain.Projects.Bridges.ProjectRating", b =>
                 {
-                    b.HasOne("SNS.Domain.Projects.Entities.Project", "Project")
+                    b.HasOne("SNS.Domain.Projects.Entities.Project", null)
                         .WithMany("Ratings")
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SNS.Domain.SocialGraph.Profile", "Rater")
-                        .WithMany("ProjectRatings")
+                    b.HasOne("SNS.Domain.Profiles.Profiles.Entities.Profile", null)
+                        .WithMany()
                         .HasForeignKey("RaterId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.Navigation("Project");
-
-                    b.Navigation("Rater");
                 });
 
             modelBuilder.Entity("SNS.Domain.Projects.Bridges.ProjectSkill", b =>
                 {
-                    b.HasOne("SNS.Domain.Projects.Entities.Project", "Project")
+                    b.HasOne("SNS.Domain.Projects.Entities.Project", null)
                         .WithMany("Skills")
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -3571,260 +3712,81 @@ namespace SNS.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Project");
-
                     b.Navigation("Skill");
                 });
 
             modelBuilder.Entity("SNS.Domain.Projects.Bridges.ProjectTag", b =>
                 {
-                    b.HasOne("SNS.Domain.Projects.Entities.Project", "Project")
+                    b.HasOne("SNS.Domain.Projects.Entities.Project", null)
                         .WithMany("Tags")
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SNS.Domain.Preferences.Entities.Tag", "Tag")
+                    b.HasOne("SNS.Domain.Preferences.Entities.Tag", null)
                         .WithMany()
                         .HasForeignKey("TagId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Project");
-
-                    b.Navigation("Tag");
                 });
 
             modelBuilder.Entity("SNS.Domain.Projects.Bridges.ProjectView", b =>
                 {
-                    b.HasOne("SNS.Domain.Projects.Entities.Project", "Project")
+                    b.HasOne("SNS.Domain.Projects.Entities.Project", null)
                         .WithMany("Views")
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SNS.Domain.SocialGraph.Profile", "Viewer")
-                        .WithMany("ProjectViews")
+                    b.HasOne("SNS.Domain.Profiles.Profiles.Entities.Profile", null)
+                        .WithMany()
                         .HasForeignKey("ViewerId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("SNS.Domain.Projects.Bridges.SavedProject", b =>
+                {
+                    b.HasOne("SNS.Domain.Profiles.Profiles.Entities.Profile", null)
+                        .WithMany()
+                        .HasForeignKey("ProfileId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SNS.Domain.Projects.Entities.Project", "Project")
+                        .WithMany("Saves")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Project");
-
-                    b.Navigation("Viewer");
                 });
 
             modelBuilder.Entity("SNS.Domain.Projects.Entities.Project", b =>
                 {
-                    b.HasOne("SNS.Domain.SocialGraph.Profile", "Owner")
+                    b.HasOne("SNS.Domain.Profiles.Profiles.Entities.Profile", null)
                         .WithMany("Projects")
                         .HasForeignKey("OwnerId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.Navigation("Owner");
                 });
 
             modelBuilder.Entity("SNS.Domain.Projects.Entities.ProjectMedia", b =>
                 {
-                    b.HasOne("SNS.Domain.Projects.Entities.Project", "Project")
+                    b.HasOne("SNS.Domain.Projects.Entities.Project", null)
                         .WithMany("Media")
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Project");
                 });
 
             modelBuilder.Entity("SNS.Domain.Projects.Entities.ProjectMilestone", b =>
                 {
-                    b.HasOne("SNS.Domain.Projects.Entities.Project", "Project")
+                    b.HasOne("SNS.Domain.Projects.Entities.Project", null)
                         .WithMany("Milestones")
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Project");
-                });
-
-            modelBuilder.Entity("SNS.Domain.QA.Bridges.ProblemTag", b =>
-                {
-                    b.HasOne("SNS.Domain.QA.Entities.Problem", "Problem")
-                        .WithMany("Tags")
-                        .HasForeignKey("ProblemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SNS.Domain.Preferences.Entities.Tag", "Tag")
-                        .WithMany()
-                        .HasForeignKey("TagId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Problem");
-
-                    b.Navigation("Tag");
-                });
-
-            modelBuilder.Entity("SNS.Domain.QA.Bridges.ProblemTopic", b =>
-                {
-                    b.HasOne("SNS.Domain.QA.Entities.Problem", "Problem")
-                        .WithMany("Topics")
-                        .HasForeignKey("ProblemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SNS.Domain.Preferences.Entities.Topic", "Topic")
-                        .WithMany()
-                        .HasForeignKey("TopicId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Problem");
-
-                    b.Navigation("Topic");
-                });
-
-            modelBuilder.Entity("SNS.Domain.QA.Bridges.ProblemView", b =>
-                {
-                    b.HasOne("SNS.Domain.QA.Entities.Problem", "Problem")
-                        .WithMany("Views")
-                        .HasForeignKey("ProblemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SNS.Domain.SocialGraph.Profile", "Viewer")
-                        .WithMany("ProblemViews")
-                        .HasForeignKey("ViewerId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Problem");
-
-                    b.Navigation("Viewer");
-                });
-
-            modelBuilder.Entity("SNS.Domain.QA.Bridges.SolutionVote", b =>
-                {
-                    b.HasOne("SNS.Domain.QA.Entities.Solution", "Solution")
-                        .WithMany("Votes")
-                        .HasForeignKey("SolutionId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("SNS.Domain.SocialGraph.Profile", "Voter")
-                        .WithMany("SolutionVotes")
-                        .HasForeignKey("VoterId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Solution");
-
-                    b.Navigation("Voter");
-                });
-
-            modelBuilder.Entity("SNS.Domain.QA.Entities.Discussion", b =>
-                {
-                    b.HasOne("SNS.Domain.SocialGraph.Profile", "Author")
-                        .WithMany("Discussions")
-                        .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("SNS.Domain.QA.Entities.Discussion", "ParentDiscussion")
-                        .WithMany("Replies")
-                        .HasForeignKey("ParentDiscussionId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("SNS.Domain.QA.Entities.Solution", "Solution")
-                        .WithMany("Discussions")
-                        .HasForeignKey("SolutionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Author");
-
-                    b.Navigation("ParentDiscussion");
-
-                    b.Navigation("Solution");
-                });
-
-            modelBuilder.Entity("SNS.Domain.QA.Entities.Problem", b =>
-                {
-                    b.HasOne("SNS.Domain.SocialGraph.Profile", "Author")
-                        .WithMany("Problems")
-                        .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("SNS.Domain.Communities.Entities.Community", "Community")
-                        .WithMany("Problems")
-                        .HasForeignKey("CommunityId")
-                        .OnDelete(DeleteBehavior.SetNull);
-
-                    b.Navigation("Author");
-
-                    b.Navigation("Community");
-                });
-
-            modelBuilder.Entity("SNS.Domain.QA.Entities.ProblemContentBlock", b =>
-                {
-                    b.HasOne("SNS.Domain.QA.Entities.Problem", "Problem")
-                        .WithMany("ContentBlocks")
-                        .HasForeignKey("ProblemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Problem");
-                });
-
-            modelBuilder.Entity("SNS.Domain.QA.Entities.ProblemVote", b =>
-                {
-                    b.HasOne("SNS.Domain.QA.Entities.Problem", "Problem")
-                        .WithMany("Votes")
-                        .HasForeignKey("ProblemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SNS.Domain.SocialGraph.Profile", "Voter")
-                        .WithMany("ProblemVotes")
-                        .HasForeignKey("VoterId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Problem");
-
-                    b.Navigation("Voter");
-                });
-
-            modelBuilder.Entity("SNS.Domain.QA.Entities.Solution", b =>
-                {
-                    b.HasOne("SNS.Domain.SocialGraph.Profile", "Author")
-                        .WithMany("Solutions")
-                        .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("SNS.Domain.QA.Entities.Problem", "Problem")
-                        .WithMany("Solutions")
-                        .HasForeignKey("ProblemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Author");
-
-                    b.Navigation("Problem");
-                });
-
-            modelBuilder.Entity("SNS.Domain.QA.Entities.SolutionContentBlock", b =>
-                {
-                    b.HasOne("SNS.Domain.QA.Entities.Solution", "Solution")
-                        .WithMany("ContentBlocks")
-                        .HasForeignKey("SolutionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Solution");
                 });
 
             modelBuilder.Entity("SNS.Domain.Resumes.Bridges.ResumeSkill", b =>
@@ -3840,327 +3802,59 @@ namespace SNS.Infrastructure.Migrations
 
             modelBuilder.Entity("SNS.Domain.Resumes.Entities.Resume", b =>
                 {
-                    b.HasOne("SNS.Domain.SocialGraph.Profile", "Owner")
-                        .WithMany("Resumes")
+                    b.HasOne("SNS.Domain.Profiles.Profiles.Entities.Profile", null)
+                        .WithMany()
                         .HasForeignKey("OwnerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Owner");
                 });
 
             modelBuilder.Entity("SNS.Domain.Resumes.Entities.ResumeCertificate", b =>
                 {
-                    b.HasOne("SNS.Domain.Resumes.Entities.Resume", "Resume")
+                    b.HasOne("SNS.Domain.Resumes.Entities.Resume", null)
                         .WithMany("Certificates")
                         .HasForeignKey("ResumeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Resume");
                 });
 
             modelBuilder.Entity("SNS.Domain.Resumes.Entities.ResumeEducation", b =>
                 {
-                    b.HasOne("SNS.Domain.Resumes.Entities.Resume", "Resume")
+                    b.HasOne("SNS.Domain.Resumes.Entities.Resume", null)
                         .WithMany("Educations")
                         .HasForeignKey("ResumeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Resume");
                 });
 
             modelBuilder.Entity("SNS.Domain.Resumes.Entities.ResumeExperience", b =>
                 {
-                    b.HasOne("SNS.Domain.Resumes.Entities.Resume", "Resume")
+                    b.HasOne("SNS.Domain.Resumes.Entities.Resume", null)
                         .WithMany("Experiences")
                         .HasForeignKey("ResumeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Resume");
                 });
 
             modelBuilder.Entity("SNS.Domain.Resumes.Entities.ResumeLanguage", b =>
                 {
-                    b.HasOne("SNS.Domain.Resumes.Entities.Resume", "Resume")
+                    b.HasOne("SNS.Domain.Resumes.Entities.Resume", null)
                         .WithMany("Languages")
                         .HasForeignKey("ResumeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Resume");
                 });
 
             modelBuilder.Entity("SNS.Domain.Resumes.Entities.ResumeProject", b =>
                 {
-                    b.HasOne("SNS.Domain.Resumes.Entities.Resume", "Resume")
+                    b.HasOne("SNS.Domain.Resumes.Entities.Resume", null)
                         .WithMany("Projects")
                         .HasForeignKey("ResumeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Resume");
                 });
 
-            modelBuilder.Entity("SNS.Domain.Security.Entities.IdentityArchive", b =>
-                {
-                    b.HasOne("SNS.Domain.Security.Entities.User", "User")
-                        .WithMany("IdentityArchives")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("SNS.Domain.Security.Entities.ManualRecoveryRequest", b =>
-                {
-                    b.HasOne("SNS.Domain.Security.Entities.User", "Reviewer")
-                        .WithMany("RecoveryReviews")
-                        .HasForeignKey("ReviewerId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("SNS.Domain.Security.Entities.User", "Submitter")
-                        .WithMany("RecoveryRequests")
-                        .HasForeignKey("SubmitterId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Reviewer");
-
-                    b.Navigation("Submitter");
-                });
-
-            modelBuilder.Entity("SNS.Domain.Security.Entities.Notification", b =>
-                {
-                    b.HasOne("SNS.Domain.Security.Entities.User", null)
-                        .WithMany("Notification")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("SNS.Domain.Security.Entities.PasswordArchive", b =>
-                {
-                    b.HasOne("SNS.Domain.Security.Entities.User", "User")
-                        .WithMany("PasswordArchives")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("SNS.Domain.Security.Entities.PendingUpdate", b =>
-                {
-                    b.HasOne("SNS.Domain.Security.Entities.User", "Support")
-                        .WithMany()
-                        .HasForeignKey("SupportId");
-
-                    b.HasOne("SNS.Domain.Security.Entities.User", "User")
-                        .WithMany("PendingUpdates")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Support");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("SNS.Domain.Security.Entities.RefreshToken", b =>
-                {
-                    b.HasOne("SNS.Domain.Security.Entities.User", null)
-                        .WithMany("Token")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("SNS.Domain.Security.Entities.SupportResponse", b =>
-                {
-                    b.HasOne("SNS.Domain.Security.Entities.SupportResponse", null)
-                        .WithMany("Replies")
-                        .HasForeignKey("ParentResponseId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("SNS.Domain.Security.Entities.User", null)
-                        .WithMany()
-                        .HasForeignKey("SenderId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("SNS.Domain.Security.Entities.SupportTicket", null)
-                        .WithMany("Responses")
-                        .HasForeignKey("TicketId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("SNS.Domain.Security.Entities.SupportTicket", b =>
-                {
-                    b.HasOne("SNS.Domain.Security.Entities.User", null)
-                        .WithMany("SupportTickets")
-                        .HasForeignKey("ApplicantId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("SNS.Domain.Security.Entities.User", b =>
-                {
-                    b.HasOne("SNS.Domain.Security.Entities.Role", "Role")
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Role");
-                });
-
-            modelBuilder.Entity("SNS.Domain.Security.Entities.UserArchive", b =>
-                {
-                    b.HasOne("SNS.Domain.Security.Entities.User", null)
-                        .WithMany("ActionPerformed")
-                        .HasForeignKey("PerformedBy")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("SNS.Domain.Security.Entities.User", null)
-                        .WithMany("Archives")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("SNS.Domain.Security.Entities.UserSession", b =>
-                {
-                    b.HasOne("SNS.Domain.Security.Entities.User", "User")
-                        .WithMany("Sessions")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("SNS.Domain.Security.Entities.VerificationCode", b =>
-                {
-                    b.HasOne("SNS.Domain.Security.Entities.PendingUpdate", "PendingUpdate")
-                        .WithOne("VerificationCode")
-                        .HasForeignKey("SNS.Domain.Security.Entities.VerificationCode", "PendingUpdateId");
-
-                    b.HasOne("SNS.Domain.Security.Entities.User", "User")
-                        .WithMany("VerificationCodes")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("PendingUpdate");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("SNS.Domain.SocialGraph.Bridges.Block", b =>
-                {
-                    b.HasOne("SNS.Domain.SocialGraph.Profile", "Blocked")
-                        .WithMany()
-                        .HasForeignKey("BlockedId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("SNS.Domain.SocialGraph.Profile", "Blocker")
-                        .WithMany("BlackList")
-                        .HasForeignKey("BlockerId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Blocked");
-
-                    b.Navigation("Blocker");
-                });
-
-            modelBuilder.Entity("SNS.Domain.SocialGraph.Bridges.Follow", b =>
-                {
-                    b.HasOne("SNS.Domain.SocialGraph.Profile", "Follower")
-                        .WithMany("Followings")
-                        .HasForeignKey("FollowerId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("SNS.Domain.SocialGraph.Profile", "Following")
-                        .WithMany("Followers")
-                        .HasForeignKey("FollowingId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Follower");
-
-                    b.Navigation("Following");
-                });
-
-            modelBuilder.Entity("SNS.Domain.SocialGraph.Bridges.ProfileView", b =>
-                {
-                    b.HasOne("SNS.Domain.SocialGraph.Profile", "Viewed")
-                        .WithMany("Views")
-                        .HasForeignKey("ViewedId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("SNS.Domain.SocialGraph.Profile", "Viewer")
-                        .WithMany("Vieweds")
-                        .HasForeignKey("ViewerId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Viewed");
-
-                    b.Navigation("Viewer");
-                });
-
-            modelBuilder.Entity("SNS.Domain.SocialGraph.Profile", b =>
-                {
-                    b.HasOne("SNS.Domain.Education.Entities.Faculty", "Faculty")
-                        .WithMany("Profiles")
-                        .HasForeignKey("FacultyId")
-                        .OnDelete(DeleteBehavior.SetNull);
-
-                    b.HasOne("SNS.Domain.Education.Entities.University", "University")
-                        .WithMany("Profiles")
-                        .HasForeignKey("UniversityId")
-                        .OnDelete(DeleteBehavior.SetNull);
-
-                    b.HasOne("SNS.Domain.Security.Entities.User", null)
-                        .WithOne("Profile")
-                        .HasForeignKey("SNS.Domain.SocialGraph.Profile", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Faculty");
-
-                    b.Navigation("University");
-                });
-
-            modelBuilder.Entity("SNS.Domain.Communities.Entities.Community", b =>
-                {
-                    b.Navigation("AuditLogs");
-
-                    b.Navigation("CreationRequests");
-
-                    b.Navigation("Memberships");
-
-                    b.Navigation("Posts");
-
-                    b.Navigation("Problems");
-
-                    b.Navigation("Rules");
-
-                    b.Navigation("Settings")
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("SNS.Domain.Content.Entities.Comment", b =>
+            modelBuilder.Entity("SNS.Domain.ContentManagement.Comments.Entities.Comment", b =>
                 {
                     b.Navigation("Medias");
 
@@ -4169,43 +3863,105 @@ namespace SNS.Infrastructure.Migrations
                     b.Navigation("Replies");
                 });
 
-            modelBuilder.Entity("SNS.Domain.Content.Entities.Post", b =>
+            modelBuilder.Entity("SNS.Domain.ContentManagement.Communities.Entities.Community", b =>
+                {
+                    b.Navigation("AuditLogs");
+
+                    b.Navigation("Memberships");
+
+                    b.Navigation("Rules");
+
+                    b.Navigation("Settings")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("SNS.Domain.ContentManagement.Posts.Entities.Post", b =>
                 {
                     b.Navigation("Comments");
 
                     b.Navigation("Media");
 
+                    b.Navigation("PostTopics");
+
                     b.Navigation("Reactions");
 
-                    b.Navigation("Tags");
-
-                    b.Navigation("Topics");
+                    b.Navigation("SavedPosts");
 
                     b.Navigation("Views");
                 });
 
-            modelBuilder.Entity("SNS.Domain.Education.Entities.Faculty", b =>
+            modelBuilder.Entity("SNS.Domain.Discussions.Problems.Entities.Problem", b =>
                 {
-                    b.Navigation("Profiles");
+                    b.Navigation("ContentBlocks");
+
+                    b.Navigation("Solutions");
+
+                    b.Navigation("Views");
+
+                    b.Navigation("Votes");
                 });
 
-            modelBuilder.Entity("SNS.Domain.Education.Entities.FacultyRequest", b =>
+            modelBuilder.Entity("SNS.Domain.Discussions.Solutions.Entities.Discussion", b =>
                 {
-                    b.Navigation("Requests");
+                    b.Navigation("Replies");
                 });
 
-            modelBuilder.Entity("SNS.Domain.Education.Entities.University", b =>
+            modelBuilder.Entity("SNS.Domain.Discussions.Solutions.Entities.Solution", b =>
                 {
-                    b.Navigation("Faculties");
+                    b.Navigation("ContentBlocks");
 
-                    b.Navigation("FacultyRequests");
+                    b.Navigation("Discussions");
 
-                    b.Navigation("Profiles");
+                    b.Navigation("Votes");
                 });
 
-            modelBuilder.Entity("SNS.Domain.Education.Entities.UniversityRequest", b =>
+            modelBuilder.Entity("SNS.Domain.Identity.SecuritySessions.Entities.Device", b =>
                 {
-                    b.Navigation("Requests");
+                    b.Navigation("Sessions");
+                });
+
+            modelBuilder.Entity("SNS.Domain.Identity.SecuritySessions.Entities.SecuritySession", b =>
+                {
+                    b.Navigation("RefreshTokens");
+                });
+
+            modelBuilder.Entity("SNS.Domain.Identity.SecuritySettings.Entities.UserSecuritySettings", b =>
+                {
+                    b.Navigation("Devices");
+
+                    b.Navigation("RecoveryCodes");
+                });
+
+            modelBuilder.Entity("SNS.Domain.Identity.Users.Entities.User", b =>
+                {
+                    b.Navigation("ActionPerformed");
+
+                    b.Navigation("Archives");
+
+                    b.Navigation("Devices");
+
+                    b.Navigation("IdentityArchives");
+
+                    b.Navigation("NotificationPreferences")
+                        .IsRequired();
+
+                    b.Navigation("Notifications");
+
+                    b.Navigation("Passkeys");
+
+                    b.Navigation("PasswordArchives");
+
+                    b.Navigation("Sessions");
+
+                    b.Navigation("UserSecuritySettings")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("SNS.Domain.Jobs.Entities.Company", b =>
+                {
+                    b.Navigation("Administrators");
+
+                    b.Navigation("PostedJobs");
                 });
 
             modelBuilder.Entity("SNS.Domain.Jobs.Entities.Job", b =>
@@ -4213,28 +3969,6 @@ namespace SNS.Infrastructure.Migrations
                     b.Navigation("Applications");
 
                     b.Navigation("JobSkills");
-                });
-
-            modelBuilder.Entity("SNS.Domain.Preferences.Entities.Interest", b =>
-                {
-                    b.Navigation("ProfileInterests");
-
-                    b.Navigation("TopicInterests");
-                });
-
-            modelBuilder.Entity("SNS.Domain.Preferences.Entities.InterestCategory", b =>
-                {
-                    b.Navigation("Interests");
-                });
-
-            modelBuilder.Entity("SNS.Domain.Preferences.Entities.InterestRequest", b =>
-                {
-                    b.Navigation("ProfileInterestRequests");
-                });
-
-            modelBuilder.Entity("SNS.Domain.Preferences.Entities.SkillRequest", b =>
-                {
-                    b.Navigation("ProfileSkillRequests");
                 });
 
             modelBuilder.Entity("SNS.Domain.Preferences.Entities.SkillsCategory", b =>
@@ -4247,6 +3981,39 @@ namespace SNS.Infrastructure.Migrations
                     b.Navigation("TopicInterests");
                 });
 
+            modelBuilder.Entity("SNS.Domain.Profiles.Profiles.Entities.Profile", b =>
+                {
+                    b.Navigation("AcademicRecords");
+
+                    b.Navigation("BlackList");
+
+                    b.Navigation("Followers");
+
+                    b.Navigation("Followings");
+
+                    b.Navigation("Problems");
+
+                    b.Navigation("ProfileSkills");
+
+                    b.Navigation("ProfileTopics");
+
+                    b.Navigation("ProjectContributors");
+
+                    b.Navigation("Projects");
+
+                    b.Navigation("ReputationHistory");
+
+                    b.Navigation("SavedByProfiles");
+
+                    b.Navigation("SavedProfiles");
+
+                    b.Navigation("Solutions");
+
+                    b.Navigation("Vieweds");
+
+                    b.Navigation("Views");
+                });
+
             modelBuilder.Entity("SNS.Domain.Projects.Entities.Project", b =>
                 {
                     b.Navigation("Contributors");
@@ -4257,40 +4024,13 @@ namespace SNS.Infrastructure.Migrations
 
                     b.Navigation("Ratings");
 
+                    b.Navigation("Saves");
+
                     b.Navigation("Skills");
 
                     b.Navigation("Tags");
 
                     b.Navigation("Views");
-                });
-
-            modelBuilder.Entity("SNS.Domain.QA.Entities.Discussion", b =>
-                {
-                    b.Navigation("Replies");
-                });
-
-            modelBuilder.Entity("SNS.Domain.QA.Entities.Problem", b =>
-                {
-                    b.Navigation("ContentBlocks");
-
-                    b.Navigation("Solutions");
-
-                    b.Navigation("Tags");
-
-                    b.Navigation("Topics");
-
-                    b.Navigation("Views");
-
-                    b.Navigation("Votes");
-                });
-
-            modelBuilder.Entity("SNS.Domain.QA.Entities.Solution", b =>
-                {
-                    b.Navigation("ContentBlocks");
-
-                    b.Navigation("Discussions");
-
-                    b.Navigation("Votes");
                 });
 
             modelBuilder.Entity("SNS.Domain.Resumes.Entities.Resume", b =>
@@ -4306,110 +4046,6 @@ namespace SNS.Infrastructure.Migrations
                     b.Navigation("Projects");
 
                     b.Navigation("Skills");
-                });
-
-            modelBuilder.Entity("SNS.Domain.Security.Entities.PendingUpdate", b =>
-                {
-                    b.Navigation("VerificationCode");
-                });
-
-            modelBuilder.Entity("SNS.Domain.Security.Entities.SupportResponse", b =>
-                {
-                    b.Navigation("Replies");
-                });
-
-            modelBuilder.Entity("SNS.Domain.Security.Entities.SupportTicket", b =>
-                {
-                    b.Navigation("Responses");
-                });
-
-            modelBuilder.Entity("SNS.Domain.Security.Entities.User", b =>
-                {
-                    b.Navigation("ActionPerformed");
-
-                    b.Navigation("Archives");
-
-                    b.Navigation("IdentityArchives");
-
-                    b.Navigation("Notification");
-
-                    b.Navigation("PasswordArchives");
-
-                    b.Navigation("PendingUpdates");
-
-                    b.Navigation("Profile")
-                        .IsRequired();
-
-                    b.Navigation("RecoveryRequests");
-
-                    b.Navigation("RecoveryReviews");
-
-                    b.Navigation("Sessions");
-
-                    b.Navigation("SupportTickets");
-
-                    b.Navigation("Token");
-
-                    b.Navigation("VerificationCodes");
-                });
-
-            modelBuilder.Entity("SNS.Domain.SocialGraph.Profile", b =>
-                {
-                    b.Navigation("BlackList");
-
-                    b.Navigation("CommentReactions");
-
-                    b.Navigation("Comments");
-
-                    b.Navigation("Communities");
-
-                    b.Navigation("CommunityMemberships");
-
-                    b.Navigation("Contributors");
-
-                    b.Navigation("Discussions");
-
-                    b.Navigation("Followers");
-
-                    b.Navigation("Followings");
-
-                    b.Navigation("JobApplications");
-
-                    b.Navigation("Jobs");
-
-                    b.Navigation("PostReactions");
-
-                    b.Navigation("PostViews");
-
-                    b.Navigation("Posts");
-
-                    b.Navigation("ProblemViews");
-
-                    b.Navigation("ProblemVotes");
-
-                    b.Navigation("Problems");
-
-                    b.Navigation("ProfileInterests");
-
-                    b.Navigation("ProfileSkills");
-
-                    b.Navigation("ProfileTopics");
-
-                    b.Navigation("ProjectRatings");
-
-                    b.Navigation("ProjectViews");
-
-                    b.Navigation("Projects");
-
-                    b.Navigation("Resumes");
-
-                    b.Navigation("SolutionVotes");
-
-                    b.Navigation("Solutions");
-
-                    b.Navigation("Vieweds");
-
-                    b.Navigation("Views");
                 });
 #pragma warning restore 612, 618
         }

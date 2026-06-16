@@ -1,0 +1,46 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using SNS.Domain.Preferences.Entities;
+using SNS.Domain.Profiles.Profiles.Entities;
+using SNS.Domain.Profiles.Profiles.Relations;
+
+namespace SNS.Infrastructure.Profiles.Profiles.Configurations;
+
+public class ProfileSkillConfigurations :
+    IEntityTypeConfiguration<ProfileSkill>
+{
+    public void Configure(EntityTypeBuilder<ProfileSkill> builder)
+    {
+        builder.ToTable("ProfileSkills", "ProfileContext");
+
+        builder.HasKey(ps => ps.Id);
+
+        builder.HasIndex(ps => ps.ProfileId);
+        builder.HasIndex(ps => ps.SkillId);
+
+        // Unique Constraint
+        builder.HasIndex(
+            ps => new 
+            { 
+                ps.ProfileId,
+                ps.SkillId 
+            })
+            .IsUnique();
+
+        builder.Property(ps => ps.Level)
+               .HasConversion<int>();
+
+        // Relationships
+        builder.HasOne<Profile>()
+               .WithMany(p => p.ProfileSkills)
+               .HasForeignKey(ps => ps.ProfileId)
+               .IsRequired()
+               .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasOne(ps => ps.Skill)
+               .WithMany()
+               .HasForeignKey(ps => ps.SkillId)
+               .IsRequired()
+               .OnDelete(DeleteBehavior.Cascade);
+    }
+}

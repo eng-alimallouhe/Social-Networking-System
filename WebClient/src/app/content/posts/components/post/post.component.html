@@ -1,0 +1,126 @@
+<div class="post-card">
+  <!-- Header -->
+  <div class="post-header">
+    <div class="author-section">
+      <div class="author-avatar-wrapper">
+        <img [src]="post.authorProfilePictureUrl || 'assets/default-avatar.png'" [alt]="post.authorName"
+          class="author-avatar">
+        <div class="status-indicator"></div>
+      </div>
+      <div class="author-text">
+        <h3 class="author-name">{{ post.authorName }}</h3>
+        <p class="author-specialization">{{ post.authorSpecialization }}</p>
+        <p class="author-meta">{{ post.createdAt | dateConverter }}</p>
+      </div>
+    </div>
+
+    <div class="header-actions">
+      <!-- <div class="more-menu-wrapper" (click)="toggleMenu($event)">
+        <button class="btn-more" [ngClass]="{ 'active': isMenuOpen() }">
+          <svg lucideEllipsisVertical></svg>
+        </button>
+
+        <div class="floating-menu" [ngClass]="{ 'active': isMenuOpen() }" (click)="$event.stopPropagation()">
+          <div class="menu-section">
+            <div class="menu-item">
+              <span class="menu-title"></span>
+              <svg></svg>
+            </div>
+            <div class="menu-item">
+              <span class="menu-title"></span>
+              <svg></svg>
+            </div>
+          </div>
+        </div>
+      </div> -->
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div class="post-body">
+    <div class="post-content">
+      {{ post.content }}
+      @if (post.content.length > 200) {
+      <span class="see-more">See more</span>
+      }
+    </div>
+
+    @if (post.mediaCount > 0) {
+    <div class="post-media">
+      <img [src]="post.firstMediaUrl" alt="Post media" class="media-image">
+      @if (post.mediaCount > 1) {
+      <div class="media-count-badge">
+        <span class="material-symbols-outlined">collections</span>
+        <span>+{{ post.mediaCount }} photos</span>
+      </div>
+      }
+    </div>
+    }
+
+    <!-- Hashtags -->
+    <div class="hashtags">
+      @for (tag of post.tags; track tag) {
+      <span class="hashtag">#{{ tag }}</span>
+      }
+    </div>
+  </div>
+
+  <!-- Engagement -->
+  <div class="post-engagement">
+    @if (isReactionMenuOpen()) {
+    <div class="reactions-container" (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()">
+      <app-reaction-icon [reactionType]="ReactionType.Like"
+        [ngClass]="{ 'current-reaction': isCurrentReaction(ReactionType.Like)}"
+        (click)="onReactionClick(ReactionType.Like)"></app-reaction-icon>
+      <app-reaction-icon [reactionType]="ReactionType.Love"
+        [ngClass]="{ 'current-reaction': isCurrentReaction(ReactionType.Love)}"
+        (click)="onReactionClick(ReactionType.Love)"></app-reaction-icon>
+      <app-reaction-icon [reactionType]="ReactionType.Support"
+        [ngClass]="{ 'current-reaction': isCurrentReaction(ReactionType.Support)}"
+        (click)="onReactionClick(ReactionType.Support)"></app-reaction-icon>
+      <app-reaction-icon [reactionType]="ReactionType.Haha"
+        [ngClass]="{ 'current-reaction': isCurrentReaction(ReactionType.Haha)}"
+        (click)="onReactionClick(ReactionType.Haha)"></app-reaction-icon>
+      <app-reaction-icon [reactionType]="ReactionType.Wow"
+        [ngClass]="{ 'current-reaction': isCurrentReaction(ReactionType.Wow)}"
+        (click)="onReactionClick(ReactionType.Wow)"></app-reaction-icon>
+      <app-reaction-icon [reactionType]="ReactionType.Sad"
+        [ngClass]="{ 'current-reaction': isCurrentReaction(ReactionType.Sad)}"
+        (click)="onReactionClick(ReactionType.Sad)"></app-reaction-icon>
+      <app-reaction-icon [reactionType]="ReactionType.Angry"
+        [ngClass]="{ 'current-reaction': isCurrentReaction(ReactionType.Angry)}"
+        (click)="onReactionClick(ReactionType.Angry)"></app-reaction-icon>
+      <app-reaction-icon [reactionType]="ReactionType.Disgust"
+        [ngClass]="{ 'current-reaction': isCurrentReaction(ReactionType.Disgust)}"
+        (click)="onReactionClick(ReactionType.Disgust)"></app-reaction-icon>
+    </div>
+    }
+
+    <div class="engagement-group">
+      <button class="engagement-btn post-like-btn" (touchstart)="onTouchStart($event)" (touchend)="onTouchEnd()"
+        (touchcancel)="onTouchEnd()" (contextmenu)="$event.preventDefault()" (click)="onLikeClick($event)"
+        (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()">
+        <app-reaction-icon [reactionType]="post.currentUserReactionType"></app-reaction-icon>
+        @if(post.currentUserReactionType === ReactionType.None){
+        <span class="reaction-count">{{ post.reactionsCount | number }}</span>
+        }
+        @else{
+        <span class="reaction-label">{{ reactionLabel | translate }}</span>
+        }
+      </button>
+      <button class="engagement-btn">
+        <span class="material-symbols-outlined">chat_bubble</span>
+        <span>{{ post.commentsCount }}</span>
+      </button>
+      <button class="engagement-btn">
+        <svg lucideSave></svg>
+        <span>{{ post.savesCount }}</span>
+      </button>
+    </div>
+
+    <div class="views-info">
+      <svg lucideTrendingUp></svg>
+      <span>{{ post.viewsCount | number }} VIEWS</span>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,100 @@
+<div [class]="'loader-container size-' + getSizeKey()">
+    @if(isCircle()){
+    <div class="circle-card">
+        <div class="circle-loader-wrapper">
+            <div class="loader-aura"></div>
+            <div class="ring ring-outer"></div>
+            <div class="ring ring-middle"></div>
+            <div class="ring ring-inner"></div>
+            <div class="core"></div>
+        </div>
+    </div>
+    }
+    @else if(isProfileLoader()){
+    <div class="profile-card-skeleton">
+        <div class="cover-placeholder"></div>
+        <div class="profile-header-content">
+            <div class="avatar-placeholder"></div>
+            <div class="skeleton-line name-line"></div>
+            <div class="skeleton-line username-line"></div>
+            <div class="skeleton-line spec-line"></div>
+
+            <div class="stats-row">
+                <div class="stat-item">
+                    <div class="skeleton-line stat-val"></div>
+                    <div class="skeleton-line stat-label"></div>
+                </div>
+                <div class="stat-item">
+                    <div class="skeleton-line stat-val"></div>
+                    <div class="skeleton-line stat-label"></div>
+                </div>
+                <div class="stat-item">
+                    <div class="skeleton-line stat-val"></div>
+                    <div class="skeleton-line stat-label"></div>
+                </div>
+            </div>
+
+            <div class="bio-content">
+                <div class="skeleton-line bio-line"></div>
+                <div class="skeleton-line bio-line"></div>
+                <div class="skeleton-line bio-line"></div>
+            </div>
+        </div>
+    </div>
+    }
+    @else if(isCommentLoader()){
+    <div class="comment-skeleton">
+        <div class="avatar-placeholder"></div>
+        <div class="comment-body">
+            <div class="comment-header">
+                <div class="skeleton-line name-line"></div>
+                <div class="skeleton-line spec-line"></div>
+            </div>
+            <div class="content-lines">
+                <div class="skeleton-line text-line"></div>
+                <div class="skeleton-line text-line"></div>
+                <div class="skeleton-line text-line short"></div>
+            </div>
+        </div>
+    </div>
+    }
+    @else if(isPostLoader()){
+    <div class="post-skeleton">
+        <div class="post-header">
+            <div class="avatar-placeholder"></div>
+            <div class="header-text-group">
+                <div class="skeleton-line name-line"></div>
+                <div class="skeleton-line spec-line"></div>
+            </div>
+        </div>
+
+        <div class="post-content">
+            <div class="skeleton-line content-line"></div>
+            <div class="skeleton-line content-line medium"></div>
+            <div class="skeleton-line content-line short"></div>
+            <div class="image-placeholder"></div>
+        </div>
+
+        <div class="post-footer">
+            <div class="footer-left">
+                <div class="tab-placeholder"></div>
+            </div>
+            <div class="footer-right">
+                <div class="tab-placeholder"></div>
+                <div class="tab-placeholder"></div>
+            </div>
+        </div>
+    </div>
+    }
+    @else if(isLine()){
+    <div class="line-loader">
+        <div style="position: relative;">
+            <div class="line-loader-wrapper">
+                <div class="line-loader-secondary"></div>
+                <div class="line-loader-progress"></div>
+                <div class="shimmer-sweep"></div>
+            </div>
+        </div>
+    </div>
+    }
+</div>

@@ -1,0 +1,35 @@
+<div class="communities-container">
+    <div class="header">
+        <h3>{{ "Communities.Trending" | translate | uppercase }}</h3>
+    </div>
+
+    <div class="trends-list">
+        @if (trendsCommunities$ | async; as communities) {
+        @for (community of communities; track community.id) {
+        <a [routerLink]="['/communities', community.id]" class="community-item">
+            <div class="community-info-wrapper">
+                <div class="community-icon-wrapper">
+                    <img class="community-image" [src]="community.logoUrl" [alt]="community.name">
+                </div>
+                <div class="community-info">
+                    <span class="community-name">{{ community.name }}</span>
+                    <span class="community-members">
+                        {{ community.membersCount | compactNumber }} {{'Communities.Members' | translate}}
+                    </span>
+                </div>
+            </div>
+            <div class="link-icon">
+                <svg lucideChevronRight></svg>
+            </div>
+        </a>
+        }
+        }
+    </div>
+
+    <div class="footer">
+        <a routerLink="/communities" class="explore-all">
+            <span>{{ "Shared.Buttons.Explore_All" | translate }}</span>
+            <svg lucideArrowRight></svg>
+        </a>
+    </div>
+</div>

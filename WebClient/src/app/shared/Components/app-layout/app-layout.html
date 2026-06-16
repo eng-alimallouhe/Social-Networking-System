@@ -1,0 +1,122 @@
+<nav class="d-nav">
+  <div class="brand">
+    <h1 class="logo">{{ 'App.Site_Name' | translate }}</h1>
+  </div>
+  <div class="nav-links">
+    <a [routerLink]="['/app/feed']" routerLinkActive="active" class="nav-link">
+      <svg lucideHouse></svg>
+      <span>{{ 'App.Layout.Home' | translate }}</span>
+    </a>
+    <a [routerLink]="['/app/search']" routerLinkActive="active" class="nav-link">
+      <svg lucideSearch></svg>
+      <span>{{ 'App.Layout.Search' | translate }}</span>
+    </a>
+    <a [routerLink]="['/app/qa']" routerLinkActive="active" class="nav-link">
+      <svg lucideMessageSquareCode></svg>
+      <span>{{ 'App.Layout.Forum' | translate }}</span>
+    </a>
+    <a [routerLink]="['/app/projects']" routerLinkActive="active" class="nav-link">
+      <svg lucideFolderKanban></svg>
+      <span>{{ 'App.Layout.Projects' | translate }}</span>
+    </a>
+  </div>
+  <div class="user-profile">
+    @if (isAuthenticated()) {
+    <img [src]="profile()?.profilePictureUrl" alt="profile">
+    }
+  </div>
+</nav>
+
+<div class="menu-conroller">
+  <div class="menu-button" [class.is-open]="isSidebarOpen()" (click)="toggleSidebar()">
+    <svg lucideMenu class="icon-menu"></svg>
+    <svg lucideX class="icon-close"></svg>
+  </div>
+  <div class="brand">
+    <h1 class="logo">{{ 'App.Site_Name' | translate }}</h1>
+  </div>
+  <div class="user-profile">
+    @if (isAuthenticated()) {
+    <img [src]="profile()?.profilePictureUrl" alt="profile">
+    }
+  </div>
+</div>
+<div class="overlay" [class.show-overlay]="isSidebarOpen()" (click)="toggleSidebar()"></div>
+
+<div [ngClass]="isSidebarOpen() ? 'menu-open' : ''" class="menu-wrapper">
+  <div class="menu-header">
+    <div class="user-profile">
+      @if(isAuthenticated()){
+      <div class="profile-picture-holder">
+        <img [src]="profile()?.profilePictureUrl" alt="profile">
+      </div>
+      <div class="user-info">
+        <h3>{{profile()?.fullName}}</h3>
+        <p>{{profile()?.specialization}}</p>
+      </div>
+      }
+      @else {
+      <div class="auth-links">
+        <a [routerLink]="['/auth/login']" class="login">
+          {{'App.Menu.Login' | translate}}
+        </a>
+        <a [routerLink]="['/auth/register']" class="register">
+          {{'App.Menu.Register' | translate}}
+        </a>
+      </div>
+      }
+    </div>
+  </div>
+  <div class="menu-links">
+    <a [routerLink]="['/app/feed']" (click)="toggleSidebarOnClick()" routerLinkActive="active" class="menu-link">
+      <svg lucideUsersRound></svg>
+      <span>{{ 'App.Menu.Community' | translate }}</span>
+    </a>
+    <a [routerLink]="['/app/search']" (click)="toggleSidebarOnClick()" routerLinkActive="active" class="menu-link">
+      <svg lucideBriefcase></svg>
+      <span>{{ 'App.Menu.Jobs' | translate }}</span>
+    </a>
+    <a [routerLink]="['/app/qa']" (click)="toggleSidebarOnClick()" routerLinkActive="active" class="menu-link">
+      <svg lucideMessageSquareCode></svg>
+      <span>{{ 'App.Menu.Content_Settings' | translate }}</span>
+    </a>
+    <a [routerLink]="['/app/projects']" (click)="toggleSidebarOnClick()" routerLinkActive="active" class="menu-link">
+      <svg lucideSettings></svg>
+      <span>{{ 'App.Menu.Account_Settings' | translate }}</span>
+    </a>
+  </div>
+</div>
+
+<main class="main-content">
+  <div class="content">
+    <router-outlet></router-outlet>
+    <app-toast-container></app-toast-container>
+  </div>
+</main>
+
+<nav class="m-nav">
+  <div class="nav-links">
+    <a [routerLink]="['/app/feed']" routerLinkActive="active" class="nav-link">
+      <svg lucideHouse></svg>
+      <span>{{ 'App.Layout.Home' | translate }}</span>
+    </a>
+    <a [routerLink]="['/app/search']" routerLinkActive="active" class="nav-link">
+      <svg lucideSearch></svg>
+      <span>{{ 'App.Layout.Search' | translate }}</span>
+    </a>
+    <a [routerLink]="['/app/qa']" routerLinkActive="active" class="nav-link">
+      <svg lucideMessageSquareCode></svg>
+      <span>{{ 'App.Layout.Forum' | translate }}</span>
+    </a>
+    <a [routerLink]="['/app/projects']" routerLinkActive="active" class="nav-link">
+      <svg lucideFolderKanban></svg>
+      <span>{{ 'App.Layout.Projects' | translate }}</span>
+    </a>
+    @if(isAuthenticated()){
+      <a [routerLink]="['/app/profile', profile()?.id]" routerLinkActive="active" class="nav-link">
+      <svg lucideSquareUser></svg>
+      <span>{{ 'App.Layout.Profile' | translate }}</span>
+    </a>
+  }
+</div>
+</nav>

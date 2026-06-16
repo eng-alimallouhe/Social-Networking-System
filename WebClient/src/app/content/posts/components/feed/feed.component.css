@@ -1,0 +1,209 @@
+.feed-container {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 1.5rem 1.5rem 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 2rem;
+    min-height: calc(100vh - var(--navbar-desktop-height, 70px));
+}
+
+.posts-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    max-width: 750px;
+    width: 100%;
+    animation: slideUp 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.posts-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    width: 100%;
+    max-width: 750px;
+}
+
+app-creation-hub{
+    width: 100%;
+    max-width: 750px;
+}
+
+.right-sidebar {
+    width: 350px;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    position: sticky;
+    top: calc(var(--navbar-desktop-height, 70px) + 1.5rem);
+    max-height: calc(100vh - var(--navbar-desktop-height, 70px) - 3rem);
+    overflow-y: auto;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;  /* IE/Edge */
+    padding-bottom: 1rem;
+}
+
+.right-sidebar::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+}
+
+/* Empty State Styling */
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 2rem;
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+    border: 1px solid var(--glass-border);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--glass-shadow);
+    text-align: center;
+    gap: 1.5rem;
+    margin-top: 1rem;
+    animation: fadeIn 0.8s ease-out;
+}
+
+.empty-icon {
+    width: 80px;
+    height: 80px;
+    background: var(--menu-active);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+}
+
+.empty-icon .material-icons {
+    font-size: 40px;
+}
+
+.empty-state h3 {
+    color: var(--primary-color);
+    font-size: var(--header-1);
+    font-weight: var(--font-weight-bold);
+    margin: 0;
+}
+
+.empty-state p {
+    color: var(--text-muted);
+    font-size: var(--text-base);
+    max-width: 320px;
+    line-height: 1.6;
+}
+
+.create-btn {
+    padding: 0.8rem 2.5rem;
+    background: var(--button-bg);
+    color: var(--button-text-color);
+    border: none;
+    border-radius: var(--border-radius-pill);
+    font-weight: var(--font-weight-semibold);
+    font-size: var(--text-base);
+    cursor: pointer;
+    transition: var(--transition-base);
+    box-shadow: var(--shadow-soft);
+    margin-top: 0.5rem;
+}
+
+.create-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+    filter: brightness(1.1);
+}
+
+.create-btn:active {
+    transform: translateY(-1px);
+}
+
+/* Footer Styling */
+.feed-footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 3rem 0;
+    gap: 1rem;
+}
+
+.end-of-feed {
+    color: var(--text-muted);
+    font-size: var(--text-sm);
+    font-weight: var(--font-weight-medium);
+    opacity: 0.6;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    width: 100%;
+}
+
+.end-of-feed::before,
+.end-of-feed::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(
+        to right, 
+        transparent, 
+        var(--border-color), 
+        transparent
+    );
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from { 
+        opacity: 0; 
+        transform: translateY(20px); 
+    }
+    to { 
+        opacity: 1; 
+        transform: translateY(0); 
+    }
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 1150px) {
+    .right-sidebar {
+        width: 300px;
+        gap: 1.5rem;
+    }
+}
+
+@media (max-width: 992px) {
+    .right-sidebar {
+        display: none;
+    }
+    
+    .feed-container {
+        padding: 1rem;
+    }
+    
+    .posts-container {
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 640px) {
+    .feed-container {
+        padding: 0.75rem;
+        gap: 1rem;
+    }
+    
+    .empty-state {
+        padding: 3rem 1.5rem;
+    }
+}

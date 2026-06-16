@@ -1,0 +1,36 @@
+<div class="feed-container">
+    <div class="posts-container">
+        @if (isAuthenticated()) {
+        <app-creation-hub></app-creation-hub>
+        }
+        @if (posts$ | async; as posts) {
+        @if (posts.length > 0){
+        <div class="posts-list">
+            @for (post of posts; track post.id) {
+            <app-post [post]="post" [profileId]="profileId()!" [appTrackVisibility]="post.id">
+            </app-post>
+            }
+        </div>
+        }
+        @else {
+        <div class="empty-state">
+            <div class="empty-icon">
+                <span class="material-icons">feed</span>
+            </div>
+            <h3>No posts yet</h3>
+            <p>Be the first to share something with the community!</p>
+            <button class="create-btn">Create Post</button>
+        </div>
+        }
+
+        <div class="feed-footer" *ngIf="posts.length > 0">
+            <div class="loading-spinner" *ngIf="false"></div>
+            <p class="end-of-feed">You're all caught up!</p>
+        </div>
+        }
+    </div>
+    <div class="right-sidebar">
+        <app-trends-communities></app-trends-communities>
+        <app-suggested-followings></app-suggested-followings>
+    </div>
+</div>

@@ -1,0 +1,157 @@
+[
+  {
+    "path": "/api/v1.0/identity/authentication/login",
+    "method": "POST",
+    "controller": "AuthenticationController",
+    "receivedData": [
+      { "name": "Identifier", "type": "string", "source": "body" },
+      { "name": "Password", "type": "string", "source": "body" }
+    ]
+  },
+  {
+    "path": "/api/v1.0/identity/authentication/logout",
+    "method": "POST",
+    "controller": "AuthenticationController",
+    "receivedData": [
+      { "name": "RefreshToken", "type": "string", "source": "body" }
+    ]
+  },
+  {
+    "path": "/api/v1.0/identity/registration/register",
+    "method": "POST",
+    "controller": "RegistrationController",
+    "receivedData": [
+      { "name": "Password", "type": "string", "source": "body" },
+      { "name": "PhoneNumber", "type": "string", "source": "body" }
+    ]
+  },
+  {
+    "path": "/api/v1.0/identity/registration/activate",
+    "method": "POST",
+    "controller": "RegistrationController",
+    "receivedData": [
+      { "name": "PhoneNumber", "type": "string", "source": "body" },
+      { "name": "Code", "type": "string", "source": "body" }
+    ]
+  },
+  {
+    "path": "/api/v1.0/identity/registration/resend-activation",
+    "method": "POST",
+    "controller": "RegistrationController",
+    "receivedData": [
+      { "name": "PhoneNumber", "type": "string", "source": "body" }
+    ]
+  },
+  {
+    "path": "/api/v1.0/identity/password/change",
+    "method": "POST",
+    "controller": "PasswordManagementController",
+    "receivedData": [
+      { "name": "UserId", "type": "Guid", "source": "body" },
+      { "name": "CurrentPassword", "type": "string", "source": "body" },
+      { "name": "NewPassword", "type": "string", "source": "body" }
+    ]
+  },
+  {
+    "path": "/api/v1.0/identity/password/forgot",
+    "method": "POST",
+    "controller": "PasswordManagementController",
+    "receivedData": [
+      { "name": "Identifier", "type": "string", "source": "body" }
+    ]
+  },
+  {
+    "path": "/api/v1.0/identity/password/reset",
+    "method": "POST",
+    "controller": "PasswordManagementController",
+    "receivedData": [
+      { "name": "Identifier", "type": "string", "source": "body" },
+      { "name": "Id", "type": "Guid", "source": "body" },
+      { "name": "NewPassword", "type": "string", "source": "body" }
+    ]
+  },
+  {
+    "path": "/api/v1.0/identity/password/verify-reset",
+    "method": "POST",
+    "controller": "PasswordManagementController",
+    "receivedData": [
+      { "name": "Identifier", "type": "string", "source": "body" },
+      { "name": "Code", "type": "string", "source": "body" }
+    ]
+  },
+  {
+    "path": "/api/v1.0/identity/twofactor/validate",
+    "method": "POST",
+    "controller": "TwoFactorController",
+    "receivedData": [
+      { "name": "UserIdentifier", "type": "string", "source": "body" },
+      { "name": "Code", "type": "string", "source": "body" }
+    ]
+  },
+  {
+    "path": "/api/v1.0/identity/twofactor/resend",
+    "method": "POST",
+    "controller": "TwoFactorController",
+    "receivedData": [
+      { "name": "UserIdentifier", "type": "string", "source": "body" }
+    ]
+  },
+  {
+    "path": "/api/v1.0/identity/recovery/security-code",
+    "method": "POST",
+    "controller": "AccountRecoveryController",
+    "receivedData": [
+      { "name": "SecurityCode", "type": "string", "source": "body" }
+    ]
+  },
+  {
+    "path": "/api/v1.0/identity/identifier/initiate-change",
+    "method": "POST",
+    "controller": "IdentifierUpdatesController",
+    "receivedData": [
+      { "name": "UserIdentifier", "type": "string", "source": "body" }
+    ]
+  },
+  {
+    "path": "/api/v1.0/identity/identifier/verify-change",
+    "method": "POST",
+    "controller": "IdentifierUpdatesController",
+    "receivedData": [
+      { "name": "UserId", "type": "Guid", "source": "body" },
+      { "name": "PendingUpdateId", "type": "Guid", "source": "body" },
+      { "name": "UserIdentifier", "type": "string", "source": "body" },
+      { "name": "Code", "type": "string", "source": "body" }
+    ]
+  },
+  {
+    "path": "/api/v1.0/identity/support/initiate-phone-change",
+    "method": "POST",
+    "controller": "SupportActionsController",
+    "receivedData": [
+      { "name": "UserId", "type": "Guid", "source": "body" },
+      { "name": "PhoneNumber", "type": "string", "source": "body" },
+      { "name": "RedirectUrl", "type": "string", "source": "body" }
+    ]
+  },
+  {
+    "path": "/api/v1.0/identity/support/verify-phone-change",
+    "method": "POST",
+    "controller": "SupportActionsController",
+    "receivedData": [
+      { "name": "PendingUpdateId", "type": "Guid", "source": "body" },
+      { "name": "UserId", "type": "Guid", "source": "body" },
+      { "name": "PhoneNumber", "type": "string", "source": "body" },
+      { "name": "Code", "type": "string", "source": "body" }
+    ]
+  },
+  {
+    "path": "/api/v1.0/identity/support/resend-code",
+    "method": "POST",
+    "controller": "SupportActionsController",
+    "receivedData": [
+      { "name": "PendingUpdateId", "type": "Guid", "source": "body" },
+      { "name": "NewIdentifier", "type": "string", "source": "body" },
+      { "name": "UserId", "type": "Guid", "source": "body" }
+    ]
+  }
+]

@@ -1,0 +1,20 @@
+[
+    {
+        "id": "1",
+        "fullName": "Dr. Sarah Wilson",
+        "profilePictureUrl": "https://i.pravatar.cc/150?u=sarah",
+        "specialization": "Software Architect"
+    },
+    {
+        "id": "2",
+        "fullName": "James Rodriguez",
+        "profilePictureUrl": "https://i.pravatar.cc/150?u=james",
+        "specialization": "UI/UX Designer"
+    },
+    {
+        "id": "3",
+        "fullName": "Amina Mansour",
+        "profilePictureUrl": "https://i.pravatar.cc/150?u=amina",
+        "specialization": "Frontend Developer"
+    }
+]

@@ -1,34 +1,51 @@
-using SNS.Domain.Abstractions.Common;
-using SNS.Domain.Common.Helpers;
+using SNS.Domain.Shared.Abstractions.IDeletable;
+using SNS.Domain.Shared.Helpers;
+using SNS.Shared.Exceptions;
 
-namespace SNS.Domain.Education.Entities;
+namespace SNS.Domain.Educations.Entities;
 
 public class University : ISoftDeletable
 {
     // Primary Key
-    public Guid Id { get; set; }
+    public Guid Id { get; private set; }
 
     // Properties
-    public string Name { get; set; } = string.Empty;
-    public string Country { get; set; } = string.Empty;
-    public string City { get; set; } = string.Empty;
+    public string Name { get; private set; } = string.Empty;
+    public string Country { get; private set; } = string.Empty;
+    public string City { get; private set; } = string.Empty;
 
     // Timestamp
-    public DateTime CreatedAt { get; set; }
-    public DateTime UpdatedAt { get; set; }
+    public DateTime CreatedAt { get; private set; }
+    public DateTime UpdatedAt { get; private set; }
 
     // Soft Delete
-    public bool IsActive { get; set; }
+    public bool IsActive { get; private set; }
 
-    // Navigation Properties
-    public ICollection<Faculty> Faculties { get; set; } = new List<Faculty>();
-    public ICollection<FacultyRequest> FacultyRequests { get; set; } = new List<FacultyRequest>();
 
-    public University()
+    private University()
     {
         Id = SequentialGuid.GenerateSequentialGuid();
         CreatedAt = DateTime.UtcNow;
         UpdatedAt = DateTime.UtcNow;
         IsActive = true;
+    }
+
+    public static University Create(string name, string country, string city)
+    {
+        return new University
+        {
+            Name = name,
+            Country = country,
+            City = city
+        };
+    }
+
+    public void SoftDelete()
+    {
+        if (IsActive)
+        {
+            throw new DomainException("University cannot be deleted because it is active.");
+        }
+        IsActive = false;
     }
 }

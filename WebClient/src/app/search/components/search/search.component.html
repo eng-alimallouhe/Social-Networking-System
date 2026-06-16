@@ -1,0 +1,99 @@
+<div class="search-page-container">
+  <!-- Hero Section -->
+  <header class="search-hero">
+    <div class="search-input-wrapper">
+      <input type="text" placeholder="Type here your search..." class="main-search-input">
+      <button class="btn-search-primary">
+        <span>Search</span>
+        <svg lucideSearch class="search-icon"></svg>
+      </button>
+    </div>
+  </header>
+  <!-- Filter Bar -->
+  <nav class="filter-bar">
+    <div class="filters-categories-container">
+      @for (cat of categories; track cat) {
+      <button class="filter-pill" [class.active]="activeCategory() === cat" (click)="setCategory(cat)">
+        {{ 'Search.Categories.' + cat | translate }}
+      </button>
+      }
+    </div>
+    <div class="filters-panal">
+      <button class="filters-button" [class.active]="isFiltersPanalOpen()" (click)="toggleFilters()">
+        @if (isFiltersPanalOpen()) {
+        <svg lucideX></svg>
+        } @else {
+        <svg lucideListFilter></svg>
+        }
+      </button>
+      
+      @if (isFiltersPanalOpen()) {
+      <div class="filter-overlay-backdrop" (click)="toggleFilters()"></div>
+      }
+
+      <div class="filters-container" [class.open]="isFiltersPanalOpen()">
+        @if (activeCategory() == categories[0]) {
+        } @else if (activeCategory() == categories[1]) {
+        <app-profile-filters></app-profile-filters>
+        } @else if (activeCategory() == categories[2]) {
+        <app-posts-filters></app-posts-filters>
+        } @else if (activeCategory() == categories[3]) {
+        <app-projects-filters></app-projects-filters>
+        } @else if (activeCategory() == categories[4]) {
+        <app-communities-filters></app-communities-filters>
+        } @else if (activeCategory() == categories[5]) {
+        <app-jobs-filters></app-jobs-filters>
+        } @else if (activeCategory() == categories[6]) {
+        <app-problems-filters></app-problems-filters>
+        }
+      </div>
+    </div>
+  </nav>
+
+
+  <!-- Results Section -->
+  <div class="results-grid">
+    <!-- Empty for backend results -->
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Related Searches Footer -->
+  <footer class="related-searches">
+    <div class="related-section">
+      <div class="section-title">
+        <svg lucideHistory></svg>
+        <h5>Recent Searches</h5>
+      </div>
+      <ul>
+        @for (search of recentSearches; track search) {
+        <li>{{ search }}</li>
+        }
+      </ul>
+    </div>
+
+    <div class="related-section">
+      <div class="section-title">
+        <svg lucideTrendingUp></svg>
+        <h5>Trending Topics</h5>
+      </div>
+      <ul>
+        @for (topic of trendingTopics; track topic) {
+        <li>{{ topic }}</li>
+        }
+      </ul>
+    </div>
+
+    <div class="related-section">
+      <div class="section-title">
+        <svg lucideLightbulb></svg>
+        <h5>Suggested for You</h5>
+      </div>
+      <ul>
+        @for (suggest of suggestedForYou; track suggest) {
+        <li>{{ suggest }}</li>
+        }
+      </ul>
+    </div>
+  </footer>
+</div>

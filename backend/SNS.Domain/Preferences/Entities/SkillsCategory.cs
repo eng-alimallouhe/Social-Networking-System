@@ -1,25 +1,42 @@
-﻿using SNS.Domain.Abstractions.Common;
-using SNS.Domain.Common.Helpers;
+using SNS.Domain.Shared.Abstractions.IDeletable;
+using SNS.Domain.Shared.Helpers;
 
 namespace SNS.Domain.Preferences.Entities;
 
 public class SkillsCategory : ISoftDeletable
 {
     // Primary Key
-    public Guid Id { get; set; }
+    public Guid Id { get; private set; }
 
-    public string Name { get; set; } = default!;
-    public string? Description { get; set; }
+    public string Name { get; private set; } = default!;
+    public string? Description { get; private set; }
     
     // Soft Delete
-    public bool IsActive { get; set; } 
+    public bool IsActive { get; private set; } 
 
     // Navigation
-    public ICollection<Skill> Skills { get; set; } = new List<Skill>();
+    public ICollection<Skill> Skills { get; private set; } = new List<Skill>();
 
-    public SkillsCategory()
+    private SkillsCategory()
     {
         Id = SequentialGuid.GenerateSequentialGuid();
         IsActive = true;
+    }
+
+    public static SkillsCategory Create(string name, string? description)
+    {
+        return new SkillsCategory
+        {
+            Name = name,
+            Description = description
+        };
+    }
+
+    public void SoftDelete()
+    {
+        if (IsActive)
+        {
+            IsActive = false;
+        }
     }
 }

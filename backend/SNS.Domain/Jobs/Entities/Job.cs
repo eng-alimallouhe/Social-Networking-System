@@ -1,6 +1,6 @@
-using SNS.Domain.Common.Helpers;
-using SNS.Domain.Abstractions.Common;
 using SNS.Domain.QA.Enums;
+using SNS.Domain.Shared.Abstractions.IDeletable;
+using SNS.Domain.Shared.Helpers;
 
 namespace SNS.Domain.Jobs.Entities;
 
@@ -8,37 +8,64 @@ namespace SNS.Domain.Jobs.Entities;
 public class Job : ISoftDeletable
 {
     // Primary Key
-    public Guid Id { get; set; }
+    public Guid Id { get; private set; }
 
     // Foreign Key: One(Profile) ? Many(Jobs)
-    public Guid OwnerId { get; set; }
+    public Guid CompanyId { get; private set; }
 
-    public string Title { get; set; } = string.Empty;
-    public string Description { get; set; } = string.Empty;
-    public string Company { get; set; } = string.Empty;
-    public string Location { get; set; } = string.Empty;
-    public JobType Type { get; set; }
-    public decimal MinSalary { get; set; }
-    public decimal MaxSalary { get; set; }
-    public string CurrencyCode { get; set; } = string.Empty;
-    public SalaryTyp SalaryType { get; set; }
-    public string KeyResponsibilitiesText { get; set; } = string.Empty;
+    public string Title { get; private set; } = string.Empty;
+    public string Description { get; private set; } = string.Empty;
+    public string Location { get; private set; } = string.Empty;
+    public JobType Type { get; private set; }
+    public decimal MinSalary { get; private set; }
+    public decimal MaxSalary { get; private set; }
+    public string CurrencyCode { get; private set; } = string.Empty;
+    public SalaryTyp SalaryType { get; private set; }
+    public string KeyResponsibilitiesText { get; private set; } = string.Empty;
 
     //Timestamp
-    public DateTime CreatedAt { get; set; }
-    public DateTime? ClosedAt { get; set; }
+    public DateTime CreatedAt { get; private set; }
+    public DateTime? ClosedAt { get; private set; }
 
     //Soft Delete
-    public bool IsActive { get; set; }
+    public bool IsActive { get; private set; }
 
     //Navigation Properties
-    public ICollection<JobApplication> Applications { get; set; } = new List<JobApplication>();
-    public ICollection<JobSkill> JobSkills { get; set; } = new List<JobSkill>();
+    public Company Company { get; private set; } = null!;
+    public ICollection<JobApplication> Applications { get; private set; } = new List<JobApplication>();
+    public ICollection<JobSkill> JobSkills { get; private set; } = new List<JobSkill>();
 
-    public Job()
+    private Job()
     {
         Id = SequentialGuid.GenerateSequentialGuid();
         CreatedAt = DateTime.UtcNow;
+    }
+
+    public static Job Create(string title, string description, Guid companyId, string location, JobType type,
+     decimal minSalary, decimal maxSalary, string currencyCode, SalaryTyp salaryType, string keyResponsibilitiesText)
+    {
+        return new Job
+        {
+            Title = title,
+            Description = description,
+            Location = location,
+            Type = type,
+            CompanyId = companyId,
+            MinSalary = minSalary,
+            MaxSalary = maxSalary,
+            CurrencyCode = currencyCode,
+            SalaryType = salaryType,
+            KeyResponsibilitiesText = keyResponsibilitiesText
+        };
+    }
+
+    public void SoftDelete()
+    {
+        if (IsActive)
+        {
+            IsActive = false;
+            ClosedAt = DateTime.UtcNow;
+        }
     }
 }
 

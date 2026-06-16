@@ -1,4 +1,4 @@
-﻿namespace SNS.Domain.QA.Enums;
+namespace SNS.Domain.QA.Enums;
 
 public enum ApplicationStatus
 {
