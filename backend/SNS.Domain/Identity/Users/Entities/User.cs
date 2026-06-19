@@ -44,7 +44,6 @@ public class User : Entity, IHardDeletable
     public bool IsVerified { get; private set; }
     public bool PurgeAllContentOnHardDelete { get; private set; }
 
-
     // Security Code
     public DateTime CodeCreatedAt { get; private set; }
 
@@ -192,7 +191,23 @@ public class User : Entity, IHardDeletable
         this.FailedLoginAttempts++;
     }
 
+    public void SetPurgeAllContentOnHardDelete()
+    {
+        if (this.PurgeAllContentOnHardDelete)
+        {
+            throw new DomainException("user already used this behivior!");
+        } 
+        this.PurgeAllContentOnHardDelete = true;
+    }
 
+    public void UnSetPurgeAllContentOnHardDelete()
+    {
+        if (!this.PurgeAllContentOnHardDelete)
+        {
+            throw new DomainException("user already used this behivior!");
+        }
+        this.PurgeAllContentOnHardDelete = false;
+    }
 
     public void ChangePreferredLanguage(SupportedLanguage language)
     {

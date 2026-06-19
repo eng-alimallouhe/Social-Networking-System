@@ -37,7 +37,7 @@ public class ProblemVoteConfigurations :
                .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasOne<Profile>()
-               .WithMany()
+               .WithMany(p => p.ProblemVotes)
                .HasForeignKey(pv => pv.VoterId)
                .IsRequired()
                .OnDelete(DeleteBehavior.Cascade);

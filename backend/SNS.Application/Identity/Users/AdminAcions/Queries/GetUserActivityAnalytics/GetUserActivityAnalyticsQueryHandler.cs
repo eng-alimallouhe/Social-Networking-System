@@ -6,11 +6,6 @@ using SNS.Domain.Projects.Enums;
 using SNS.Shared.Results;
 using SNS.Shared.StatusCodes;
 using SNS.Shared.StatusCodes.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace SNS.Application.Identity.Users.AdminAcions.Queries.GetUserActivityAnalytics;
 

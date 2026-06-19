@@ -3,9 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using SNS.Application.Abstractions.Common;
 using SNS.Application.Abstractions.Messaging;
 using SNS.Application.Identity.Shared.Abstractions;
-using SNS.Application.Identity.Shared.DTOs.Users;
 using SNS.Application.Identity.Shared.DTOs.VerificationCodes;
-using SNS.Application.Shared.Abstractions.Data;
 using SNS.Domain.Identity.Shared.Enums;
 using SNS.Domain.Identity.Users.Entities;
 using SNS.Domain.Identity.Users.Specifications;
@@ -22,6 +20,7 @@ public sealed class BeginUserDeactivationCommandHandler :
     private readonly IUnitOfWork _unitOfWork;
     private readonly IRepository<User> _userRepo;
     private readonly ICodeService _codeService;
+    private readonly IRepository<User> _userRepo;
     private readonly IUrlGeneratorService _urlGeneratorService;
     private readonly ICurrentUserService _currentUserService;
     private readonly IGeneratorService _generatorService;
@@ -30,6 +29,7 @@ public sealed class BeginUserDeactivationCommandHandler :
         IUnitOfWork unitOfWork,
         IRepository<User> userRepo,
         ICodeService codeService,
+        IRepository<User> userRepo,
         IGeneratorService generatorService,
         IUrlGeneratorService urlGeneratorService,
         ICurrentUserService currentUserService)
@@ -37,6 +37,7 @@ public sealed class BeginUserDeactivationCommandHandler :
         _unitOfWork = unitOfWork;
         _userRepo = userRepo;
         _generatorService = generatorService;
+        _userRepo = userRepo;
         _codeService = codeService;
         _urlGeneratorService = urlGeneratorService;
         _currentUserService = currentUserService;
@@ -87,6 +88,10 @@ public sealed class BeginUserDeactivationCommandHandler :
         {
             return Result<BeginUserDeactivationResponse>.Failure(sendResult.StatusCode);
         }
+
+        user.SetPurgeAllContentOnHardDelete();
+
+        await _unitOfWork.CompleteAsync(cancellationToken);
 
         return Result<BeginUserDeactivationResponse>.Success(
             new BeginUserDeactivationResponse(

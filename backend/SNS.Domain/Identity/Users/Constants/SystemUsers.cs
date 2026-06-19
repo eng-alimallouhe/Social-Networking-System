@@ -17,4 +17,6 @@ public static class SystemProfiles
 public static class SystemRoles
 {
     public static readonly Guid GhostRoleId = Guid.Parse("00000000-0000-0000-0000-000000000001");
+    public static readonly Guid GhostProfileId = Guid.Parse("00000000-0000-0000-0000-000000000001");
+    public static readonly string GhostProfilePicture = "";
 }
