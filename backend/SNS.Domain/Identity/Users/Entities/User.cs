@@ -2,6 +2,7 @@ using SNS.Domain.Identity.ArchiveManagement.Entities;
 using SNS.Domain.Identity.Notifications.Entities;
 using SNS.Domain.Identity.SecuritySessions.Entities;
 using SNS.Domain.Identity.SecuritySettings.Entities;
+using SNS.Domain.Identity.Users.Constants;
 using SNS.Domain.Identity.Users.Enums;
 using SNS.Domain.Profiles.Profiles.Entities;
 using SNS.Domain.Shared.Abstractions.IDeletable;
@@ -41,6 +42,7 @@ public class User : Entity, IHardDeletable
 
     // Soft Delete
     public bool IsVerified { get; private set; }
+    public bool PurgeAllContentOnHardDelete { get; private set; }
 
 
     // Security Code
@@ -72,6 +74,7 @@ public class User : Entity, IHardDeletable
         CodeCreatedAt = DateTime.UtcNow;
         Status = UserStatus.Active;
         DeactivatedAt = null;
+        PurgeAllContentOnHardDelete = false;
     }
 
 
@@ -83,6 +86,21 @@ public class User : Entity, IHardDeletable
         entity.Email = email;
         entity.PasswordHash = passwordHash;
         return entity;
+    }
+    
+    public static User CreateDefaultUser()
+    {
+        var user = new User();
+
+        user.Id = SystemUsers.GhostUserId;
+        user.RoleId = SystemRoles.GhostRoleId;
+        user.CreatedAt = new DateTime(1, 1, 1);
+        user.UpdatedAt = new DateTime(1, 1, 1);
+        user.LastLogIn = new DateTime(1, 1, 1);
+        user.LastPasswordChange = new DateTime(1, 1, 1);
+        user.CodeCreatedAt = new DateTime(1, 1, 1);
+        
+        return user;
     }
 
     public void ChangePassword(string hashedPassword)
@@ -96,10 +114,14 @@ public class User : Entity, IHardDeletable
         this.RoleId = newRoleId;
     }
 
+    public void ChangeUserName(string newUserName) { this.UserName = newUserName; }
+
     public void ChangeEmail(string email)
     {
         this.Email = email;
     }
+
+    public void ChangeUserPreferredLanguage(SupportedLanguage language) { this.PreferredLanguage = language; }
 
     public void SetSecuritySettings(UserSecuritySettings settings)
     {

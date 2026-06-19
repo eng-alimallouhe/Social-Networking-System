@@ -4,5 +4,6 @@ public enum UpdateType
 {
     Email, 
     Password,
-    Register
+    Register,
+    RecoveryEmail
 }

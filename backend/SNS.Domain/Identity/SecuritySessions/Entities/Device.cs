@@ -1,5 +1,6 @@
 using SNS.Domain.Shared.Abstractions.IDeletable;
 using SNS.Domain.Shared.Entities;
+using SNS.Domain.Shared.Enums;
 using SNS.Domain.Shared.Helpers;
 
 namespace SNS.Domain.Identity.SecuritySessions.Entities;
@@ -10,9 +11,7 @@ public class Device: Entity, IHardDeletable
     public Guid UserId { get; private set; }
 
     public string DeviceToken { get; private set; } = string.Empty;
-
     public string FriendlyName { get; private set; } = string.Empty;
-    
     public string Browser { get; private set; } = string.Empty; 
     public string OperatingSystem { get; private set; } = string.Empty;
 

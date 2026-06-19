@@ -52,7 +52,7 @@ namespace SNS.Infrastructure.Projects.Configurations
                    .WithMany()
                    .HasForeignKey(pv => pv.ViewerId)
                    .IsRequired()
-                   .OnDelete(DeleteBehavior.Restrict);
+                   .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

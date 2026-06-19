@@ -1,3 +1,4 @@
+using SNS.Domain.Identity.Users.Constants;
 using SNS.Domain.Identity.Users.Enums;
 using SNS.Domain.Shared.Abstractions.IDeletable;
 using SNS.Domain.Shared.Entities;
@@ -25,6 +26,16 @@ public class Role : Entity, ISoftDeletable
     {
         var entity = new Role();
         entity.Type = type;
+        return entity;
+    }
+
+    public static Role CreateDefaultRole()
+    {
+        var entity = new Role();
+
+        entity.Id = SystemRoles.GhostRoleId;
+        entity.Type = RoleType.Ghost;
+
         return entity;
     }
 

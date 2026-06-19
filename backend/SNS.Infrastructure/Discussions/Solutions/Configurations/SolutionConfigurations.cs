@@ -28,7 +28,7 @@ public class SolutionConfigurations :
                .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasOne<Profile>()
-               .WithMany(p => p.Solutions) 
+               .WithMany() 
                .HasForeignKey(s => s.AuthorId)
                .IsRequired()
                .OnDelete(DeleteBehavior.Restrict);

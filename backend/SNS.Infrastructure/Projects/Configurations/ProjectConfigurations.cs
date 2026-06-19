@@ -57,7 +57,7 @@ public class ProjectConfigurations :
 
         // Relationships
         builder.HasOne<Profile>()
-               .WithMany(p => p.Projects)
+               .WithMany()
                .HasForeignKey(p => p.OwnerId)
                .IsRequired()
                .OnDelete(DeleteBehavior.Restrict);

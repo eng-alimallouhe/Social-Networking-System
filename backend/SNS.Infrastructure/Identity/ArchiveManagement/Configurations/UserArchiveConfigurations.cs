@@ -30,7 +30,7 @@ namespace SNS.Infrastructure.Identity.ArchiveManagement.Configurations
                    .WithMany(u => u.ActionPerformed)
                    .HasForeignKey(ua => ua.PerformedById)
                    .IsRequired(false)
-                   .OnDelete(DeleteBehavior.Restrict);
+                   .OnDelete(DeleteBehavior.SetNull);
         }
     }
 }

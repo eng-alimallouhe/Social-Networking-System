@@ -31,6 +31,6 @@ public class UserSecuritySettingsConfiguration : IEntityTypeConfiguration<UserSe
         builder.HasOne<User>()
             .WithOne(u => u.UserSecuritySettings)
             .HasForeignKey<UserSecuritySettings>(x => x.UserId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

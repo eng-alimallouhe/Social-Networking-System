@@ -51,10 +51,6 @@ public sealed record GetProfileByIdQueryHandler : IQueryHandler<GetProfileByIdQu
         p.Followers.Count(),
         p.Followings.Count(),
         p.Vieweds.Count(),
-        p.Projects.Count(proj => proj.OwnerId == p.Id),             
-        p.ProjectContributors.Count(pr => pr.ContributorId == p.Id),
-        p.Solutions.Count(s => s.AuthorId == p.Id),                 
-        p.Problems.Count(pr => pr.AuthorId == p.Id),                
         p.ProfileSkills.Select(ps => new ProfileSkillDto(
             ps.Id,
             ps.SkillId,

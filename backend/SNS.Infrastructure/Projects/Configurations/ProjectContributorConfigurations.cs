@@ -38,7 +38,7 @@ public class ProjectContributorConfigurations :
                .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasOne(pc => pc.Contributor)
-               .WithMany(p => p.ProjectContributors)
+               .WithMany()
                .HasForeignKey(pc => pc.ContributorId)
                .IsRequired()
                .OnDelete(DeleteBehavior.Restrict);

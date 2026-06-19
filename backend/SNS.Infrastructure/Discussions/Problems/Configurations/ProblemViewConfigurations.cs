@@ -48,6 +48,6 @@ public class ProblemViewConfigurations :
                .WithMany()
                .HasForeignKey(pv => pv.ViewerId)
                .IsRequired()
-               .OnDelete(DeleteBehavior.Restrict);
+               .OnDelete(DeleteBehavior.Cascade);
     }
 }

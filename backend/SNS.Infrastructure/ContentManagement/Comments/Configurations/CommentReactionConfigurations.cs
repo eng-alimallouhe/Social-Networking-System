@@ -37,6 +37,6 @@ public class CommentReactionConfigurations :
                .WithMany()
                .HasForeignKey(cr => cr.ReactorId)
                .IsRequired()
-               .OnDelete(DeleteBehavior.Restrict);
+               .OnDelete(DeleteBehavior.Cascade);
     }
 }

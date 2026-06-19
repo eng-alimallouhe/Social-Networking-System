@@ -29,12 +29,12 @@ public class ProfileViewConfigurations :
                .WithMany(p => p.Views) 
                .HasForeignKey(pv => pv.ViewerId)
                .IsRequired()
-               .OnDelete(DeleteBehavior.Restrict);
+               .OnDelete(DeleteBehavior.NoAction);
 
         builder.HasOne<Profile>()
                .WithMany(p => p.Vieweds) 
                .HasForeignKey(pv => pv.ViewedId)
                .IsRequired()
-               .OnDelete(DeleteBehavior.Restrict);
+               .OnDelete(DeleteBehavior.Cascade);
     }
 }

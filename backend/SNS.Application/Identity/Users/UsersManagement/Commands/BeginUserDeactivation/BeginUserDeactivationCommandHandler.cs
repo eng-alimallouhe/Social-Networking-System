@@ -1,3 +1,4 @@
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using SNS.Application.Abstractions.Common;
 using SNS.Application.Abstractions.Messaging;
@@ -6,6 +7,9 @@ using SNS.Application.Identity.Shared.DTOs.Users;
 using SNS.Application.Identity.Shared.DTOs.VerificationCodes;
 using SNS.Application.Shared.Abstractions.Data;
 using SNS.Domain.Identity.Shared.Enums;
+using SNS.Domain.Identity.Users.Entities;
+using SNS.Domain.Identity.Users.Specifications;
+using SNS.Domain.Shared.Abstractions.Repositories;
 using SNS.Shared.Results;
 using SNS.Shared.StatusCodes;
 using SNS.Shared.StatusCodes.Identity;
@@ -15,20 +19,23 @@ namespace SNS.Application.Identity.Users.UsersManagement.Commands.BeginUserDeact
 public sealed class BeginUserDeactivationCommandHandler :
     ICommandHandler<BeginUserDeactivationCommand, BeginUserDeactivationResponse>
 {
-    private readonly IApplicationDbContext _dbContext;
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly IRepository<User> _userRepo;
     private readonly ICodeService _codeService;
     private readonly IUrlGeneratorService _urlGeneratorService;
     private readonly ICurrentUserService _currentUserService;
     private readonly IGeneratorService _generatorService;
 
     public BeginUserDeactivationCommandHandler(
-        IApplicationDbContext dbContext,
+        IUnitOfWork unitOfWork,
+        IRepository<User> userRepo,
         ICodeService codeService,
         IGeneratorService generatorService,
         IUrlGeneratorService urlGeneratorService,
         ICurrentUserService currentUserService)
     {
-        _dbContext = dbContext;
+        _unitOfWork = unitOfWork;
+        _userRepo = userRepo;
         _generatorService = generatorService;
         _codeService = codeService;
         _urlGeneratorService = urlGeneratorService;
@@ -44,17 +51,10 @@ public sealed class BeginUserDeactivationCommandHandler :
             return Result<BeginUserDeactivationResponse>.Failure(OperationStatusCode.AuthenticationRequired);
         }
 
-        var user = await _dbContext.Users
-            .Where(u => u.Id == userId)
-            .Select(u => new UserBaseDto(
-                Id: u.Id,
-                UserName: u.UserName,
-                DefaultCommunicationMethod: u.UserSecuritySettings.DefaultCommunicationMethod,
-                PreferredLanguage: u.PreferredLanguage,
-                RecoveryEmail: u.UserSecuritySettings.RecoveryEmail,
-                Email: u.Email))
-            .FirstOrDefaultAsync(cancellationToken);
+        var spec  = new UserWithRoleAndSettingsSpecification(userId.Value);
 
+        var user = await _userRepo.GetSingleAsync(spec, cancellationToken);
+            
         if (user == null)
         {
             return Result<BeginUserDeactivationResponse>.Failure(UserStatusCodes.NotFound);
@@ -64,9 +64,9 @@ public sealed class BeginUserDeactivationCommandHandler :
 
         var redirectUrl = _urlGeneratorService.GenerateUserDeletingUrl(userId: user.Id, token: token);
 
-        var recipientAddress = user.DefaultCommunicationMethod switch
+        var recipientAddress = user.UserSecuritySettings.DefaultCommunicationMethod switch
         {
-            CommunicationMethod.RecoveryEmail => user.RecoveryEmail!,
+            CommunicationMethod.RecoveryEmail => user.UserSecuritySettings.RecoveryEmail!,
             CommunicationMethod.Email => user.Email,
             _ => user.Email
         };
@@ -76,7 +76,7 @@ public sealed class BeginUserDeactivationCommandHandler :
             UserName: user.UserName,
             RecipientAddress: recipientAddress,
             Purpose: SendPurpose.UserDeleting,
-            SendMethod: user.DefaultCommunicationMethod,
+            SendMethod: user.UserSecuritySettings.DefaultCommunicationMethod,
             SendLanguage: user.PreferredLanguage,
             RedirectUrl: redirectUrl,
             Token: token);

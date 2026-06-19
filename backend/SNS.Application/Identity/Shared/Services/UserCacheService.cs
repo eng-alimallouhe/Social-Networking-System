@@ -8,6 +8,7 @@ using SNS.Domain.Shared.Abstractions.Repositories;
 using SNS.Shared.Results;
 using SNS.Shared.StatusCodes;
 using Microsoft.EntityFrameworkCore;
+using System.Net.NetworkInformation;
 
 
 namespace SNS.Application.Identity.Shared.Services;
@@ -93,6 +94,13 @@ public class UserCacheService : IUserCacheService
             return Result.Failure(OperationStatusCode.InvalidInput);
         }
 
+        return Result.Success(OperationStatusCode.Success);
+    }
+
+    public async Task<Result> CompleteUserActivationChanlageAsync(Guid userId, CancellationToken cancellationToken = default)
+    {
+        var key = _identityCacheKeyFactory.GetUserActivationChanlageKey(userId);
+        await _cacheService.RemoveAsync(key, cancellationToken);
         return Result.Success(OperationStatusCode.Success);
     }
 }

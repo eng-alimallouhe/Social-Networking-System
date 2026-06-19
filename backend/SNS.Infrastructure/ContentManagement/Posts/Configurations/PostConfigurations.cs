@@ -10,7 +10,7 @@ public class PostConfigurations : IEntityTypeConfiguration<Post>
 {
     public void Configure(EntityTypeBuilder<Post> builder)
     {
-        builder.ToTable("ContentManagement", "ContentManagement");
+        builder.ToTable("Posts", "ContentManagement");
 
         builder.HasKey(p => p.Id);
 
@@ -43,6 +43,6 @@ public class PostConfigurations : IEntityTypeConfiguration<Post>
                .WithMany() 
                .HasForeignKey(p => p.CommunityId)
                .IsRequired(false)
-               .OnDelete(DeleteBehavior.SetNull);
+               .OnDelete(DeleteBehavior.Cascade);
     }
 }

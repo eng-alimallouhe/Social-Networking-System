@@ -20,9 +20,9 @@ using SNS.Shared.Results;
 using SNS.Shared.StatusCodes;
 using SNS.Shared.StatusCodes.Identity;
 
-namespace SNS.Application.Identity.Users.UsersManagement.Commands.ActivateUser;
+namespace SNS.Application.Identity.Users.UsersManagement.Commands.CancelUserDeactivationRequest;
 
-public sealed class ActivateUserCommandHandler : ICommandHandler<ActivateUserCommand, AuthTokensDto>
+public sealed class CancelUserDeactivationRequestCommandHandler : ICommandHandler<CancelUserDeactivationRequestCommand, AuthTokensDto>
 {
     private readonly IRepository<User> _userRepo;
     private readonly IUnitOfWork _unitOfWork;
@@ -36,7 +36,7 @@ public sealed class ActivateUserCommandHandler : ICommandHandler<ActivateUserCom
     private readonly IUserCacheService _userCacheService;
 
 
-    public ActivateUserCommandHandler(
+    public CancelUserDeactivationRequestCommandHandler(
         IRepository<User> userRepo,
         IUnitOfWork unitOfWork,
         ICurrentUserService currentUserService,
@@ -60,7 +60,7 @@ public sealed class ActivateUserCommandHandler : ICommandHandler<ActivateUserCom
         _userCacheService = userCacheService;
     }
 
-    public async Task<Result<AuthTokensDto>> Handle(ActivateUserCommand request, CancellationToken cancellationToken)
+    public async Task<Result<AuthTokensDto>> Handle(CancelUserDeactivationRequestCommand request, CancellationToken cancellationToken)
     {
         var spec = new UserWithRoleAndSettingsSpecification(request.UserId);
         var user = await _userRepo.GetSingleAsync(spec, cancellationToken);
@@ -74,6 +74,11 @@ public sealed class ActivateUserCommandHandler : ICommandHandler<ActivateUserCom
         if (user.Status != UserStatus.Deactivated)
         {
             return Result<AuthTokensDto>.Failure(OperationStatusCode.Conflict);
+        }
+
+        if (user.Status == UserStatus.Deactivated && user.DeactivatedAt.HasValue && user.DeactivatedAt.Value.AddDays(60) <= DateTime.UtcNow)
+        {
+            return Result<AuthTokensDto>.Failure(UserStatusCodes.Deactivated);
         }
 
         var verifyChallageResult = await _userCacheService.VerifyUserActivationChanlageAsync(request.UserId, request.Token, cancellationToken);
@@ -182,6 +187,8 @@ public sealed class ActivateUserCommandHandler : ICommandHandler<ActivateUserCom
 
             await _unitOfWork.CompleteAsync(cancellationToken);
             await _unitOfWork.CommitTransactionAsync(cancellationToken);
+
+            await _userCacheService.CompleteUserActivationChanlageAsync(user.Id, cancellationToken);
 
             return Result<AuthTokensDto>.Success(tokenResult.Value!, OperationStatusCode.Success);
         }

@@ -36,8 +36,7 @@ public class UserSecuritySettings : Entity, IHardDeletable
 
 
     public ICollection<RecoveryCode> RecoveryCodes { get; set; } = new List<RecoveryCode>();
-    public ICollection<Device> Devices { get; set; } = new List<Device>();
-
+    
     private UserSecuritySettings()
     {
         Id = SequentialGuid.GenerateSequentialGuid();

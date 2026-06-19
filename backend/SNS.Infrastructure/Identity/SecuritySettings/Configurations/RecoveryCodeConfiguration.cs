@@ -21,6 +21,6 @@ public class RecoveryCodeConfiguration : IEntityTypeConfiguration<RecoveryCode>
         builder.HasOne<UserSecuritySettings>()
             .WithMany(uss => uss.RecoveryCodes)
             .HasForeignKey(rc => rc.UserSecuritySettingsId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

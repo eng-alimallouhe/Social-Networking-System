@@ -1,4 +1,4 @@
-﻿namespace SNS.Application.Identity.Users.UsersManagement.Queries.GetUserActivityAnalytics;
+﻿namespace SNS.Application.Identity.Users.AdminAcions.Queries.GetUserActivityAnalytics;
 
 
 
@@ -24,7 +24,7 @@ public sealed record LifetimeCountersDto(
 
 // 3️⃣ كائن المنحنى الزمني (نقطة بيانية واحدة تحتوي على التاريخ وعدد الحركات)
 public sealed record ActivityGraphPointDto(
-    string PeriodLabel, // قد يكون تاريخ يوم "2026-06-14" أو اسم شهر "June 2026"
+    DateTime PeriodLabel, // قد يكون تاريخ يوم "2026-06-14" أو اسم شهر "June 2026"
     int ActionsCount);
 
 // 4️⃣ قسم توزيع التفاعل (النسب المئوية الجاهزة للـ Pie Chart)
@@ -62,8 +62,5 @@ public enum ActivityType
     CreateProject,
     ContributeInProject
 }
-
-#endregion
-#region 🔍 Query Request
 
 #endregion

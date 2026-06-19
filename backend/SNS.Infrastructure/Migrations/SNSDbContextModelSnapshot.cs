@@ -440,7 +440,7 @@ namespace SNS.Infrastructure.Migrations
 
                     b.HasIndex("Title");
 
-                    b.ToTable("ContentManagement", "ContentManagement");
+                    b.ToTable("Posts", "ContentManagement");
                 });
 
             modelBuilder.Entity("SNS.Domain.ContentManagement.Posts.Entities.PostMedia", b =>
@@ -1116,6 +1116,34 @@ namespace SNS.Infrastructure.Migrations
                     b.ToTable("Universities", "Education");
                 });
 
+            modelBuilder.Entity("SNS.Domain.Identity.ArchiveManagement.Entities.ExportDataRequest", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("CompletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DownloadUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ExportDataRequest", "Identity");
+                });
+
             modelBuilder.Entity("SNS.Domain.Identity.ArchiveManagement.Entities.IdentityArchive", b =>
                 {
                     b.Property<Guid>("Id")
@@ -1218,6 +1246,10 @@ namespace SNS.Infrastructure.Migrations
 
                     b.Property<bool>("IsRead")
                         .HasColumnType("bit");
+
+                    b.Property<string>("RedirectUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Source")
                         .HasColumnType("int");
@@ -1359,17 +1391,12 @@ namespace SNS.Infrastructure.Migrations
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("UserSecuritySettingsUserId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
 
                     b.HasIndex("DeviceToken")
                         .IsUnique();
 
                     b.HasIndex("UserId");
-
-                    b.HasIndex("UserSecuritySettingsUserId");
 
                     b.ToTable("Devices", "Identity");
                 });
@@ -1536,7 +1563,8 @@ namespace SNS.Infrastructure.Migrations
 
             modelBuilder.Entity("SNS.Domain.Identity.SecuritySettings.Entities.UserSecuritySettings", b =>
                 {
-                    b.Property<Guid>("UserId")
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("AuthenticatorSecretKey")
@@ -1562,11 +1590,17 @@ namespace SNS.Infrastructure.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.HasKey("UserId");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("RecoveryEmail")
                         .IsUnique()
                         .HasFilter("[RecoveryEmail] IS NOT NULL");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("UsersSecuritySettings", "Identity");
                 });
@@ -1611,18 +1645,6 @@ namespace SNS.Infrastructure.Migrations
                     b.Property<int>("FailedLoginAttempts")
                         .HasColumnType("int");
 
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Status")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsDeactivated")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsSuspended")
-                        .HasColumnType("bit");
-
                     b.Property<bool>("IsVerified")
                         .HasColumnType("bit");
 
@@ -1640,8 +1662,14 @@ namespace SNS.Infrastructure.Migrations
                     b.Property<int>("PreferredLanguage")
                         .HasColumnType("int");
 
+                    b.Property<bool>("PurgeAllContentOnHardDelete")
+                        .HasColumnType("bit");
+
                     b.Property<Guid>("RoleId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("SuspendedUntil")
                         .HasColumnType("datetime2");
@@ -2877,13 +2905,13 @@ namespace SNS.Infrastructure.Migrations
                     b.HasOne("SNS.Domain.Profiles.Profiles.Entities.Profile", null)
                         .WithMany()
                         .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("SNS.Domain.ContentManagement.Comments.Entities.Comment", "ParentComment")
                         .WithMany("Replies")
                         .HasForeignKey("ParentCommentId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.HasOne("SNS.Domain.ContentManagement.Posts.Entities.Post", null)
                         .WithMany("Comments")
@@ -2914,7 +2942,7 @@ namespace SNS.Infrastructure.Migrations
                     b.HasOne("SNS.Domain.Profiles.Profiles.Entities.Profile", null)
                         .WithMany()
                         .HasForeignKey("ReactorId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -2952,13 +2980,13 @@ namespace SNS.Infrastructure.Migrations
                     b.HasOne("SNS.Domain.Profiles.Profiles.Entities.Profile", null)
                         .WithMany()
                         .HasForeignKey("InviteeId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("SNS.Domain.Profiles.Profiles.Entities.Profile", null)
                         .WithMany()
                         .HasForeignKey("InviterId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
 
@@ -3021,7 +3049,7 @@ namespace SNS.Infrastructure.Migrations
                     b.HasOne("SNS.Domain.ContentManagement.Communities.Entities.Community", null)
                         .WithMany()
                         .HasForeignKey("CommunityId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("SNS.Domain.ContentManagement.Posts.Entities.PostMedia", b =>
@@ -3044,7 +3072,7 @@ namespace SNS.Infrastructure.Migrations
                     b.HasOne("SNS.Domain.Profiles.Profiles.Entities.Profile", null)
                         .WithMany()
                         .HasForeignKey("ReactorId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -3093,7 +3121,7 @@ namespace SNS.Infrastructure.Migrations
                     b.HasOne("SNS.Domain.Profiles.Profiles.Entities.Profile", null)
                         .WithMany()
                         .HasForeignKey("ViewerId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -3115,7 +3143,7 @@ namespace SNS.Infrastructure.Migrations
             modelBuilder.Entity("SNS.Domain.Discussions.Problems.Entities.Problem", b =>
                 {
                     b.HasOne("SNS.Domain.Profiles.Profiles.Entities.Profile", null)
-                        .WithMany("Problems")
+                        .WithMany()
                         .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -3178,7 +3206,7 @@ namespace SNS.Infrastructure.Migrations
                     b.HasOne("SNS.Domain.Profiles.Profiles.Entities.Profile", null)
                         .WithMany()
                         .HasForeignKey("ViewerId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -3237,7 +3265,7 @@ namespace SNS.Infrastructure.Migrations
             modelBuilder.Entity("SNS.Domain.Discussions.Solutions.Entities.Solution", b =>
                 {
                     b.HasOne("SNS.Domain.Profiles.Profiles.Entities.Profile", null)
-                        .WithMany("Solutions")
+                        .WithMany()
                         .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -3309,6 +3337,15 @@ namespace SNS.Infrastructure.Migrations
                     b.Navigation("University");
                 });
 
+            modelBuilder.Entity("SNS.Domain.Identity.ArchiveManagement.Entities.ExportDataRequest", b =>
+                {
+                    b.HasOne("SNS.Domain.Identity.Users.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("SNS.Domain.Identity.ArchiveManagement.Entities.IdentityArchive", b =>
                 {
                     b.HasOne("SNS.Domain.Identity.Users.Entities.User", null)
@@ -3332,7 +3369,7 @@ namespace SNS.Infrastructure.Migrations
                     b.HasOne("SNS.Domain.Identity.Users.Entities.User", null)
                         .WithMany("ActionPerformed")
                         .HasForeignKey("PerformedById")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("SNS.Domain.Identity.Users.Entities.User", null)
                         .WithMany("Archives")
@@ -3366,10 +3403,6 @@ namespace SNS.Infrastructure.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("SNS.Domain.Identity.SecuritySettings.Entities.UserSecuritySettings", null)
-                        .WithMany("Devices")
-                        .HasForeignKey("UserSecuritySettingsUserId");
                 });
 
             modelBuilder.Entity("SNS.Domain.Identity.SecuritySessions.Entities.RefreshToken", b =>
@@ -3392,7 +3425,7 @@ namespace SNS.Infrastructure.Migrations
                     b.HasOne("SNS.Domain.Identity.Users.Entities.User", null)
                         .WithMany("Sessions")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Device");
@@ -3403,7 +3436,7 @@ namespace SNS.Infrastructure.Migrations
                     b.HasOne("SNS.Domain.Identity.SecuritySettings.Entities.UserSecuritySettings", null)
                         .WithMany("RecoveryCodes")
                         .HasForeignKey("UserSecuritySettingsId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -3421,7 +3454,7 @@ namespace SNS.Infrastructure.Migrations
                     b.HasOne("SNS.Domain.Identity.Users.Entities.User", null)
                         .WithOne("UserSecuritySettings")
                         .HasForeignKey("SNS.Domain.Identity.SecuritySettings.Entities.UserSecuritySettings", "UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -3535,11 +3568,13 @@ namespace SNS.Infrastructure.Migrations
 
             modelBuilder.Entity("SNS.Domain.Profiles.Profiles.Entities.Profile", b =>
                 {
-                    b.HasOne("SNS.Domain.Identity.Users.Entities.User", null)
-                        .WithOne()
+                    b.HasOne("SNS.Domain.Identity.Users.Entities.User", "Owner")
+                        .WithOne("UserProfile")
                         .HasForeignKey("SNS.Domain.Profiles.Profiles.Entities.Profile", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Owner");
                 });
 
             modelBuilder.Entity("SNS.Domain.Profiles.Profiles.Entities.ProfileView", b =>
@@ -3547,13 +3582,13 @@ namespace SNS.Infrastructure.Migrations
                     b.HasOne("SNS.Domain.Profiles.Profiles.Entities.Profile", null)
                         .WithMany("Vieweds")
                         .HasForeignKey("ViewedId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("SNS.Domain.Profiles.Profiles.Entities.Profile", null)
                         .WithMany("Views")
                         .HasForeignKey("ViewerId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
 
@@ -3569,13 +3604,13 @@ namespace SNS.Infrastructure.Migrations
             modelBuilder.Entity("SNS.Domain.Profiles.Profiles.Entities.SavedProfile", b =>
                 {
                     b.HasOne("SNS.Domain.Profiles.Profiles.Entities.Profile", "Saved")
-                        .WithMany("SavedByProfiles")
+                        .WithMany()
                         .HasForeignKey("SavedId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("SNS.Domain.Profiles.Profiles.Entities.Profile", "Saver")
-                        .WithMany("SavedProfiles")
+                        .WithMany()
                         .HasForeignKey("SaverId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -3669,7 +3704,7 @@ namespace SNS.Infrastructure.Migrations
             modelBuilder.Entity("SNS.Domain.Projects.Bridges.ProjectContributor", b =>
                 {
                     b.HasOne("SNS.Domain.Profiles.Profiles.Entities.Profile", "Contributor")
-                        .WithMany("ProjectContributors")
+                        .WithMany()
                         .HasForeignKey("ContributorId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -3741,7 +3776,7 @@ namespace SNS.Infrastructure.Migrations
                     b.HasOne("SNS.Domain.Profiles.Profiles.Entities.Profile", null)
                         .WithMany()
                         .HasForeignKey("ViewerId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -3765,7 +3800,7 @@ namespace SNS.Infrastructure.Migrations
             modelBuilder.Entity("SNS.Domain.Projects.Entities.Project", b =>
                 {
                     b.HasOne("SNS.Domain.Profiles.Profiles.Entities.Profile", null)
-                        .WithMany("Projects")
+                        .WithMany()
                         .HasForeignKey("OwnerId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -3927,8 +3962,6 @@ namespace SNS.Infrastructure.Migrations
 
             modelBuilder.Entity("SNS.Domain.Identity.SecuritySettings.Entities.UserSecuritySettings", b =>
                 {
-                    b.Navigation("Devices");
-
                     b.Navigation("RecoveryCodes");
                 });
 
@@ -3952,6 +3985,9 @@ namespace SNS.Infrastructure.Migrations
                     b.Navigation("PasswordArchives");
 
                     b.Navigation("Sessions");
+
+                    b.Navigation("UserProfile")
+                        .IsRequired();
 
                     b.Navigation("UserSecuritySettings")
                         .IsRequired();
@@ -3991,23 +4027,11 @@ namespace SNS.Infrastructure.Migrations
 
                     b.Navigation("Followings");
 
-                    b.Navigation("Problems");
-
                     b.Navigation("ProfileSkills");
 
                     b.Navigation("ProfileTopics");
 
-                    b.Navigation("ProjectContributors");
-
-                    b.Navigation("Projects");
-
                     b.Navigation("ReputationHistory");
-
-                    b.Navigation("SavedByProfiles");
-
-                    b.Navigation("SavedProfiles");
-
-                    b.Navigation("Solutions");
 
                     b.Navigation("Vieweds");
 

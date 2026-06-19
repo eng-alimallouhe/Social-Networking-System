@@ -22,9 +22,7 @@ public class ProblemVote : IHardDeletable
     // Timestamp
     public DateTime CreatedAt { get; private set; }
 
-    // Navigation Properties
-
-
+    
     public ProblemVote()
     {
         Id = SequentialGuid.GenerateSequentialGuid();

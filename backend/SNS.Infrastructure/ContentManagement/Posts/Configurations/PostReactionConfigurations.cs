@@ -37,6 +37,6 @@ public class PostReactionConfigurations :
                .WithMany()
                .HasForeignKey(pr => pr.ReactorId)
                .IsRequired()
-               .OnDelete(DeleteBehavior.Restrict);
+               .OnDelete(DeleteBehavior.Cascade);
     }
 }

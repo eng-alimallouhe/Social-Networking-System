@@ -12,6 +12,8 @@ public enum SendPurpose
     PasswordReset = 3,
 
     EmailChangeVerification = 4,
+    
+    RecoveryEmailChangeVerification = 4,
 
     PasswordChangedAlert = 10,
 
