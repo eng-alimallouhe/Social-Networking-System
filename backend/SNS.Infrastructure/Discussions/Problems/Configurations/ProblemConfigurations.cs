@@ -35,7 +35,7 @@ namespace SNS.Infrastructure.Discussions.Problems.Configurations
 
             // Relationships
             builder.HasOne<Profile>()
-                   .WithMany(p => p.Problems) 
+                   .WithMany() 
                    .HasForeignKey(p => p.AuthorId)
                    .IsRequired()
                    .OnDelete(DeleteBehavior.Restrict);

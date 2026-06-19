@@ -7,7 +7,7 @@ using SNS.Shared.Results;
 using SNS.Shared.StatusCodes;
 using SNS.Shared.StatusCodes.Identity;
 
-namespace SNS.Application.Identity.Users.UsersManagement.Queries.GetUserActivityAnalytics;
+namespace SNS.Application.Identity.Users.AdminAcions.Queries.GetUserActivityAnalytics;
 
 public sealed class GetUserActivityAnalyticsQueryHandler
     : IQueryHandler<GetUserActivityAnalyticsQuery, UserActivityAnalyticsResult>
@@ -27,25 +27,20 @@ public sealed class GetUserActivityAnalyticsQueryHandler
         GetUserActivityAnalyticsQuery request,
         CancellationToken cancellationToken)
     {
-        // 1️⃣ حارس بوابة الأمان والتحقق من صلاحية الـ Admin
-        var targetUserId = _currentUserService.UserId;
-
-        if (request.TargetUserId != null)
-        {
-            var currentUserRole = _currentUserService.RoleType;
-            if (currentUserRole == null || !currentUserRole.Contains("admin", StringComparison.OrdinalIgnoreCase))
-            {
-                return Result<UserActivityAnalyticsResult>.Failure(SecurityStatusCodes.AuthenticationRequired);
-            }
-            targetUserId = request.TargetUserId;
-        }
-
-        if (targetUserId == null || targetUserId == Guid.Empty)
+        // 1️⃣ حارس بوابة الأمان: التأكد من أن المستخدم الحالي هو Admin
+        var currentUserRole = _currentUserService.RoleType;
+        if (currentUserRole == null || !currentUserRole.Contains("admin", StringComparison.OrdinalIgnoreCase))
         {
             return Result<UserActivityAnalyticsResult>.Failure(SecurityStatusCodes.AuthenticationRequired);
         }
 
-        // 2️⃣ السلسلة العملاقة والنقية للـ GroupJoin بضربة SQL واحدة نفاثة
+        var targetUserId = request.TargetUserId; // 👈 استخدام الحساب المستهدف المرسل بالطلب صراحة
+
+        // إعداد الفلاتر الزمنية الافتراضية للجراف إن لم ترسل (مثلاً آخر 30 يوماً)
+        var fromDate = request.FromDate ?? DateTime.UtcNow.AddDays(-30);
+        var toDate = request.ToDate ?? DateTime.UtcNow;
+
+        // 2️⃣ السلسلة العملاقة والنقية لجلب البيانات الأساسية من الـ DB مع فلاتر الجراف المضمنة
         var dbData = await _dbContext.Profiles
             .AsNoTracking()
             .Where(p => p.UserId == targetUserId)
@@ -73,10 +68,9 @@ public sealed class GetUserActivityAnalyticsQueryHandler
                 TotalProjectsCreated = p.projectsGroup.Count(),
                 TotalProjectsJoined = p.projectContributorsGroup.Count(pc => pc.InvitingStatus == InvitingStatus.Accepted),
 
-                // حساب الحركات الصادرة الإجمالية للتفاعلات
                 TotalReactionsCasted = p.postReactionsGroup.Count() + p.commentReactionsGroup.Count(),
 
-                // تصحيح الـ Mapping وسحب الـ Top 5 لكل قطاع بنقاء
+                // سحب آخر 5 حركات حية
                 RecentPosts = p.postsGroup.OrderByDescending(x => x.CreatedAt).Take(5).Select(x => new { x.Id, x.CreatedAt }),
                 RecentComments = p.commentsGroup.OrderByDescending(x => x.CreatedAt).Take(5).Select(x => new { x.Id, x.CreatedAt }),
                 RecentProblems = p.problemsGroup.OrderByDescending(x => x.CreatedAt).Take(5).Select(x => new { x.Id, x.CreatedAt }),
@@ -84,7 +78,15 @@ public sealed class GetUserActivityAnalyticsQueryHandler
                 RecentPostReactions = p.postReactionsGroup.OrderByDescending(x => x.CreatedAt).Take(5).Select(x => new { x.Id, x.CreatedAt }),
                 RecentCommentReactions = p.commentReactionsGroup.OrderByDescending(x => x.CreatedAt).Take(5).Select(x => new { x.Id, x.CreatedAt }),
                 RecentProjects = p.projectsGroup.OrderByDescending(x => x.CreatedAt).Take(5).Select(x => new { x.Id, x.CreatedAt }),
-                RecentContributions = p.projectContributorsGroup.Where(pc => pc.InvitingStatus == InvitingStatus.Accepted && pc.RespondedAt.HasValue).OrderByDescending(x => x.RespondedAt).Take(5).Select(x => new { x.Id, x.RespondedAt })
+                RecentContributions = p.projectContributorsGroup.Where(pc => pc.InvitingStatus == InvitingStatus.Accepted && pc.RespondedAt.HasValue).OrderByDescending(x => x.RespondedAt).Take(5).Select(x => new { x.Id, x.RespondedAt }),
+
+                // 📈 جلب كافة التواريخ ضمن النطاق المحدد لتغذية الجراف بشكل ديناميكي
+                GraphPostDates = p.postsGroup.Where(x => x.CreatedAt >= fromDate && x.CreatedAt <= toDate).Select(x => x.CreatedAt),
+                GraphCommentDates = p.commentsGroup.Where(x => x.CreatedAt >= fromDate && x.CreatedAt <= toDate).Select(x => x.CreatedAt),
+                GraphProblemDates = p.problemsGroup.Where(x => x.CreatedAt >= fromDate && x.CreatedAt <= toDate).Select(x => x.CreatedAt),
+                GraphSolutionDates = p.solutionsGroup.Where(x => x.CreatedAt >= fromDate && x.CreatedAt <= toDate).Select(x => x.CreatedAt),
+                GraphProjectDates = p.projectsGroup.Where(x => x.CreatedAt >= fromDate && x.CreatedAt <= toDate).Select(x => x.CreatedAt),
+                GraphContributorDates = p.projectContributorsGroup.Where(pc => pc.InvitingStatus == InvitingStatus.Accepted && pc.RespondedAt >= fromDate && pc.RespondedAt <= toDate).Select(x => x.RespondedAt!.Value)
             })
             .FirstOrDefaultAsync(cancellationToken);
 
@@ -93,7 +95,6 @@ public sealed class GetUserActivityAnalyticsQueryHandler
             return Result<UserActivityAnalyticsResult>.Failure(ResourceStatusCode.NotFound);
         }
 
-        // 3️⃣ حساب نسب التفاعل للـ Pie Chart منعاً للـ Division by zero
         int totalAllActions = dbData.TotalPosts + dbData.TotalComments + dbData.TotalProblems + dbData.TotalSolutions + dbData.TotalProjectsCreated + dbData.TotalProjectsJoined;
         int denominator = totalAllActions == 0 ? 1 : totalAllActions;
 
@@ -103,9 +104,7 @@ public sealed class GetUserActivityAnalyticsQueryHandler
             ProjectsCommunitiesPercentage: Math.Round(((double)(dbData.TotalProjectsCreated + dbData.TotalProjectsJoined) / denominator) * 100, 2)
         );
 
-        // 4️⃣ الـ In-Memory Merge النظيف والآمن لآخر 5 حركات حية
         var mergedActivities = new List<RecentActivityLogDto>();
-
         mergedActivities.AddRange(dbData.RecentPosts.Select(x => new RecentActivityLogDto(x.Id, ActivityType.CreatePost, x.CreatedAt)));
         mergedActivities.AddRange(dbData.RecentComments.Select(x => new RecentActivityLogDto(x.Id, ActivityType.CreateComment, x.CreatedAt)));
         mergedActivities.AddRange(dbData.RecentProblems.Select(x => new RecentActivityLogDto(x.Id, ActivityType.CreateProblem, x.CreatedAt)));
@@ -115,20 +114,52 @@ public sealed class GetUserActivityAnalyticsQueryHandler
         mergedActivities.AddRange(dbData.RecentProjects.Select(x => new RecentActivityLogDto(x.Id, ActivityType.CreateProject, x.CreatedAt)));
         mergedActivities.AddRange(dbData.RecentContributions.Select(x => new RecentActivityLogDto(x.Id, ActivityType.ContributeInProject, x.RespondedAt!.Value)));
 
-        // الترتيب والأخذ النهائي لأحدث 5 حركات على مستوى السستم ككل 🏆
         var finalRecentActivities = mergedActivities
             .OrderByDescending(a => a.OccurredAt)
             .Take(5)
             .ToList();
 
-        // 5️⃣ بناء وإعداد منحي النشاط الزمني (Activity Graph) خفيف ومؤقت بالقيم الافتراضية
-        // (يمكن توسيعه بـ GroupBy زمني لاحقاً حسب المدخلات)
-        var graphPoints = new List<ActivityGraphPointDto>
-        {
-            new ActivityGraphPointDto(DateTime.UtcNow.ToString("yyyy-MM-dd"), totalAllActions)
-        };
+        // 5️⃣ 📈 التعبئة الديناميكية الفولاذية للجراف الزمني (In-Memory Grouping) بناءً على الـ DateTime الجديد
+        var allGraphDates = new List<DateTime>();
+        allGraphDates.AddRange(dbData.GraphPostDates);
+        allGraphDates.AddRange(dbData.GraphCommentDates);
+        allGraphDates.AddRange(dbData.GraphProblemDates);
+        allGraphDates.AddRange(dbData.GraphSolutionDates);
+        allGraphDates.AddRange(dbData.GraphProjectDates);
+        allGraphDates.AddRange(dbData.GraphContributorDates);
 
-        // 6️⃣ تجميع الحزم داخل الـ Result الفاخر
+        var graphPoints = new List<ActivityGraphPointDto>();
+
+        if (request.PeriodUnit.Equals("Month", StringComparison.OrdinalIgnoreCase))
+        {
+            graphPoints = allGraphDates
+                .GroupBy(d => new DateTime(d.Year, d.Month, 1))
+                .Select(g => new ActivityGraphPointDto(g.Key, g.Count()))
+                .OrderBy(g => g.PeriodLabel)
+                .ToList();
+        }
+        else if (request.PeriodUnit.Equals("Year", StringComparison.OrdinalIgnoreCase))
+        {
+            graphPoints = allGraphDates
+                .GroupBy(d => new DateTime(d.Year, 1, 1))
+                .Select(g => new ActivityGraphPointDto(g.Key, g.Count()))
+                .OrderBy(g => g.PeriodLabel)
+                .ToList();
+        }
+        else
+        {
+            graphPoints = allGraphDates
+                .GroupBy(d => d.Date)
+                .Select(g => new ActivityGraphPointDto(g.Key, g.Count()))
+                .OrderBy(g => g.PeriodLabel)
+                .ToList();
+        }
+
+        if (!graphPoints.Any())
+        {
+            graphPoints.Add(new ActivityGraphPointDto(DateTime.UtcNow.Date, 0));
+        }
+
         var result = new UserActivityAnalyticsResult(
             UserProfile: new UserProfileHeaderDto(dbData.FullName, dbData.Specialization!, dbData.ProfilePictureUrl),
             LifetimeStats: new LifetimeCountersDto(dbData.TotalPosts, dbData.TotalReactionsCasted, dbData.TotalComments, dbData.TotalProblems, dbData.TotalSolutions, dbData.TotalVotesCasted, dbData.Reputation, dbData.TotalProjectsCreated, dbData.TotalProjectsJoined),

@@ -14,4 +14,6 @@ public interface IUserCacheService
     Task<Result> SetUserActivationChanlageAsync(Guid userId, string Token, CancellationToken cancellationToken = default);
 
     Task<Result> VerifyUserActivationChanlageAsync(Guid userId, string token, CancellationToken cancellationToken = default);
+
+    Task<Result> CompleteUserActivationChanlageAsync(Guid userId, CancellationToken cancellationToken = default);
 }

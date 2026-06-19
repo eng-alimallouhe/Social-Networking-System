@@ -7,5 +7,5 @@ public enum RoleType
     Moderator = 2,
     Guest = 3,
     Support = 4,
-    SystemUser = 5,
+    Ghost = 5
 }

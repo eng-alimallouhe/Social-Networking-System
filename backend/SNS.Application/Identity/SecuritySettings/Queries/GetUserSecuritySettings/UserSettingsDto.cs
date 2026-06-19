@@ -9,5 +9,4 @@ public sealed record UserSecuritySettingsDto(
     MfaProvider? MfaProvider,
     string? RecoveryEmail,
     CommunicationMethod DefaultCommunicationMethod,
-    int ActiveRecoveryCodesCount,
-    int DevicesCount);
+    int ActiveRecoveryCodesCount);

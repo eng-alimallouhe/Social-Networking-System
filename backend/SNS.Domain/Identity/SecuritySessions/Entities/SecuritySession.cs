@@ -88,5 +88,9 @@ public class SecuritySession : Entity, IHardDeletable
         IsRevoked = true;
         RevokedAt = DateTime.UtcNow;
         RevokedReason = reason;
+        foreach (var token in RefreshTokens)
+        {
+            token.Revoke();
+        }
     }
 }

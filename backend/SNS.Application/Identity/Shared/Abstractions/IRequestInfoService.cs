@@ -1,3 +1,4 @@
+using SNS.Domain.Identity.SecuritySessions.Entities;
 using SNS.Domain.Shared.Enums;
 
 namespace SNS.Application.Identity.Shared.Abstractions;

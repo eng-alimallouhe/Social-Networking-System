@@ -16,12 +16,12 @@ public class SavedProfileConfigurations : IEntityTypeConfiguration<SavedProfile>
         builder.HasIndex(sp => sp.SavedId);
 
         builder.HasOne(sp => sp.Saver)
-            .WithMany(p => p.SavedProfiles)
+            .WithMany()
             .HasForeignKey(sp => sp.SaverId)
             .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasOne(sp => sp.Saved)
-            .WithMany(p => p.SavedByProfiles)
+            .WithMany()
             .HasForeignKey(sp => sp.SavedId)
             .OnDelete(DeleteBehavior.Restrict);
     }

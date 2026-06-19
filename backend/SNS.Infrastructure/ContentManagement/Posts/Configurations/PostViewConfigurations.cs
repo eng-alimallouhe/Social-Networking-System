@@ -52,6 +52,6 @@ public class PostViewConfigurations :
                .WithMany() 
                .HasForeignKey(pv => pv.ViewerId)
                .IsRequired()
-               .OnDelete(DeleteBehavior.Restrict);
+               .OnDelete(DeleteBehavior.Cascade);
     }
 }

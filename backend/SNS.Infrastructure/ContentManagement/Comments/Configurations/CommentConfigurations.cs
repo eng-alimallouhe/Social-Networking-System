@@ -36,13 +36,13 @@ public class CommentConfigurations :
                .WithMany()
                .HasForeignKey(c => c.AuthorId)
                .IsRequired()
-               .OnDelete(DeleteBehavior.Restrict);
+               .OnDelete(DeleteBehavior.NoAction);
 
         // Self-referencing (Replies)
         builder.HasOne(c => c.ParentComment)
                .WithMany(c => c.Replies)
                .HasForeignKey(c => c.ParentCommentId)
                .IsRequired(false)
-               .OnDelete(DeleteBehavior.Restrict); // Avoid cycles
+               .OnDelete(DeleteBehavior.NoAction); // Avoid cycles
     }
 }

@@ -1,14 +1,8 @@
-using SNS.Domain.ContentManagement.Comments.Entities;
-using SNS.Domain.ContentManagement.Posts.Entities;
-using SNS.Domain.Discussions.Problems.Entities;
-using SNS.Domain.Discussions.Problems.Relations;
-using SNS.Domain.Discussions.Solutions.Entities;
 using SNS.Domain.Educations.Entities;
+using SNS.Domain.Identity.Users.Constants;
 using SNS.Domain.Identity.Users.Entities;
 using SNS.Domain.Profiles.Profiles.Relations;
 using SNS.Domain.Profiles.SocialGraph.Entities;
-using SNS.Domain.Projects.Bridges;
-using SNS.Domain.Projects.Entities;
 using SNS.Domain.Shared.Abstractions.IDeletable;
 using SNS.Domain.Shared.Entities;
 using SNS.Domain.Shared.Helpers;
@@ -56,6 +50,7 @@ public class Profile : Entity, ISoftDeletable
 
     // Navigation
     public User Owner { get; set; } = null!;
+
     public ICollection<Follow> Followers { get; private set; } 
         = new List<Follow>();   
     
@@ -71,22 +66,7 @@ public class Profile : Entity, ISoftDeletable
     public ICollection<ProfileTopic> ProfileTopics { get; private set; } 
         = new List<ProfileTopic>();
 
-    public ICollection<Solution> Solutions { get; private set; }
-        = new List<Solution>();
-
-    public ICollection<Post> Posts { get; private set; }
-        = new List<Post>();
-
-    public ICollection<Comment> Comments { get; private set; }
-        = new List<Comment>();
-
-    public ICollection<Problem> Problems { get; private set; }
-        = new List<Problem>();
-
-    public ICollection<ProblemVote> ProblemVotes { get; private set; }
-        = new List<ProblemVote>();
-
-
+    
     public ICollection<ProfileView> Views { get; private set; } 
         = new List<ProfileView>();
     
@@ -94,22 +74,10 @@ public class Profile : Entity, ISoftDeletable
     public ICollection<ProfileView> Vieweds { get; private set; } 
         = new List<ProfileView>();
 
-
-    public ICollection<SavedProfile> SavedProfiles { get; private set; } 
-        = new List<SavedProfile>();
-
-    public ICollection<SavedProfile> SavedByProfiles { get; private set; } 
-        = new List<SavedProfile>();
-
-
+    
     public ICollection<AcademicRecord> AcademicRecords { get; private set; } 
         = new List<AcademicRecord>();
 
-    public ICollection<Project> Projects { get; private set; } = 
-        new List<Project>();
-
-    public ICollection<ProjectContributor> ProjectContributors = 
-        new List<ProjectContributor>();
 
     private Profile()
     {
@@ -137,15 +105,19 @@ public class Profile : Entity, ISoftDeletable
         return entity;
     }
 
-    public static Profile CreateSystemProfile(Guid id, Guid userId, string fullName, string? profilePictureUrl)
+    public static Profile CreateDefaultProfile()
     {
         var entity = new Profile();
-        entity.Id = id;
-        entity.UserId = userId;
-        entity.FullName = fullName;
-        entity.ProfilePictureUrl = profilePictureUrl;
-        entity.CreatedAt = new DateTime(year: 1999, month: 12, day: 1);
-        entity.UpdatedAt = new DateTime(year: 1999, month: 12, day: 1);
+
+        entity.UserId = SystemUsers.GhostUserId;
+        entity.Id = SystemProfiles.GhostProfileId;
+        entity.Specialization = "Default";
+        entity.FullName = SystemProfiles.GhostProfileFullName;
+        entity.ProfilePictureUrl = SystemProfiles.GhostProfilePictureUrl;
+        entity.CreatedAt = new DateTime(1, 1, 1);
+        entity.UpdatedAt = new DateTime(1, 1, 1);
+        entity.Reputation = 9999999;
+        
         return entity;
     }
 

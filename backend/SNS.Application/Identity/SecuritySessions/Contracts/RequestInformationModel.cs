@@ -1,3 +1,5 @@
+using SNS.Domain.Shared.Enums;
+
 namespace SNS.Application.Identity.SecuritySessions.DTOs;
 
 public sealed record RequestInformationModel(

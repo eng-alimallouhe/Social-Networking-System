@@ -1,3 +1,5 @@
+using MediatR;
+using Microsoft.EntityFrameworkCore;
 using SNS.Application.Abstractions.Common;
 using SNS.Application.Abstractions.Messaging;
 using SNS.Application.Identity.Shared.Abstractions;
@@ -16,6 +18,7 @@ public sealed class BeginUserDeactivationCommandHandler :
     ICommandHandler<BeginUserDeactivationCommand, BeginUserDeactivationResponse>
 {
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IRepository<User> _userRepo;
     private readonly ICodeService _codeService;
     private readonly IRepository<User> _userRepo;
     private readonly IUrlGeneratorService _urlGeneratorService;
@@ -24,6 +27,7 @@ public sealed class BeginUserDeactivationCommandHandler :
 
     public BeginUserDeactivationCommandHandler(
         IUnitOfWork unitOfWork,
+        IRepository<User> userRepo,
         ICodeService codeService,
         IRepository<User> userRepo,
         IGeneratorService generatorService,
@@ -31,6 +35,7 @@ public sealed class BeginUserDeactivationCommandHandler :
         ICurrentUserService currentUserService)
     {
         _unitOfWork = unitOfWork;
+        _userRepo = userRepo;
         _generatorService = generatorService;
         _userRepo = userRepo;
         _codeService = codeService;
@@ -46,9 +51,11 @@ public sealed class BeginUserDeactivationCommandHandler :
         {
             return Result<BeginUserDeactivationResponse>.Failure(OperationStatusCode.AuthenticationRequired);
         }
-        var spec = new UserWithRoleAndSettingsSpecification(userId.Value);
-        var user = await _userRepo.GetSingleAsync(spec, cancellationToken);
 
+        var spec  = new UserWithRoleAndSettingsSpecification(userId.Value);
+
+        var user = await _userRepo.GetSingleAsync(spec, cancellationToken);
+            
         if (user == null)
         {
             return Result<BeginUserDeactivationResponse>.Failure(UserStatusCodes.NotFound);

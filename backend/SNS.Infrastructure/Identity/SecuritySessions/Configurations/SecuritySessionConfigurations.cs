@@ -34,11 +34,12 @@ public class SecuritySessionConfigurations :
                .WithMany(u => u.Sessions)
                .HasForeignKey(us => us.UserId)
                .IsRequired()
-               .OnDelete(DeleteBehavior.Restrict);
+               .OnDelete(DeleteBehavior.NoAction);
 
         builder.HasOne(ss => ss.Device)
                .WithMany(d => d.Sessions)
                .HasForeignKey(ss => ss.DeviceId)
+               .OnDelete(DeleteBehavior.Cascade)
                .IsRequired();
 
         builder.HasMany(ss => ss.RefreshTokens)

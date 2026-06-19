@@ -38,12 +38,12 @@ public class CommunityInvitationConfigurations :
                .WithMany()
                .HasForeignKey(ci => ci.InviterId)
                .IsRequired()
-               .OnDelete(DeleteBehavior.Restrict);
+               .OnDelete(DeleteBehavior.NoAction);
 
         builder.HasOne<Profile>()
                .WithMany()
                .HasForeignKey(ci => ci.InviteeId)
                .IsRequired()
-               .OnDelete(DeleteBehavior.Restrict);
+               .OnDelete(DeleteBehavior.NoAction);
     }
 }

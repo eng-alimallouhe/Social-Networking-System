@@ -6,4 +6,5 @@ public enum CodeType {
     PasswordReset,
     ChangeEmail,
     UserDeleting,
+    ChangeRecoveryEmail
 }

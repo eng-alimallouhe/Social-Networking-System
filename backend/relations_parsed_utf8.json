@@ -1,0 +1,794 @@
+﻿[
+    {
+        "Context":  "ContentManagement",
+        "Principal":  "Post",
+        "Dependent":  "Comment",
+        "Behavior":  "Cascade",
+        "File":  "CommentConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "ContentManagement",
+        "Principal":  "Profile",
+        "Dependent":  "Comment",
+        "Behavior":  "NoAction",
+        "File":  "CommentConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "ContentManagement",
+        "Principal":  "Property:ParentComment",
+        "Dependent":  "Comment",
+        "Behavior":  "NoAction",
+        "File":  "CommentConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "ContentManagement",
+        "Principal":  "Comment",
+        "Dependent":  "CommentMedia",
+        "Behavior":  "Cascade",
+        "File":  "CommentMediaConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "ContentManagement",
+        "Principal":  "Comment",
+        "Dependent":  "CommentReaction",
+        "Behavior":  "Cascade",
+        "File":  "CommentReactionConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "ContentManagement",
+        "Principal":  "Profile",
+        "Dependent":  "CommentReaction",
+        "Behavior":  "Cascade",
+        "File":  "CommentReactionConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "ContentManagement",
+        "Principal":  "Profile",
+        "Dependent":  "Post",
+        "Behavior":  "Restrict",
+        "File":  "PostConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "ContentManagement",
+        "Principal":  "Community",
+        "Dependent":  "Post",
+        "Behavior":  "Cascade",
+        "File":  "PostConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "ContentManagement",
+        "Principal":  "Post",
+        "Dependent":  "PostMedia",
+        "Behavior":  "Cascade",
+        "File":  "PostMediaConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "ContentManagement",
+        "Principal":  "Post",
+        "Dependent":  "PostReaction",
+        "Behavior":  "Cascade",
+        "File":  "PostReactionConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "ContentManagement",
+        "Principal":  "Profile",
+        "Dependent":  "PostReaction",
+        "Behavior":  "Cascade",
+        "File":  "PostReactionConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "ContentManagement",
+        "Principal":  "Post",
+        "Dependent":  "PostTag",
+        "Behavior":  "Cascade",
+        "File":  "PostTagConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "ContentManagement",
+        "Principal":  "Tag",
+        "Dependent":  "PostTag",
+        "Behavior":  "Cascade",
+        "File":  "PostTagConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "ContentManagement",
+        "Principal":  "Property:Post",
+        "Dependent":  "PostTopic",
+        "Behavior":  "Cascade",
+        "File":  "PostTopicConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "ContentManagement",
+        "Principal":  "Property:Topic",
+        "Dependent":  "PostTopic",
+        "Behavior":  "Cascade",
+        "File":  "PostTopicConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "ContentManagement",
+        "Principal":  "Post",
+        "Dependent":  "PostView",
+        "Behavior":  "Cascade",
+        "File":  "PostViewConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "ContentManagement",
+        "Principal":  "Profile",
+        "Dependent":  "PostView",
+        "Behavior":  "Cascade",
+        "File":  "PostViewConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "ContentManagement",
+        "Principal":  "Post",
+        "Dependent":  "SavedPost",
+        "Behavior":  "Cascade",
+        "File":  "SavedPostConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "ContentManagement",
+        "Principal":  "Profile",
+        "Dependent":  "SavedPost",
+        "Behavior":  "Cascade",
+        "File":  "SavedPostConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "Discussions",
+        "Principal":  "Profile",
+        "Dependent":  "Problem",
+        "Behavior":  "Restrict",
+        "File":  "ProblemConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "Discussions",
+        "Principal":  "Property:Community",
+        "Dependent":  "Problem",
+        "Behavior":  "SetNull",
+        "File":  "ProblemConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "Discussions",
+        "Principal":  "Problem",
+        "Dependent":  "ProblemContentBlock",
+        "Behavior":  "Cascade",
+        "File":  "ProblemContentBlockConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "Discussions",
+        "Principal":  "Problem",
+        "Dependent":  "ProblemTag",
+        "Behavior":  "Cascade",
+        "File":  "ProblemTagConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "Discussions",
+        "Principal":  "Tag",
+        "Dependent":  "ProblemTag",
+        "Behavior":  "Cascade",
+        "File":  "ProblemTagConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "Discussions",
+        "Principal":  "Problem",
+        "Dependent":  "ProblemTopic",
+        "Behavior":  "Cascade",
+        "File":  "ProblemTopicConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "Discussions",
+        "Principal":  "Topic",
+        "Dependent":  "ProblemTopic",
+        "Behavior":  "Cascade",
+        "File":  "ProblemTopicConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "Discussions",
+        "Principal":  "Problem",
+        "Dependent":  "ProblemView",
+        "Behavior":  "Cascade",
+        "File":  "ProblemViewConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "Discussions",
+        "Principal":  "Profile",
+        "Dependent":  "ProblemView",
+        "Behavior":  "Cascade",
+        "File":  "ProblemViewConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "Discussions",
+        "Principal":  "Problem",
+        "Dependent":  "ProblemVote",
+        "Behavior":  "Cascade",
+        "File":  "ProblemVoteConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "Discussions",
+        "Principal":  "Profile",
+        "Dependent":  "ProblemVote",
+        "Behavior":  "Cascade",
+        "File":  "ProblemVoteConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "Discussions",
+        "Principal":  "Profile",
+        "Dependent":  "SavedProblem",
+        "Behavior":  "Cascade",
+        "File":  "SavedProblemConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "Discussions",
+        "Principal":  "Property:Problem",
+        "Dependent":  "SavedProblem",
+        "Behavior":  "Cascade",
+        "File":  "SavedProblemConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "Discussions",
+        "Principal":  "Solution",
+        "Dependent":  "Discussion",
+        "Behavior":  "Cascade",
+        "File":  "DiscussionConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "Discussions",
+        "Principal":  "Profile",
+        "Dependent":  "Discussion",
+        "Behavior":  "Restrict",
+        "File":  "DiscussionConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "Discussions",
+        "Principal":  "Discussion",
+        "Dependent":  "Discussion",
+        "Behavior":  "Restrict",
+        "File":  "DiscussionConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "Discussions",
+        "Principal":  "Profile",
+        "Dependent":  "SavedSolution",
+        "Behavior":  "Cascade",
+        "File":  "SavedSolutionConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "Discussions",
+        "Principal":  "Property:Solution",
+        "Dependent":  "SavedSolution",
+        "Behavior":  "Cascade",
+        "File":  "SavedSolutionConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "Discussions",
+        "Principal":  "Problem",
+        "Dependent":  "Solution",
+        "Behavior":  "Cascade",
+        "File":  "SolutionConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "Discussions",
+        "Principal":  "Profile",
+        "Dependent":  "Solution",
+        "Behavior":  "Restrict",
+        "File":  "SolutionConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "Discussions",
+        "Principal":  "Solution",
+        "Dependent":  "SolutionContentBlock",
+        "Behavior":  "Cascade",
+        "File":  "SolutionContentBlockConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "Discussions",
+        "Principal":  "Solution",
+        "Dependent":  "SolutionVote",
+        "Behavior":  "Restrict",
+        "File":  "SolutionVoteConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "Discussions",
+        "Principal":  "Profile",
+        "Dependent":  "SolutionVote",
+        "Behavior":  "Restrict",
+        "File":  "SolutionVoteConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "Education",
+        "Principal":  "Property:University",
+        "Dependent":  "AcademicRecord",
+        "Behavior":  "Restrict",
+        "File":  "AcademicRecordConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "Education",
+        "Principal":  "Property:Profile",
+        "Dependent":  "AcademicRecord",
+        "Behavior":  "Restrict",
+        "File":  "AcademicRecordConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "Identity",
+        "Principal":  "User",
+        "Dependent":  "ExportDataRequest",
+        "Behavior":  "Cascade",
+        "File":  "ExportDataRequestConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "Identity",
+        "Principal":  "User",
+        "Dependent":  "IdentityArchive",
+        "Behavior":  "Cascade (Default)",
+        "File":  "IdentityArchiveConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "Identity",
+        "Principal":  "User",
+        "Dependent":  "PasswordArchive",
+        "Behavior":  "Cascade (Default)",
+        "File":  "PasswordArchiveConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "Identity",
+        "Principal":  "User",
+        "Dependent":  "UserArchive",
+        "Behavior":  "Restrict",
+        "File":  "UserArchiveConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "Identity",
+        "Principal":  "User",
+        "Dependent":  "UserArchive",
+        "Behavior":  "SetNull",
+        "File":  "UserArchiveConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "Identity",
+        "Principal":  "User",
+        "Dependent":  "Notification",
+        "Behavior":  "Cascade (Default)",
+        "File":  "NotificationConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "Identity",
+        "Principal":  "User",
+        "Dependent":  "UserNotificationPreferences",
+        "Behavior":  "Cascade",
+        "File":  "UserNotificationPreferencesConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "Identity",
+        "Principal":  "User",
+        "Dependent":  "Device",
+        "Behavior":  "Cascade",
+        "File":  "DeviceConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "Identity",
+        "Principal":  "SecuritySession",
+        "Dependent":  "RefreshToken",
+        "Behavior":  "Cascade",
+        "File":  "RefreshTokenConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "Identity",
+        "Principal":  "User",
+        "Dependent":  "SecuritySession",
+        "Behavior":  "NoAction",
+        "File":  "SecuritySessionConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "Identity",
+        "Principal":  "Property:Device",
+        "Dependent":  "SecuritySession",
+        "Behavior":  "Cascade",
+        "File":  "SecuritySessionConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "Identity",
+        "Principal":  "SecuritySession",
+        "Dependent":  "Property:RefreshTokens",
+        "Behavior":  "Cascade",
+        "File":  "SecuritySessionConfigurations.cs",
+        "Type":  "HasMany"
+    },
+    {
+        "Context":  "Identity",
+        "Principal":  "User",
+        "Dependent":  "UserPasskey",
+        "Behavior":  "Cascade (Default)",
+        "File":  "UserPasskeyConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "Identity",
+        "Principal":  "Role",
+        "Dependent":  "User",
+        "Behavior":  "Cascade (Default)",
+        "File":  "UserConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "Jobs",
+        "Principal":  "Property:Profile",
+        "Dependent":  "CompanyAdministrator",
+        "Behavior":  "Cascade",
+        "File":  "CompanyAdministratorConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "Jobs",
+        "Principal":  "Property:Company",
+        "Dependent":  "CompanyAdministrator",
+        "Behavior":  "Cascade",
+        "File":  "CompanyAdministratorConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "Jobs",
+        "Principal":  "Profile",
+        "Dependent":  "SavedJob",
+        "Behavior":  "Cascade",
+        "File":  "SavedJobConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "Jobs",
+        "Principal":  "Property:Job",
+        "Dependent":  "SavedJob",
+        "Behavior":  "Cascade",
+        "File":  "SavedJobConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "Preferences",
+        "Principal":  "Property:Category",
+        "Dependent":  "Skill",
+        "Behavior":  "Restrict",
+        "File":  "SkillConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "Profiles",
+        "Principal":  "Property:Owner",
+        "Dependent":  "Profile",
+        "Behavior":  "Cascade (Default)",
+        "File":  "ProfileConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "Profiles",
+        "Principal":  "Profile",
+        "Dependent":  "ProfileSkill",
+        "Behavior":  "Cascade",
+        "File":  "ProfileSkillConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "Profiles",
+        "Principal":  "Property:Skill",
+        "Dependent":  "ProfileSkill",
+        "Behavior":  "Cascade",
+        "File":  "ProfileSkillConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "Profiles",
+        "Principal":  "Profile",
+        "Dependent":  "ProfileTopic",
+        "Behavior":  "Cascade",
+        "File":  "ProfileTopicConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "Profiles",
+        "Principal":  "Domain.Preferences.Entities.Topic",
+        "Dependent":  "ProfileTopic",
+        "Behavior":  "Cascade",
+        "File":  "ProfileTopicConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "Profiles",
+        "Principal":  "Profile",
+        "Dependent":  "ProfileView",
+        "Behavior":  "NoAction",
+        "File":  "ProfileViewConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "Profiles",
+        "Principal":  "Profile",
+        "Dependent":  "ProfileView",
+        "Behavior":  "Cascade",
+        "File":  "ProfileViewConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "Profiles",
+        "Principal":  "Profile",
+        "Dependent":  "ReputationLedger",
+        "Behavior":  "Cascade",
+        "File":  "ReputationLedgerConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "Profiles",
+        "Principal":  "Property:Saver",
+        "Dependent":  "SavedProfile",
+        "Behavior":  "Cascade",
+        "File":  "SavedProfileConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "Profiles",
+        "Principal":  "Property:Saved",
+        "Dependent":  "SavedProfile",
+        "Behavior":  "Restrict",
+        "File":  "SavedProfileConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "Profiles",
+        "Principal":  "Profile",
+        "Dependent":  "Block",
+        "Behavior":  "Restrict",
+        "File":  "BlockConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "Profiles",
+        "Principal":  "Profile",
+        "Dependent":  "Block",
+        "Behavior":  "Restrict",
+        "File":  "BlockConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "Profiles",
+        "Principal":  "Profile",
+        "Dependent":  "Follow",
+        "Behavior":  "Restrict",
+        "File":  "FollowConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "Profiles",
+        "Principal":  "Profile",
+        "Dependent":  "Follow",
+        "Behavior":  "Restrict",
+        "File":  "FollowConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "Profiles",
+        "Principal":  "Property:Muted",
+        "Dependent":  "Mute",
+        "Behavior":  "Cascade",
+        "File":  "MuteConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "Profiles",
+        "Principal":  "Property:Muter",
+        "Dependent":  "Mute",
+        "Behavior":  "Restrict",
+        "File":  "MuteConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "Projects",
+        "Principal":  "Profile",
+        "Dependent":  "Project",
+        "Behavior":  "Restrict",
+        "File":  "ProjectConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "Projects",
+        "Principal":  "Project",
+        "Dependent":  "ProjectContributor",
+        "Behavior":  "Cascade",
+        "File":  "ProjectContributorConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "Projects",
+        "Principal":  "Property:Contributor",
+        "Dependent":  "ProjectContributor",
+        "Behavior":  "Restrict",
+        "File":  "ProjectContributorConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "Projects",
+        "Principal":  "Project",
+        "Dependent":  "ProjectMedia",
+        "Behavior":  "Cascade",
+        "File":  "ProjectMediaConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "Projects",
+        "Principal":  "Project",
+        "Dependent":  "ProjectMilestone",
+        "Behavior":  "Cascade",
+        "File":  "ProjectMilestoneConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "Projects",
+        "Principal":  "Project",
+        "Dependent":  "ProjectRating",
+        "Behavior":  "Cascade",
+        "File":  "ProjectRatingConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "Projects",
+        "Principal":  "Profile",
+        "Dependent":  "ProjectRating",
+        "Behavior":  "Restrict",
+        "File":  "ProjectRatingConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "Projects",
+        "Principal":  "Project",
+        "Dependent":  "ProjectSkill",
+        "Behavior":  "Cascade",
+        "File":  "ProjectSkillConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "Projects",
+        "Principal":  "Property:Skill",
+        "Dependent":  "ProjectSkill",
+        "Behavior":  "Cascade",
+        "File":  "ProjectSkillConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "Projects",
+        "Principal":  "Project",
+        "Dependent":  "ProjectTag",
+        "Behavior":  "Cascade",
+        "File":  "ProjectTagConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "Projects",
+        "Principal":  "Tag",
+        "Dependent":  "ProjectTag",
+        "Behavior":  "Cascade",
+        "File":  "ProjectTagConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "Projects",
+        "Principal":  "Domain.Projects.Entities.Project",
+        "Dependent":  "ProjectView",
+        "Behavior":  "Cascade",
+        "File":  "ProjectViewConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "Projects",
+        "Principal":  "Profile",
+        "Dependent":  "ProjectView",
+        "Behavior":  "Cascade",
+        "File":  "ProjectViewConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "Resumes",
+        "Principal":  "Resume",
+        "Dependent":  "ResumeCertificate",
+        "Behavior":  "Cascade",
+        "File":  "ResumeCertificateConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "Resumes",
+        "Principal":  "Profile",
+        "Dependent":  "Resume",
+        "Behavior":  "Cascade",
+        "File":  "ResumeConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "Resumes",
+        "Principal":  "Resume",
+        "Dependent":  "ResumeEducation",
+        "Behavior":  "Cascade",
+        "File":  "ResumeEducationConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "Resumes",
+        "Principal":  "Resume",
+        "Dependent":  "ResumeExperience",
+        "Behavior":  "Cascade",
+        "File":  "ResumeExperienceConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "Resumes",
+        "Principal":  "Resume",
+        "Dependent":  "ResumeLanguage",
+        "Behavior":  "Cascade",
+        "File":  "ResumeLanguageConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "Resumes",
+        "Principal":  "Resume",
+        "Dependent":  "ResumeProject",
+        "Behavior":  "Cascade",
+        "File":  "ResumeProjectConfigurations.cs",
+        "Type":  "HasOne"
+    },
+    {
+        "Context":  "Resumes",
+        "Principal":  "Property:Resume",
+        "Dependent":  "ResumeSkill",
+        "Behavior":  "Cascade",
+        "File":  "ResumeSkillConfigurations.cs",
+        "Type":  "HasOne"
+    }
+]

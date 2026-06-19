@@ -93,6 +93,10 @@ public static class UserStatusCodes
     /// </summary>
     public static readonly StatusCode NotVerified =
         new(Category, 4033); // 403 + 3
+    
+    
+    public static readonly StatusCode UserNameAlreadyExists =
+        new(Category, 4056);
 
 
     /// <summary>

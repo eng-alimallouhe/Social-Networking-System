@@ -49,7 +49,6 @@ public sealed class GetUserSecuritySettingsQueryHandler : IQueryHandler<GetUserS
                 RecoveryEmail = uss.RecoveryEmail,
                 DefaultCommunicationMethod = uss.DefaultCommunicationMethod,
                 ActiveRecoveryCodesCount = uss.RecoveryCodes.Count(),
-                DevicesCount = uss.Devices.Count()
             })
             .FirstOrDefaultAsync(cancellationToken);
 
@@ -66,8 +65,7 @@ public sealed class GetUserSecuritySettingsQueryHandler : IQueryHandler<GetUserS
                     ? _generatorService.GenerateEmailMask(settingsRaw.RecoveryEmail)
                     : null,
                 DefaultCommunicationMethod: settingsRaw.DefaultCommunicationMethod,
-                ActiveRecoveryCodesCount: settingsRaw.ActiveRecoveryCodesCount,
-                DevicesCount: settingsRaw.DevicesCount
+                ActiveRecoveryCodesCount: settingsRaw.ActiveRecoveryCodesCount
             ), ResourceStatusCode.Found);
     }
 }

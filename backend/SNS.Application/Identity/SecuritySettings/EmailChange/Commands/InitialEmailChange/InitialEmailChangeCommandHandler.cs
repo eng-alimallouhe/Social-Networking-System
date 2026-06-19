@@ -91,7 +91,7 @@ public sealed class InitialEmailChangeCommandHandler
             UserName: user.UserName,
             RecipientAddress: request.NewEmail,
             Purpose: SendPurpose.EmailChangeVerification,
-            SendMethod: CommunicationMethod.RecoveryEmail,
+            SendMethod: CommunicationMethod.Email,
             SendLanguage: user.PreferredLanguage,
             RedirectUrl: redirecrtUrl,
             Token: token);

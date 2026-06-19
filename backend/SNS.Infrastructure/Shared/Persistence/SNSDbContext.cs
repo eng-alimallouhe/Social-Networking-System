@@ -94,6 +94,8 @@ public class SNSDbContext : DbContext, IApplicationDbContext
 
     public DbSet<ProfileSkill> ProfileSkills { get; set; }
     public DbSet<ProfileTopic> ProfileTopics { get; set; }
+    public DbSet<ProfileView> ProfileViews { get; set; }
+    public DbSet<Mute> Mutes { get; set; }
 
     // 📦 Projects
     public DbSet<Project> Projects { get; set; }
