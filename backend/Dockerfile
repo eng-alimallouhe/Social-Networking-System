@@ -6,7 +6,7 @@ WORKDIR /src
 # استبدل SNS.sln باسم ملف الـ Solution الحقيقي عندك، أو انسخ ملفات الـ csproj يدوياً
 COPY ["SNS.slnx", "./"]
 COPY ["SNS.API/SNS.API.csproj", "SNS.API/"]
-COPY ["SNS.Infrastructure/SNS.Infrastructure.csproj", "SNS.Infrastrcutre/"]
+COPY ["SNS.Infrastructure/SNS.Infrastructure.csproj", "SNS.Infrastructure/"]
 COPY ["SNS.Application/SNS.Application.csproj", "SNS.Application/"]
 COPY ["SNS.Domain/SNS.Domain.csproj", "SNS.Domain/"]
 COPY ["SNS.Shared/SNS.Shared.csproj", "SNS.Shared/"]
