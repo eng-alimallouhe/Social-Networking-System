@@ -42,7 +42,7 @@ public class ProfileConfigurations :
                .HasColumnType("nvarchar(1000)");
 
         // URL Properties - Standardizing on 512 for links
-        builder.Property(p => p.ProfilePictureUrl).HasMaxLength(512).HasColumnType("varchar(512)");
+        builder.Property(p => p.ProfilePictureObjectKey).HasMaxLength(512).HasColumnType("varchar(512)");
         builder.Property(p => p.GitHubUrl).HasMaxLength(512).HasColumnType("varchar(512)");
         builder.Property(p => p.LinkedInUrl).HasMaxLength(512).HasColumnType("varchar(512)");
         builder.Property(p => p.FacebookUrl).HasMaxLength(512).HasColumnType("varchar(512)");

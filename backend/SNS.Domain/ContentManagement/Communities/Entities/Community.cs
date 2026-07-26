@@ -2,6 +2,9 @@ using SNS.Domain.Shared.Abstractions.IDeletable;
 using SNS.Domain.ContentManagement.Communities.Enums;
 using SNS.Domain.Shared.Entities;
 using SNS.Domain.Shared.Helpers;
+using SNS.Domain.Discussions.Problems.Entities;
+using SNS.Domain.ContentManagement.Posts.Entities;
+using SNS.Domain.Profiles.Profiles.Entities;
 
 namespace SNS.Domain.ContentManagement.Communities.Entities;
 
@@ -20,7 +23,7 @@ public class Community : Entity, ISoftDeletable
     public ModerationPolicy Policy { get; private set; }
     public CommunityType Type { get; private set; }
     public CommunityStatus Status { get; private set; }
-    public string LogoUrl { get; private set; } = string.Empty;
+    public string LogoObjectKey { get; private set; } = string.Empty;
 
     // Timestamp
     public DateTime CreatedAt { get; private set; } = DateTime.UtcNow;
@@ -36,7 +39,9 @@ public class Community : Entity, ISoftDeletable
     public ICollection<CommunityMembership> Memberships { get; private set; } = new List<CommunityMembership>();
     public ICollection<CommunityRule> Rules { get; private set; } = new List<CommunityRule>();
     public ICollection<CommunityAuditLog> AuditLogs { get; private set; } = new List<CommunityAuditLog>();
-
+    public ICollection<Problem> Problems { get; private set; } = new List<Problem>();
+    public ICollection<Post> Posts { get; private set; } = new List<Post>();
+    public Profile Owner { get; private set; } = null!;
 
     private Community()
     {
@@ -56,7 +61,7 @@ public class Community : Entity, ISoftDeletable
         entity.Policy = policy;
         entity.Type = type;
         entity.Status = status;
-        entity.LogoUrl = logoUrl;
+        entity.LogoObjectKey = logoUrl;
         return entity;
     }
 

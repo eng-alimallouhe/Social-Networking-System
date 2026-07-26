@@ -98,7 +98,7 @@ public class CompletePasskeyRegistrationCommandHandler
                 signatureCounter: fidoCredential.SignCount
             );
 
-            await _userPasskeyRepo.AddAsync(newPasskey, cancellationToken);
+            _userPasskeyRepo.Add(newPasskey);
 
             var securitySettings = await _userSecuritySettingsRepo
                 .GetSingleByExpressionAsync(s => s.UserId == userId.Value, cancellationToken);

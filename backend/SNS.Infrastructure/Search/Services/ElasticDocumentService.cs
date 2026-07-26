@@ -89,8 +89,14 @@ public class ElasticDocumentService<TDocument> : IElasticDocumentService<TDocume
         // Map the Elastic response to your custom SearchResult DTO
         return new SearchResult<TDocument>
         {
-            Documents = response.Documents.ToList(),
-            Total = response.Total
+            Total = response.Total,
+
+            Hits = response.Hits
+            .Where(h => h.Source != null)
+            .Select(h => new SearchHit<TDocument>(
+                h.Source!,
+                h.Score ?? 0))
+            .ToList()
         };
     }
 

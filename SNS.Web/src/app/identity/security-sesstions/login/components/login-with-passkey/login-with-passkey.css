@@ -1,0 +1,188 @@
+.login-wrapper {
+    background: var(--secondary-bg);
+    position: relative;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    margin: 0 auto;
+    outline: none;
+    overflow: hidden;
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--glass-shadow);
+    width: 95%;
+    max-width: 450px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    animation: formEntry 0.8s ease-out forwards;
+}
+
+.login-form {
+    padding: 2rem 1.5rem;
+}
+
+@keyframes formEntry {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.loader-container {
+    width: 100%;
+    border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;
+    height: 10px;
+    z-index: 999;
+}
+
+.passkey-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.icon-pulse {
+    width: 80px;
+    height: 80px;
+    background: var(--secondary-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    animation: pulse 2s infinite;
+    color: var(--accent-color);
+}
+
+.icon-pulse svg {
+    width: 40px;
+    height: 40px;
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4);
+    }
+
+    70% {
+        box-shadow: 0 0 0 20px rgba(16, 185, 129, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+    }
+}
+
+.status-container {
+    text-align: center;
+    padding: 1rem;
+    color: var(--text-muted);
+    font-size: var(--text-base);
+}
+
+.retry-btn {
+    width: 100%;
+    padding: 0.8rem;
+    background: transparent;
+    border: 1px solid var(--accent-color);
+    color: var(--accent-color);
+    border-radius: var(--border-radius-md);
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.retry-btn:hover {
+    background: var(--accent-color);
+    color: white;
+}
+
+
+.form-footer {
+    position: relative;
+    margin-top: 1.5rem;
+    width: 100%;
+    display: flex;
+    padding: 0.5rem 0 0 0;
+    justify-content: center;
+    border-top: 2px solid var(--border-color);
+    align-items: center;
+}
+
+/* النصوص الأساسية */
+h2 {
+    color: var(--text-primary);
+    font-size: var(--header-2);
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.passkey-header p {
+    color: var(--text-muted);
+    font-size: var(--text-base);
+    line-height: 1.5;
+    margin: 0;
+}
+
+/* الرابط (Back to Login) */
+.register-link {
+    color: var(--accent-color);
+    text-decoration: none;
+    font-size: var(--text-base);
+    font-weight: 500;
+    transition: opacity 0.3s ease;
+    padding: 0.5rem;
+}
+
+.register-link:hover {
+    opacity: 0.8;
+    text-decoration: underline;
+}
+
+/* تنسيق الـ Button المعدل (تأكد من استخدام class="submit-btn" في الـ HTML) */
+.submit-btn {
+    width: 100%;
+    padding: 0.8rem;
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+    color: var(--secondary-bg);
+    border: none;
+    border-radius: var(--border-radius-md);
+    cursor: pointer;
+    font-weight: 700;
+    font-size: var(--text-base);
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+}
+
+.submit-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.submit-icon {
+    visibility: hidden;
+    opacity: 0;
+    transition: var(--transition-slow);
+}
+
+.submit-btn:hover .submit-icon {
+    visibility: visible;
+    opacity: 1;
+}
+
+.submit-btn:active .submit-icon {
+    visibility: visible;
+    opacity: 1;
+    transform: translateX(5px);
+}

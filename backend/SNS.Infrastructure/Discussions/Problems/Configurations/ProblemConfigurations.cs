@@ -34,14 +34,14 @@ namespace SNS.Infrastructure.Discussions.Problems.Configurations
                    .HasConversion<int>();
 
             // Relationships
-            builder.HasOne<Profile>()
-                   .WithMany() 
+            builder.HasOne<Profile>(p => p.Author)
+                   .WithMany(p => p.Problems)
                    .HasForeignKey(p => p.AuthorId)
                    .IsRequired()
                    .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne(p => p.Community)
-                   .WithMany()
+                   .WithMany(c => c.Problems)
                    .HasForeignKey(p => p.CommunityId)
                    .IsRequired(false)
                    .OnDelete(DeleteBehavior.SetNull);

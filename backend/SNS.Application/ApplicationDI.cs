@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SNS.Application.ContentManagement;
 using SNS.Application.Identity.Shared.Services;
 using SNS.Application.Profiles.Profiles;
 using SNS.Application.Shared.Services;
@@ -16,7 +17,8 @@ public static class ApplicationDI
             .AddIdentityApplicationServices(configuration)
             .AddSharedApplicationServicesDI()
             .AddSettingsDI(configuration)
-            .AddApplicationSocialGrcontentaph();
+            .AddApplicationSocialGrcontentaph()
+            .AddContentManagementApplicationDI();
 
         services.AddMediatR(cfg =>
         {

@@ -8,7 +8,7 @@ public class CurrentSecuritySessionByDeviceIdAndUserIdSpecification : ISingleEnt
 {
     public Expression<Func<SecuritySession, bool>> Criteria { get; }
 
-    public List<string> Includes => [nameof(SecuritySession.RefreshTokens)];
+    public List<string> Includes => [];
 
     public Expression<Func<SecuritySession, object>>? OrderBy => null;
 

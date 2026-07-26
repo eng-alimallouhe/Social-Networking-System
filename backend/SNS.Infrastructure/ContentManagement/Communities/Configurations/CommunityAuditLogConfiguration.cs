@@ -17,9 +17,7 @@ public class CommunityAuditLogConfigurations :
         builder.HasIndex(cal => cal.ActorId);
 
         builder.Property(cal => cal.Action)
-               .IsRequired()
-               .HasMaxLength(255)
-               .HasColumnType("nvarchar(255)");
+               .IsRequired();
 
         builder.HasOne<Community>()
                .WithMany(c => c.AuditLogs)

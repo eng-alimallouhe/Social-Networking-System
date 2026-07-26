@@ -64,3 +64,41 @@ public class CurrentSecuritySessionsSpecification : ISpecification<SecuritySessi
         IsTrackingEnabled = true;
     }
 }
+
+
+public class SessionByTokenOrIdSpecification : ISingleEntitySpecification<SecuritySession>
+{
+    /// <summary>
+    /// Gets the criteria expression used to filter the sessions.
+    /// 
+    /// Matches sessions where the User ID matches, the session is marked active,
+    /// and the session has not been explicitly logged out.
+    /// </summary>
+    public Expression<Func<SecuritySession, bool>> Criteria { get; }
+
+    /// <summary>
+    /// Gets the list of related entities to include in the query result.
+    /// 
+    /// No related entities are eagerly loaded for this specification.
+    /// </summary>
+    public List<string> Includes => [];
+
+    
+    /// <inheritdoc/>
+    public Expression<Func<SecuritySession, object>>? OrderBy => null;
+
+    /// <inheritdoc/>
+    public Expression<Func<SecuritySession, object>>? OrderByDescending => null;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="CurrentSecuritySessionsSpecification"/> class.
+    /// </summary>
+    /// <param name="userId">
+    /// The unique identifier of the user whose active sessions are being retrieved.
+    /// </param>
+    public SessionByTokenOrIdSpecification(Guid? sessionId, string refreshToken)
+    {
+        Criteria = us => us.RefreshToken == refreshToken ||
+            us.Id == sessionId;
+    }
+}

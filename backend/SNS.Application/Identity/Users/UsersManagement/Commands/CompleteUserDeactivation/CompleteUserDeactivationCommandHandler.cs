@@ -1,5 +1,5 @@
 using SNS.Application.Abstractions.Messaging;
-using SNS.Application.Identity.SecuritySessions.Abstractions;
+using SNS.Application.Identity.SecuritySessions.Shared.Abstractions;
 using SNS.Application.Identity.Shared.Abstractions;
 using SNS.Application.Identity.Shared.DTOs.VerificationCodes;
 using SNS.Application.Profiles.Profiles.abstractions;
@@ -23,6 +23,7 @@ public sealed class CompleteUserDeactivationCommandHandler : ICommandHandler<Com
     private readonly IProfileCacheService _profileCacheService;
     private readonly ISessionService _sessionService;
     private readonly ISoftDeletableRepository<Profile> _profileRepo;
+    private readonly IRequestInfoService _requestInfoService;
 
     public CompleteUserDeactivationCommandHandler(
         ICodeService codeService,
@@ -31,7 +32,8 @@ public sealed class CompleteUserDeactivationCommandHandler : ICommandHandler<Com
         IUnitOfWork unitOfWork,
         IUserCacheService userCacheService,
         IProfileCacheService profileCacheService,
-        ISessionService sessionService)
+        ISessionService sessionService,
+        IRequestInfoService requestInfoService)
     {
         _codeService = codeService;
         _userRepo = userRepo;
@@ -40,6 +42,7 @@ public sealed class CompleteUserDeactivationCommandHandler : ICommandHandler<Com
         _userCacheService = userCacheService;
         _profileCacheService = profileCacheService;
         _sessionService = sessionService;
+        _requestInfoService = requestInfoService;
     }
 
     public async Task<Result> Handle(CompleteUserDeactivationCommand request, CancellationToken cancellationToken)
@@ -73,9 +76,19 @@ public sealed class CompleteUserDeactivationCommandHandler : ICommandHandler<Com
 
             profile.SoftDelete();
 
-            user.AddDomainEvent(new UserDeletedEvent(
+            user.AddDomainEvent(new UserDeactivatedEvent(
+                UserId: user.Id,
                 UserName: user.UserName,
                 Email: user.Email,
+                SendLanguage: user.PreferredLanguage,
+                SendMethod: user.UserSecuritySettings.DefaultCommunicationMethod,
+                Device: _requestInfoService.DeviceName,
+                Browser: _requestInfoService.Browser,
+                Country: _requestInfoService.Country,
+                City: _requestInfoService.City,
+                Longitude: _requestInfoService.Longitude,
+                Latitude: _requestInfoService.Latitude,
+                IpAddress: _requestInfoService.IpAddress,
                 OccurredOn: DateTime.UtcNow));
 
             await _unitOfWork.CompleteAsync(cancellationToken: cancellationToken);

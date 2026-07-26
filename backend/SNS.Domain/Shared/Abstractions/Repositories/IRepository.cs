@@ -16,7 +16,8 @@ namespace SNS.Domain.Shared.Abstractions.Repositories;
 /// <typeparam name="TEntity">
 /// The type of the entity managed by the repository.
 /// </typeparam>  
-public interface IRepository<TEntity> where TEntity : class, IHardDeletable
+public interface IRepository
+    <TEntity> where TEntity : class, IHardDeletable
 {
     // ------------------------------------------------------------------
     // Read operations
@@ -29,7 +30,7 @@ public interface IRepository<TEntity> where TEntity : class, IHardDeletable
     /// <returns>
     /// The entity if found; otherwise, <c>null</c>.
     /// </returns>
-    Task<TEntity?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
+    Task<TEntity?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Retrieves a single entity that matches the given specification.
@@ -40,7 +41,7 @@ public interface IRepository<TEntity> where TEntity : class, IHardDeletable
     /// <returns>
     /// The matching entity if found; otherwise, <c>null</c>.
     /// </returns>
-    Task<TEntity?> GetSingleAsync(ISingleEntitySpecification<TEntity> specification, CancellationToken cancellationToken);
+    Task<TEntity?> GetSingleAsync(ISingleEntitySpecification<TEntity> specification, CancellationToken cancellationToken = default);
 
     // ------------------------------------------------------------------
     // Expression Query operations
@@ -68,20 +69,14 @@ public interface IRepository<TEntity> where TEntity : class, IHardDeletable
     /// <summary>
     /// Adds a new entity to the data store.
     /// </summary>
-    Task AddAsync(TEntity entity, CancellationToken cancellationToken);
+    void Add(TEntity entity);
 
     /// <summary>
     /// Adds multiple entities to the data store.
     /// </summary>
-    Task AddRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken);
+    void AddRange(IEnumerable<TEntity> entities);
 
-    /// <summary>
-    /// Deletes an entity by its unique identifier.
-    /// </summary>
-    /// <param name="id">
-    /// The unique identifier of the entity to delete.
-    /// </param>
-    Task DeleteAsync(Guid id, CancellationToken cancellationToken);
+    void Delete(TEntity entity);
 
     /// <summary>
     /// Deletes List of entities.
@@ -90,7 +85,7 @@ public interface IRepository<TEntity> where TEntity : class, IHardDeletable
     /// The list that contains entities to delete.
     /// </param>
 
-    Task DeleteRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken);
+    void DeleteRange(IEnumerable<TEntity> entities);
 
-    Task ExecuteDeleteAsync(Expression<Func<TEntity, bool>> expression, CancellationToken cancellationToken = default);
+    Task<int> ExecuteDeleteAsync(Expression<Func<TEntity, bool>> expression, CancellationToken cancellationToken = default);
 }

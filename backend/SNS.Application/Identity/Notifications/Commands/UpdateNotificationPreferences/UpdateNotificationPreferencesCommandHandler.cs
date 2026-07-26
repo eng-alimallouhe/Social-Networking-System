@@ -43,7 +43,7 @@ public sealed class UpdateNotificationPreferencesCommandHandler
         if (preferences == null)
         {
             preferences = UserNotificationPreferences.Create(currentUserId.Value);
-            await _preferencesRepo.AddAsync(preferences, cancellationToken);
+            _preferencesRepo.Add(preferences);
         }
 
         preferences.UpdateSocialPreferences(

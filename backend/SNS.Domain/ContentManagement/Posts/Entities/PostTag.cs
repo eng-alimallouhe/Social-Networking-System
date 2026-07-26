@@ -1,3 +1,4 @@
+using SNS.Domain.Preferences.Entities;
 using SNS.Domain.Shared.Abstractions.IDeletable;
 using SNS.Domain.Shared.Helpers;
 
@@ -15,6 +16,8 @@ public class PostTag : IHardDeletable
     //Foreign Key: One(Tag) To Many(PostTags)
     public Guid TagId { get; private set; }
     public float? Confidence { get; private set; }
+
+    public Tag Tag { get; set; } = null!;
 
     private PostTag()
     {

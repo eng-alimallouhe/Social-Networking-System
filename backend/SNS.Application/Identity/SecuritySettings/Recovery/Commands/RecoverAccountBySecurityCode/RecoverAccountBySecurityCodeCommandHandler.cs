@@ -1,8 +1,8 @@
 using SNS.Application.Abstractions.Common;
 using SNS.Application.Abstractions.Messaging;
 using SNS.Application.Identity.ArchiveManagement.Abstractions;
-using SNS.Application.Identity.SecuritySessions.Abstractions;
-using SNS.Application.Identity.SecuritySessions.DTOs;
+using SNS.Application.Identity.SecuritySessions.Shared.Abstractions;
+using SNS.Application.Identity.SecuritySessions.Shared.Contracts;
 using SNS.Application.Identity.Shared.Abstractions;
 using SNS.Application.Identity.Shared.DTOs.Archives;
 using SNS.Application.Identity.Shared.DTOs.Authentication;
@@ -14,6 +14,7 @@ using SNS.Domain.Identity.Users.Entities;
 using SNS.Domain.Identity.Users.Specifications;
 using SNS.Domain.Shared.Abstractions.Repositories;
 using SNS.Shared.Results;
+using SNS.Shared.StatusCodes;
 using SNS.Shared.StatusCodes.Identity;
 
 namespace SNS.Application.Identity.SecuritySettings.Recovery.Commands.RecoverAccountBySecurityCode;
@@ -23,7 +24,7 @@ public sealed class RecoverAccountBySecurityCodeCommandHandler : ICommandHandler
     private readonly IUnitOfWork _unitOfWork;
     private readonly IRepository<User> _userRepo;
     private readonly IHashingService _hashingService;
-    private readonly IAuthResponseService _authResponseService;
+    private readonly ITokenService _tokenService;
     private readonly IArchiveService _archiveService;
     private readonly IRequestInfoService _requestInfoService;
     private readonly ISessionService _sessionService;
@@ -33,7 +34,7 @@ public sealed class RecoverAccountBySecurityCodeCommandHandler : ICommandHandler
         IUnitOfWork unitOfWork,
         IRepository<User> userRepo,
         IHashingService hashingService,
-        IAuthResponseService authResponseService,
+        ITokenService tokenService,
         IArchiveService archiveService,
         IRequestInfoService requestInfoService,
         ISessionService sessionService,
@@ -44,7 +45,7 @@ public sealed class RecoverAccountBySecurityCodeCommandHandler : ICommandHandler
         _sessionService = sessionService;
         _hashingService = hashingService;
         _deviceService = deviceService;
-        _authResponseService = authResponseService;
+        _tokenService = tokenService;
         _archiveService = archiveService;
         _requestInfoService = requestInfoService;
     }
@@ -106,23 +107,23 @@ public sealed class RecoverAccountBySecurityCodeCommandHandler : ICommandHandler
                     Browser: _requestInfoService.Browser,
                     IsDeviceTrusted: device.isDeviceTrusted), cancellationToken);
 
-            if (sessionResult.IsFailure)
+            if (sessionResult.IsFailure || sessionResult.Value == null)
             {
                 await _unitOfWork.RollbackTransactionAsync(cancellationToken);
                 return Result<AuthTokensDto>.Failure(sessionResult.StatusCode);
             }
 
-            var tokensResult = await _authResponseService.GenerateAuthResponseAsync(
-                new AuthResponseGenerationDto(
+            var accessToken = _tokenService.GenerateAccessToken(
+                new AccessTokenCreateDto(
                     UserId: user.Id,
-                    RoleId: user.Role.Id,
-                    SessionId: sessionResult.Value,
-                    RoleType: user.Role.Type), cancellationToken);
+                    ProfileId: user.UserProfile.Id,
+                    SessionId: sessionResult.Value.SessionId,
+                    RoleType: user.Role.Type));
 
-            if (tokensResult.IsFailure || tokensResult.Value == null)
+            if (accessToken == null)
             {
                 await _unitOfWork.RollbackTransactionAsync(cancellationToken);
-                return Result<AuthTokensDto>.Failure(tokensResult.StatusCode);
+                return Result<AuthTokensDto>.Failure(SecurityStatusCodes.TokenGenerationError);
             }
 
             await _archiveService.LogUserActionAsync(new CreateUserArchiveDto(
@@ -144,10 +145,10 @@ public sealed class RecoverAccountBySecurityCodeCommandHandler : ICommandHandler
             {
                 user.AddDomainEvent(new UserLoggedInBySecurityCodeEvent(
                     UserId: user.Id,
-                    SessionId: sessionResult.Value,
+                    SessionId: sessionResult.Value.SessionId,
                     IpAddress: requestInformationModel.IpAddress,
                     Device: requestInformationModel.DeviceName,
-                    UserLanguage: user.PreferredLanguage,
+                    SendLanguage: user.PreferredLanguage,
                     RecipientAddress: recipientAddress,
                     City: requestInformationModel.City,
                     Country: requestInformationModel.Country,
@@ -159,7 +160,7 @@ public sealed class RecoverAccountBySecurityCodeCommandHandler : ICommandHandler
 
             await _unitOfWork.CompleteAsync(cancellationToken);
             await _unitOfWork.CommitTransactionAsync(cancellationToken);
-            return tokensResult;
+            return Result<AuthTokensDto>.Success(new AuthTokensDto(Token: accessToken, RefreshToken: sessionResult.Value.RefreshToken), OperationStatusCode.Success);
         }
         catch
         {

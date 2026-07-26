@@ -9,8 +9,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Shared\Abstractions\Gdpr\**" />
+    <EmbeddedResource Remove="Shared\Abstractions\Gdpr\**" />
+    <None Remove="Shared\Abstractions\Gdpr\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="16.1.1" />
     <PackageReference Include="BCrypt.Net-Next" Version="4.2.0" />
+    <PackageReference Include="FFMpegCore" Version="5.4.0" />
     <PackageReference Include="Fido2" Version="4.0.1" />
     <PackageReference Include="MediatR" Version="14.1.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.8" />
@@ -24,6 +31,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Shared\Abstractions\Gdpr\" />
+    <Folder Include="ContentManagement\Comments\" />
   </ItemGroup>
 </Project>

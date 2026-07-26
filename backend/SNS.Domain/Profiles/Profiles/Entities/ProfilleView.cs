@@ -14,7 +14,8 @@ public class ProfileView : Entity, ISoftDeletable
     //Soft Delete:
     public bool IsActive { get; private set; }
 
-
+    public Profile Viewer { get; set; } = null!;
+    public Profile Viewed { get; set; } = null!;
 
 
     private ProfileView()

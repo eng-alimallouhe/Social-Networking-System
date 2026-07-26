@@ -122,7 +122,6 @@ public interface IApplicationDbContext
     IQueryable<User> Users { get; }
     IQueryable<Role> Roles { get; }
     IQueryable<Device> Devices { get; }
-    IQueryable<RefreshToken> RefreshTokens { get; }
     IQueryable<SecuritySession> UserSessions { get; }
     IQueryable<UserArchive> UserArchives { get; }
     IQueryable<IdentityArchive> IdentityArchives { get; }
@@ -140,6 +139,8 @@ public interface IApplicationDbContext
     IQueryable<Profile> Profiles { get; }
     IQueryable<ReputationLedger> ReputationLedgers { get; }
     IQueryable<SavedProfile> SavedProfiles { get; }
+    IQueryable<ProfileView> ProfileViews { get; }
+    IQueryable<ProfileTag> ProfileTags { get; }
 
 
     // Bridges

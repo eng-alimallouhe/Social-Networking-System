@@ -1,14 +1,12 @@
 using SNS.Application.Abstractions.Common;
 using SNS.Application.Abstractions.Messaging;
 using SNS.Application.Identity.ArchiveManagement.Abstractions;
-using SNS.Application.Identity.SecuritySessions.Abstractions;
-using SNS.Application.Identity.SecuritySessions.DTOs;
-using SNS.Application.Identity.SecuritySessions.Services;
+using SNS.Application.Identity.SecuritySessions.Shared.Abstractions;
+using SNS.Application.Identity.SecuritySessions.Shared.Contracts;
 using SNS.Application.Identity.Shared.Abstractions;
 using SNS.Application.Identity.Shared.DTOs.Archives;
 using SNS.Application.Identity.Shared.DTOs.Authentication;
 using SNS.Application.Identity.Shared.DTOs.SecuritySessions;
-using SNS.Application.Identity.Shared.Services;
 using SNS.Domain.Identity.ArchiveManagement.Enums;
 using SNS.Domain.Identity.Shared.Enums;
 using SNS.Domain.Identity.Users.Entities;
@@ -20,7 +18,7 @@ using SNS.Shared.StatusCodes.Identity;
 
 namespace SNS.Application.Identity.SecuritySettings.PasswordManagement.Commands.ResetPassword;
 
-public sealed class ResetPasswordCommandHandler : ICommandHandler<ResetPasswordCommand, AuthTokensDto>
+internal sealed class ResetPasswordCommandHandler : ICommandHandler<ResetPasswordCommand, AuthTokensDto>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IRepository<User> _userRepo;
@@ -28,7 +26,7 @@ public sealed class ResetPasswordCommandHandler : ICommandHandler<ResetPasswordC
     private readonly IArchiveService _archiveService;
     private readonly IHashingService _hashingService;
     private readonly ISessionService _sessionService;
-    private readonly IAuthResponseService _authResponseService;
+    private readonly ITokenService _tokenService;
     private readonly IRequestInfoService _requestInfoService;
     private readonly IDeviceService _deviceService;
 
@@ -39,7 +37,7 @@ public sealed class ResetPasswordCommandHandler : ICommandHandler<ResetPasswordC
         IArchiveService archiveService,
         IHashingService hashingService,
         ISessionService sessionService,
-        IAuthResponseService authResponseService,
+        ITokenService tokenService,
         IRequestInfoService requestInfoService,
         IDeviceService deviceService)
     {
@@ -49,7 +47,7 @@ public sealed class ResetPasswordCommandHandler : ICommandHandler<ResetPasswordC
         _archiveService = archiveService;
         _hashingService = hashingService;
         _sessionService = sessionService;
-        _authResponseService = authResponseService;
+        _tokenService = tokenService;
         _requestInfoService = requestInfoService;
         _deviceService = deviceService;
     }
@@ -67,7 +65,7 @@ public sealed class ResetPasswordCommandHandler : ICommandHandler<ResetPasswordC
         if (!pendingUpdate.IsVerified)
             return Result<AuthTokensDto>.Failure(OperationStatusCode.AccessDenied);
 
-        var spec = new UserWithRoleAndSettingsSpecification(request.UserId);
+        var spec = new UserWithRoleAndSettingsAndProfileSpecification(request.UserId);
 
         var user = await _userRepo.GetSingleAsync(spec, cancellationToken);
 
@@ -127,23 +125,23 @@ public sealed class ResetPasswordCommandHandler : ICommandHandler<ResetPasswordC
                     Browser: _requestInfoService.Browser,
                     IsDeviceTrusted: device.isDeviceTrusted), cancellationToken);
 
-            if (sessionResult.IsFailure)
+            if (sessionResult.IsFailure || sessionResult.Value == null)
             {
                 await _unitOfWork.RollbackTransactionAsync(cancellationToken);
                 return Result<AuthTokensDto>.Failure(sessionResult.StatusCode);
             }
 
-            var tokensResult = await _authResponseService.GenerateAuthResponseAsync(
-                new AuthResponseGenerationDto(
+            var accessToken = _tokenService.GenerateAccessToken(
+                new AccessTokenCreateDto(
                     UserId: user.Id,
-                    RoleId: user.RoleId,
-                    SessionId: sessionResult.Value,
-                    RoleType: user.Role.Type), cancellationToken);
+                    ProfileId: user.UserProfile.Id,
+                    SessionId: sessionResult.Value.SessionId,
+                    RoleType: user.Role.Type));
 
-            if (tokensResult.IsFailure || tokensResult.Value == null)
+            if (accessToken == null)
             {
                 await _unitOfWork.RollbackTransactionAsync(cancellationToken);
-                return Result<AuthTokensDto>.Failure(tokensResult.StatusCode);
+                return Result<AuthTokensDto>.Failure(SecurityStatusCodes.TokenGenerationError);
             }
 
             await _archiveService.LogUserActionAsync(
@@ -165,7 +163,9 @@ public sealed class ResetPasswordCommandHandler : ICommandHandler<ResetPasswordC
 
             await _unitOfWork.CommitTransactionAsync(cancellationToken);
 
-            return tokensResult;
+            return Result<AuthTokensDto>.Success(
+                new AuthTokensDto(Token: accessToken, RefreshToken: sessionResult.Value.RefreshToken), 
+                OperationStatusCode.Success);
         }
         catch
         {

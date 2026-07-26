@@ -35,6 +35,22 @@ public class RedisCacheService : ICacheService
         await _db.StringSetAsync(key, jsonData, expiry);
     }
 
+    public async Task<List<T>> GetListAsync<T>(
+    string[] keys,
+    CancellationToken cancellationToken = default)
+    {
+        RedisKey[] redisKeys = keys
+            .Select(k => (RedisKey)k)
+            .ToArray();
+
+        RedisValue[] values = await _db.StringGetAsync(redisKeys);
+
+        return values
+            .Where(v => v.HasValue)
+            .Select(v => JsonSerializer.Deserialize<T>(v.ToString())!)
+            .ToList();
+    }
+
     public async Task<T?> GetAsync<T>(
         string key, 
         CancellationToken cancellationToken = default)
@@ -89,7 +105,6 @@ public class RedisCacheService : ICacheService
         return await _db.KeyExistsAsync(key);
     }
 
-
     public async Task IncrementSortedSetScoreAsync(string key, string member, double increment, CancellationToken cancellationToken = default)
     {
         await _db.SortedSetIncrementAsync(key, member, increment);
@@ -124,5 +139,21 @@ public class RedisCacheService : ICacheService
     public async Task<long> IncrementAsync(string key, CancellationToken cancellationToken = default)
     {
         return await _db.StringIncrementAsync(key: key, flags: CommandFlags.None);
+    }
+
+    public async Task AddRangeToSortedSetAsync(string key, IEnumerable<(string Member, double Score)> items, CancellationToken cancellationToken = default)
+    {
+        var entries = items
+            .Select(i => new SortedSetEntry(i.Member, i.Score))
+            .ToArray();
+
+        await _db.SortedSetAddAsync(key, entries);
+    }
+
+    public async Task<Dictionary<string, double>> GetSortedSetRangeByRankWithScoresAsync(string key, long start, long stop, CancellationToken cancellationToken = default)
+    {
+        var results = await _db.SortedSetRangeByRankWithScoresAsync(key, start, stop, Order.Descending);
+
+        return results.ToDictionary(r => r.Element.ToString(), r => r.Score);
     }
 }

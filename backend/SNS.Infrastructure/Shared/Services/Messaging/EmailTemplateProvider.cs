@@ -58,9 +58,10 @@ public class EmailTemplateProvider : IEmailTemplateProvider
     {
         return Path.Combine(
             AppDomain.CurrentDomain.BaseDirectory,
+            "Shared",
             "Resources",
             "MessagingTemplates",
-            "RecoveryEmail",
+            "Email",
             language.ToString(),
             $"{purpose}.json");
     }

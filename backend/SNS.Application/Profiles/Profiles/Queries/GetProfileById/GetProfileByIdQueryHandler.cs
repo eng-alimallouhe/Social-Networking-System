@@ -46,7 +46,7 @@ public sealed record GetProfileByIdQueryHandler : IQueryHandler<GetProfileByIdQu
         p.Id,
         p.FullName,
         p.Bio,
-        p.ProfilePictureUrl,
+        p.ProfilePictureObjectKey,
         p.Specialization,
         p.Followers.Count(),
         p.Followings.Count(),

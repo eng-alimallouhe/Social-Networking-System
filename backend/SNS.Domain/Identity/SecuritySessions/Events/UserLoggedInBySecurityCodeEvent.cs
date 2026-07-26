@@ -13,7 +13,7 @@ public sealed record UserLoggedInBySecurityCodeEvent(
     string Country,
     double Latitude,
     double Longitude,
-    SupportedLanguage UserLanguage,
+    SupportedLanguage SendLanguage,
     string RecipientAddress,
     CommunicationMethod SendMethod,
     DateTime OccurredOn,

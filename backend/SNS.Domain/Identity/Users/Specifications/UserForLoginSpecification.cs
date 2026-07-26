@@ -60,6 +60,8 @@ public class UserForLoginSpecification : ISingleEntitySpecification<User>
 
         Includes = [
             nameof(User.Role),
-            nameof(User.UserSecuritySettings)];
+            nameof(User.UserSecuritySettings), 
+            nameof(User.UserProfile)
+        ];
     }
 }

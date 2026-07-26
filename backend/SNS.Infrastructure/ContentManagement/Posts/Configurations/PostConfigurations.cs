@@ -33,14 +33,14 @@ public class PostConfigurations : IEntityTypeConfiguration<Post>
         builder.Property(p => p.Status).HasConversion<int>();
 
         // Relationships
-        builder.HasOne<Profile>()
-               .WithMany()
+        builder.HasOne(p => p.Author)
+               .WithMany(p => p.Posts)
                .HasForeignKey(p => p.AuthorId)
                .IsRequired()
                .OnDelete(DeleteBehavior.Restrict);
 
-        builder.HasOne<Community>()
-               .WithMany() 
+        builder.HasOne(p => p.Community)
+               .WithMany(c => c.Posts)
                .HasForeignKey(p => p.CommunityId)
                .IsRequired(false)
                .OnDelete(DeleteBehavior.Cascade);

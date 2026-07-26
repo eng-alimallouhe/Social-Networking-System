@@ -141,9 +141,14 @@ public class JobSearchService : IJobSearchService
     {
         return await _elasticBaseService.UpsertAsync(_indexName, job.Id.ToString(), job, cancellationToken);
     }
-
+    
     public async Task<AppResult> DeleteJobAsync(Guid jobId, CancellationToken cancellationToken = default)
     {
         return await _elasticBaseService.DeleteAsync(_indexName, jobId.ToString(), cancellationToken);
+    }
+    
+    public async Task<AppResult> BulkJobsAsync(List<JobsDocument> jobs, CancellationToken cancellationToken = default)
+    {
+        return await _elasticBaseService.BulkIndexDocumentAsync(_indexName, jobs, cancellationToken);
     }
 }

@@ -6,13 +6,8 @@ public class PostDocument
 {
     public Guid Id { get; set; }
     public Guid AuthorId { get; set; }
-    public string AuthorName { get; set; } = string.Empty;
-    public string AuthorSpecialization { get; set; } = string.Empty;
-    public string AuthorProfilePictureUrl { get; set; } = string.Empty;
     public Guid? CommunityId { get; set; }
-    public CommunityType? CommunityType { get; set; }
-    public string? CommunityName { get; set; }
-    public string? CommunityLogoUrl { get; set; }
+    public string? CommunityType { get; set; }
     public string Title { get; set; } = string.Empty;
     public string Content { get; set; } = string.Empty;
     public DateTime CreatedAt { get; set; }

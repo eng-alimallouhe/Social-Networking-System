@@ -12,4 +12,5 @@ public interface IJobSearchService
     Task<SearchResult<JobsDocument>> GetSuggestedJobsAsync(SuggestedJobsQuery query, CancellationToken cancellationToken = default);
     Task<AppResult> UpsertJobAsync(JobsDocument job, CancellationToken cancellationToken = default);
     Task<AppResult> DeleteJobAsync(Guid jobId, CancellationToken cancellationToken = default);
+    Task<AppResult> BulkJobsAsync(List<JobsDocument> jobs, CancellationToken cancellationToken = default);
 }

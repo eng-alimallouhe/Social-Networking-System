@@ -42,7 +42,7 @@ public class UserCacheService : IUserCacheService
         if (model != null)
             return model;
 
-        var spec = new UserWithRoleAndSettingsSpecification(userId);
+        var spec = new UserWithRoleAndSettingsAndProfileSpecification(userId);
         var fallBackUser = await _userRepo.GetSingleAsync(spec, cancellationToken);
 
         var fallBackUserModel = await _dbContext

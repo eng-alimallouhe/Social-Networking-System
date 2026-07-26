@@ -6,10 +6,11 @@ namespace SNS.Domain.Identity.Users.Events;
 
 public sealed record UserBannedEvent(
     Guid UserId,
+    string UserName,
     string Email,
-    SupportedLanguage UserLanguage,
     string Reason,
+    SupportedLanguage SendLanguage,
     CommunicationMethod CommunicationMethod,
     DateTime OccurredOn,
-    EventType EventType = EventType.Synchronous) : IDomainEvent;
+    EventType EventType = EventType.Integration) : IDomainEvent;
 

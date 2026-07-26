@@ -43,7 +43,7 @@ public class ProfileCacheService : IProfileCacheService
             return null;
         }
 
-        model = new ProfileIntegrationModel(profileId, fallBackProfile.FullName, fallBackProfile.UserId, fallBackProfile.ProfilePictureUrl, fallBackProfile.Specialization, fallBackProfile.IsActive);
+        model = new ProfileIntegrationModel(profileId, fallBackProfile.FullName, fallBackProfile.UserId, fallBackProfile.ProfilePictureObjectKey, fallBackProfile.Specialization, fallBackProfile.IsActive);
         var mappingKey = _cacheKeyFactory.GetUserProfileMappingKey(fallBackProfile.UserId);
 
         await SetProfileAsync(model, cancellationToken);
@@ -68,7 +68,7 @@ public class ProfileCacheService : IProfileCacheService
                 return null;
             }
 
-            var model = new ProfileIntegrationModel(fallBackProfile.Id, fallBackProfile.FullName, fallBackProfile.UserId, fallBackProfile.ProfilePictureUrl, fallBackProfile.Specialization, fallBackProfile.IsActive);
+            var model = new ProfileIntegrationModel(fallBackProfile.Id, fallBackProfile.FullName, fallBackProfile.UserId, fallBackProfile.ProfilePictureObjectKey, fallBackProfile.Specialization, fallBackProfile.IsActive);
 
             await SetProfileAsync(model, cancellationToken);
 

@@ -1,0 +1,163 @@
+{
+    "App": {
+        "Site_Name": "Syrian Developers Network",
+        "Site_Name_1": "Syrian",
+        "Site_Name_2": "Developers",
+        "Site_Name_3": "Platform",
+        "Layout": {
+            "Home": "Home",
+            "Profile": "Profile",
+            "Logout": "Logout",
+            "Search": "Search",
+            "Forum": "Q&A",
+            "Projects": "Projects",
+            "Notifications": "Notifications",
+            "Settings": {
+                "Title": "Account Settings",
+                "Home": "Account Home",
+                "Personal_Info": "Personal Information",
+                "Security_Settings": "Security Settings",
+                "Sessions": "Sessions & Sign-in",
+                "Password_Management": "Password Management",
+                "Archive": "Account Archive",
+                "Search": "Search for any settings"
+            }
+        },
+        "Menu": {
+            "Welcome": "Welcome to the Syrian Developers Platform, please select an action",
+            "Community": "Community",
+            "Content_Settings": "Content Settings",
+            "Jobs": "Jobs",
+            "Account_Settings": "Account Settings",
+            "Logout": "Logout",
+            "Login": "Login",
+            "Register": "Register"
+        }
+    },
+    "Identity": {
+        "Security_Sessions": {
+            "Login": {
+                "Title": "Welcome Back again",
+                "Identifier": "User Identifier",
+                "Identifier_Placeholder": "Enter your email or username",
+                "Password": "Password",
+                "Password_Placeholder": "Enter your password",
+                "Remember_Me": "Remember me",
+                "Forgot_Password": "Forgot password?",
+                "Login": "Sign In",
+                "Divider": "Or continue with",
+                "Register_Prompt": "Don't have an account?",
+                "Register_Link": "Register now",
+                "Show_Password": "Show password",
+                "Login_Error_Title": "Error while tyring to login",
+                "Login_Error_Body": "your identifier or password is incorect, please check them and try again"
+            },
+            "Authenticator": {
+                "Title": "Login With Authenticator App",
+                "Enter_Code_For": "Enter Code For",
+                "Verify": "Verify",
+                "Back_To_Login": "Back to login",
+                "Using_Authenticator": "using your Authenticator App"
+            },
+            "Passkey": {
+                "Title": "Sign in with Passkey",
+                "Subtitle": "Use your device's built-in authentication to sign in quickly and securely",
+                "Retry": "Retry",
+                "Waiting_For_Device": "Waiting for your device to respond..."
+            },
+            "OTP": {
+                "Title": "Verify OTP Code",
+                "Enter_Code_Send_To": "Check your email {{email}} and enter the code sent to it",
+                "Verify": "Verify",
+                "Back_To_Login": "Back to login",
+                "Using_Authenticator": "using your Authenticator App",
+                "Did_Not_Receive": "Did not receive code?",
+                "Resend": "Resend it"
+            },
+            "Shared": {
+                "Support": "Support",
+                "Login_Options": "Login Options"
+            }
+        },
+        "Security_Settings": {
+            "Personal_Info": {
+                "Title": "Personal Information",
+                "User_Name": "UserName",
+                "Role": "Role",
+                "Email": "Email",
+                "Preferred_Language": "Preferred Language",
+                "Last_Password_Change": "Last Password Change",
+                "Location": "Location",
+                "Last_Location": "Last Active Location",
+                "Has_Active_Download_Request": "Has Active Download Request",
+                "Change_Username": {
+                    "Title": "Change Username",
+                    "Subtitle": "Change your username",
+                    "description": "Choose a unique username. This will be visible to other users.",
+                    "New_Username": "New Username",
+                    "New_Username_Placeholder": "Enter your new username",
+                    "Avalable": "this username is available",
+                    "Not_Avaliable": "this username is taken",
+                    "Apply": "Apply",
+                    "Back": "Back",
+                    "Current_Username": "your current name"
+                }
+            },
+            "Search": {}
+        }
+    },
+    "Shared": {
+        "Error_Title": "Error!",
+        "Seccuess_Title": "Success",
+        "Errors": {
+            "Email_Required": "Email is required",
+            "Email_Invalid": "Email is invalid",
+            "Password_Required": "Password is required",
+            "Password_MinLength": "Password must be at least 8 characters long",
+            "Failed": "Failed",
+            "Invalid_Code": "Code must be 6-digits"
+        },
+        "Role_Type": {
+            "USER": "Normal User",
+            "ADMIN": "Admin Role",
+            "MODERATOR": "Moderator Role",
+            "GUEST": "Guest",
+            "SUPPORT": "Support Role",
+            "GHOST": "Ghost"
+        },
+        "Supported_Languages": {
+            "1": "Arabic",
+            "2": "English"
+        },
+        "Logical_Values": {
+            "true": "Yes",
+            "false_Found": "Not Found"
+        },
+        "Loaders": {
+            "Checking_Username_Availablity": "Checking Username Availablity"
+        }
+    },
+    "Status_Codes": {
+        "Shared": {
+            "Error_Title": "Error",
+            "Success_Title": "Success"
+        },
+        "User": {
+            "404": "Sorry, we couldn't find an account associated with this identifier.",
+            "4091": "Sorry, this identifier is alredy used in another account",
+            "4036": "Sorry, this username is taken by another user"
+        },
+        "Operation": {
+            "200": "the Operation is done successfully",
+            "400": "the Operation is done with errors",
+            "401": "you need to be authenticated to perform this operation",
+            "403": "you do not have a permission to perform this operation",
+            "4221": "you had entered unvalid data",
+            "500": "Something went wrong, please try again later"
+        }
+    },
+    "Loader": {
+        "System_Busy_Title": "System Busy",
+        "System_Busy_Body": "We are currently processing your request. Please hold for a moment."
+    }
+}

@@ -3,6 +3,7 @@ using SNS.Domain.Discussions.Problems.Enums;
 using SNS.Domain.Discussions.Problems.Relations;
 using SNS.Domain.Discussions.Shared.Enums;
 using SNS.Domain.Discussions.Solutions.Entities;
+using SNS.Domain.Profiles.Profiles.Entities;
 using SNS.Domain.Shared.Abstractions.IDeletable;
 using SNS.Domain.Shared.Entities;
 using SNS.Domain.Shared.Helpers;
@@ -35,8 +36,18 @@ public class Problem : Entity, ISoftDeletable
     // Navigation Properties
     public Community? Community { get; set; }
 
+    public Profile Author { get; set; } = null!;
+
     public ICollection<ProblemContentBlock> ContentBlocks { get; set; } 
         = new List<ProblemContentBlock>();
+    
+
+    public ICollection<ProblemTag> ProblemTags { get; set; } 
+        = new List<ProblemTag>();
+    
+
+    public ICollection<ProblemTopic> ProblemTopics { get; set; } 
+        = new List<ProblemTopic>();
     
     public ICollection<ProblemVote> Votes { get; set; } 
         = new List<ProblemVote>();

@@ -1,3 +1,4 @@
+using SNS.Domain.Profiles.Profiles.Entities;
 using SNS.Domain.Shared.Abstractions.IDeletable;
 using SNS.Domain.Shared.Helpers;
 
@@ -21,6 +22,9 @@ public class Block : IHardDeletable
     public DateTime UpdatedAt { get; private set; }
 
     // Navigation
+    public Profile Blocker { get; set; } = null!;
+    public Profile Blocked { get; set; } = null!;
+
 
     private Block()
     {

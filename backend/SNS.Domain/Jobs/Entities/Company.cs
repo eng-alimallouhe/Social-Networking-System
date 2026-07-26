@@ -13,7 +13,7 @@ public class Company : Entity, ISoftDeletable
     public string Name { get; private set; } = string.Empty;
     public string Industry { get; private set; } = string.Empty;
     public string? WebsiteUrl { get; private set; }
-    public string? LogoUrl { get; private set; }
+    public string? LogoObjectKey { get; private set; }
 
     public bool IsActive { get; private set; }
     public DateTime CreatedAt { get; set; }
@@ -27,7 +27,7 @@ public class Company : Entity, ISoftDeletable
         Id = SequentialGuid.GenerateSequentialGuid();
     }
 
-    public static Company Create(string name, string industry, string? websiteUrl, string? logoUrl)
+    public static Company Create(string name, string industry, string? websiteUrl, string? logoObjectKey)
     {
         var entity = new Company()
         {
@@ -35,7 +35,7 @@ public class Company : Entity, ISoftDeletable
             Industry = industry
         };
         entity.WebsiteUrl = websiteUrl;
-        entity.LogoUrl = logoUrl;
+        entity.LogoObjectKey = logoObjectKey;
         return entity;
     }
 

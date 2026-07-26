@@ -75,7 +75,7 @@ public sealed class GenerateRecoveryCodesCommandHandler
 
             var recoveryCodeEntity = RecoveryCode.Create(securitySettingsId, hashedCode);
 
-            await _recoveryCodeRepo.AddAsync(recoveryCodeEntity, cancellationToken);
+            _recoveryCodeRepo.Add(recoveryCodeEntity);
         }
 
         await _unitOfWork.CompleteAsync(cancellationToken);

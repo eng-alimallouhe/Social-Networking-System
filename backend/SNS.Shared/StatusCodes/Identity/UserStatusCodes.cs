@@ -37,6 +37,13 @@ public static class UserStatusCodes
         new(Category, 200);
 
     /// <summary>
+    /// Indicates that the requested user profile or account founded.
+    /// <para>HTTP Equivalent: 200 Ok or Found</para>
+    /// </summary>
+    public static readonly StatusCode UserNameAvailable =
+        new(Category, 2001);
+
+    /// <summary>
     /// Indicates that the requested user profile or account could not be found.
     /// <para>HTTP Equivalent: 404 Not Found</para>
     /// </summary>
@@ -96,7 +103,7 @@ public static class UserStatusCodes
     
     
     public static readonly StatusCode UserNameAlreadyExists =
-        new(Category, 4056);
+        new(Category, 4036);
 
 
     /// <summary>

@@ -15,6 +15,9 @@ public class SecuritySessionConfigurations :
         builder.HasKey(us => us.Id);
         builder.HasIndex(us => us.UserId);
 
+        builder.HasIndex(us => us.RefreshToken)
+            .IsUnique();
+
         builder.Property(us => us.IpAddress)
                .IsRequired()
                .HasMaxLength(45)
@@ -41,10 +44,5 @@ public class SecuritySessionConfigurations :
                .HasForeignKey(ss => ss.DeviceId)
                .OnDelete(DeleteBehavior.Cascade)
                .IsRequired();
-
-        builder.HasMany(ss => ss.RefreshTokens)
-               .WithOne()
-               .HasForeignKey(rt => rt.SecuritySessionId)
-               .OnDelete(DeleteBehavior.Cascade);
     }
 }

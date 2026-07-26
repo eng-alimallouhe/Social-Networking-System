@@ -28,13 +28,13 @@ public class BlockConfigurations :
 
         // Relationships
 
-        builder.HasOne<Profile>()
+        builder.HasOne<Profile>(b => b.Blocker)
                .WithMany(p => p.BlackList)
                .HasForeignKey(b => b.BlockerId)
                .IsRequired()
                .OnDelete(DeleteBehavior.Restrict);
 
-        builder.HasOne<Profile>()
+        builder.HasOne<Profile>(b => b.Blocked)
                .WithMany()
                .HasForeignKey(b => b.BlockedId)
                .IsRequired()

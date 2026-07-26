@@ -14,4 +14,5 @@ public class CommunityDocument
     public int MembersCount { get; set; }
     public Guid OwnerId { get; set; }
     public string OwnerName { get; set; } = string.Empty;
+    public string OwnerProfilePicture { get; set; } = string.Empty;
 }

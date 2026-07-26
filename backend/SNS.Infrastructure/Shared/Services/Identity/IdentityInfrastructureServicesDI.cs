@@ -12,7 +12,7 @@ public static class IdentitySharedInfrastructureServicesDI
         {
             var basePath = AppContext.BaseDirectory;
 
-            var dbPath = Path.Combine(basePath, "Resources", "DataBases", "GeoLite2-Country.mmdb");
+            var dbPath = Path.Combine(basePath , "Shared", "Resources", "DataBases", "GeoLite2-Country.mmdb");
 
             if (!File.Exists(dbPath))
             {

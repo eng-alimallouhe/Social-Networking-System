@@ -1,8 +1,8 @@
 using SNS.Application.Abstractions.Common;
 using SNS.Application.Abstractions.Messaging;
 using SNS.Application.Identity.ArchiveManagement.Abstractions;
-using SNS.Application.Identity.SecuritySessions.Abstractions;
-using SNS.Application.Identity.SecuritySessions.DTOs;
+using SNS.Application.Identity.SecuritySessions.Shared.Abstractions;
+using SNS.Application.Identity.SecuritySessions.Shared.Contracts;
 using SNS.Application.Identity.Shared.Abstractions;
 using SNS.Application.Identity.Shared.DTOs.Archives;
 using SNS.Application.Identity.Shared.DTOs.Authentication;
@@ -22,7 +22,7 @@ public sealed class ChangePasswordCommandHandler : ICommandHandler<ChangePasswor
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IDeviceService _deviceService;
-    private readonly IAuthResponseService _authResponseService;
+    private readonly ITokenService _tokenService;
     private readonly IRequestInfoService _requestInfoService;
     private readonly ICurrentUserService _currentUserService;
     private readonly IRepository<User> _userRepo;
@@ -33,7 +33,7 @@ public sealed class ChangePasswordCommandHandler : ICommandHandler<ChangePasswor
     public ChangePasswordCommandHandler(
         IUnitOfWork unitOfWork,
         IDeviceService deviceService,
-        IAuthResponseService authResponseService,
+        ITokenService tokenService,
         IRequestInfoService requestInfoService,
         ICurrentUserService currentUserService,
         IRepository<User> userRepo,
@@ -43,7 +43,7 @@ public sealed class ChangePasswordCommandHandler : ICommandHandler<ChangePasswor
     {
         _unitOfWork = unitOfWork;
         _deviceService = deviceService;
-        _authResponseService = authResponseService;
+        _tokenService = tokenService;
         _requestInfoService = requestInfoService;
         _currentUserService = currentUserService;
         _userRepo = userRepo;
@@ -60,7 +60,7 @@ public sealed class ChangePasswordCommandHandler : ICommandHandler<ChangePasswor
         if (userId == null) 
             return Result<AuthTokensDto>.Failure(OperationStatusCode.AuthenticationRequired);
 
-        var spec = new UserWithRoleAndSettingsSpecification(userId.Value);
+        var spec = new UserWithRoleAndSettingsAndProfileSpecification(userId.Value);
 
         var user = await _userRepo.GetSingleAsync(spec, cancellationToken);
         
@@ -124,20 +124,23 @@ public sealed class ChangePasswordCommandHandler : ICommandHandler<ChangePasswor
 
             var sessionResult = await _sessionService.CreateSessionAsync(sessionArgs, cancellationToken);
 
-            if (sessionResult.IsFailure)
+            if (sessionResult.IsFailure || sessionResult.Value == null)
             {
                 await _unitOfWork.RollbackTransactionAsync(cancellationToken);
                 return Result<AuthTokensDto>.Failure(sessionResult.StatusCode);
             }
 
-            var authResult = await _authResponseService.GenerateAuthResponseAsync(
-                new AuthResponseGenerationDto(user.Id, user.RoleId, sessionResult.Value, user.Role.Type)
-                , cancellationToken);
+            var accessToken = _tokenService.GenerateAccessToken(
+                new AccessTokenCreateDto(
+                    UserId: user.Id, 
+                    ProfileId: user.UserProfile.Id, 
+                    SessionId: sessionResult.Value.SessionId, 
+                    RoleType: user.Role.Type));
 
-            if (authResult.IsFailure)
+            if (accessToken == null)
             {
                 await _unitOfWork.RollbackTransactionAsync (cancellationToken);
-                return Result<AuthTokensDto>.Failure(authResult.StatusCode);
+                return Result<AuthTokensDto>.Failure(SecurityStatusCodes.TokenGenerationError);
             }
 
             await _archiveService.LogUserActionAsync(
@@ -159,7 +162,10 @@ public sealed class ChangePasswordCommandHandler : ICommandHandler<ChangePasswor
 
             await _unitOfWork.CommitTransactionAsync(cancellationToken);
 
-            return authResult;
+            return Result<AuthTokensDto>.Success(
+                new AuthTokensDto(
+                    Token: accessToken, RefreshToken: sessionResult.Value.RefreshToken), 
+                OperationStatusCode.Success);
         }
         catch
         {

@@ -44,7 +44,7 @@ public sealed class UnbanUserCommandHandler : ICommandHandler<UnbanUserCommand>
             return Result.Failure(SecurityStatusCodes.AuthenticationRequired);
         }
 
-        var spec = new UserWithRoleAndSettingsSpecification(request.TargetUserId);
+        var spec = new UserWithRoleAndSettingsAndProfileSpecification(request.TargetUserId);
 
         var targetUser = await _userRepo.GetSingleAsync(spec, cancellationToken);
 

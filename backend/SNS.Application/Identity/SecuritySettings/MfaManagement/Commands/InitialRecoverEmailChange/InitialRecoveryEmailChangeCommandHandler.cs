@@ -58,7 +58,7 @@ public sealed class InitialRecoveryEmailChangeCommandHandler
         if (userId == null || sessionId == null)
             return Result<IdentifierChangeResponseDto>.Failure(OperationStatusCode.AuthenticationRequired);
 
-        var spec = new UserWithRoleAndSettingsSpecification(userId.Value);
+        var spec = new UserWithRoleAndSettingsAndProfileSpecification(userId.Value);
         var user = await _userRepo.GetSingleAsync(spec, cancellationToken);
 
         if (user == null)
@@ -95,6 +95,8 @@ public sealed class InitialRecoveryEmailChangeCommandHandler
             UserName: user.UserName,
             Device: _requestInfoService.DeviceName,
             Browser: _requestInfoService.Browser,
+            SendLanguage: user.PreferredLanguage,
+            IpAddress: _requestInfoService.IpAddress,
             RecipientAddress: alertRecipientAddress!,
             DefaultCommunicationMethod: user.UserSecuritySettings.DefaultCommunicationMethod,
             UpdateType: UpdateType.RecoveryEmail,

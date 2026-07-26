@@ -1,0 +1,54 @@
+<div class="login-wrapper">
+    <div class="loader-container">
+        @if (isLoadingResponse || isResending) {
+        <app-linear-loader width="100%"></app-linear-loader>
+        }
+    </div>
+    <form class="login-form" [formGroup]="otpForm" (ngSubmit)="onSubmit()" autocomplete="off">
+        <h2>{{ 'Identity.Security_Sessions.OTP.Title' | translate }}</h2>
+
+        <div class="user-notice">
+            <p>
+                <span class="material-symbols-outlined notice-icon">mark_email_unread</span>
+                {{ 'Identity.Security_Sessions.OTP.Enter_Code_Send_To' | translate: { 'email': recipientAddress } }}
+            </p>
+        </div>
+
+        <div class="form-group code-group">
+            <div class="code-inputs" formArrayName="code">
+                @for (control of codeControls.controls; track $index) {
+                <input type="text" [formControlName]="$index" maxlength="1" inputmode="numeric" pattern="[0-9]*"
+                    (input)="onInput($event, $index)" (keydown)="onKeyDown($event, $index)" (focus)="onFocus($event)"
+                    (paste)="onPaste($event)" #codeInput>
+                }
+            </div>
+            <div *ngIf="otpForm.invalid && (otpForm.touched || otpForm.dirty)" class="error-message">
+                <span>{{ 'Shared.Errors.Invalid_Code' | translate }}</span>
+            </div>
+        </div>
+
+        <button type="submit" class="submit-btn" id="verifyBtn" [disabled]="otpForm.invalid || isLoadingResponse">
+            <span>{{ 'Identity.Security_Sessions.OTP.Verify' | translate }}</span>
+            <span class="material-symbols-outlined submit-icon">check_circle</span>
+        </button>
+
+        <div class="resend-container">
+            <p class="resend-text">
+                {{ 'Identity.Security_Sessions.OTP.Did_Not_Receive' | translate }}
+                @if (!canResend()) {
+                <span class="cooldown-timer">({{ resendCooldown() }}s)</span>
+                } @else {
+                <a (click)="resendCode()" class="resend-link" [class.disabled]="isResending">
+                    {{ 'Identity.Security_Sessions.OTP.Resend' | translate }}
+                </a>
+                }
+            </p>
+        </div>
+
+        <div class="form-footer">
+            <a [routerLink]="['/auth/login']" class="register-link">
+                {{ 'Identity.Security_Sessions.OTP.Back_To_Login' | translate }}
+            </a>
+        </div>
+    </form>
+</div>

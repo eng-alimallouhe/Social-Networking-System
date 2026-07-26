@@ -123,4 +123,9 @@ public class UserSearchService : IUserSearchService
 
         return (field, sortOrder);
     }
+
+    public async Task<AppResult> BulkUsersAsync(List<UserDocument> documents, CancellationToken cancellationToken = default)
+    {
+        return await _elasticBaseService.BulkIndexDocumentAsync(_indexName, documents, cancellationToken);
+    }
 }

@@ -1,3 +1,5 @@
+using SNS.Domain.Discussions.Problems.Entities;
+using SNS.Domain.Preferences.Entities;
 using SNS.Domain.Shared.Abstractions.IDeletable;
 using SNS.Domain.Shared.Helpers;
 
@@ -13,6 +15,8 @@ public class ProblemTag : IHardDeletable
 
     // Foreign Key: One(Tag) ? Many(ProblemTags)
     public Guid TagId { get; private set; }
+    public Tag Tag { get; private set; } = null!;
+    public Problem Problem { get; private set; } = null!;
 
 
     public ProblemTag()

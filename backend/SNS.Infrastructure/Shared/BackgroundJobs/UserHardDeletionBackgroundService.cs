@@ -76,7 +76,7 @@ public sealed class UserHardDeletionBackgroundService : BackgroundService
                 await TransferOfOwnershipAsync(usersTransferOfOwnershipIds, dbContext);
                 await PurgeUsersContentAsync(userToPurgeAllContentIds, dbContext);
 
-                _logger.LogInformation("Successfully hard deleted {Count} deactivated users from the system.");
+                _logger.LogInformation("Successfully hard deleted {Count} deactivated users from the system.", usersToDelet.Count());
             }
             catch (Exception ex)
             {
@@ -115,10 +115,6 @@ public sealed class UserHardDeletionBackgroundService : BackgroundService
         
         
         await dbContext.Follows.Where(ps => profilesIds.Contains(ps.FollowerId) || profilesIds.Contains(ps.FollowingId))
-            .ExecuteDeleteAsync(cancellationToken);
-        
-        
-        await dbContext.Mutes.Where(ps => profilesIds.Contains(ps.MutedId) || profilesIds.Contains(ps.MuterId))
             .ExecuteDeleteAsync(cancellationToken);
         
         await dbContext.ReputationLedgers.Where(ps => profilesIds.Contains(ps.ProfileId))

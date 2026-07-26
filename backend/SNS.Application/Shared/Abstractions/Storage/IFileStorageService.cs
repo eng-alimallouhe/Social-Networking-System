@@ -10,5 +10,11 @@ public interface IFileStorageService
 
     Task<Stream> DownloadFileStreamAsync(string objectKey, CancellationToken cancellationToken = default);
 
+    string GetFilePublicUrl(string objectKey);
+
+    Task<string> GetTemporaryUrlAsync(
+        string objectKey,
+        TimeSpan expires);
+
     Task DeleteFileAsync(string objectKey, CancellationToken cancellationToken = default);
 }

@@ -47,7 +47,7 @@ public class TrendingCommunityService
 
         var sortedTrendingCommunities = topCommunityIds
             .Select(redisId => searchResult
-                .Documents.FirstOrDefault(elasticDoc => elasticDoc.Id.ToString() == redisId))
+                .Hits.Select(h => h.Document).ToList().FirstOrDefault(elasticDoc => elasticDoc.Id.ToString() == redisId))
             .Where(doc => doc != null)
             .ToList();
 

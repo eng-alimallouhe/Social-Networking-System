@@ -1,0 +1,47 @@
+.loader-container {
+  height: 7px;
+  background-color: var(--button-secondary-bg);
+  border-radius: var(--border-radius-sm);
+  overflow: hidden;
+  position: relative;
+  display: flex;
+}
+
+.loader-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  background-color: var(--primary-light);
+  border-radius: var(--border-radius-sm);
+  width: 50%;
+  animation: indeterminate-animation 1.5s infinite ease-in-out;
+  box-shadow: var(--shadow-glow);
+}
+
+@keyframes indeterminate-animation {
+  0% {
+    left: -50%;
+    width: 30%;
+  }
+
+  25% {
+    left: -10%;
+    width: 20%;
+  }
+
+  50% {
+    left: 40%;
+    width: 20%;
+  }
+
+  75% {
+    left: 100%;
+    width: 30%;
+  }
+
+  100% {
+    left: 100%;
+    width: 30%;
+  }
+}

@@ -1,8 +1,8 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using SNS.Application.Shared.Settings;
 using SNS.Infrastructure.Identity.Shared.Services;
 using SNS.Infrastructure.Search.DI;
+using SNS.Infrastructure.Shared.Services.AI;
 using SNS.Infrastructure.Shared.Services.Cashing;
 using SNS.Infrastructure.Shared.Services.Identity;
 using SNS.Infrastructure.Shared.Services.Loggings;
@@ -24,7 +24,8 @@ public static class SharedServiceInfrastructureDI
             .AddLoggingServices()
             .AddSearchServices(configuration)
             .AddStorageServices(configuration)
-            .AddCachingServices(configuration);
+            .AddCachingServices(configuration)
+            .AddAIDI();
 
         return services;
     }

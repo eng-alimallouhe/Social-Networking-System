@@ -2,8 +2,10 @@
 using SNS.Application.Abstractions.Messaging;
 using SNS.Application.Identity.Shared.Abstractions;
 using SNS.Application.Shared.Abstractions.Data;
+using SNS.Domain.Identity.Shared.Enums;
 using SNS.Domain.Identity.Users.Entities;
 using SNS.Domain.Identity.Users.Events;
+using SNS.Domain.Identity.Users.Specifications;
 using SNS.Domain.Shared.Abstractions.Repositories;
 using SNS.Shared.Results;
 using SNS.Shared.StatusCodes;
@@ -39,8 +41,8 @@ public sealed class ChangeUserRoleCommandHandler : ICommandHandler<ChangeUserRol
         {
             return Result.Failure(SecurityStatusCodes.AuthenticationRequired);
         }
-            
-        var targetUser = await _userRepo.GetByIdAsync(request.TargetUserId, cancellationToken);
+        var spec = new UserWithRoleAndSettingsAndProfileSpecification(userId.Value);            
+        var targetUser = await _userRepo.GetSingleAsync(spec, cancellationToken);
 
         if (targetUser== null)
         {
@@ -63,8 +65,13 @@ public sealed class ChangeUserRoleCommandHandler : ICommandHandler<ChangeUserRol
 
             targetUser.AddDomainEvent(new UserRoleChangedEvent(
                 UserId: targetUser.Id,
-                RoleName: request.NewRole.ToString(),
-                Email: targetUser.Email,
+                UserName: targetUser.UserName,
+                OldRole: targetUser.Role.Type.ToString(),
+                NewRole: request.NewRole.ToString(),
+                Email: targetUser.UserSecuritySettings.DefaultCommunicationMethod == CommunicationMethod.Email ?
+                        targetUser.Email : targetUser.UserSecuritySettings.RecoveryEmail!,
+                SendLanguage: targetUser.PreferredLanguage,
+                SendMethod: targetUser.UserSecuritySettings.DefaultCommunicationMethod,
                 OccurredOn: DateTime.UtcNow));
 
             await _unitOfWork.CompleteAsync(cancellationToken);

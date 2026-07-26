@@ -15,5 +15,7 @@ public enum ReplacementKey
     NewEmail,
     NewRecoveryEmail,
     Longitude,
-    Latitude
+    Latitude, 
+    OldRole, 
+    NewRole
 }

@@ -46,6 +46,7 @@ public class MinioFileStorageService : IFileStorageService
         return $"{protocol}://{_settings.Endpoint}/{_settings.BucketName}/{objectKey}";
     }
 
+
     public async Task<string> UploadStreamAsync(Stream stream, string objectKey, string contentType, CancellationToken cancellationToken = default)
     {
         return await UploadStreamInternalAsync(stream, objectKey, contentType, stream.Length, cancellationToken);
@@ -82,7 +83,6 @@ public class MinioFileStorageService : IFileStorageService
     {
         var memoryStream = new MemoryStream();
 
-        // ?? MinIO? ??? ????? ???????? ??? Callback? ???? ?????? ??? MemoryStream
         var getObjectArgs = new GetObjectArgs()
             .WithBucket(_settings.BucketName)
             .WithObject(objectKey)
@@ -105,5 +105,22 @@ public class MinioFileStorageService : IFileStorageService
             .WithObject(objectKey);
 
         await _minioClient.RemoveObjectAsync(removeObjectArgs, cancellationToken);
+    }
+
+    public string GetFilePublicUrl(string objectKey)
+    {
+        var protocol = _settings.UseSSL? "https" : "http";
+
+        return $"{protocol}://{_settings.Endpoint}/{_settings.BucketName}/{objectKey}";
+    }
+
+    public async Task<string> GetTemporaryUrlAsync(string objectKey, TimeSpan expires)
+    {
+        var args = new PresignedGetObjectArgs()
+        .WithBucket(_settings.BucketName)
+        .WithObject(objectKey)
+        .WithExpiry((int)expires.TotalSeconds);
+
+        return await _minioClient.PresignedGetObjectAsync(args);
     }
 }

@@ -14,12 +14,8 @@ public class PostMediaConfigurations :
         builder.HasKey(pm => pm.Id);
         builder.HasIndex(pm => pm.PostId);
 
-        builder.Property(pm => pm.Url)
+        builder.Property(pm => pm.ObjectKey)
                .IsRequired()
-               .HasMaxLength(512)
-               .HasColumnType("varchar(512)");
-
-        builder.Property(pm => pm.ThumbnailUrl)
                .HasMaxLength(512)
                .HasColumnType("varchar(512)");
 

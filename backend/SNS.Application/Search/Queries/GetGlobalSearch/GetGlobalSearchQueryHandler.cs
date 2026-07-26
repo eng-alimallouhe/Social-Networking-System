@@ -62,10 +62,10 @@ public class GetGlobalSearchQueryHandler
 
         var result = new GlobalSearchResultDto
         {
-            Profiles = profilesTask.Result.Documents,
-            Projects = projectsTask.Result.Documents,
-            Communities = communitiesTask.Result.Documents,
-            Jobs = jobsTask.Result.Documents
+            Profiles = profilesTask.Result.Hits.Select(h => h.Document).ToList(),
+            Projects = projectsTask.Result.Hits.Select(h => h.Document).ToList(),
+            Communities = communitiesTask.Result.Hits.Select(h => h.Document).ToList(),
+            Jobs = jobsTask.Result.Hits.Select(h => h.Document).ToList()
         };
 
         return Result<GlobalSearchResultDto>.Success(result, OperationStatusCode.Success);

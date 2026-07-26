@@ -1,4 +1,4 @@
-using SNS.Domain.QA.Enums;
+using SNS.Domain.Jobs.Enums;
 using SNS.Domain.Shared.Abstractions.IDeletable;
 using SNS.Domain.Shared.Helpers;
 
@@ -20,7 +20,7 @@ public class Job : ISoftDeletable
     public decimal MinSalary { get; private set; }
     public decimal MaxSalary { get; private set; }
     public string CurrencyCode { get; private set; } = string.Empty;
-    public SalaryTyp SalaryType { get; private set; }
+    public SalaryType SalaryType { get; private set; }
     public string KeyResponsibilitiesText { get; private set; } = string.Empty;
 
     //Timestamp
@@ -42,7 +42,7 @@ public class Job : ISoftDeletable
     }
 
     public static Job Create(string title, string description, Guid companyId, string location, JobType type,
-     decimal minSalary, decimal maxSalary, string currencyCode, SalaryTyp salaryType, string keyResponsibilitiesText)
+     decimal minSalary, decimal maxSalary, string currencyCode, SalaryType salaryType, string keyResponsibilitiesText)
     {
         return new Job
         {

@@ -3,6 +3,8 @@ using SNS.Domain.ContentManagement.Comments.Entities;
 using SNS.Domain.ContentManagement.Posts.Enums;
 using SNS.Domain.Shared.Entities;
 using SNS.Domain.Shared.Helpers;
+using SNS.Domain.Profiles.Profiles.Entities;
+using SNS.Domain.ContentManagement.Communities.Entities;
 
 namespace SNS.Domain.ContentManagement.Posts.Entities;
 
@@ -36,12 +38,16 @@ public class Post : Entity, ISoftDeletable
     public DateTime? LastInteractedAt { get; private set; } = null;
 
     // Navigation Properties
-    public ICollection<PostMedia> Media { get; set; } = new List<PostMedia>();
-    public ICollection<PostTopic> PostTopics { get; set; } = new List<PostTopic>();
+    public List<PostMedia> Media { get; set; } = new List<PostMedia>();
+    public List<PostTopic> PostTopics { get; set; } = new List<PostTopic>();
+    public List<PostTag> PostTags { get; set; } = new List<PostTag>();
     public ICollection<Comment> Comments { get; set; } = new List<Comment>();
     public ICollection<PostReaction> Reactions { get; set; } = new List<PostReaction>();
     public ICollection<PostView> Views { get; set; } = new List<PostView>();
     public ICollection<SavedPost> SavedPosts { get; set; } = new List<SavedPost>();
+    public ICollection<PostMention> Mentions { get; set; } = new List<PostMention>();
+    public Profile Author { get; set; } = null!;
+    public Community? Community { get; set; }
 
     private Post()
     {
@@ -68,5 +74,22 @@ public class Post : Entity, ISoftDeletable
     {
         this.IsActive = false;
     }
-}
 
+    public void ChangeStatus(PostStatus status)
+    {
+        this.Status = status;
+        DetectChanges();
+    }
+
+
+    private void DetectChanges()
+    {
+        this.UpdatedAt = DateTime.UtcNow;
+    }
+
+    public void UpdateInfo(string  title, string content)
+    {
+        this.Title = title;
+        this.Content = content;
+    }
+}

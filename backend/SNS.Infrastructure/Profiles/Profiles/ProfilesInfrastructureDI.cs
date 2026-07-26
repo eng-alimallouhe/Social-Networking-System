@@ -1,6 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using SNS.Domain.Profiles.Profiles.Entities;
 using SNS.Domain.Profiles.Profiles.Relations;
+using SNS.Domain.Profiles.Profiles.Repositories;
 using SNS.Domain.Shared.Abstractions.Repositories;
 using SNS.Infrastructure.Profiles.Profiles.Repositories;
 using SNS.Infrastructure.Repositories.ProfileContext;
@@ -19,6 +20,7 @@ public static class ProfilesInfrastructureDI
         services.AddScoped<IRepository<SavedProfile>, SavedProfileRepository>();
         services.AddScoped<IRepository<ProfileSkill>, ProfileSkillRepository>();
         services.AddScoped<IRepository<ProfileTopic>, ProfileTopicRepository>();
+        services.AddScoped<IProfileTopicRepository, ProfileTopicRepository>();
 
 
         return services;

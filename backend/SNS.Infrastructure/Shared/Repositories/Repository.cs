@@ -84,34 +84,30 @@ public class Repository<TEntity> : IRepository<TEntity>
     // Write operations
     // ----------------------------
 
-    public async Task AddAsync(TEntity entity, CancellationToken cancellationToken = default)
+    public void Add(TEntity entity)
     {
-        await _dbSet.AddAsync(entity, cancellationToken);
+        _dbSet.Add(entity);
     }
 
-    public async Task AddRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default)
+    public void AddRange(IEnumerable<TEntity> entities)
     {
-        await _dbSet.AddRangeAsync(entities, cancellationToken);
+        _dbSet.AddRange(entities);
     }
 
-    public async Task DeleteAsync(Guid id, CancellationToken cancellationToken = default)
+    public void Delete(TEntity entity)
     {
-        var entity = await GetByIdAsync(id, cancellationToken);
-        if (entity == null) return;
-
         _dbSet.Remove(entity);
     }
 
-    public async Task DeleteRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default)
+    public void DeleteRange(IEnumerable<TEntity> entities)
     {
         _dbSet.RemoveRange(entities);
-        await Task.CompletedTask;
     }
 
-    public async Task ExecuteDeleteAsync(Expression<Func<TEntity, bool>> expression, CancellationToken cancellationToken = default)
+    public async Task<int> ExecuteDeleteAsync(Expression<Func<TEntity, bool>> expression, CancellationToken cancellationToken = default)
     {
-        await _dbSet
-                .Where(expression)
-                .ExecuteDeleteAsync(cancellationToken);
+        return await _dbSet
+            .Where(expression)
+            .ExecuteDeleteAsync(cancellationToken);
     }
 }

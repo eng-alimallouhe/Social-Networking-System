@@ -19,7 +19,7 @@ public class SecuritySessionWithRefreshTokens : ISingleEntitySpecification<Secur
     /// 
     /// No related entities are eagerly loaded for this specification.
     /// </summary>
-    public List<string> Includes => [nameof(SecuritySession.RefreshTokens)];
+    public List<string> Includes => [];
 
     /// <summary>
     /// Indicates whether change tracking is enabled for the query.

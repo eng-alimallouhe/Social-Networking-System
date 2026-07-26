@@ -48,6 +48,7 @@ public class UserBySecurityCodeSpecification : ISingleEntitySpecification<User>
         Includes = 
             [
                 nameof(User.Role), 
+                nameof(User.UserProfile),
                 "UserSecuritySettings.RecoveryCodes",
                 "UserSecuritySettings"
             ];

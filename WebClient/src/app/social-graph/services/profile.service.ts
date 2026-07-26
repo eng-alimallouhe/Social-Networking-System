@@ -13,7 +13,7 @@ export class ProfileService {
   private storageService = inject(StorageService);
   private http = inject(HttpClient);
 
-  userProfile = signal<ProfileBaseDto | null>(this.getProfileFromStorage());
+  userProfile = signal<ProfileBaseDto | null>(null);
   profileId = signal<string | null>(this.getProfileFromStorage()?.id!);
 
   private getProfileFromStorage(): ProfileBaseDto | null {

@@ -4,6 +4,7 @@ namespace SNS.Domain.Discussions.Problems.Enums
     {
         Text,
         Code,
-        Media
+        Image,
+        Video
     }
 }

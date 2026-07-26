@@ -2,6 +2,7 @@
 using SNS.Application.Identity.Shared.Abstractions;
 using SNS.Application.Shared.Abstractions.Data;
 using SNS.Application.Shared.Abstractions.Messaging;
+using SNS.Application.Shared.Abstractions.Storage;
 using SNS.Domain.Projects.Enums;
 using SNS.Shared.Results;
 using SNS.Shared.StatusCodes;
@@ -14,13 +15,16 @@ public sealed class GetUserActivityAnalyticsQueryHandler
 {
     private readonly IApplicationDbContext _dbContext;
     private readonly ICurrentUserService _currentUserService;
+    private readonly IFileStorageService _fileStorageService;
 
     public GetUserActivityAnalyticsQueryHandler(
         IApplicationDbContext dbContext,
-        ICurrentUserService currentUserService)
+        ICurrentUserService currentUserService,
+        IFileStorageService fileStorageService)
     {
         _dbContext = dbContext;
         _currentUserService = currentUserService;
+        _fileStorageService = fileStorageService;
     }
 
     public async Task<Result<UserActivityAnalyticsResult>> Handle(
@@ -52,12 +56,16 @@ public sealed class GetUserActivityAnalyticsQueryHandler
             .GroupJoin(_dbContext.CommentReactions, prev => prev.profile.Id, o => o.ReactorId, (prev, commentReactionsGroup) => new { prev.profile, prev.postsGroup, prev.commentsGroup, prev.problemsGroup, prev.solutionsGroup, prev.postReactionsGroup, commentReactionsGroup })
             .GroupJoin(_dbContext.ProblemVotes, prev => prev.profile.Id, o => o.VoterId, (prev, problemVotesGroup) => new { prev.profile, prev.postsGroup, prev.commentsGroup, prev.problemsGroup, prev.solutionsGroup, prev.postReactionsGroup, prev.commentReactionsGroup, problemVotesGroup })
             .GroupJoin(_dbContext.Projects, prev => prev.profile.Id, o => o.OwnerId, (prev, projectsGroup) => new { prev.profile, prev.postsGroup, prev.commentsGroup, prev.problemsGroup, prev.solutionsGroup, prev.postReactionsGroup, prev.commentReactionsGroup, prev.problemVotesGroup, projectsGroup })
-            .GroupJoin(_dbContext.ProjectContributors, prev => prev.profile.Id, o => o.ContributorId, (prev, projectContributorsGroup) => new { prev.profile, prev.postsGroup, prev.commentsGroup, prev.problemsGroup, prev.solutionsGroup, prev.postReactionsGroup, prev.commentReactionsGroup, prev.problemVotesGroup, prev.projectsGroup, projectContributorsGroup })
+            .GroupJoin(
+                _dbContext.ProjectContributors, 
+                prev => prev.profile.Id, 
+                o => o.ContributorId, 
+                (prev, projectContributorsGroup) => new { prev.profile, prev.postsGroup, prev.commentsGroup, prev.problemsGroup, prev.solutionsGroup, prev.postReactionsGroup, prev.commentReactionsGroup, prev.problemVotesGroup, prev.projectsGroup, projectContributorsGroup })
             .Select(p => new
             {
                 p.profile.FullName,
                 p.profile.Specialization,
-                p.profile.ProfilePictureUrl,
+                p.profile.ProfilePictureObjectKey,
                 p.profile.Reputation,
 
                 TotalPosts = p.postsGroup.Count(),
@@ -161,7 +169,7 @@ public sealed class GetUserActivityAnalyticsQueryHandler
         }
 
         var result = new UserActivityAnalyticsResult(
-            UserProfile: new UserProfileHeaderDto(dbData.FullName, dbData.Specialization!, dbData.ProfilePictureUrl),
+            UserProfile: new UserProfileHeaderDto(dbData.FullName, dbData.Specialization!, dbData.ProfilePictureObjectKey != null? _fileStorageService.GetFilePublicUrl(dbData.ProfilePictureObjectKey) : null),
             LifetimeStats: new LifetimeCountersDto(dbData.TotalPosts, dbData.TotalReactionsCasted, dbData.TotalComments, dbData.TotalProblems, dbData.TotalSolutions, dbData.TotalVotesCasted, dbData.Reputation, dbData.TotalProjectsCreated, dbData.TotalProjectsJoined),
             ActivityGraph: graphPoints,
             InteractionDistribution: distribution,

@@ -11,7 +11,7 @@ public class UserDocument
     public string UserName { get; set; } = string.Empty;
     public SupportedLanguage PreferredLanguage { get; set; }
     public string Role { get; set; } = string.Empty;
-    public string FullName { get; set; } = string.Empty;
+    public string? FullName { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
 
     public UserStatus Status { get; set; }

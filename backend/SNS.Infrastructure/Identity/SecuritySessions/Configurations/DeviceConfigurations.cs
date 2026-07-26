@@ -51,7 +51,7 @@ public class DeviceConfigurations : IEntityTypeConfiguration<Device>
         builder.Property(us => us.FingerprintHash)
                .IsRequired()
                .HasMaxLength(64)
-               .HasColumnType("nvarchar(64)");
+               .HasColumnType("nvarchar(128)");
         
         builder.Property(us => us.IsTrusted)
                .IsRequired()

@@ -12,7 +12,7 @@ public class DiscussionConfigurations :
 {
     public void Configure(EntityTypeBuilder<Discussion> builder)
     {
-        builder.ToTable("DiscussionsDI", "QA");
+        builder.ToTable("Discussions", "QA");
 
         builder.HasKey(d => d.Id);
 

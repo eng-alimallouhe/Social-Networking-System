@@ -42,7 +42,7 @@ public sealed class GetProfileForCurrentUserQueryHandler : IRequestHandler<GetPr
                 Id: p.Id,
                 FullName: p.FullName,
                 Specialization: p.Specialization ?? _profileSettings.DefaultSpecialization,
-                ProfilePictureUrl: p.ProfilePictureUrl ?? _profileSettings.DefaultProfilePictureUrl,
+                ProfilePictureUrl: p.ProfilePictureObjectKey ?? _profileSettings.DefaultProfilePictureUrl,
                 Reputation: p.Reputation
             )).FirstOrDefaultAsync(cancellationToken);
 

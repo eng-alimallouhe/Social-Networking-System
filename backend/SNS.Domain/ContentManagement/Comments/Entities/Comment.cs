@@ -33,6 +33,7 @@ public class Comment : Entity, ISoftDeletable
     public Comment? ParentComment { get; set; }
     public ICollection<Comment> Replies { get; set; } = new List<Comment>();
     public ICollection<CommentReaction> Reactions { get; set; } = new List<CommentReaction>();
+    public ICollection<CommentMention> Mentions { get; set; } = new List<CommentMention>();
     public ICollection<CommentMedia> Medias { get; set; } 
         = new List<CommentMedia>();
 

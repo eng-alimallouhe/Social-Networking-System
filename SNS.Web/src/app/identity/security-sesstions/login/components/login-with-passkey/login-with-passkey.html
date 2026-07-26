@@ -1,0 +1,26 @@
+<div class="login-wrapper">
+    <div class="login-form">
+        <div class="passkey-header">
+            <div class="icon-pulse">
+                <svg lucideFingerprint></svg>
+            </div>
+            <h2>{{ 'Identity.Security_Sessions.Passkey.Title' | translate }}</h2>
+            <p>{{ 'Identity.Security_Sessions.Passkey.Subtitle' | translate }}</p>
+        </div>
+        
+        <button type="button" class="submit-btn" (click)="onPasskeyLogin(ui)" [disabled]="isLoading()">
+            @if (isLoading()) {
+            <p class="status-text">{{ 'Identity.Security_Sessions.Passkey.Waiting_For_Device' | translate }}</p>
+            } @else {
+            <span>{{ 'Identity.Security_Sessions.Passkey.Retry' | translate }}</span>
+            <span class="material-symbols-outlined">refresh</span>
+            }
+        </button>
+
+        <div class="form-footer">
+            <a [routerLink]="['/auth/login']" class="register-link">
+                {{ 'Identity.Security_Sessions.Authenticator.Back_To_Login' | translate }}
+            </a>
+        </div>
+    </div>
+</div>

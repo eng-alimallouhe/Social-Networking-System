@@ -1,0 +1,32 @@
+<div class="skeleton-container" [style.width]="width()" [style.height]="height()">
+    @if (type() === SkeletonType.AccountOnPhone) {
+    <div class="account-phone-skeleton">
+        <div class="skeleton-avatar skeleton-pulse"></div>
+        <div class="skeleton-info">
+            <div class="skeleton-line skeleton-line--name skeleton-pulse"></div>
+            <div class="skeleton-line skeleton-line--email skeleton-pulse"></div>
+        </div>
+    </div>
+    }
+
+    <!-- AccountOnDesktop Skeleton (TODO) -->
+    @if (type() === SkeletonType.AccountOnDesktop) {
+    <div class="skeleton-placeholder">
+        <span>AccountOnDesktop — Not implemented yet</span>
+    </div>
+    }
+
+    <!-- Post Skeleton (TODO) -->
+    @if (type() === SkeletonType.Post) {
+    <div class="skeleton-placeholder">
+        <span>Post — Not implemented yet</span>
+    </div>
+    }
+
+    <!-- Comment Skeleton (TODO) -->
+    @if (type() === SkeletonType.Comment) {
+    <div class="skeleton-placeholder">
+        <span>Comment — Not implemented yet</span>
+    </div>
+    }
+</div>

@@ -28,14 +28,14 @@ public class FollowConfigurations : IEntityTypeConfiguration<Follow>
         // Relationships
 
         // Follower side
-        builder.HasOne<Profile>()
+        builder.HasOne<Profile>(f => f.Follower)
                .WithMany(p => p.Followings)
                .HasForeignKey(f => f.FollowerId)
                .IsRequired()
                .OnDelete(DeleteBehavior.Restrict); 
 
         // Following side
-        builder.HasOne<Profile>()
+        builder.HasOne<Profile>(f => f.Following)
                .WithMany(p => p.Followers)
                .HasForeignKey(f => f.FollowingId)
                .IsRequired()

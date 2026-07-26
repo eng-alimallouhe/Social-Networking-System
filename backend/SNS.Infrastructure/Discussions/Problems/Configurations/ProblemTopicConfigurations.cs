@@ -25,13 +25,13 @@ namespace SNS.Infrastructure.Discussions.Problems.Configurations
             builder.Property(pt => pt.Confidence)
                    .HasColumnType("real"); 
 
-            builder.HasOne<Problem>()
-                   .WithMany()
+            builder.HasOne<Problem>(pt => pt.Problem)
+                   .WithMany(p => p.ProblemTopics)
                    .HasForeignKey(pt => pt.ProblemId)
                    .IsRequired()
                    .OnDelete(DeleteBehavior.Cascade);
 
-            builder.HasOne<Topic>()
+            builder.HasOne(pt => pt.Topic)
                    .WithMany()
                    .HasForeignKey(pt => pt.TopicId)
                    .IsRequired()

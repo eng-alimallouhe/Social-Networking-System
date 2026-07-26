@@ -82,3 +82,6 @@ firebase.json
 # -------------------------------
 .DS_Store
 Thumbs.db
+
+
+**/service-account.json

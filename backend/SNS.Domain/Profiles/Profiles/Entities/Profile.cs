@@ -1,3 +1,6 @@
+using SNS.Domain.ContentManagement.Communities.Entities;
+using SNS.Domain.ContentManagement.Posts.Entities;
+using SNS.Domain.Discussions.Problems.Entities;
 using SNS.Domain.Educations.Entities;
 using SNS.Domain.Identity.Users.Constants;
 using SNS.Domain.Identity.Users.Entities;
@@ -21,7 +24,7 @@ public class Profile : Entity, ISoftDeletable
 
     public string FullName { get; private set; } = string.Empty;
     public string? Bio { get; private set; }
-    public string? ProfilePictureUrl { get; private set; }
+    public string? ProfilePictureObjectKey { get; private set; }
     public string? Specialization { get; private set; }
 
     public string? GitHubUrl { get; private set; }
@@ -51,6 +54,10 @@ public class Profile : Entity, ISoftDeletable
     // Navigation
     public User Owner { get; set; } = null!;
 
+    public ICollection<Problem> Problems { get; private set; } = new List<Problem>();
+    
+    public ICollection<Post> Posts { get; private set; } = new List<Post>();
+
     public ICollection<Follow> Followers { get; private set; } 
         = new List<Follow>();   
     
@@ -65,6 +72,9 @@ public class Profile : Entity, ISoftDeletable
     
     public ICollection<ProfileTopic> ProfileTopics { get; private set; } 
         = new List<ProfileTopic>();
+    
+    public ICollection<ProfileTag> ProfileTags { get; private set; } 
+        = new List<ProfileTag>();
 
     
     public ICollection<ProfileView> Views { get; private set; } 
@@ -73,11 +83,13 @@ public class Profile : Entity, ISoftDeletable
 
     public ICollection<ProfileView> Vieweds { get; private set; } 
         = new List<ProfileView>();
+    
 
+    public ICollection<CommunityMembership> Memberships { get; private set; } 
+        = new List<CommunityMembership>();
     
     public ICollection<AcademicRecord> AcademicRecords { get; private set; } 
         = new List<AcademicRecord>();
-
 
     private Profile()
     {
@@ -87,13 +99,13 @@ public class Profile : Entity, ISoftDeletable
         IsActive = true;
     }
 
-    public static Profile Create(Guid userId, string fullName, string? bio, string? profilePictureUrl, string? specialization, string? gitHubUrl, string? linkedInUrl, string? facebookUrl, string? xUrl, string? website, string? location, string? skillsSummary)
+    public static Profile Create(Guid userId, string fullName, string? bio = null, string? profilePictureObjectKey = null, string? specialization = null, string? gitHubUrl = null, string? linkedInUrl = null, string? facebookUrl = null, string? xUrl = null, string? website = null, string? location = null, string? skillsSummary = null)
     {
         var entity = new Profile();
         entity.UserId = userId;
         entity.FullName = fullName;
         entity.Bio = bio;
-        entity.ProfilePictureUrl = profilePictureUrl;
+        entity.ProfilePictureObjectKey = profilePictureObjectKey;
         entity.Specialization = specialization;
         entity.GitHubUrl = gitHubUrl;
         entity.LinkedInUrl = linkedInUrl;
@@ -113,7 +125,7 @@ public class Profile : Entity, ISoftDeletable
         entity.Id = SystemProfiles.GhostProfileId;
         entity.Specialization = "Default";
         entity.FullName = SystemProfiles.GhostProfileFullName;
-        entity.ProfilePictureUrl = SystemProfiles.GhostProfilePictureUrl;
+        entity.ProfilePictureObjectKey = SystemProfiles.GhostProfilePictureUrl;
         entity.CreatedAt = new DateTime(1, 1, 1);
         entity.UpdatedAt = new DateTime(1, 1, 1);
         entity.Reputation = 9999999;
@@ -130,6 +142,33 @@ public class Profile : Entity, ISoftDeletable
     {
         this.IsActive = true;
     }
+
+    public void UpdateProfilePictureObjectKey(string profilePictureObjectKey)
+    {
+        this.ProfilePictureObjectKey = profilePictureObjectKey;
+        this.UpdatedAt = DateTime.UtcNow;
+    }
+
+
+    public void UpdateBasicInformation(string fullName, string bio, string specialization, string location)
+    {
+        this.FullName = fullName;
+        this.Bio = bio;
+        this.Specialization = specialization;
+        this.Location = location;
+    }
+
+    public void UpdateSocialLinks(
+        string? gitHubUrl,
+        string? linkedInUrl,
+        string? facebookUrl,
+        string website,
+        string? xUrl)
+    {
+        this.GitHubUrl = gitHubUrl;
+        this.LinkedInUrl = linkedInUrl;
+        this.FacebookUrl = facebookUrl;
+        this.Website = website;
+        this.XUrl = xUrl;
+    }
 }
-
-

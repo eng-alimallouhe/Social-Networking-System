@@ -11,4 +11,6 @@ public interface IUserSearchService
 
     Task<Result> DeleteUserAsync(Guid userId, CancellationToken cancellationToken = default);
     Task<SearchResult<UserDocument>> SearchUsersAsync(UserSearchQuery query, CancellationToken cancellationToken = default);
+
+    Task<Result> BulkUsersAsync(List<UserDocument> documents, CancellationToken cancellationToken = default);
 }

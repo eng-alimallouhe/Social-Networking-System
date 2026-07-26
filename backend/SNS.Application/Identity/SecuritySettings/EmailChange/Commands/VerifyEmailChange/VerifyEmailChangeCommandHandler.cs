@@ -1,7 +1,8 @@
+using SNS.Application.Abstractions.Common;
 using SNS.Application.Abstractions.Messaging;
 using SNS.Application.Identity.ArchiveManagement.Abstractions;
-using SNS.Application.Identity.SecuritySessions.Abstractions;
-using SNS.Application.Identity.SecuritySessions.DTOs;
+using SNS.Application.Identity.SecuritySessions.Shared.Abstractions;
+using SNS.Application.Identity.SecuritySessions.Shared.Contracts;
 using SNS.Application.Identity.Shared.Abstractions;
 using SNS.Application.Identity.Shared.DTOs.Archives;
 using SNS.Application.Identity.Shared.DTOs.Authentication;
@@ -22,7 +23,7 @@ public sealed class VerifyEmailChangeCommandHandler : ICommandHandler<VerifyEmai
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IPendingUpdatesService _pendingUpdateService;
-    private readonly IAuthResponseService _authResponseService;
+    private readonly ITokenService _tokenService;
     private readonly IRequestInfoService _requestInfoService;
     private readonly ICurrentUserService _currentUserService;
     private readonly IRepository<User> _userRepo;
@@ -30,28 +31,31 @@ public sealed class VerifyEmailChangeCommandHandler : ICommandHandler<VerifyEmai
     private readonly IArchiveService _archiveService;
     private readonly ISessionService _userSessionService;
     private readonly IDeviceService _deviceService;
+    private readonly IGeneratorService _generatorService;
 
     public VerifyEmailChangeCommandHandler(
         IUnitOfWork unitOfWork,
         IPendingUpdatesService pendingUpdatesService,
-        IAuthResponseService authResponseService,
+        ITokenService tokenService,
         IRequestInfoService requestInfoService,
         ICurrentUserService currentUserService,
         IRepository<User> userRepo,
         ICodeService codeService,
         IArchiveService archiveService,
         ISessionService userSessionService,
-        IDeviceService deviceService)
+        IDeviceService deviceService,
+        IGeneratorService generatorService)
     {
         _unitOfWork = unitOfWork;
         _pendingUpdateService = pendingUpdatesService;
-        _authResponseService = authResponseService;
+        _tokenService = tokenService;
         _requestInfoService = requestInfoService;
         _currentUserService = currentUserService;
         _userRepo = userRepo;
         _codeService = codeService;
         _deviceService = deviceService;
         _archiveService = archiveService;
+        _generatorService = generatorService;
         _userSessionService = userSessionService;
     }
 
@@ -62,7 +66,7 @@ public sealed class VerifyEmailChangeCommandHandler : ICommandHandler<VerifyEmai
         if (userId == null)
             return Result<AuthTokensDto>.Failure(OperationStatusCode.AuthenticationRequired);
 
-        var spec = new UserWithRoleAndSettingsSpecification(userId.Value);
+        var spec = new UserWithRoleAndSettingsAndProfileSpecification(userId.Value);
 
         var user = await _userRepo.GetSingleAsync(spec, cancellationToken);
 
@@ -125,14 +129,18 @@ public sealed class VerifyEmailChangeCommandHandler : ICommandHandler<VerifyEmai
 
             var sessionCreateResult = await _userSessionService.CreateSessionAsync(sessionArgs, cancellationToken);
             
-            if (sessionCreateResult.IsFailure)
+            if (sessionCreateResult.IsFailure || sessionCreateResult.Value == null)
             {
                 await _unitOfWork.RollbackTransactionAsync(cancellationToken);
                 return Result<AuthTokensDto>.Failure(sessionCreateResult.StatusCode);
             }
 
-            var authResult = await _authResponseService.GenerateAuthResponseAsync(
-                new AuthResponseGenerationDto(user.Id, user.RoleId, sessionCreateResult.Value, user.Role.Type), cancellationToken);
+            var accessToken = _tokenService.GenerateAccessToken(
+                new AccessTokenCreateDto(
+                    UserId: user.Id,
+                    ProfileId: user.UserProfile.Id,
+                    SessionId: sessionCreateResult.Value.SessionId,
+                    RoleType: user.Role.Type));
 
             var reason = $"The user updated his Email from device: {deviceCreateDto.FriendlyName}";
 
@@ -154,7 +162,7 @@ public sealed class VerifyEmailChangeCommandHandler : ICommandHandler<VerifyEmai
             await _unitOfWork.CompleteAsync(cancellationToken);
             await _unitOfWork.CommitTransactionAsync(cancellationToken);
 
-            return authResult;
+            return Result<AuthTokensDto>.Success(new AuthTokensDto(accessToken, sessionCreateResult.Value.RefreshToken), OperationStatusCode.Success);
         }
         catch
         {

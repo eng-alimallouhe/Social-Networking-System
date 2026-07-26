@@ -1,81 +1,92 @@
 :root {
     /* ==== 1. Core Brand Colors (Sophisticated Blue) ==== */
-    --primary-color: #0C4A6E;
-    --secondary-color: #2F6685;
-    --tertiary-color: #4589B0;
-    --neutral-color: #F8FAFC;
+    --primary-color: #0f172a;
+    /* أزرق داكن وعميق للأساسيات */
+    --secondary-color: #334155;
+    /* درجة أفتح قليلاً لدعم اللون الأساسي */
+    --tertiary-color: #475569;
 
-    --primary-light: #38BDF8;
-    --primary-dark: #00668A;
-    --accent-color: #34D399;
-    --accent-glow: rgba(56, 189, 248, 0.5);
+    --primary-light: #38bdf8;
+    /* للتركيز والتفاعل (Hover) */
+    --primary-dark: #0c4a6e;
+    --accent-color: #10b981;
+    /* استخدام لون مميز للـ Accent بدل تكرار الأخضر */
+    --accent-glow: rgba(56, 189, 248, 0.4);
 
+    --neutral-color: #f8fafc;
 
     /* ==== 2. Semantic Colors ==== */
     --success: #10b981;
     --error: #ef4444;
-    --warning: #f6a720;
+    --warning: #f59e0b;
+    /* تم تعديله ليكون أكثر وضوحاً */
     --info: #3b82f6;
 
     /* ==== 3. Backgrounds & Surfaces (Glassmorphic) ==== */
-    --primary-bg: #f6f8fa;
-    --secondary-bg: #FFFFFF;
-    --surface-bg: #f2f7fd;
-    --bg-hover: rgba(51, 65, 85, 0.05);
-    --menu-bg: #f6f8fa;
-    --button-bg: #2F6685;
-    --button-secondary-bg: #ECEEF0;
+    --primary-bg: #f8fafc;
+    /* توحيد لون الخلفية مع Neutral */
+    --secondary-bg: #ffffff;
+    --surface-bg: #f1f5f9;
+    --bg-hover: rgba(15, 23, 42, 0.05);
+    /* لون تفاعلي متناسق مع Primary */
 
+    --menu-bg: var(--secondary-bg);
+    --button-bg: #0f172a;
+    /* استخدام الـ Primary كلون للأزرار */
+    --button-secondary-bg: #e2e8f0;
 
     /* ==== 4. Glassmorphism Utilities ==== */
-    --glass-bg: rgba(255, 255, 255, 0.7);
-    --glass-border: rgba(255, 255, 255, 0.2);
-    --glass-blur: 12px;
-    --glass-shadow: 0 8px 32px 0 rgba(15, 23, 42, 0.08);
-
+    --glass-bg: rgba(255, 255, 255, 0.65);
+    /* شفافية أفضل لتأثير الزجاج */
+    --glass-border: rgba(255, 255, 255, 0.4);
+    --glass-blur: 16px;
+    /* زيادة التمويه لجمالية أعلى */
+    --glass-shadow: 0 8px 32px 0 rgba(15, 23, 42, 0.06);
 
     /* ==== 5. Text Colors (Deep & Premium) ==== */
-    --text-color: #191C1E;
-    --text-main: #475569;
-    --text-muted: #94A3B8;
-    --button-text-color: #F1F5F9;
-    --button-secondary-text-color: #000000;
-
-    /* --text-dim: #94A3B8;
-    --text-light: #FFFFFF; */
+    --text-color: #0f172a;
+    /* تناسق مع الـ Primary */
+    --text-main: #334155;
+    --text-muted: #64748b;
+    --button-text-color: #ffffff;
+    --button-secondary-text-color: #0f172a;
 
     /* ==== 6. Navbar & Menu ==== */
-    --navbar-bg: rgba(255, 255, 255, 0.8);
-    --navbar-desktop-height: 70px;
-    --navbar-mobile-height: 60px;
+    --navbar-bg: rgba(255, 255, 255, 0.85);
+    --navbar-desktop-height: 72px;
+    /* أرقام زوجية قياسية (8px grid) */
+    --navbar-mobile-height: 64px;
     --sidebar-width: 280px;
     --nav-z-index: 1000;
-    --menu-active: rgba(224, 242, 254, 0.5);
-    --menu-hover: rgba(224, 242, 254, 0.5);
+    --menu-active: rgba(56, 189, 248, 0.15);
+    --menu-hover: rgba(56, 189, 248, 0.1);
 
     /* ==== 7. Borders & Shadows ==== */
-    --border-color: rgba(226, 232, 240, 0.8);
-    --border-radius-sm: 8px;
+    --border-color: #e2e8f0;
+    --border-radius-sm: 6px;
+    /* تقليل الطمس للزوايا الصغيرة */
     --border-radius-md: 12px;
     --border-radius-lg: 20px;
     --border-radius-xl: 32px;
     --border-radius-pill: 9999px;
 
-    --shadow-soft: 0 2px 15px rgba(0, 0, 0, 0.03);
-    --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.06);
-    --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.1);
-    --shadow-glow: 0 0 20px rgba(47, 102, 133, 0.15);
+    --shadow-soft: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+    --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.05);
+    --shadow-glow: 0 0 20px rgba(56, 189, 248, 0.2);
 
     /* ==== 8. Typography ==== */
     --font-main: 'Manrope', sans-serif;
     --arabic-font: 'Tajawal', sans-serif;
-    --text-xs: clamp(0.75rem, 1.5vw, 12px);
-    --text-sm: clamp(0.875rem, 2vw, 14px);
-    --text-base: (1rem, 2vw, 16px);
-    --text-lg: clamp(1.25rem, 2.5vw, 22px);
-    --header-1: clamp(1.2rem, 3vw, 24px);
-    --header-2: clamp(1.3rem, 4vw, 26px);
-    --header-3: clamp(2rem, 6vw, 40px);
+
+    /* استخدام وحدات (rem) حصراً في الـ clamp لدقة تجاوب أفضل وتصحيح الخطأ البرمجي */
+    --text-xs: clamp(0.75rem, 1vw, 0.875rem);
+    --text-sm: clamp(0.875rem, 1.2vw, 1rem);
+    --text-base: clamp(1rem, 1.5vw, 1.125rem);
+    --text-lg: clamp(1.125rem, 2vw, 1.25rem);
+    --header-1: clamp(2rem, 4vw, 2.5rem);
+    --header-2: clamp(1.5rem, 3vw, 2rem);
+    --header-3: clamp(1.25rem, 2.5vw, 1.5rem);
 
     --font-weight-regular: 400;
     --font-weight-medium: 500;
@@ -83,14 +94,9 @@
     --font-weight-bold: 700;
     --font-weight-extrabold: 800;
 
+    /* Toast Settings */
     --toast-width: min(400px, 90vw);
-    --toast-bg: #ffffff;
-    --success-color: #2ecc71;
-    --error-color: #e74c3c;
-    --warning-color: #f1c40f;
-    --info-color: #3498db;
-    --shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-
+    --toast-bg: var(--secondary-bg);
 
     /* ==== 9. Transitions ==== */
     --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
@@ -99,46 +105,58 @@
     --header-height: 80px;
 }
 
-
 /* ==== Dark Mode Overrides (Deep & Premium) ==== */
 .dark-mode {
-    /* ==== 3. Backgrounds & Surfaces (Glassmorphic) ==== */
-    --primary-bg: #0b0f1a;
-    --secondary-bg: #151b27;
-    --surface-bg: #1b1e26;
-    --bg-hover: rgba(51, 65, 85, 0.1);
-    --menu-bg: #1b1e26;
-    --button-bg: #38BDF8;
-    --button-secondary-bg: #2D3446;
+    /* ألوان العناوين والنصوص في الوضع الداكن */
+    --primary-color: #f8fafc;
+    /* أبيض مزرق ساطع - للعناوين الرئيسية البارزة */
+    --secondary-color: #cbd5e1;
+    /* رمادي فاتح مزرق - للعناوين الفرعية */
+    --tertiary-color: #94a3b8;
+    /* رمادي متوسط - للنصوص التوضيحية أو الثانوية */
 
+    /* ==== 3. Backgrounds & Surfaces ==== */
+    --primary-bg: #020617;
+    /* أسود مزرق عميق جداً لفخامة أعلى */
+    --secondary-bg: #0f172a;
+    --surface-bg: #1e293b;
+    --bg-hover: rgba(255, 255, 255, 0.05);
 
-    --primary-color: #FFFFFF;
-    --secondary-color: #94A3B8;
-    --tertiary-color: #94A3B8;
-    --neutral-color: #151b27;
-    --primary-light: #e2e8f0;
-    --primary-dark: #cbd5e1;
-    --accent-color: #38bdf8;
+    --menu-bg: var(--secondary-bg);
+    --button-bg: #38bdf8;
+    /* التركيز على لون مضيء للأزرار في الوضع الليلي */
+    --button-secondary-bg: #334155;
 
+    /* ==== 1. Core Brand Colors ==== */
+    /* في الوضع الليلي، يظل لون العلامة التجارية كما هو ولكن نغير الألوان التفاعلية */
+    --primary-light: #7dd3fc;
+    --primary-dark: #0284c7;
+    --neutral-color: #020617;
 
-    --text-color: #E2E8F0;
-    --text-main: #475569;
-    --text-muted: #64748B;
-    --button-text-color: #000000;
-    --button-secondary-text-color: #F1F5F9;
+    /* ==== 5. Text Colors ==== */
+    --text-color: #f8fafc;
+    --text-main: #cbd5e1;
+    --text-muted: #94a3b8;
+    --button-text-color: #020617;
+    /* تباين عالي مع الزر المضيء */
+    --button-secondary-text-color: #f8fafc;
 
+    /* ==== 6. Navbar & Menu ==== */
+    --navbar-bg: rgba(2, 6, 23, 0.85);
+    --menu-active: rgba(56, 189, 248, 0.15);
+    --menu-hover: rgba(56, 189, 248, 0.1);
 
-    --navbar-bg: rgba(11, 15, 26, 0.8);
-    --menu-active: rgba(56, 189, 248, 0.6);
-    --menu-hover: rgba(56, 189, 248, 0.6);
+    /* ==== 4. Glassmorphism Utilities ==== */
+    --glass-bg: rgba(15, 23, 42, 0.7);
+    --glass-border: rgba(255, 255, 255, 0.08);
+    /* حواف زجاجية أخف في الليل */
+    --border-color: #334155;
 
-    --glass-bg: rgba(17, 24, 39, 0.7);
-    --glass-border: rgba(255, 255, 255, 0.05);
-    --border-color: rgba(51, 65, 85, 0.5);
-
-    --shadow-soft: 0 2px 15px rgba(0, 0, 0, 0.2);
-    --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.4);
-    --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.6);
+    /* ==== 7. Borders & Shadows ==== */
+    --shadow-soft: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+    --shadow-glow: 0 0 20px rgba(56, 189, 248, 0.15);
 }
 
 .toast.closing {

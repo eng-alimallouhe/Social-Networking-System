@@ -1,3 +1,4 @@
+using SNS.Domain.ContentManagement.Communities.Enums;
 using SNS.Domain.Shared.Abstractions.IDeletable;
 using SNS.Domain.Shared.Entities;
 using SNS.Domain.Shared.Helpers;
@@ -15,7 +16,7 @@ public class CommunityAuditLog : Entity, IHardDeletable
     // Foreign Key: One(Profile) ? Many(AuditLogs) == Optional
     public Guid? ActorId { get; private set; }
 
-    public string Action { get; private set; } = string.Empty;
+    public CommunityActionType Action { get; private set; }
 
     // Timestamp
     public DateTime PerformedAt { get; private set; }
@@ -26,7 +27,7 @@ public class CommunityAuditLog : Entity, IHardDeletable
         PerformedAt = DateTime.UtcNow;
     }
 
-    public static CommunityAuditLog Create(Guid communityId, Guid? actorId, string action)
+    public static CommunityAuditLog Create(Guid communityId, Guid? actorId, CommunityActionType action)
     {
         var entity = new CommunityAuditLog();
         entity.CommunityId = communityId;

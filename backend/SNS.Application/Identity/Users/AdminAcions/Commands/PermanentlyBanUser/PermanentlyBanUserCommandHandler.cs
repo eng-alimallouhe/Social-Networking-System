@@ -43,7 +43,7 @@ public sealed class PermanentlyBanUserCommandHandler : ICommandHandler<Permanent
             return Result.Failure(SecurityStatusCodes.AuthenticationRequired);
         }
 
-        var spec = new UserWithRoleAndSettingsSpecification(request.TargetUserId);
+        var spec = new UserWithRoleAndSettingsAndProfileSpecification(request.TargetUserId);
 
         var targetUser = await _userRepo.GetSingleAsync(spec, cancellationToken);
 
@@ -64,10 +64,11 @@ public sealed class PermanentlyBanUserCommandHandler : ICommandHandler<Permanent
 
             targetUser.AddDomainEvent(new UserBannedEvent(
                 UserId: targetUser.Id,
+                UserName: targetUser.UserName,
                 Email: targetUser.UserSecuritySettings.DefaultCommunicationMethod == CommunicationMethod.Email? 
                             targetUser.UserSecuritySettings.RecoveryEmail! : targetUser.Email,
-                UserLanguage: targetUser.PreferredLanguage,
                 Reason: request.Reason,
+                SendLanguage: targetUser.PreferredLanguage,
                 CommunicationMethod: targetUser.UserSecuritySettings.DefaultCommunicationMethod,
                 OccurredOn: DateTime.UtcNow)); 
 

@@ -50,7 +50,7 @@ public sealed class VerifyRecoveryEmailChangeCommandHandler : ICommandHandler<Ve
         if (userId == null)
             return Result<AuthTokensDto>.Failure(OperationStatusCode.AuthenticationRequired);
 
-        var spec = new UserWithRoleAndSettingsSpecification(userId.Value);
+        var spec = new UserWithRoleAndSettingsAndProfileSpecification(userId.Value);
 
         var user = await _userRepo.GetSingleAsync(spec, cancellationToken);
 

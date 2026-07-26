@@ -27,12 +27,12 @@ public class PostTagConfigurations :
         builder.Property(pt => pt.Confidence).HasColumnType("real");
 
         builder.HasOne<Post>()
-               .WithMany()
+               .WithMany(p => p.PostTags)
                .HasForeignKey(pt => pt.PostId)
                .IsRequired()
                .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasOne<Tag>()
+        builder.HasOne(pt => pt.Tag)
                .WithMany()
                .HasForeignKey(pt => pt.TagId)
                .IsRequired()

@@ -1,10 +1,8 @@
-using MediatR;
-using SNS.Application.Abstractions.Caching;
 using SNS.Application.Abstractions.Common;
 using SNS.Application.Abstractions.Messaging;
 using SNS.Application.Identity.ArchiveManagement.Abstractions;
-using SNS.Application.Identity.SecuritySessions.Abstractions;
-using SNS.Application.Identity.SecuritySessions.DTOs;
+using SNS.Application.Identity.SecuritySessions.Shared.Abstractions;
+using SNS.Application.Identity.SecuritySessions.Shared.Contracts;
 using SNS.Application.Identity.Shared.Abstractions;
 using SNS.Application.Identity.Shared.DTOs.Archives;
 using SNS.Application.Identity.Shared.DTOs.Authentication;
@@ -29,7 +27,7 @@ public sealed class CancelUserDeactivationRequestCommandHandler : ICommandHandle
     private readonly ICurrentUserService _currentUserService;
     private readonly IRequestInfoService _requestInfoService;
     private readonly IHashingService _hashingService;
-    private readonly IAuthResponseService _authResponseService;
+    private readonly ITokenService _tokenService;
     private readonly IArchiveService _archiveService;
     private readonly ISessionService _sessionService;
     private readonly IDeviceService _deviceService;
@@ -42,7 +40,7 @@ public sealed class CancelUserDeactivationRequestCommandHandler : ICommandHandle
         ICurrentUserService currentUserService,
         IRequestInfoService requestInfoService,
         IHashingService hashingService,
-        IAuthResponseService authResponseService,
+        ITokenService tokenService,
         IArchiveService archiveService,
         ISessionService sessionService,
         IDeviceService deviceService,
@@ -53,7 +51,7 @@ public sealed class CancelUserDeactivationRequestCommandHandler : ICommandHandle
         _currentUserService = currentUserService;
         _requestInfoService = requestInfoService;
         _hashingService = hashingService;
-        _authResponseService = authResponseService;
+        _tokenService = tokenService;
         _archiveService = archiveService;
         _sessionService = sessionService;
         _deviceService = deviceService;
@@ -62,7 +60,7 @@ public sealed class CancelUserDeactivationRequestCommandHandler : ICommandHandle
 
     public async Task<Result<AuthTokensDto>> Handle(CancelUserDeactivationRequestCommand request, CancellationToken cancellationToken)
     {
-        var spec = new UserWithRoleAndSettingsSpecification(request.UserId);
+        var spec = new UserWithRoleAndSettingsAndProfileSpecification(request.UserId);
         var user = await _userRepo.GetSingleAsync(spec, cancellationToken);
 
         if (user == null)
@@ -111,16 +109,16 @@ public sealed class CancelUserDeactivationRequestCommandHandler : ICommandHandle
 
             var now = DateTime.UtcNow;
 
-            var synchronousActivationEvent = new UserActivatedSynchronousEvent(
+            user.AddDomainEvent(new UserActivatedSynchronousEvent(
                 UserId: user.Id,
                 ActivatedAt: now,
                 Device: _requestInfoService.DeviceName,
                 Browser: _requestInfoService.Browser,
                 Country: _requestInfoService.Country,
                 IpAddress: _requestInfoService.IpAddress,
-                OccurredOn: now);
-
-            var activationIntegrationEvent = new UserActivatedIntegrationEvent(
+                OccurredOn: now));
+            
+            user.AddDomainEvent(new UserActivatedIntegrationEvent(
                 UserId: user.Id,
                 ActivatedAt: now,
                 Device: _requestInfoService.DeviceName,
@@ -128,11 +126,7 @@ public sealed class CancelUserDeactivationRequestCommandHandler : ICommandHandle
                 Country: _requestInfoService.Country,
                 City: _requestInfoService.City,
                 IpAddress: _requestInfoService.IpAddress,
-                OccurredOn: now);
-
-            user.AddDomainEvent(synchronousActivationEvent);
-            
-            user.AddDomainEvent(activationIntegrationEvent);
+                OccurredOn: now));
 
             var device = await _deviceService.GetOrCreateUserDeviceAsync(new DeviceCreateDto(
             UserId: user.Id,
@@ -157,22 +151,23 @@ public sealed class CancelUserDeactivationRequestCommandHandler : ICommandHandle
                 Latitude: requestInformationModel.Latitude,
                 IsDeviceTrusted: device.isDeviceTrusted));
 
-            if (sessionsResult.IsFailure)
+            if (sessionsResult.IsFailure || sessionsResult.Value == null)
             {
                 await _unitOfWork.RollbackTransactionAsync(cancellationToken);
                 return Result<AuthTokensDto>.Failure(sessionsResult.StatusCode);
             }
 
-            var tokenResult = await _authResponseService.GenerateAuthResponseAsync(new AuthResponseGenerationDto(
-                UserId: user.Id,
-                RoleId: user.RoleId,
-                SessionId: sessionsResult.Value,
-                RoleType: user.Role.Type), cancellationToken);
+            var accessToken = _tokenService.GenerateAccessToken(
+                new AccessTokenCreateDto(
+                    UserId: user.Id,
+                    ProfileId: user.UserProfile.Id,
+                    SessionId: sessionsResult.Value.SessionId,
+                    RoleType: user.Role.Type));
 
-            if (tokenResult.IsFailure)
+            if (accessToken == null)
             {
                 await _unitOfWork.RollbackTransactionAsync(cancellationToken);
-                return Result<AuthTokensDto>.Failure(tokenResult.StatusCode);
+                return Result<AuthTokensDto>.Failure(SecurityStatusCodes.TokenGenerationError);
             }
 
             await _archiveService.LogUserActionAsync(new CreateUserArchiveDto(
@@ -190,7 +185,7 @@ public sealed class CancelUserDeactivationRequestCommandHandler : ICommandHandle
 
             await _userCacheService.CompleteUserActivationChanlageAsync(user.Id, cancellationToken);
 
-            return Result<AuthTokensDto>.Success(tokenResult.Value!, OperationStatusCode.Success);
+            return Result<AuthTokensDto>.Success(new AuthTokensDto(accessToken, sessionsResult.Value.RefreshToken), OperationStatusCode.Success);
         }
         catch
         {

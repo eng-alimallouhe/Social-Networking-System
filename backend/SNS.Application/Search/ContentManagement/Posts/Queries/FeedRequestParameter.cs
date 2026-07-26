@@ -8,6 +8,19 @@ public sealed record FeedRequestParameter(
     List<Guid> CommunitiesIds,
     List<Guid> FollowedProfilesIds,
     DateTime StartDate,
-    List<string> Topics,
-    List<string> Tags,
+    List<ProfileTopicSnapshot> Topics,
+    List<ProfileTagSnapshot> Tags,
     int FeedSize);
+
+
+
+
+public sealed record ProfileTagSnapshot(
+    string Tag,
+    double Score
+);
+
+public sealed record ProfileTopicSnapshot(
+    string Topic,
+    double Score
+);

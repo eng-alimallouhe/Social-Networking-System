@@ -20,6 +20,12 @@ public class SecuritySession : Entity, IHardDeletable
     public DateTime? LogoutAt { get; private set; }
 
 
+    //Token :
+    public string RefreshToken { get; set; } = string.Empty;
+    public DateTime RefreshTokenExpiresAt { get; set; }
+    public int RefreshCount { get; set; } = 1;
+    public DateTime LastRefreshedAt { get; set; } 
+
     public string IpAddress { get; private set; } = string.Empty;
     public string Country { get; private set; } = string.Empty;
     public string City { get; private set; } = string.Empty;
@@ -30,10 +36,6 @@ public class SecuritySession : Entity, IHardDeletable
     public DateTime? RevokedAt { get; private set; }
     public bool IsRevoked { get; private set; }
     public string? RevokedReason { get; private set; }
-
-    // Navigation
-    public ICollection<RefreshToken> RefreshTokens { get; set; } 
-        = new List<RefreshToken>();
 
     public Device Device { get; set; } = null!;
 
@@ -51,17 +53,23 @@ public class SecuritySession : Entity, IHardDeletable
         string ipAddress,
         string country, 
         string city, 
-        int durationMinutes)
+        int durationMinutes, 
+        string refreshToken,
+        DateTime tokenExpiresAt)
     {
         var entity = new SecuritySession()
         {
             IpAddress = ipAddress,
             City = city,
             DeviceId = deviceId,
-            Country = country
+            Country = country,
+            RefreshCount = 0,
+            LastRefreshedAt = DateTime.UtcNow
         };
         entity.UserId = userId;
         entity.DurationMinutes = durationMinutes;
+        entity.RefreshToken = refreshToken;
+        entity.RefreshTokenExpiresAt = tokenExpiresAt;
         return entity;
     }
 
@@ -88,9 +96,13 @@ public class SecuritySession : Entity, IHardDeletable
         IsRevoked = true;
         RevokedAt = DateTime.UtcNow;
         RevokedReason = reason;
-        foreach (var token in RefreshTokens)
-        {
-            token.Revoke();
-        }
+    }
+
+    public void UpdateRefreshToken(string newRefreshToken, DateTime newExpiresAt)
+    {
+        this.RefreshToken = newRefreshToken;
+        this.RefreshTokenExpiresAt = newExpiresAt;
+        this.LastRefreshedAt = DateTime.UtcNow;
+        this.RefreshCount++;
     }
 }

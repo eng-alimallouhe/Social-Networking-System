@@ -2,4 +2,4 @@
 
 namespace SNS.Application.Identity.Notifications.Queries.GetUserNotificationPreferences;
 
-public sealed record GetUserNotificationPreferencesQuery : IQuery<UserNotificationPreferencesDto>;
+public sealed record GetUserNotificationPreferencesQuery() : IQuery<UserNotificationPreferencesDto>;

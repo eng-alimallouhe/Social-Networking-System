@@ -1,3 +1,4 @@
+using SNS.Domain.Preferences.Entities;
 using SNS.Domain.Shared.Abstractions.IDeletable;
 using SNS.Domain.Shared.Helpers;
 
@@ -20,6 +21,7 @@ public class ProfileTopic : IHardDeletable
     public DateTime LastUpdate { get; private set; }
 
     // Navigation
+    public Topic Topic { get; set; } = null!;
 
     private ProfileTopic()
     {
@@ -35,5 +37,10 @@ public class ProfileTopic : IHardDeletable
             TopicId = topicId,
             Score = score
         };
+    }
+
+    public void UpdateScore(double value)
+    {
+        Score += value;
     }
 }

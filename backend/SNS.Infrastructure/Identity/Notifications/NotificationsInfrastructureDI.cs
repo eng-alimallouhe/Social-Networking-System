@@ -17,8 +17,9 @@ public static class NotificationsInfrastructureDI
         services.AddScoped<IRepository<UserNotificationPreferences>, UserNotificationPreferencesRepository>();
 
         services.AddSingleton<IUserIdProvider, CustomUserIdProvider>();
-        services.AddScoped<INotificationHubService, NotificationHubService>();
-
+        services.AddScoped<IInAppNotificationService, InAppNotificationService>();
+        services.AddScoped<IPushNotificationService, PushNotificationService>();
+        
         return services;
     }
 }

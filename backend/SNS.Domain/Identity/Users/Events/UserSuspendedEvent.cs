@@ -1,4 +1,5 @@
 using SNS.Domain.Identity.Shared.Enums;
+using SNS.Domain.Shared.Enums;
 using SNS.Domain.Shared.Events;
 
 namespace SNS.Domain.Identity.Users.Events;
@@ -7,6 +8,7 @@ public sealed record UserSuspendedEvent(
     Guid UserId,
     string RecipientAddress,
     CommunicationMethod SendMethod,
+    SupportedLanguage SendLanguage,
     string UserName,
     string IpAddress,
     string City,

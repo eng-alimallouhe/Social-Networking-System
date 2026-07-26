@@ -4,7 +4,8 @@ public class SecurityStatusCodes
 {
     private const string Category = "Security";
 
-    public static readonly StatusCode AuthenticationRequired = new(Category, 404);
+    public static readonly StatusCode AuthenticationRequired = new(Category, 4041);
+    public static readonly StatusCode UnAuthorized = new(Category, 4041);
 
     public static readonly StatusCode VerificationFailed = new(Category, 4041);
 
@@ -23,4 +24,7 @@ public class SecurityStatusCodes
     public static readonly StatusCode AccessDenied = new(Category, 409);
 
     public static readonly StatusCode RequestRejected = new(Category, 410);
+
+
+    public static readonly StatusCode TokenGenerationError = new(Category, 5001);
 }

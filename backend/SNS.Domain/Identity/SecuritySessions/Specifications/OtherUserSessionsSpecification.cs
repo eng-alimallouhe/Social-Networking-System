@@ -25,9 +25,6 @@ public class OtherUserSessionsSpecification : ISpecification<SecuritySession>
         Criteria = ss => 
             ss.UserId == userId && ss.Id != currentSessionId && ss.LogoutAt == null;
 
-        Includes = new List<string>()
-        {
-            nameof(SecuritySession.RefreshTokens)
-        };
+        Includes = new List<string>();
     }
 }

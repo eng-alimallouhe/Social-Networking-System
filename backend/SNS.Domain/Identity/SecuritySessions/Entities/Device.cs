@@ -11,6 +11,7 @@ public class Device: Entity, IHardDeletable
     public Guid UserId { get; private set; }
 
     public string DeviceToken { get; private set; } = string.Empty;
+    public string? PushTarget { get; private set; }
     public string FriendlyName { get; private set; } = string.Empty;
     public string Browser { get; private set; } = string.Empty; 
     public string OperatingSystem { get; private set; } = string.Empty;
@@ -60,5 +61,10 @@ public class Device: Entity, IHardDeletable
             IsTrusted = isTrusted
         };
         return entity;
+    }
+
+    public void UpdatePushTarget(string? pushToken)
+    {
+        PushTarget = pushToken;
     }
 }

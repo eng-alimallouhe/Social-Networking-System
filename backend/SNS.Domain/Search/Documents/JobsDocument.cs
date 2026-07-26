@@ -1,4 +1,4 @@
-using SNS.Domain.QA.Enums;
+using SNS.Domain.Jobs.Enums;
 
 namespace SNS.Domain.Search.Documents;
 

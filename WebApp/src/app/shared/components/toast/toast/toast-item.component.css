@@ -1,0 +1,236 @@
+.toast {
+    width: var(--toast-width);
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+    border: 1px solid var(--glass-border);
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--glass-shadow), var(--shadow-md);
+    display: flex;
+    align-items: flex-start;
+    padding: 16px;
+    position: relative;
+    overflow: hidden;
+    pointer-events: auto;
+    animation: slideInRight 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    transition: transform var(--transition-base), box-shadow var(--transition-base);
+}
+
+.toast:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--glass-shadow), var(--shadow-lg);
+}
+
+.toast.closing {
+    animation: fadeOut 0.4s var(--transition-fast) forwards !important;
+}
+
+/* Status Indicators via Left Border Glow */
+.toast::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    transition: background-color var(--transition-base);
+}
+
+.toast.success::before {
+    background: var(--success);
+    box-shadow: 0 0 8px var(--success);
+}
+
+.toast.error::before {
+    background: var(--error);
+    box-shadow: 0 0 8px var(--error);
+}
+
+.toast.warning::before {
+    background: var(--warning);
+    box-shadow: 0 0 8px var(--warning);
+}
+
+.toast.info::before {
+    background: var(--info);
+    box-shadow: 0 0 8px var(--info);
+}
+
+/* Icon Styling */
+.toast-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 16px;
+    font-size: 24px;
+    flex-shrink: 0;
+    padding: 8px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    transition: transform var(--transition-base);
+}
+
+.toast:hover .toast-icon {
+    transform: scale(1.1);
+}
+
+.dark-mode .toast-icon {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.toast.success .toast-icon {
+    color: var(--success);
+}
+
+.toast.error .toast-icon {
+    color: var(--error);
+}
+
+.toast.warning .toast-icon {
+    color: var(--warning);
+}
+
+.toast.info .toast-icon {
+    color: var(--info);
+}
+
+/* Content Styling */
+.toast-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 40px;
+}
+
+.toast-title {
+    font-weight: var(--font-weight-bold);
+    color: var(--text-color);
+    font-size: var(--text-base);
+    margin-bottom: 4px;
+    line-height: 1.2;
+}
+
+.toast-message {
+    font-size: var(--text-sm);
+    color: var(--text-muted);
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* Close Button */
+.toast-close {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--text-muted);
+    padding: 4px;
+    margin-left: 8px;
+    border-radius: var(--border-radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-fast);
+}
+
+.toast-close:hover {
+    color: var(--text-color);
+    background: var(--bg-hover);
+    transform: rotate(90deg);
+}
+
+/* Progress Bar */
+.progress-track {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    width: 100%;
+    background: var(--border-color);
+    opacity: 0.5;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 100%;
+    animation-name: timer;
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
+}
+
+.toast.success .progress-bar {
+    background-color: var(--success);
+}
+
+.toast.error .progress-bar {
+    background-color: var(--error);
+}
+
+.toast.warning .progress-bar {
+    background-color: var(--warning);
+}
+
+.toast.info .progress-bar {
+    background-color: var(--info);
+}
+
+.toast:hover .progress-bar {
+    animation-play-state: paused !important;
+}
+
+/* Animations */
+@keyframes slideInRight {
+    from {
+        transform: translateX(120%) scale(0.9);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0) scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes slideInTop {
+    from {
+        transform: translateY(-120%) scale(0.9);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+        transform: scale(1) translateX(0);
+    }
+
+    to {
+        opacity: 0;
+        transform: scale(0.9) translateX(20px);
+    }
+}
+
+@keyframes timer {
+    from {
+        width: 100%;
+    }
+
+    to {
+        width: 0%;
+    }
+}
+
+/* Mobile Responsive */
+@media screen and (max-width: 480px) {
+    .toast {
+        animation: slideInTop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        width: 100%;
+        margin: 0;
+        border-radius: var(--border-radius-md);
+    }
+}

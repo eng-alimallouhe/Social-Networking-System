@@ -56,7 +56,6 @@ public class CodeService : ICodeService
         
         var attemptsKey = _identityCacheKeyFactory.GetAttemptsKey(dto.UserId);
 
-
         var isCoolingDownTask = _cacheService.ExistsAsync(cooldownKey);
         
         var currentAttemptsTask = _cacheService.GetAsync<int>(attemptsKey);
@@ -79,6 +78,7 @@ public class CodeService : ICodeService
         {
             Code = codeString,
             CurrentAttempt = 0,
+            Token= dto.Token,
             ExipresAt = DateTime.UtcNow.Add(_codeExpiry),
         };
 

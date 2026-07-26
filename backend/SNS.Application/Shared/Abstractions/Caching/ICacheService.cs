@@ -87,5 +87,26 @@ public interface ICacheService
     /// <returns>The value of the key after the increment.</returns>
     Task<long> IncrementAsync(string key, CancellationToken cancellationToken = default);
 
-    Task SetKeyExpiryAsync(string key, TimeSpan expiry, CancellationToken cancellationToken = default);
+    Task SetKeyExpiryAsync(
+        string key, 
+        TimeSpan expiry, 
+        CancellationToken cancellationToken = default);
+
+    Task<List<T>> GetListAsync<T>(
+    string[] keys,
+    CancellationToken cancellationToken = default);
+
+
+    Task AddRangeToSortedSetAsync(
+        string key,
+        IEnumerable<(string Member, double Score)> items,
+        CancellationToken cancellationToken = default);
+
+    Task<Dictionary<string, double>> GetSortedSetRangeByRankWithScoresAsync(
+        string key,
+        long start,
+        long stop,
+        CancellationToken cancellationToken = default);
+
+    
 }

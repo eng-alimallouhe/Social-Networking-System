@@ -39,7 +39,7 @@ public class CommunityMembershipConfigurations :
                .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasOne<Profile>()
-               .WithMany() 
+               .WithMany(p => p.Memberships) 
                .HasForeignKey(cm => cm.MemberId)
                .IsRequired()
                .OnDelete(DeleteBehavior.Cascade);

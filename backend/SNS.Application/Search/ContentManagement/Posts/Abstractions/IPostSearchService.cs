@@ -1,7 +1,8 @@
+using SNS.Application.ContentManagement.Posts.Contracts;
 using SNS.Application.Search.ContentManagement.Posts.Queries;
 using SNS.Application.Search.Shared.Contracts;
-using SNS.Shared.Results;
 using SNS.Domain.Search.Documents;
+using SNS.Shared.Results;
 
 namespace SNS.Application.Search.ContentManagement.Posts.Abstractions;
 
@@ -15,7 +16,9 @@ public interface IPostSearchService
 
     public Task<Result> DeletePostAsync(Guid postId, CancellationToken cancellationToken = default);
 
-    public Task<SearchResult<PostDocument>> GetFeedPostsAsync(FeedRequestParameter parameter, CancellationToken cancellationToken = default);
+    Task<List<FeedCandidate>> GetFeedPostsAsync(
+        FeedRequestParameter parameter,
+        CancellationToken cancellationToken = default);
 
     public Task<Result> DeletePostsByAuthorIdAsync(Guid authorId, CancellationToken cancellationToken = default);
 }

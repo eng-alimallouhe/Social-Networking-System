@@ -17,6 +17,7 @@ public static class PostsInfrastructureDI
         services.AddScoped<IRepository<PostTopic>, PostTopicRepository>();
         services.AddScoped<ISoftDeletableRepository<PostView>, PostViewRepository>();
         services.AddScoped<IRepository<SavedPost>, SavedPostRepository>();
+        services.AddScoped<IRepository<PostMention>, PostMentionRepository>();
 
         // Services
 

@@ -2,7 +2,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SNS.Domain.Discussions.Problems.Entities;
 using SNS.Domain.Discussions.Problems.Relations;
-using SNS.Domain.Preferences.Entities;
 
 namespace SNS.Infrastructure.Discussions.Problems.Configurations
 {
@@ -26,13 +25,13 @@ namespace SNS.Infrastructure.Discussions.Problems.Configurations
 
             builder.HasIndex(pt => pt.TagId);
 
-            builder.HasOne<Problem>()
-                   .WithMany()
+            builder.HasOne(pt => pt.Problem)
+                   .WithMany(p => p.ProblemTags)
                    .HasForeignKey(pt => pt.ProblemId)
                    .IsRequired()
                    .OnDelete(DeleteBehavior.Cascade);
 
-            builder.HasOne<Tag>()
+            builder.HasOne(pt => pt.Tag)
                    .WithMany() 
                    .HasForeignKey(pt => pt.TagId)
                    .IsRequired()

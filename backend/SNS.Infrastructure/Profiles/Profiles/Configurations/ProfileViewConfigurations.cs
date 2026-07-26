@@ -25,13 +25,13 @@ public class ProfileViewConfigurations :
         .IsUnique()
         .HasFilter("[IsActive] = 1");
 
-        builder.HasOne<Profile>()
+        builder.HasOne<Profile>(pv => pv.Viewer)
                .WithMany(p => p.Views) 
                .HasForeignKey(pv => pv.ViewerId)
                .IsRequired()
                .OnDelete(DeleteBehavior.NoAction);
 
-        builder.HasOne<Profile>()
+        builder.HasOne<Profile>(pv => pv.Viewed)
                .WithMany(p => p.Vieweds) 
                .HasForeignKey(pv => pv.ViewedId)
                .IsRequired()

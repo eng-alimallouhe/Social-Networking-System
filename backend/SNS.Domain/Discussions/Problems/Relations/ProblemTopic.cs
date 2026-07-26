@@ -1,3 +1,5 @@
+using SNS.Domain.Discussions.Problems.Entities;
+using SNS.Domain.Preferences.Entities;
 using SNS.Domain.Shared.Abstractions.IDeletable;
 
 namespace SNS.Domain.Discussions.Problems.Relations;
@@ -16,6 +18,9 @@ public class ProblemTopic : IHardDeletable
 
     // General Properties
     public float? Confidence { get; private set; }
+
+    public Topic Topic { get; set; } = null!;
+    public Problem Problem { get; set; } = null!;
 
     public static ProblemTopic Create(Guid problemId, Guid topicId, float? confidence = null)
     {

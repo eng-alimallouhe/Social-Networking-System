@@ -24,6 +24,9 @@ public enum NotificationType
     ProblemUpvoted,
     SolutionUpvoted,
 
+    // --- Social Graph ----
+    Follow,
+
     // --- Projects ---
     ProjectRated,
     ProjectContributorAdded,

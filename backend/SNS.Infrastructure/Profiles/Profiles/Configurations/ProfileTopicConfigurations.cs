@@ -36,7 +36,7 @@ public class ProfileTopicConfigurations :
                .IsRequired()
                .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasOne<Domain.Preferences.Entities.Topic>()
+        builder.HasOne(pt => pt.Topic)
                .WithMany()
                .HasForeignKey(pt => pt.TopicId)
                .IsRequired()

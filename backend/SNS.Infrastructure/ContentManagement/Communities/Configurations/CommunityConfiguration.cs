@@ -37,7 +37,7 @@ public class CommunityConfigurations :
         builder.Property(c => c.RulesText)
                .HasColumnType("nvarchar(max)");
 
-        builder.Property(c => c.LogoUrl)
+        builder.Property(c => c.LogoObjectKey)
                .HasMaxLength(512)
                .HasColumnType("varchar(512)");
 
@@ -47,7 +47,7 @@ public class CommunityConfigurations :
         builder.Property(c => c.Status).HasConversion<int>();
 
         // Relationships
-        builder.HasOne<Profile>()
+        builder.HasOne<Profile>(c => c.Owner)
                .WithMany()
                .HasForeignKey(c => c.OwnerId)
                .IsRequired()

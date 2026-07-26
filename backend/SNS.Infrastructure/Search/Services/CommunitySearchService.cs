@@ -109,4 +109,9 @@ public class CommunitySearchService : ICommunitySearchService
     {
         return await _elasticBaseService.DeleteAsync(_indexName, communityId, cancellationToken);
     }
+
+    public async Task<AppResult> BulkCommunitiesAsync(List<CommunityDocument> communities, CancellationToken cancellationToken = default)
+    {
+        return await _elasticBaseService.BulkIndexDocumentAsync(_indexName, communities, cancellationToken);
+    }
 }

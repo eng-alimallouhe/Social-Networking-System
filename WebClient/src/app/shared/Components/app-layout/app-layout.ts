@@ -30,7 +30,7 @@ import { ToastContainerComponent } from "../toast/toast-container/toast-containe
     LucideHouse,
     LucideX,
     ToastContainerComponent
-],
+  ],
   templateUrl: './app-layout.html',
   styleUrl: './app-layout.css'
 })
@@ -40,7 +40,7 @@ export class AppLayout {
   private renderer = inject(Renderer2);
   private document = inject(DOCUMENT);
   private toastService = inject(ToastService);
-  
+
 
   public isAuthenticated: Signal<boolean> = signal(false);
 

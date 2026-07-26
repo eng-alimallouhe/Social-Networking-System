@@ -147,4 +147,9 @@ public class ProfileSearchService : IProfileSearchService
     {
         return await _elasticBaseService.DeleteAsync(IndexName, profileId.ToString(), cancellationToken);
     }
+
+    public async Task<AppResult> BulkProfilesAsync(List<ProfileDocument> profiles, CancellationToken cancellationToken = default)
+    {
+        return await _elasticBaseService.BulkIndexDocumentAsync(IndexName, profiles, cancellationToken);
+    } 
 }

@@ -32,7 +32,7 @@ public class ArchiveService : IArchiveService
             type: dto.IdentityType
         );
 
-        await _identityArchiveRepo.AddAsync(archive, cancellationToken);
+        _identityArchiveRepo.Add(archive);
 
         return Result.Success(OperationStatusCode.Success);
     }
@@ -43,7 +43,7 @@ public class ArchiveService : IArchiveService
             userId: userId
         );
 
-        await _passwordArchiveRepo.AddAsync(archive, cancellationToken);
+        _passwordArchiveRepo.Add(archive);
 
         return Result.Success(OperationStatusCode.Success);
     }
@@ -58,7 +58,7 @@ public class ArchiveService : IArchiveService
             parameters: dto.Parameters
         );
 
-        await _userArchiveRepo.AddAsync(archive, cancellationToken);
+        _userArchiveRepo.Add(archive);
 
         return Result.Success(OperationStatusCode.Success);
     }

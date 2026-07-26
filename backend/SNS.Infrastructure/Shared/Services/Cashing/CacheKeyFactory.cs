@@ -15,11 +15,11 @@ public class CacheKeyFactory :
     public string GetUserKey(Guid userId)
         => $"user:{userId}";
 
-    public string GetUserPostsKey(Guid userId)
-        => $"user:{userId.ToString()}:posts";
+    public string GetProfileFeedKey(Guid profileId)
+        => $"profile:feed:{profileId.ToString()}";
 
-    public string GetPostKey(Guid postId)
-        => $"post:{postId.ToString()}";
+    public string GetCelebrityPostKey(Guid publisherId)
+        => $"celebrity:posts:{publisherId.ToString()}";
 
     public string GetCommunityMembersKey(Guid communityId)
         => $"community:{communityId.ToString()}:members";

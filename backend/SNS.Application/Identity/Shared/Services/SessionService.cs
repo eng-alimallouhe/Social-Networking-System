@@ -1,5 +1,7 @@
 using SNS.Application.Abstractions.Caching;
-using SNS.Application.Identity.SecuritySessions.Abstractions;
+using SNS.Application.Abstractions.Common;
+using SNS.Application.Identity.SecuritySessions.Shared.Abstractions;
+using SNS.Application.Identity.SecuritySessions.Shared.Contracts;
 using SNS.Application.Identity.Shared.Abstractions;
 using SNS.Application.Identity.Shared.DTOs.SecuritySessions;
 using SNS.Domain.Identity.SecuritySessions.Entities;
@@ -16,15 +18,18 @@ public class SessionService : ISessionService
     private readonly ICacheService _cacheService;
     private readonly IIdentityCacheKeyFactory _identityCacheKeyFactory;
     private readonly TimeSpan _sessionCacheDuration = TimeSpan.FromMinutes(40);
+    private readonly IGeneratorService _generatorService;
 
     public SessionService(
         IRepository<SecuritySession> sessionRepo,
         ICacheService cacheService,
-        IIdentityCacheKeyFactory identityCacheKeyFactory)
+        IIdentityCacheKeyFactory identityCacheKeyFactory, 
+        IGeneratorService generatorService)
     {
         _sessionRepo = sessionRepo;
         _cacheService = cacheService;
         _identityCacheKeyFactory = identityCacheKeyFactory;
+        _generatorService = generatorService;
     }
 
     public async Task<bool> ValidateAndUpdateSessionAsync(
@@ -66,7 +71,7 @@ public class SessionService : ISessionService
     }
 
 
-    public async Task<Result<Guid>> CreateSessionAsync(
+    public async Task<Result<SessionCreateResult>> CreateSessionAsync(
         CreateSessionDto dto, 
         CancellationToken cancellationToken = default)
     {
@@ -81,13 +86,10 @@ public class SessionService : ISessionService
             oldSession.Logout(at: now);
             oldSession.SetDurationMinutes(durationMinutes: (int)(now - oldSession.LoginAt).TotalMinutes);
             
-            foreach (var token in oldSession.RefreshTokens)
-            {
-                token.Revoke();
-            }
-
             await _cacheService.RemoveAsync(_identityCacheKeyFactory.GetSessionKey(oldSession.Id), cancellationToken);
         }
+
+        var token = _generatorService.GenerateSecureString();
 
         var sessionEntity = SecuritySession.Create(
             userId: dto.UserId,
@@ -95,10 +97,12 @@ public class SessionService : ISessionService
             deviceId: dto.DeviceId,
             city: dto.City,
             country: dto.Country,
-            durationMinutes: 0
+            durationMinutes: 0,
+            refreshToken: token,
+            tokenExpiresAt: now.AddDays(7)
         );
 
-        await _sessionRepo.AddAsync(sessionEntity, cancellationToken);
+        _sessionRepo.Add(sessionEntity);
 
         var redisModel = new SessionRedisModel
         {
@@ -129,7 +133,7 @@ public class SessionService : ISessionService
             sessionEntity.Id.ToString(),
             cancellationToken);
 
-        return Result<Guid>.Success(sessionEntity.Id, ResourceStatusCode.Found);
+        return Result<SessionCreateResult>.Success(new SessionCreateResult(sessionEntity.Id, sessionEntity.RefreshToken), ResourceStatusCode.Found);
     }
 
 
@@ -144,11 +148,6 @@ public class SessionService : ISessionService
         foreach (var session in currentSessionsForUser)
         {
             session.Logout(at: DateTime.UtcNow);
-
-            foreach (var token in session.RefreshTokens)
-            {
-                token.Revoke();
-            }
 
             var sessionKey = _identityCacheKeyFactory.GetSessionKey(session.Id);
             await _cacheService.RemoveAsync(sessionKey, cancellationToken);
@@ -173,11 +172,8 @@ public class SessionService : ISessionService
 
         session.Logout(at: DateTime.UtcNow);
 
-        foreach (var token in session.RefreshTokens)
-        {
-            token.Revoke();
-        }
         await _cacheService.RemoveAsync(_identityCacheKeyFactory.GetSessionKey(sessionId), cancellationToken);
+
         await _cacheService.RemoveFromSetAsync(
             _identityCacheKeyFactory.GetUserSessionsKey(session.UserId), 
             sessionId.ToString(), 

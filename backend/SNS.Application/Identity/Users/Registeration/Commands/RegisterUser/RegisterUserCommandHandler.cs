@@ -112,7 +112,7 @@ public sealed class RegisterUserCommandHandler : ICommandHandler<RegisterUserCom
         {
             if (!isRecycledUser)
             {
-                await _userRepo.AddAsync(user, cancellationToken);
+                _userRepo.Add(user);
             }
 
             var token = _generatorService.GenerateSecureString();

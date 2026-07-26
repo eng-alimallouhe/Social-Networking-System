@@ -1,9 +1,9 @@
 using Elastic.Clients.Elasticsearch;
 using Elastic.Clients.Elasticsearch.QueryDsl;
+using SNS.Application.ContentManagement.Posts.Contracts;
 using SNS.Application.Search.ContentManagement.Posts.Abstractions;
 using SNS.Application.Search.ContentManagement.Posts.Queries;
 using SNS.Application.Search.Shared.Contracts;
-using SNS.Domain.ContentManagement.Communities.Enums;
 using SNS.Domain.Search.Documents;
 using SNS.Infrastructure.Search.Abstractions;
 using AppResult = SNS.Shared.Results.Result;
@@ -61,7 +61,7 @@ public class PostSearchService : IPostSearchService
     }
 
 
-    public async Task<SearchResult<PostDocument>> GetFeedPostsAsync(
+    public async Task<List<FeedCandidate>> GetFeedPostsAsync(
         FeedRequestParameter parameter,
         CancellationToken cancellationToken = default)
     {
@@ -80,11 +80,6 @@ public class PostSearchService : IPostSearchService
             mustNotQueries.Add(new TermQuery { Field = "id", Value = postId.ToString() });
         }
 
-        filterQueries.Add(new TermQuery
-        {
-            Field = "communityType",
-            Value = CommunityType.Public.ToString().ToLower()
-        });
 
         filterQueries.Add(new BoolQuery
         {
@@ -105,12 +100,29 @@ public class PostSearchService : IPostSearchService
             });
         }
 
-        if (parameter.Topics.Any())
+        foreach (var topic in parameter.Topics)
         {
-            shouldQueries.Add(new TermsQuery
+            functions.Add(new FunctionScore
             {
-                Field = "topics",
-                Terms = new TermsQueryField(parameter.Topics.Select(t => FieldValue.String(t)).ToArray())
+                Filter = new TermQuery
+                {
+                    Field = "topics",
+                    Value = topic.Topic
+                },
+                Weight = (double)topic.Score
+            });
+        }
+
+        foreach (var tag in parameter.Tags)
+        {
+            functions.Add(new FunctionScore
+            {
+                Filter = new TermQuery
+                {
+                    Field = "tags",
+                    Value = tag.Tag
+                },
+                Weight = (double)tag.Score
             });
         }
 
@@ -166,7 +178,7 @@ public class PostSearchService : IPostSearchService
             }
         });
 
-        return await _elasticBaseService.SearchAsync(
+        var result = await _elasticBaseService.SearchAsync(
             _indexName,
             s => s
                 .Size(parameter.FeedSize)
@@ -188,6 +200,10 @@ public class PostSearchService : IPostSearchService
                 .Sort(s => s.Score())
             ,
             cancellationToken);
+            
+        return result.Hits.Select(h => new FeedCandidate(
+            h.Document.Id,
+            h.Score)).ToList();
     } 
 
     public async Task<AppResult> UpsertPostAsync(PostDocument post, CancellationToken cancellationToken = default)

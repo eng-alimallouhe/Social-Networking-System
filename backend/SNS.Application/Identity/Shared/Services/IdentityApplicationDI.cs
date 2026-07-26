@@ -4,8 +4,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using SNS.Application.Identity.ArchiveManagement.Abstractions;
 using SNS.Application.Identity.ArchiveManagement.Services;
-using SNS.Application.Identity.SecuritySessions.Abstractions;
-using SNS.Application.Identity.SecuritySessions.Services;
+using SNS.Application.Identity.Notifications.Abstractions;
+using SNS.Application.Identity.Notifications.Services;
+using SNS.Application.Identity.SecuritySessions.Shared.Abstractions;
+using SNS.Application.Identity.SecuritySessions.Shared.Services;
 using SNS.Application.Identity.Shared.Abstractions;
 
 namespace SNS.Application.Identity.Shared.Services;
@@ -18,9 +20,6 @@ public static class IdentityApplicationDI
     {
         services
             .AddScoped<ISessionService, SessionService>();
-
-        services.AddScoped<
-            IAuthResponseService, AuthResponseService>();
 
         services.AddScoped<
             IArchiveService, ArchiveService>();
@@ -54,6 +53,11 @@ public static class IdentityApplicationDI
                 TimestampDriftTolerance = fidoOptions.TimestampDriftTolerance <= 0 ? 300000 : fidoOptions.TimestampDriftTolerance
             });
         });
+
+        services.AddSingleton<IOnlineUserTracker, OnlineUserTracker>();
+
+        services.AddScoped<INotificationDeliveryService, NotificationDeliveryService>();
+        services.AddScoped<INotificationLocalizerService, NotificationLocalizerService>();
 
         return services;
     }

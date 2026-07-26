@@ -1,3 +1,4 @@
+using SNS.Domain.Jobs.Enums;
 using SNS.Domain.QA.Enums;
 
 namespace SNS.Application.Search.Jobs.Queries.GetJobsSearch;

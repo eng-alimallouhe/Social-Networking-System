@@ -1,4 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
+using SNS.Application.Profiles.SocialGraph.Abstractions;
+using SNS.Application.Profiles.SocialGraph.Services;
 using SNS.Domain.Profiles.SocialGraph.Entities;
 using SNS.Domain.Shared.Abstractions.Repositories;
 using SNS.Infrastructure.Profiles.SocialGraph.Repositories;
@@ -11,7 +13,9 @@ public static class SocialGraphInfrastructureDI
     {
         services.AddScoped<IRepository<Block>, BlockRepository>();
         services.AddScoped<IRepository<Follow>, FollowRepository>();
-        services.AddScoped<IRepository<Mute>,MuteRepository>();
+
+        // Service DI:
+        services.AddScoped<ISocialPolicyService, SocialPolicyService>();
 
         return services;
     }

@@ -64,7 +64,7 @@ public sealed class ExportAccountDataCommandHandler
 
         var exportRequest = ExportDataRequest.Create(currentUserId.Value);
 
-        await _exportDataRequestRepo.AddAsync(exportRequest, cancellationToken);
+        _exportDataRequestRepo.Add(exportRequest);
         await _unitOfWork.CompleteAsync(cancellationToken);
 
         await _jobSchedulerService.TriggerExportJobAsync(exportRequest.Id);

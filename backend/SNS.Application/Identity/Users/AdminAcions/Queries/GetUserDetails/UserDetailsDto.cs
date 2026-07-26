@@ -1,4 +1,4 @@
-﻿using SNS.Application.Identity.SecuritySessions.Contracts;
+﻿using SNS.Application.Identity.SecuritySessions.SessionsManagement.Queries.GetUserSessions;
 using SNS.Application.Profiles.Profiles.Contracts;
 using SNS.Domain.Identity.Users.Enums;
 using SNS.Domain.Shared.Enums;

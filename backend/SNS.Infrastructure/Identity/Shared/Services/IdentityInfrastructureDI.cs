@@ -1,6 +1,6 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using SNS.Application.Identity.SecuritySessions.Abstractions;
+using SNS.Application.Identity.SecuritySessions.Shared.Abstractions;
 using SNS.Application.Identity.Shared.Abstractions;
 using SNS.Application.Shared.Settings;
 

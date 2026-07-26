@@ -36,6 +36,9 @@ public class ProblemDocument
     public int UpVotesCount { get; set; }
     public int DownVotesCount { get; set; }
 
+    public List<string> Topics { get; set; } = new List<string>();
+    public List<string> Tags { get; set; } = new List<string>();
+
     public int SolutionsCount { get; set; }
     public int ViewsCount { get; set; }
 }

@@ -18,4 +18,6 @@ public interface ICommunitySearchService
 
     Task<Result> UpsertCommunityAsync(CommunityDocument communityDocument, CancellationToken cancellationToken = default);
      Task<Result> DeleteCommunityAsync(string communityId, CancellationToken cancellationToken = default);
+
+    Task<Result> BulkCommunitiesAsync(List<CommunityDocument> communities, CancellationToken cancellationToken = default);
 }

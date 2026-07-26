@@ -9,3 +9,7 @@ namespace SNS.Application.Identity.Shared.DTOs.Authentication;
 public sealed record AuthTokensDto(
     string Token,
     string RefreshToken);
+
+
+public sealed record AuthTokenDto(
+    string Token);

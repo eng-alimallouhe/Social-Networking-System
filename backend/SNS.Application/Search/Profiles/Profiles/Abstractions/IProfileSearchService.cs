@@ -14,4 +14,6 @@ public interface IProfileSearchService
     Task<SearchResult<ProfileDocument>> SearchProfilesAsync(ProfileSearchQuery query, CancellationToken cancellationToken = default);
 
     Task<SearchResult<ProfileDocument>> GetSuggestedProfilesAsync(SuggestedProfilesRequestDto request, CancellationToken cancellationToken = default);
+
+    Task<Result> BulkProfilesAsync(List<ProfileDocument> profiles, CancellationToken cancellationToken = default);
 }

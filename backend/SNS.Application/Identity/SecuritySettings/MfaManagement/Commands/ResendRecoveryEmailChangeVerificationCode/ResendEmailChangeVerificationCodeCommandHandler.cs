@@ -97,6 +97,8 @@ public sealed class ResendRecoveryEmailChangeVerificationCodeCommandHandler :
             UserName: user.UserName,
             Device: _requestInfoService.DeviceName,
             Browser: _requestInfoService.Browser,
+            SendLanguage: user.PreferredLanguage,
+            IpAddress: _requestInfoService.IpAddress,
             RecipientAddress: alertRecipientAddress!,
             DefaultCommunicationMethod: user.UserSecuritySettings.DefaultCommunicationMethod,
             UpdateType: UpdateType.Email,

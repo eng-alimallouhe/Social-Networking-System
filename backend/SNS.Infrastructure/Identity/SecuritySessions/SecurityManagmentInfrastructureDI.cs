@@ -11,7 +11,6 @@ public static class SecuritySessionInfrastructureDI
     {
         //Repositories
         services.AddScoped<IRepository<Device>, DeviceRepository>();
-        services.AddScoped<IRepository<RefreshToken>, RefreshTokenRepository>();
         services.AddScoped<IRepository<SecuritySession>, SecuritySessionRepository>();
 
 

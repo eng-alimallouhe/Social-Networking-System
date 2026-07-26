@@ -93,9 +93,8 @@ public class SNSDbContext : DbContext, IApplicationDbContext
     // Profile is defined in Profiles as well, assuming shared reference or mapping
 
     public DbSet<ProfileSkill> ProfileSkills { get; set; }
-    public DbSet<ProfileTopic> ProfileTopics { get; set; }
     public DbSet<ProfileView> ProfileViews { get; set; }
-    public DbSet<Mute> Mutes { get; set; }
+
 
     // 📦 Projects
     public DbSet<Project> Projects { get; set; }
@@ -138,7 +137,6 @@ public class SNSDbContext : DbContext, IApplicationDbContext
     // 📦 Identity
     public DbSet<User> Users { get; set; }
     public DbSet<Role> Roles { get; set; }
-    public DbSet<RefreshToken> RefreshTokens { get; set; }
     public DbSet<SecuritySession> UserSessions { get; set; }
     public DbSet<UserArchive> UserArchives { get; set; }
     public DbSet<IdentityArchive> IdentityArchives { get; set; }
@@ -156,6 +154,8 @@ public class SNSDbContext : DbContext, IApplicationDbContext
     public DbSet<Profile> Profiles { get; set; }
     public DbSet<ReputationLedger> ReputationLedgers { get; set; }
     public DbSet<SavedProfile> SavedProfiles { get; set; }
+    public DbSet<ProfileTag> ProfileTags { get; set; }
+    public DbSet<ProfileTopic> ProfileTopics { get; set; }
 
     // Bridges
     public DbSet<Follow> Follows { get; set; }
@@ -261,7 +261,6 @@ public class SNSDbContext : DbContext, IApplicationDbContext
     // 📦 Security
     IQueryable<User> IApplicationDbContext.Users => Users.AsNoTracking();
     IQueryable<Role> IApplicationDbContext.Roles => Roles.AsNoTracking();
-    IQueryable<RefreshToken> IApplicationDbContext.RefreshTokens => RefreshTokens.AsNoTracking();
     IQueryable<SecuritySession> IApplicationDbContext.UserSessions => UserSessions.AsNoTracking();
     IQueryable<UserArchive> IApplicationDbContext.UserArchives => UserArchives.AsNoTracking();
     IQueryable<IdentityArchive> IApplicationDbContext.IdentityArchives => IdentityArchives.AsNoTracking();
@@ -277,31 +276,21 @@ public class SNSDbContext : DbContext, IApplicationDbContext
     // 📦 Profiles
     IQueryable<Profile> IApplicationDbContext.Profiles => Profiles.AsNoTracking();
     IQueryable<ReputationLedger> IApplicationDbContext.ReputationLedgers => ReputationLedgers.AsNoTracking();
+    
     // Bridges
     IQueryable<Follow> IApplicationDbContext.Follows => Follows.AsNoTracking();
     IQueryable<Block> IApplicationDbContext.Blocks => Blocks.AsNoTracking();
+    IQueryable<ProfileView> IApplicationDbContext.ProfileViews => ProfileViews.AsNoTracking();
     IQueryable<SavedProfile> IApplicationDbContext.SavedProfiles => SavedProfiles.AsNoTracking();
+    IQueryable<ProfileTag> IApplicationDbContext.ProfileTags => ProfileTags.AsNoTracking();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
 
-        modelBuilder.Entity<Role>().HasData(
-            Role.CreateSystemUserRole(SystemUsers.GhostRoleId));
-
-        modelBuilder.Entity<User>().HasData(User.CreateSystemUser(
-            SystemUsers.GhostUserId, 
-            SystemUsers.GhostRoleId,
-            "deleted_user", 
-            "deleted_user@system.sns", 
-            SystemUsers.GhostUserPassword));
-
-        modelBuilder.Entity<Profile>().HasData(Profile.CreateSystemProfile(
-            SystemUsers.GhostProfileId,
-            SystemUsers.GhostUserId, 
-            "Deleted User",
-            SystemUsers.GhostProfilePicture));
-
+        modelBuilder.Entity<Role>().HasData(Role.CreateDefaultRole());
+        modelBuilder.Entity<User>().HasData(User.CreateDefaultUser());
+        modelBuilder.Entity<Profile>().HasData(Profile.CreateDefaultProfile());
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
     }
 

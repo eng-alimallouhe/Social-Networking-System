@@ -68,12 +68,12 @@ public interface ISoftDeletableRepository<TEntity> where TEntity : class
     /// <summary>
     /// Adds a new entity to the data store.
     /// </summary>
-    Task AddAsync(TEntity entity, CancellationToken cancellationToken);
+    void Add(TEntity entity);
 
     /// <summary>
     /// Adds multiple entities to the data store.
     /// </summary>
-    Task AddRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken);
+    void AddRange(IEnumerable<TEntity> entities);
 
     /// <summary>
     /// Permanently deletes an entity from the data store.
@@ -83,7 +83,7 @@ public interface ISoftDeletableRepository<TEntity> where TEntity : class
     /// <param name="id">
     /// The unique identifier of the entity to delete.
     /// </param>
-    Task DeleteAsync(Guid id, CancellationToken cancellationToken);
+    void Delete(TEntity entity);
 
     /// <summary>
     /// Performs a soft delete by marking the entity as deleted
@@ -94,6 +94,6 @@ public interface ISoftDeletableRepository<TEntity> where TEntity : class
     /// <param name="id">
     /// The unique identifier of the entity to soft delete.
     /// </param>
-    Task SoftDeleteAsync(Guid id, CancellationToken cancellationToken);
+    void SoftDelete(TEntity entity);
 }
 

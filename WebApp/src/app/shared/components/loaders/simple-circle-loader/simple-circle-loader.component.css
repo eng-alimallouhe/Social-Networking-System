@@ -1,0 +1,19 @@
+.circle-loader-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: var(--text-base);
+}
+
+.spinner {
+  border: 5px solid var(--border-color);
+  border-top-color: var(--primary-light);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

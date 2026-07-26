@@ -18,7 +18,6 @@ public sealed class BeginUserDeactivationCommandHandler :
     ICommandHandler<BeginUserDeactivationCommand, BeginUserDeactivationResponse>
 {
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IRepository<User> _userRepo;
     private readonly ICodeService _codeService;
     private readonly IRepository<User> _userRepo;
     private readonly IUrlGeneratorService _urlGeneratorService;
@@ -29,13 +28,11 @@ public sealed class BeginUserDeactivationCommandHandler :
         IUnitOfWork unitOfWork,
         IRepository<User> userRepo,
         ICodeService codeService,
-        IRepository<User> userRepo,
         IGeneratorService generatorService,
         IUrlGeneratorService urlGeneratorService,
         ICurrentUserService currentUserService)
     {
         _unitOfWork = unitOfWork;
-        _userRepo = userRepo;
         _generatorService = generatorService;
         _userRepo = userRepo;
         _codeService = codeService;
@@ -52,7 +49,7 @@ public sealed class BeginUserDeactivationCommandHandler :
             return Result<BeginUserDeactivationResponse>.Failure(OperationStatusCode.AuthenticationRequired);
         }
 
-        var spec  = new UserWithRoleAndSettingsSpecification(userId.Value);
+        var spec  = new UserWithRoleAndSettingsAndProfileSpecification(userId.Value);
 
         var user = await _userRepo.GetSingleAsync(spec, cancellationToken);
             

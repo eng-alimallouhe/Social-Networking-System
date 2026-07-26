@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using SNS.Application.Identity.SecuritySessions.Contracts;
+using SNS.Application.Identity.SecuritySessions.SessionsManagement.Queries.GetUserSessions;
 using SNS.Application.Identity.Shared.Abstractions;
 using SNS.Application.Profiles.Profiles.Contracts;
 using SNS.Application.Shared.Abstractions.Data;
@@ -69,7 +69,7 @@ public sealed class GetUserDetailsQueryHandler : IQueryHandler<GetUserDetailsQue
                     u.UserProfile.Id,
                     u.UserProfile.FullName,
                     u.UserProfile.Specialization ?? defaultProfileSpecialization,
-                    u.UserProfile.ProfilePictureUrl ?? defaultProfilePictureUrl,
+                    u.UserProfile.ProfilePictureObjectKey ?? defaultProfilePictureUrl,
                     u.UserProfile.Reputation),
                 new UserRoleDetailsDto(
                     u.RoleId,
@@ -83,28 +83,32 @@ public sealed class GetUserDetailsQueryHandler : IQueryHandler<GetUserDetailsQue
                 u.Sessions
                 .Where(s => s.LogoutAt == null)
                 .Select(s => new SessionSummaryDto(
-                    s.Id,
                     s.UserId,
+                    s.Id,
+                    s.Device.FriendlyName,
                     s.LoginAt,
                     s.LastSeenAt,
                     s.LogoutAt,
-                    s.City,
                     s.Country,
-                    s.Device.FriendlyName,
-                    s.Device.Browser))
+                    s.City,
+                    s.DurationMinutes,
+                    s.IsRevoked,
+                    s.RevokedReason))
                 .ToList(),
                 u.Sessions
                 .OrderBy(s => s.LoginAt)
                 .Select(s => new SessionSummaryDto(
-                    s.Id,
                     s.UserId,
+                    s.Id,
+                    s.Device.FriendlyName,
                     s.LoginAt,
                     s.LastSeenAt,
                     s.LogoutAt,
-                    s.City,
                     s.Country,
-                    s.Device.FriendlyName,
-                    s.Device.Browser))
+                    s.City,
+                    s.DurationMinutes,
+                    s.IsRevoked,
+                    s.RevokedReason))
                 .ToList()
             )).FirstOrDefaultAsync(cancellationToken);
 

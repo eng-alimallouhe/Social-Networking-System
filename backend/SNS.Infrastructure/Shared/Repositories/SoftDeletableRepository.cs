@@ -68,30 +68,23 @@ public class SoftDeletableRepository<TEntity>
     // Write operations (تم تنظيفها من SaveChanges!)
     // ------------------------------------------------------------------
 
-    public async Task AddAsync(TEntity entity, CancellationToken cancellationToken = default)
+    public void Add(TEntity entity)
     {
-        await _dbSet.AddAsync(entity, cancellationToken);
+        _dbSet.Add(entity);
     }
 
-    public async Task AddRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default)
+    public void AddRange(IEnumerable<TEntity> entities)
     {
-        await _dbSet.AddRangeAsync(entities, cancellationToken);
+        _dbSet.AddRange(entities);
     }
 
-    public async Task DeleteAsync(Guid id, CancellationToken cancellationToken = default)
+    public void Delete(TEntity entity)
     {
-        var entity = await _dbSet.FindAsync(new object[] { id }, cancellationToken);
-        if (entity != null)
-        {
-            _dbSet.Remove(entity);
-        }
+        _dbSet.Remove(entity);
     }
 
-    public async Task SoftDeleteAsync(Guid id, CancellationToken cancellationToken = default)
+    public void SoftDelete(TEntity entity)
     {
-        var entity = await _dbSet.FindAsync(new object[] { id }, cancellationToken);
-        if (entity == null) return;
-
         var isAlreadyDeleted = !entity.IsActive;
         if (isAlreadyDeleted)
         {
