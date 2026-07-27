@@ -4,7 +4,7 @@ using SNS.Application.ContentManagement.Posts.Contracts;
 using SNS.Application.Search.ContentManagement.Posts.Queries;
 using SNS.Application.Shared.Abstractions.Data;
 
-namespace SNS.Infrastructure.ContentManagement.Posts.BackgroundServices;
+namespace SNS.Application.ContentManagement.Posts.Services;
 
 public class FeedBackgroundService : IFeedBackgroundService
 {

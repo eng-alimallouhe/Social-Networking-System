@@ -2,6 +2,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SNS.Infrastructure.Identity.Shared.Services;
 using SNS.Infrastructure.Search.DI;
+using SNS.Infrastructure.Shared.BackgroundJobs;
 using SNS.Infrastructure.Shared.Services.AI;
 using SNS.Infrastructure.Shared.Services.Cashing;
 using SNS.Infrastructure.Shared.Services.Identity;
@@ -25,6 +26,7 @@ public static class SharedServiceInfrastructureDI
             .AddSearchServices(configuration)
             .AddStorageServices(configuration)
             .AddCachingServices(configuration)
+            .AddBackgroundJobsServices()
             .AddAIDI();
 
         return services;

@@ -13,14 +13,12 @@ public sealed record FeedRequestParameter(
     int FeedSize);
 
 
-
-
 public sealed record ProfileTagSnapshot(
-    string Tag,
+    Guid TagId,
     double Score
 );
 
 public sealed record ProfileTopicSnapshot(
-    string Topic,
+    Guid TopicId,
     double Score
 );

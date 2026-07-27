@@ -10,6 +10,10 @@ public static class ContentManagementApplicationDI
         this IServiceCollection services)
     {
         services.AddScoped<IPostCacheService, PostCacheService>();
+        services.AddScoped<IFeedBackgroundService, FeedBackgroundService>();
+        services.AddScoped<IFeedFallbackService, FeedFallbackService>();
+
+
         return services;
     }
 }

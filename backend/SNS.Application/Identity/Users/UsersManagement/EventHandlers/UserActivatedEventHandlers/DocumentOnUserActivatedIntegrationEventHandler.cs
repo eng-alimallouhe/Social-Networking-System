@@ -127,9 +127,6 @@ public class DocumentOnUserActivatedIntegrationEventHandler : INotificationHandl
             {
                 Id = p.Id,
                 AuthorId = p.AuthorId,
-                AuthorName = finalProfileDoc.FullName,
-                AuthorProfilePictureObjectKey = finalProfileDoc.ProfilePictureUrl ?? _profileSettings.DefaultProfilePictureUrl,
-                AuthorSpecialization = finalProfileDoc.Specialization ?? _profileSettings.DefaultSpecialization,
                 Title = p.Title,
                 Content = p.Content,
                 CreatedAt = p.CreatedAt,

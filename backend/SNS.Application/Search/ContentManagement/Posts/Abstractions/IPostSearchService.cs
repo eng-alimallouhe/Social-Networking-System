@@ -16,9 +16,5 @@ public interface IPostSearchService
 
     public Task<Result> DeletePostAsync(Guid postId, CancellationToken cancellationToken = default);
 
-    Task<List<FeedCandidate>> GetFeedPostsAsync(
-        FeedRequestParameter parameter,
-        CancellationToken cancellationToken = default);
-
     public Task<Result> DeletePostsByAuthorIdAsync(Guid authorId, CancellationToken cancellationToken = default);
 }

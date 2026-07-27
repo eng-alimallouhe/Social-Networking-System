@@ -148,13 +148,7 @@ public class ClassifyTopicsOnPostCreatedEventHandler
             {
                 Id = post.Id,
                 AuthorId = post.AuthorId,
-                AuthorName = post.AuthorName,
-                AuthorSpecialization = post.AuthorSpecialization,
-                AuthorProfilePictureObjectKey = post.AuthorProfilePictureObjectKey,
                 CommunityId = post.CommunityId,
-                CommunityType = post.CommunityType,
-                CommunityName = post.CommunityName,
-                CommunityLogoObjectKey = post.CommunityLogoObjectKey,
                 Title = post.Title,
                 Content = post.Content,
                 CreatedAt = post.CreatedAt,

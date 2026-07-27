@@ -1,4 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
+using SNS.Application.Shared.Abstractions.BackgroundJobs;
 
 namespace SNS.Infrastructure.Shared.BackgroundJobs;
 
@@ -9,6 +10,8 @@ public static class BackgroundJobsServicersDI
     {
         services.AddHostedService<
             ProcessOutboxMessagesJob>();
+
+        services.AddTransient<IBackgroundJobService, BackgroundJobService>();
 
         return services;
     }

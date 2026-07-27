@@ -24,24 +24,8 @@ public class PostsController : ControllerBase
     [Authorize]
     [MapToApiVersion("1.0")]
     [HttpGet("feed")]
-    public async Task<ActionResult<Result<List<PostOverviewDto>>>> GetFeedAsync()
+    public async Task<ActionResult<Result<List<PostOverviewDto>>>> GetFeedAsync([FromQuery] int CurrentPage = 1, int PageSize = 10)
     {
-        return (await _mediator.Send(new GetFeedQuery())).ToActionResult(this);
+        return (await _mediator.Send(new GetFeedQuery(CurrentPage: CurrentPage, PageSize: PageSize))).ToActionResult(this);
     }
-
-
-    [HttpPost]
-    public async Task<ActionResult<Result<List<PostOverviewDto>>>> CreatePostAsync()
-    {
-        return (await _mediator.Send(new GetFeedQuery())).ToActionResult(this);
-    }
-
-
-    [HttpPut]
-    public async Task<ActionResult<Result<List<PostOverviewDto>>>> UpdatePostAsync()
-    {
-        return (await _mediator.Send(new GetFeedQuery())).ToActionResult(this);
-    }
-
-
 }

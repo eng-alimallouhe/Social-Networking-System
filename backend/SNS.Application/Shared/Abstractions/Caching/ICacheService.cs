@@ -18,6 +18,16 @@ public interface ICacheService
     /// <param name="value">The object to store.</param>
     /// <param name="expiry">The duration for which the item should remain in the cache.</param>
     Task SetAsync<T>(string key, T value, TimeSpan expiry, CancellationToken cancellationToken = default);
+    
+    /// <summary>
+    /// Stores an object in the cache with a specified expiration time.
+    /// The object is serialized to JSON before storage.
+    /// </summary>
+    /// <typeparam name="T">The type of the object to cache.</typeparam>
+    /// <param name="key">The unique cache key.</param>
+    /// <param name="value">The object to store.</param>
+    /// <param name="expiry">The duration for which the item should remain in the cache.</param>
+    Task<bool> SetIfNotExistsAsync<T>(string key, T value, TimeSpan expiry, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Retrieves and deserializes an object from the cache.

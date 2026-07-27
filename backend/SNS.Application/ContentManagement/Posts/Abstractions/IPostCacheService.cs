@@ -15,4 +15,8 @@ public interface IPostCacheService
         long start,
         long stop,
         CancellationToken cancellationToken = default);
+
+    Task<bool> TryLockFeedBuildingAsync(Guid profileId);
+    
+    Task UnlockFeedBuildingAsync(Guid profileId);
 }

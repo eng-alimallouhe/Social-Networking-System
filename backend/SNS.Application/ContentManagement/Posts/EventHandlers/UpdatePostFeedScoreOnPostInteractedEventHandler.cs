@@ -68,15 +68,5 @@ public class UpdatePostFeedScoreOnPostInteractedEventHandler
                 ));
             }
         }
-
-        if (type == InteractionType.NotInterested)
-        {
-            await _postCacheService.RemovePostFromProfileFeedAsync(profileId, postId, cancellationToken);
-        }
-        else
-        {
-            double boost = type == InteractionType.Comment ? 40.0 : 15.0;
-            await _postCacheService.IncrementPostScoreAsync(profileId, postId, boost, cancellationToken);
-        }
     }
 }

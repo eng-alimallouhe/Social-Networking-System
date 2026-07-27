@@ -61,4 +61,7 @@ public class CacheKeyFactory :
 
     public string GetTrendingCommunitiesKey(DateTime date)
         => $"trending:communities:{date:UtcNow:yyyy-MM-dd}";
+
+    public string GetFeedBuildingKey(Guid profileId)
+        => $"feed:building:profileId:{profileId}";
 }

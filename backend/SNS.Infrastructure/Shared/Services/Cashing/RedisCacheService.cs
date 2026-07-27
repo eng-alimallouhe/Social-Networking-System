@@ -25,7 +25,7 @@ public class RedisCacheService : ICacheService
     public async Task SetAsync<T>(
         string key, 
         T value, 
-        TimeSpan expiry, 
+        TimeSpan expiry,
         CancellationToken cancellationToken = default)
     {
         // We serialize complex objects to JSON strings because Redis 
@@ -33,6 +33,19 @@ public class RedisCacheService : ICacheService
         var jsonData = JsonSerializer.Serialize(value);
 
         await _db.StringSetAsync(key, jsonData, expiry);
+    }
+
+    public async Task<bool> SetIfNotExistsAsync<T>(
+        string key, 
+        T value, 
+        TimeSpan expiry,
+        CancellationToken cancellationToken = default)
+    {
+        // We serialize complex objects to JSON strings because Redis 
+        // primarily stores strings (or binary data) for simple keys.
+        var jsonData = JsonSerializer.Serialize(value);
+
+        return await _db.StringSetAsync(key, jsonData, expiry);
     }
 
     public async Task<List<T>> GetListAsync<T>(
