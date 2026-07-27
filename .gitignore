@@ -47,7 +47,6 @@ dist/
 # -------------------------------
 # Ignore configuration and secret files
 # -------------------------------
-appsettings.json
 appsettings.Development.json
 appsettings.Production.json
 secrets.json
