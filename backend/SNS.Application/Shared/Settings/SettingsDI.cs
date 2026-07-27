@@ -13,7 +13,7 @@ public static class SettingsDI
         services.Configure<AppSettings>(configuration.GetSection("AppSettings"));
         services.Configure<EmailSettings>(configuration.GetSection("EmailSettings"));
         services.Configure<JWTSettings>(configuration.GetSection("JWTSettings"));
-        services.Configure<MinioStorageSettings>(configuration.GetSection("MinioStorageSettings"));
+        services.Configure<MinioStorageSettings>(configuration.GetSection("MinioSettings"));
         services.Configure<ProfileSettings>(configuration.GetSection("ProfileSettings"));
         services.Configure<ReputationSettings>(configuration.GetSection("ReputationSettings"));
         services.Configure<SmsSettings>(configuration.GetSection("SmsSettings"));
