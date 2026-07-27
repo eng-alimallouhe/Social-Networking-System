@@ -13,9 +13,9 @@ public static class StorageServicesDI
             IConfiguration configuration)
     {
         var minioSettings = new MinioStorageSettings();
-        configuration.GetSection("MinioStorage").Bind(minioSettings);
+        configuration.GetSection("MinioStorageSettings").Bind(minioSettings);
 
-        services.Configure<MinioStorageSettings>(configuration.GetSection("MinioStorage"));
+        services.Configure<MinioStorageSettings>(configuration.GetSection("MinioStorageSettings"));
 
         services.AddMinio(configureClient => configureClient
             .WithEndpoint(minioSettings.Endpoint)
