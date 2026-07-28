@@ -43,7 +43,7 @@
   </ItemGroup>
 
   <ItemGroup>
-	  <None Update="Shared\Resources\DataBases\GeoLite2-Country.mmdb">
+	  <None Update="Shared\Resources\DataBases\GeoLite2-City.mmdb">
 		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		  <CopyToPublishDirectory>Always</CopyToPublishDirectory>
 	  </None>
