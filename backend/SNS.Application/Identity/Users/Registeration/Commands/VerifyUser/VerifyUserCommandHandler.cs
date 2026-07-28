@@ -119,7 +119,7 @@ public sealed class VerifyUserCommandHandler : ICommandHandler<VerifyUserCommand
             var accessToken = _tokenService.GenerateAccessToken(
                 new AccessTokenCreateDto(
                     UserId: user.Id,
-                    ProfileId: user.UserProfile.Id,
+                    ProfileId: null,
                     SessionId: sessionResult.Value.SessionId,
                     RoleType: user.Role.Type));
 
