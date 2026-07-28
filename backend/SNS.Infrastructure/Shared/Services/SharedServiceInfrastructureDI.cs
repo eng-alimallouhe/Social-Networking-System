@@ -1,3 +1,4 @@
+using MaxMind.GeoIP2;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SNS.Infrastructure.Identity.Shared.Services;
@@ -28,6 +29,29 @@ public static class SharedServiceInfrastructureDI
             .AddCachingServices(configuration)
             .AddBackgroundJobsServices()
             .AddAIDI();
+
+        services.AddSingleton(sp =>
+        {
+            var basePath = AppContext.BaseDirectory;
+
+            var dbPath = Path.Combine(basePath, "Shared", "Resources", "DataBases", "GeoLite2-City.mmdb");
+
+            if (!File.Exists(dbPath))
+            {
+                var fallbackPath = Path.Combine(basePath, "GeoLite2-City.mmdb");
+                if (File.Exists(fallbackPath))
+                {
+                    dbPath = fallbackPath;
+                }
+                else
+                {
+                    throw new FileNotFoundException($"GeoIP database not found at: {dbPath}");
+                }
+            }
+
+            return new DatabaseReader(dbPath);
+        });
+
 
         return services;
     }

@@ -44,8 +44,8 @@
 
   <ItemGroup>
 	  <None Update="Shared\Resources\DataBases\GeoLite2-Country.mmdb">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		  <CopyToPublishDirectory>Always</CopyToPublishDirectory>
 	  </None>
 	  <None Update="Shared\Resources\Firebase\service-account.json">
 		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
