@@ -43,24 +43,27 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Shared\Resources\DataBases\GeoLite2-Country.mmdb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Shared\Resources\Firebase\service-account.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-	
-  <ItemGroup>
-	  <None Update="Shared\Resources\MessagingTemplates\Email\Arabic\*.json">
+	  <None Update="Shared\Resources\DataBases\GeoLite2-Country.mmdb">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+	  </None>
+	  <None Update="Shared\Resources\Firebase\service-account.json">
 		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		  <CopyToPublishDirectory>Always</CopyToPublishDirectory>
 	  </None>
   </ItemGroup>
-	
-  <ItemGroup>
-	  <None Update="Shared\Resources\MessagingTemplates\Email\English\*.json">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </None>
-  </ItemGroup>
-	
+
+	<ItemGroup>
+		<None Update="Shared\Resources\MessagingTemplates\Email\Arabic\*.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+			<CopyToPublishDirectory>Always</CopyToPublishDirectory>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Update="Shared\Resources\MessagingTemplates\Email\English\*.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+			<CopyToPublishDirectory>Always</CopyToPublishDirectory>
+		</None>
+	</ItemGroup>
 </Project>
