@@ -5,7 +5,7 @@
     width: 100%;
     height: 100%;
     display: block;
-    z-index: -100;
+    z-index: 0;
     overflow: hidden;
     background-color: var(--bg-main);
     transition: background-color var(--transition-base);
@@ -16,7 +16,7 @@
     position: fixed;
     top: 0;
     right: 0;
-    width: 100vw;
+    width: 100%;
     height: var(--navbar-mobile-height);
     z-index: 1000;
     background-color: var(--bg-surface);
@@ -134,30 +134,19 @@
     background-color: var(--bg-hover);
 }
 
-.identity-wrapper {
-    width: 100vw;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding-top: var(--navbar-mobile-height);
-}
-
 .form-container {
     width: 100%;
-    min-height: calc(100vh - var(--navbar-mobile-height));
+    height: calc(100vh - var(--navbar-mobile-height));
+    height: calc(100dvh - var(--navbar-mobile-height));
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: var(--spacing-4);
+    margin-top: var(--navbar-mobile-height);
     box-sizing: border-box;
+    overflow: hidden;
 }
 
 @media (min-width: 991px) {
-    .identity-wrapper {
-        padding-top: var(--navbar-desktop-height);
-    }
-
     .links-menu-button {
         display: none;
     }
@@ -181,7 +170,9 @@
     }
 
     .form-container {
-        min-height: calc(100vh - var(--navbar-desktop-height));
+        height: calc(100vh - var(--navbar-desktop-height));
+        height: calc(100dvh - var(--navbar-desktop-height));
+        margin-top: var(--navbar-desktop-height);
     }
 
     .options .option {
@@ -195,8 +186,8 @@
     left: 0;
     right: 0;
     bottom: 0;
-    width: 100vw;
-    height: 100%;
+    width: 100%;
+    height: calc(100vh - var(--navbar-mobile-height));
     background-color: var(--glass-bg);
     backdrop-filter: blur(4px);
     display: flex;

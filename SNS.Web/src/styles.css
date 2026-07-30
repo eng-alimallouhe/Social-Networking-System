@@ -15,13 +15,28 @@
     -webkit-tap-highlight-color: transparent;
 }
 
-body {
+a,
+h1,
+h2 {
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+}
+
+a {
+    cursor: pointer;
+}
+
+body,
+html {
     font-family: var(--font-family-base);
     background-color: var(--bg-main);
     color: var(--text-primary);
     transition: background-color var(--transition-base), color var(--transition-base);
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    height: 100%;
     font-display: swap;
     overflow-x: hidden;
     line-height: var(--line-height-normal);
