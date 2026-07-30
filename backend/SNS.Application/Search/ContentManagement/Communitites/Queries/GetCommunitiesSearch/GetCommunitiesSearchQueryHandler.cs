@@ -8,6 +8,14 @@ using SNS.Application.Shared.Abstractions.Messaging;
 
 namespace SNS.Application.Search.ContentManagement.Communitites.Queries.GetCommunitiesSearch;
 
+/// <summary>
+/// Handles the execution of <see cref="GetCommunitiesSearchQuery"/> to search community documents.
+/// </summary>
+/// <remarks>
+/// Data retrieval and query logic:
+/// 1. Invokes <see cref="ICommunitySearchService"/> passing request search parameters.
+/// 2. Returns <see cref="SearchResult{CommunityDocument}"/> search results.
+/// </remarks>
 public class GetCommunitiesSearchQueryHandler
 : IQueryHandler<GetCommunitiesSearchQuery, SearchResult<CommunityDocument>>
 {

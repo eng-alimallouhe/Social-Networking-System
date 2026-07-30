@@ -1,4 +1,4 @@
-﻿using SNS.Application.Abstractions.Messaging;
+using SNS.Application.Abstractions.Messaging;
 using SNS.Application.Identity.Shared.Abstractions;
 using SNS.Application.Shared.Abstractions.Data;
 using SNS.Domain.Profiles.Profiles.Entities;
@@ -10,6 +10,17 @@ using Microsoft.EntityFrameworkCore;
 
 namespace SNS.Application.Profiles.Profiles.Commands.ViewProfiles;
 
+/// <summary>
+/// Handles the execution of <see cref="ViewProfilesCommand"/> to record batch profile view events.
+/// </summary>
+/// <remarks>
+/// Business operation and processing flow:
+/// 1. Resolves authenticated viewer profile ID.
+/// 2. Queries existing profile view records to avoid duplicates.
+/// 3. Filters unrecorded profile IDs and constructs new <see cref="ProfileView"/> entities.
+/// 4. Adds new entities and saves changes to database.
+/// Side effects include batch creation of profile view records in persistence store.
+/// </remarks>
 internal sealed class ViewProfilesCommandHandler : ICommandHandler<ViewProfilesCommand>
 {
     private readonly IApplicationDbContext _dbContext;

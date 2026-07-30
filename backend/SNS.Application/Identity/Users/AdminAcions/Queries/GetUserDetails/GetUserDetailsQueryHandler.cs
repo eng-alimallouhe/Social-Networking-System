@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using SNS.Application.Identity.SecuritySessions.SessionsManagement.Queries.GetUserSessions;
 using SNS.Application.Identity.Shared.Abstractions;
@@ -12,6 +12,15 @@ using SNS.Shared.StatusCodes.Identity;
 
 namespace SNS.Application.Identity.Users.AdminAcions.Queries.GetUserDetails;
 
+/// <summary>
+/// Handles the execution of <see cref="GetUserDetailsQuery"/> to retrieve comprehensive user details.
+/// </summary>
+/// <remarks>
+/// Data retrieval and query details:
+/// 1. Verifies administrative authorization of the current user.
+/// 2. Projects user entity fields, security status, profile information, assigned role, and aggregate security metrics (active sessions count, devices, passkeys, archives).
+/// 3. Includes lists of active sessions and full session history summaries.
+/// </remarks>
 public sealed class GetUserDetailsQueryHandler : IQueryHandler<GetUserDetailsQuery, UserDetailsDto>
 {
     private readonly IApplicationDbContext _dbContext;

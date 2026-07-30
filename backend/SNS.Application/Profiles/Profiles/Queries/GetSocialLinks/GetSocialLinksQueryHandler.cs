@@ -1,4 +1,4 @@
-﻿using SNS.Application.Identity.Shared.Abstractions;
+using SNS.Application.Identity.Shared.Abstractions;
 using SNS.Application.Shared.Abstractions.Data;
 using SNS.Application.Shared.Abstractions.Messaging;
 using SNS.Shared.Results;
@@ -7,6 +7,15 @@ using SNS.Shared.StatusCodes;
 
 namespace SNS.Application.Profiles.Profiles.Queries.GetSocialLinks;
 
+/// <summary>
+/// Handles the execution of <see cref="GetSocialLinksQuery"/> to retrieve profile social URLs.
+/// </summary>
+/// <remarks>
+/// Data retrieval and query logic:
+/// 1. Resolves authenticated user profile ID.
+/// 2. Projects GitHub, LinkedIn, Facebook, X, and website URLs from database.
+/// 3. Returns <see cref="SocialLinksDto"/>.
+/// </remarks>
 public sealed class GetSocialLinksQueryHandler : IQueryHandler<GetSocialLinksQuery, SocialLinksDto>
 {
     private readonly IApplicationDbContext _dbContext;

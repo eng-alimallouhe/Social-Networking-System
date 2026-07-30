@@ -1,4 +1,4 @@
-﻿using SNS.Application.Abstractions.Messaging;
+using SNS.Application.Abstractions.Messaging;
 using SNS.Application.Identity.Shared.Abstractions;
 using SNS.Application.Shared.Abstractions.Data;
 using SNS.Application.Shared.Contracts.Storage;
@@ -17,6 +17,14 @@ using SNS.Domain.ContentManagement.Posts.Events;
 
 namespace SNS.Application.ContentManagement.Posts.Commands.CreatePost;
 
+/// <summary>
+/// Represents a command to create a new post with title, content, optional community association, and media files.
+/// </summary>
+/// <param name="CommunityId">Optional unique identifier of the target community if publishing to a community.</param>
+/// <param name="Title">The title of the post.</param>
+/// <param name="Content">The textual content of the post.</param>
+/// <param name="IsPenned">Indicates whether the post should be pinned.</param>
+/// <param name="Files">List of attached media files (images or videos) to upload.</param>
 public sealed record CreatePostCommand(
     Guid? CommunityId,
     string Title,
@@ -25,7 +33,19 @@ public sealed record CreatePostCommand(
     List<UploadedFile> Files
 ) : ICommand;
 
-
+/// <summary>
+/// Handles the execution of <see cref="CreatePostCommand"/> to create and publish a post.
+/// </summary>
+/// <remarks>
+/// Business operation and processing flow:
+/// 1. Resolves author profile ID.
+/// 2. Determines post type (Profile or Community) and verifies community membership and posting approval rules if target is a community.
+/// 3. Creates the <see cref="Post"/> entity and attaches media records.
+/// 4. Uploads media files in parallel to storage via <see cref="IFileStorageService"/>.
+/// 5. Raises a <see cref="PostCreatedEvent"/> domain event.
+/// 6. Persists post entity inside a database transaction, rolling back uploaded media files if storage or database commit fails.
+/// Side effects include storage file uploads, entity persistence, domain event publishing, and transaction commit.
+/// </remarks>
 internal sealed class CreatePostCoommandHandler
     : ICommandHandler<CreatePostCommand>
 {

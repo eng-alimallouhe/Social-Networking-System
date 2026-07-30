@@ -1,5 +1,8 @@
-﻿using SNS.Application.Shared.Abstractions.Messaging;
+using SNS.Application.Shared.Abstractions.Messaging;
 
 namespace SNS.Application.Profiles.Profiles.Queries.GetBasicInformation;
 
-public sealed record GetBasicInformationQuery() : IQuery<BasicInformationDto>;
+/// <summary>
+/// Represents a query to retrieve basic profile information for the authenticated user.
+/// </summary>
+public sealed record GetBasicInformationQuery() : IQuery<BasicInformationDto>;

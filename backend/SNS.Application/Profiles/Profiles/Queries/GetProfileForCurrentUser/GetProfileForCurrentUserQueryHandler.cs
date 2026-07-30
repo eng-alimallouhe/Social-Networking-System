@@ -11,6 +11,15 @@ using SNS.Shared.StatusCodes.Identity;
 
 namespace SNS.Application.Profiles.Profiles.Queries.GetProfileForCurrentUser;
 
+/// <summary>
+/// Handles the execution of <see cref="GetProfileForCurrentUserQuery"/> to retrieve the authenticated user's base profile summary.
+/// </summary>
+/// <remarks>
+/// Data retrieval and query logic:
+/// 1. Resolves current authenticated user ID.
+/// 2. Projects profile fields (ID, full name, specialization, profile picture key, reputation).
+/// 3. Applies fallback settings from <see cref="ProfileSettings"/> if specialization or avatar key is missing.
+/// </remarks>
 public sealed class GetProfileForCurrentUserQueryHandler : IRequestHandler<GetProfileForCurrentUserQuery, Result<ProfileBaseDto>>
 {
     private readonly IApplicationDbContext _dbContext;

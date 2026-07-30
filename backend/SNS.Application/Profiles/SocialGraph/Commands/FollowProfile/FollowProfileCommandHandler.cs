@@ -1,4 +1,4 @@
-﻿using SNS.Application.Abstractions.Messaging;
+using SNS.Application.Abstractions.Messaging;
 using SNS.Application.Identity.Shared.Abstractions;
 using SNS.Application.Profiles.SocialGraph.Abstractions;
 using SNS.Domain.Profiles.SocialGraph.Entities;
@@ -9,6 +9,17 @@ using SNS.Shared.StatusCodes.Profiles;
 
 namespace SNS.Application.Profiles.SocialGraph.Commands.FollowProfile;
 
+/// <summary>
+/// Handles the execution of <see cref="FollowProfileCommand"/> to follow a user profile.
+/// </summary>
+/// <remarks>
+/// Business operation and processing flow:
+/// 1. Resolves authenticated follower profile ID.
+/// 2. Checks social relationship policy rules using <see cref="ISocialPolicyService"/>.
+/// 3. Creates a new <see cref="Follow"/> entity.
+/// 4. Saves the follow relationship entity to database.
+/// Side effects include follow entity creation and database persistence.
+/// </remarks>
 internal sealed class FollowProfileCommandHandler
     : ICommandHandler<FollowProfileCommand>
 {

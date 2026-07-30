@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using SNS.Application.ContentManagement.Posts.Abstractions;
 using SNS.Application.ContentManagement.Posts.Contracts;
 using SNS.Application.Identity.Shared.Abstractions;
@@ -13,11 +13,27 @@ using SNS.Shared.StatusCodes.Identity;
 
 namespace SNS.Application.ContentManagement.Posts.Queries.GetFeed;
 
+/// <summary>
+/// Represents a query to retrieve a personalized feed of posts for the authenticated user.
+/// </summary>
+/// <param name="CurrentPage">The current page index for feed pagination (1-based).</param>
+/// <param name="PageSize">The maximum number of posts to retrieve per page.</param>
 public sealed record GetFeedQuery(
     int CurrentPage,
     int PageSize
 ) : IQuery<List<PostOverviewDto>>;
 
+/// <summary>
+/// Handles the execution of <see cref="GetFeedQuery"/> to retrieve a personalized post feed.
+/// </summary>
+/// <remarks>
+/// Data retrieval and query logic:
+/// 1. Attempts to fetch cached feed post IDs for the user profile from <see cref="IPostCacheService"/>.
+/// 2. If cached feed exists, projects detailed post overviews (author, community, media, tags, engagement counters) from database ordered by cached ranking.
+/// 3. If cache is empty, gathers profile feed parameters (skills, topics, tags, followings, community memberships, block list).
+/// 4. Enqueues a background job via <see cref="IJobSchedulerService"/> to asynchronously compute and cache user feed.
+/// 5. Retrieves and returns an instant fallback feed via <see cref="IFeedFallbackService"/>.
+/// </remarks>
 internal class GetFeedQueryHandler
     : IQueryHandler<GetFeedQuery, List<PostOverviewDto>>
 {
@@ -26,7 +42,7 @@ internal class GetFeedQueryHandler
     private readonly ICurrentUserService _currentUserService;
     private readonly IPostCacheService _postCacheService;
     private readonly DateTime _startDate = DateTime.UtcNow.AddYears(-4);
-    private readonly IBackgroundJobService _backgroundJobService;
+    private readonly IJobSchedulerService _backgroundJobService;
     private readonly IFeedBackgroundService _feedBackgroundService;
     private readonly IFeedFallbackService _feedFallbackService;
 
@@ -35,7 +51,7 @@ internal class GetFeedQueryHandler
         IApplicationDbContext dbContext,
         ICurrentUserService currentUserService,
         IPostCacheService postCacheService,
-        IBackgroundJobService backgroundJobService,
+        IJobSchedulerService backgroundJobService,
         IFeedFallbackService feedFallbackService,
         IFeedBackgroundService feedBackgroundService)
     {

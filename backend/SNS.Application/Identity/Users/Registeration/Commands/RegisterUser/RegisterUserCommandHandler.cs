@@ -17,6 +17,17 @@ using SNS.Shared.StatusCodes.Identity;
 
 namespace SNS.Application.Identity.Users.Registeration.Commands.RegisterUser;
 
+/// <summary>
+/// Handles the execution of <see cref="RegisterUserCommand"/> to register a new user account or update an unverified user.
+/// </summary>
+/// <remarks>
+/// Business operation and processing flow:
+/// 1. Checks existing user status by email address.
+/// 2. If existing and unverified, updates password and language; if new, generates a unique username and creates new user and security setting entities.
+/// 3. Generates activation token and sends a verification code email.
+/// 4. Caches user information in the user cache service and commits transaction.
+/// Side effects include entity persistence, code sending, user caching, and transaction completion.
+/// </remarks>
 public sealed class RegisterUserCommandHandler : ICommandHandler<RegisterUserCommand, RegisterResponseDto>
 {
     private readonly IUnitOfWork _unitOfWork;

@@ -7,6 +7,14 @@ using SNS.Shared.StatusCodes;
 
 namespace SNS.Application.Search.Profiles.Profiles.Queries.GetProfilesSearch;
 
+/// <summary>
+/// Handles the execution of <see cref="GetProfilesSearchQuery"/> to search profile documents.
+/// </summary>
+/// <remarks>
+/// Data retrieval and query logic:
+/// 1. Invokes <see cref="IProfileSearchService"/> passing request search parameters.
+/// 2. Returns <see cref="SearchResult{ProfileDocument}"/> matching user profiles.
+/// </remarks>
 public class GetProfilesSearchQueryHandler
 : IQueryHandler<GetProfilesSearchQuery, SearchResult<ProfileDocument>>
 {

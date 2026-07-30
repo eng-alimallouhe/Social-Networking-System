@@ -1,11 +1,13 @@
 namespace SNS.Application.Identity.Users.Registeration.DTOs;
 
 /// <summary>
-/// Represents a data transfer object used to
-/// convey the initial results of a user registration attempt.
+/// Represents response DTO returned upon user registration, indicating user ID, verification token, and profile completion status.
 /// </summary>
-/// <param name="UserId">Gets the unique identifier of the user. This value is used to reference the newly created user account in subsequent requests.</param>
+/// <param name="UserId">The unique identifier of the newly registered user account.</param>
+/// <param name="Token">The verification token generated for account verification.</param>
+/// <param name="IsProfileCompleted">Indicates whether the user's profile setup is complete.</param>
 public sealed record RegisterResponseDto(
     Guid UserId,
     string? Token = null,
     bool? IsProfileCompleted = null);
+

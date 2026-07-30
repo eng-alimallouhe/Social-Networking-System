@@ -1,4 +1,4 @@
-﻿using SNS.Application.Identity.Shared.Abstractions;
+using SNS.Application.Identity.Shared.Abstractions;
 using SNS.Application.Shared.Abstractions.Data;
 using SNS.Application.Shared.Abstractions.Messaging;
 using SNS.Application.Shared.Abstractions.Storage;
@@ -9,6 +9,15 @@ using SNS.Shared.StatusCodes.Identity;
 
 namespace SNS.Application.Profiles.Profiles.Queries.GetProfilePictureUrl;
 
+/// <summary>
+/// Handles the execution of <see cref="GetProfilePictureUrlQuery"/> to generate a temporary profile avatar URL.
+/// </summary>
+/// <remarks>
+/// Data retrieval and query logic:
+/// 1. Resolves authenticated user profile ID.
+/// 2. Queries profile picture object key from database.
+/// 3. Generates a temporary 15-minute presigned access URL via <see cref="IFileStorageService"/>.
+/// </remarks>
 public sealed class GetProfilePictureUrlQueryHandler : IQueryHandler<GetProfilePictureUrlQuery, string>
 {
     private readonly ICurrentUserService _currentUserService;

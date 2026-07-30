@@ -11,5 +11,9 @@ public sealed record AuthTokensDto(
     string RefreshToken);
 
 
+/// <summary>
+/// Represents a data transfer object containing an authentication JWT access token.
+/// </summary>
+/// <param name="Token">The JWT access token used to authenticate requests.</param>
 public sealed record AuthTokenDto(
-    string Token);
+    string Token);

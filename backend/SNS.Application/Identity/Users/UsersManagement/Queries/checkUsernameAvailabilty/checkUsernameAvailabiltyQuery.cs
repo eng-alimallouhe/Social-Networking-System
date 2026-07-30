@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using SNS.Application.Shared.Abstractions.Data;
 using SNS.Application.Shared.Abstractions.Messaging;
 using SNS.Shared.Results;
@@ -6,8 +6,20 @@ using SNS.Shared.StatusCodes.Identity;
 
 namespace SNS.Application.Identity.Users.UsersManagement.Queries.checkUsernameAvailabilty;
 
+/// <summary>
+/// Represents a query to check whether a specific username is available for registration or change.
+/// </summary>
+/// <param name="UserName">The username to check for availability.</param>
 public sealed record CheckUsernameAvailabiltyQuery(string UserName): IQuery<bool>;
 
+/// <summary>
+/// Handles the execution of <see cref="CheckUsernameAvailabiltyQuery"/> to verify username availability.
+/// </summary>
+/// <remarks>
+/// Data retrieval and query logic:
+/// 1. Queries the database to check if the requested username already exists.
+/// 2. Returns a boolean indicating availability.
+/// </remarks>
 internal sealed class CheckUsernameAvailabiltyQueryHandler: IQueryHandler<CheckUsernameAvailabiltyQuery, bool>
 {
     private readonly IApplicationDbContext _dbContext;

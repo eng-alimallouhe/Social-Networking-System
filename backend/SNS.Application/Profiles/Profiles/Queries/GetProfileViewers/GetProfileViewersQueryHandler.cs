@@ -1,4 +1,4 @@
-﻿using SNS.Application.Identity.Shared.Abstractions;
+using SNS.Application.Identity.Shared.Abstractions;
 using SNS.Application.Profiles.Profiles.Contracts;
 using SNS.Application.Shared.Abstractions.Data;
 using SNS.Application.Shared.Abstractions.Messaging;
@@ -12,6 +12,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace SNS.Application.Profiles.Profiles.Queries.GetProfileViewers;
 
+/// <summary>
+/// Handles the execution of <see cref="GetProfileViewersQuery"/> to retrieve paged profile viewers.
+/// </summary>
+/// <remarks>
+/// Data retrieval and query logic:
+/// 1. Resolves current user profile ID.
+/// 2. Filters profile views where the current user profile is the viewed subject.
+/// 3. Applies descending view date sorting and pagination (<c>Skip</c>/<c>Take</c>).
+/// 4. Maps profile picture keys to public storage URLs and packages results in <see cref="Paged{ProfileViewDto}"/>.
+/// </remarks>
 internal sealed class GetProfileViewersQueryHandler : IQueryHandler<GetProfileViewersQuery, Paged<ProfileViewDto>>
 {
     private readonly ICurrentUserService _currentUserService;

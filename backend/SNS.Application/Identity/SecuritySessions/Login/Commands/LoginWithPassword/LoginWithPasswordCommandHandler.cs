@@ -12,6 +12,7 @@ using SNS.Application.Identity.Shared.DTOs.SecuritySessions;
 using SNS.Application.Identity.Shared.DTOs.VerificationCodes;
 using SNS.Application.Identity.Shared.ValueObjects;
 using SNS.Application.Shared.Abstractions.Data;
+using SNS.Domain.Identity.SecuritySessions.Entities;
 using SNS.Domain.Identity.SecuritySessions.Events;
 using SNS.Domain.Identity.SecuritySettings.Enums;
 using SNS.Domain.Identity.Shared.Enums;
@@ -26,6 +27,18 @@ using SNS.Shared.StatusCodes.Identity;
 
 namespace SNS.Application.Identity.SecuritySessions.Login.Commands.LoginWithPassword;
 
+/// <summary>
+/// Handles the execution of <see cref="LoginWithPasswordCommand"/> to authenticate a user using password credentials.
+/// </summary>
+/// <remarks>
+/// Business operation and processing flow:
+/// 1. Verifies user existence, lockouts, suspension, ban status, and password hash.
+/// 2. Handles MFA workflows if enabled (TOTP, Email, SMS, Passkey challenge).
+/// 3. Registers or updates device information and starts a new security session upon successful verification.
+/// 4. Generates JWT access and refresh tokens.
+/// 5. Logs login activity into the user archive and publishes domain events (such as <see cref="UserLoggedInEvent"/>).
+/// Side effects include updating login attempt counts, session persistence, device registration, audit logging, and event publishing.
+/// </remarks>
 public sealed class LoginWithPasswordCommandHandler : ICommandHandler<LoginWithPasswordCommand, LoginInitialResponseDto>
 {
     private readonly IUnitOfWork _unitOfWork;
@@ -198,6 +211,11 @@ public sealed class LoginWithPasswordCommandHandler : ICommandHandler<LoginWithP
                 await _unitOfWork.CommitTransactionAsync(cancellationToken);
 
                 return Result<LoginInitialResponseDto>.Failure(UserStatusCodes.FailedLoginAttempt);
+            }
+
+            if (user.UserProfile == null)
+            {
+                return await HandleLowRiskLoginAsync(user, requestInformationModel, recipientAddress, cancellationToken);
             }
 
             // Calculate risk score based on various factors such as IP address, device fingerprint, geolocation, and historical login patterns. This can help determine if additional verification steps are needed or if the login attempt should be blocked.
@@ -415,9 +433,6 @@ public sealed class LoginWithPasswordCommandHandler : ICommandHandler<LoginWithP
     {
         if (user.UserSecuritySettings.MfaProvider == MfaProvider.AuthenticatorApp)
         {
-            await _unitOfWork.CompleteAsync(cancellationToken);
-            await _unitOfWork.CommitTransactionAsync(cancellationToken);
-
             return Result<LoginInitialResponseDto>.Success(
                 new LoginInitialResponseDto(
                     RequiresTwoFactor: true,
@@ -465,7 +480,6 @@ public sealed class LoginWithPasswordCommandHandler : ICommandHandler<LoginWithP
             return Result<LoginInitialResponseDto>.Failure(sendResult.StatusCode);
         }
 
-        // 🚀 تصحيح ثغرة الـ Bypass: نضمن إرجاع عقد يثبت تعليق الدخول بانتظار الـ OTP Token
         return Result<LoginInitialResponseDto>.Success(
             new LoginInitialResponseDto(
                 RequiresTwoFactor: true,
@@ -497,7 +511,7 @@ public sealed class LoginWithPasswordCommandHandler : ICommandHandler<LoginWithP
             DeviceVendor: requestInformationModel.DeviceVendor,
             IsTrusted: false));
 
-        var sessionsResult = await _sessionService.CreateSessionAsync(new CreateSessionDto(
+        var sessionResult = await _sessionService.CreateSessionAsync(new CreateSessionDto(
             UserId: user.Id,
             DeviceId: device.deviceId,
             IpAddress: requestInformationModel.IpAddress,
@@ -509,15 +523,15 @@ public sealed class LoginWithPasswordCommandHandler : ICommandHandler<LoginWithP
             Latitude: requestInformationModel.Latitude,
             IsDeviceTrusted: device.isDeviceTrusted));
 
-        if (sessionsResult.IsFailure || sessionsResult.Value == null)
+        if (sessionResult.IsFailure || sessionResult.Value == null)
         {
             await _unitOfWork.RollbackTransactionAsync(cancellationToken);
-            return Result<LoginInitialResponseDto>.Failure(sessionsResult.StatusCode);
+            return Result<LoginInitialResponseDto>.Failure(sessionResult.StatusCode);
         }
 
         user.AddDomainEvent(new UserLoggedInEvent(
             UserId: user.Id,
-            SessionId: sessionsResult.Value.SessionId,
+            SessionId: sessionResult.Value.SessionId,
             IpAddress: requestInformationModel.IpAddress,
             Device: requestInformationModel.DeviceName,
             City: requestInformationModel.City,
@@ -531,8 +545,8 @@ public sealed class LoginWithPasswordCommandHandler : ICommandHandler<LoginWithP
 
         var accessToken = _tokenService.GenerateAccessToken(new AccessTokenCreateDto(
             UserId: user.Id,
-            ProfileId: user.UserProfile.Id,
-            SessionId: sessionsResult.Value.SessionId,
+            ProfileId: user.UserProfile != null? user.UserProfile.Id : null,
+            SessionId: sessionResult.Value.SessionId,
             RoleType: user.Role.Type));
 
         if (accessToken == null)
@@ -541,13 +555,11 @@ public sealed class LoginWithPasswordCommandHandler : ICommandHandler<LoginWithP
             return Result<LoginInitialResponseDto>.Failure(SecurityStatusCodes.TokenGenerationError);
         }
 
-
         return Result<LoginInitialResponseDto>.Success(new LoginInitialResponseDto(
             UserId: user.Id,
             DeviceId: device.deviceId,
             AccessToken: accessToken,
-            RefreshToken: sessionsResult.Value.RefreshToken),
+            RefreshToken: sessionResult.Value.RefreshToken),
             OperationStatusCode.Success);
     }
-
 }

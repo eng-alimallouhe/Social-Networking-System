@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using SNS.Application.Identity.Shared.Abstractions;
 using SNS.Application.Profiles.SocialGraph.Contracts;
 using SNS.Application.Shared.Abstractions.Data;
@@ -10,6 +10,13 @@ using SNS.Shared.StatusCodes;
 
 namespace SNS.Application.Profiles.SocialGraph.Queries.GetProfileFollowers;
 
+/// <summary>
+/// Represents a query to retrieve a paged list of followers for a specified profile.
+/// </summary>
+/// <param name="ProfileId">The unique identifier of the profile whose followers are being queried.</param>
+/// <param name="SearchTerm">Optional search term to filter followers by full name or specialization.</param>
+/// <param name="PageSize">The maximum number of follower records to return per page.</param>
+/// <param name="CurrentPage">The page index for pagination (1-based).</param>
 public sealed record GetProfileFollowersQuery(
     Guid ProfileId,
     string? SearchTerm,
@@ -17,7 +24,16 @@ public sealed record GetProfileFollowersQuery(
     int CurrentPage = 1
 ): IQuery<Paged<ProfileFollowDto>>;
 
-
+/// <summary>
+/// Handles the execution of <see cref="GetProfileFollowersQuery"/> to retrieve profile followers.
+/// </summary>
+/// <remarks>
+/// Data retrieval and query logic:
+/// 1. Queries follow records where the specified profile is being followed.
+/// 2. Applies search term filtering on full name and specialization if specified.
+/// 3. Sorts by follow date descending and applies pagination (<c>Skip</c>/<c>Take</c>).
+/// 4. Maps profile picture keys to public storage URLs and packages results in <see cref="Paged{ProfileFollowDto}"/>.
+/// </remarks>
 internal sealed class GetProfileFollowersQueryHandler
     : IQueryHandler<GetProfileFollowersQuery, Paged<ProfileFollowDto>>
 {

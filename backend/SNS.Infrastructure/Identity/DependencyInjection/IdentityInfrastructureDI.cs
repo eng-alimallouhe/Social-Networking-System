@@ -5,7 +5,7 @@ using SNS.Infrastructure.Identity.SecuritySessions;
 using SNS.Infrastructure.Identity.SecuritySettings;
 using SNS.Infrastructure.Identity.Users;
 
-namespace SNS.Infrastructure.Identity;
+namespace SNS.Infrastructure.Identity.DependencyInjection;
 
 
 public static class IdentityInfrastructureDI

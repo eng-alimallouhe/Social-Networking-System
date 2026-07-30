@@ -33,9 +33,9 @@ public static class CashingServicesDI
         services.AddSingleton<IConnectionMultiplexer>(sp =>
         {
             var options = ConfigurationOptions.Parse(configuration.GetConnectionString("Redis") ?? "");
-            options.AbortOnConnectFail = false; // لا تنهار إذا Redis غير متاح عند الإقلاع
-            options.ConnectRetry = 5;           // حاول إعادة الاتصال 5 مرات
-            options.SyncTimeout = 5000;         // 5 ثواني Timeout للعمليات
+            options.AbortOnConnectFail = false; 
+            options.ConnectRetry = 5;           
+            options.SyncTimeout = 5000;         
             var multiplexer = ConnectionMultiplexer.Connect(options);
             
             Console.WriteLine($"Redis Connected: {multiplexer}");

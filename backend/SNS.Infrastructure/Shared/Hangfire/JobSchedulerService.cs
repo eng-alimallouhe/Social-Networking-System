@@ -4,11 +4,11 @@ using System.Linq.Expressions;
 
 namespace SNS.Infrastructure.Shared.BackgroundJobs;
 
-internal sealed class BackgroundJobService : IBackgroundJobService
+internal sealed class JobSchedulerService : IJobSchedulerService
 {
     private readonly IBackgroundJobClient _backgroundJobClient;
 
-    public BackgroundJobService(
+    public JobSchedulerService(
         IBackgroundJobClient backgroundJobClient)
     {
         _backgroundJobClient = backgroundJobClient;

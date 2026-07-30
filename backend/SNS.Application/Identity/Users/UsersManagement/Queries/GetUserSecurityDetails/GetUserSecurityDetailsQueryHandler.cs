@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using SNS.Application.Identity.Shared.Abstractions;
 using SNS.Application.Shared.Abstractions.Data;
 using SNS.Application.Shared.Abstractions.Messaging;
@@ -8,6 +8,14 @@ using SNS.Shared.StatusCodes.Identity;
 
 namespace SNS.Application.Identity.Users.UsersManagement.Queries.GetUserSecurityDetails;
 
+/// <summary>
+/// Handles the execution of <see cref="GetUserSecurityDetailsQuery"/> to retrieve current user security settings.
+/// </summary>
+/// <remarks>
+/// Data retrieval and query logic:
+/// 1. Verifies authentication of the requesting user.
+/// 2. Performs a read-only query (<c>AsNoTracking</c>) projecting MFA status, provider details, recovery email, passkeys count, device counts, and recovery code metrics.
+/// </remarks>
 public sealed class GetUserSecurityDetailsQueryHandler : IQueryHandler<GetUserSecurityDetailsQuery, UserSecurityDetailsResult>
 {
     private readonly IApplicationDbContext _dbContext;

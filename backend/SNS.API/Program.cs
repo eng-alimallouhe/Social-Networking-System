@@ -1,6 +1,7 @@
 ﻿using Asp.Versioning;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Scalar.AspNetCore;
 using SNS.Application;
 using SNS.Infrastructure;
 using SNS.Infrastructure.Identity.Notifications.Hubs;
@@ -11,10 +12,21 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
-builder.Services.AddOpenApi();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddOpenApi(options =>
+{
+    options.AddDocumentTransformer((document, context, cancellationToken) =>
+    {
+        document.Info = new()
+        {
+            Title = "Syrian Developers Network API",
+            Version = "v1",
+            Description = "REST API for the Syrian Developers Network."
+        };
 
+        return Task.CompletedTask;
+    });
+});
+builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddInfrastructureDI(builder.Configuration);
@@ -42,10 +54,8 @@ var secretKey = jwtSettings["SecretKey"]
 
 var encodedKey = Encoding.UTF8.GetBytes(secretKey);
 
-// 2. تسجيل خدمات الـ Authentication داخل حاوية الـ DI
 builder.Services.AddAuthentication(options =>
 {
-    // تعيين الـ JWT كقائد افتراضي لفحص الهوية والعبور بالسيستم
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 })
@@ -87,19 +97,24 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-app.MapHub<NotificationHub>("/hubs/notifications");
-
-
 app.MapOpenApi();
-app.UseSwagger();
-app.UseSwaggerUI();
 
+app.MapScalarApiReference(options =>
+{
+    options.Title = "Syrian Developers Network APIs";
+
+    options.Theme = ScalarTheme.BluePlanet;
+});
 
 app.UseHttpsRedirection();
 
 app.UseCors("syrianDevs");
 
+app.UseAuthentication();
 app.UseAuthorization();
+
+app.MapHub<NotificationHub>("/hubs/notifications");
+
 
 app.MapControllers();
 

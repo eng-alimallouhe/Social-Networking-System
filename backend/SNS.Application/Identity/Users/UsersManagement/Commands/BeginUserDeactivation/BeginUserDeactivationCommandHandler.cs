@@ -14,6 +14,17 @@ using SNS.Shared.StatusCodes.Identity;
 
 namespace SNS.Application.Identity.Users.UsersManagement.Commands.BeginUserDeactivation;
 
+/// <summary>
+/// Handles the execution of <see cref="BeginUserDeactivationCommand"/> to initiate account deactivation.
+/// </summary>
+/// <remarks>
+/// Business operation and processing flow:
+/// 1. Resolves authenticated user identity and fetches user entity with security settings.
+/// 2. Generates a secure token and URL for account deactivation.
+/// 3. Sends a verification code to the user's preferred communication method.
+/// 4. Updates the user's purge preference for hard deletion and persists changes.
+/// Side effects include code delivery notification dispatching and entity setting update.
+/// </remarks>
 public sealed class BeginUserDeactivationCommandHandler :
     ICommandHandler<BeginUserDeactivationCommand, BeginUserDeactivationResponse>
 {

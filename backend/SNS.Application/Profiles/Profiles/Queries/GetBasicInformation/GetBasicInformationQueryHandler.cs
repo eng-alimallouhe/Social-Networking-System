@@ -1,4 +1,4 @@
-﻿using SNS.Application.Identity.Shared.Abstractions;
+using SNS.Application.Identity.Shared.Abstractions;
 using SNS.Application.Shared.Abstractions.Data;
 using SNS.Application.Shared.Abstractions.Messaging;
 using SNS.Application.Shared.Abstractions.Storage;
@@ -9,6 +9,15 @@ using SNS.Shared.StatusCodes;
 
 namespace SNS.Application.Profiles.Profiles.Queries.GetBasicInformation;
 
+/// <summary>
+/// Handles the execution of <see cref="GetBasicInformationQuery"/> to retrieve basic profile details.
+/// </summary>
+/// <remarks>
+/// Data retrieval and query logic:
+/// 1. Resolves authenticated user profile ID.
+/// 2. Projects profile full name, bio, specialization, and reputation from database.
+/// 3. Returns <see cref="BasicInformationDto"/>.
+/// </remarks>
 public sealed class GetBasicInformationQueryHandler : IQueryHandler<GetBasicInformationQuery, BasicInformationDto>
 {
     private readonly ICurrentUserService _currentUserService;

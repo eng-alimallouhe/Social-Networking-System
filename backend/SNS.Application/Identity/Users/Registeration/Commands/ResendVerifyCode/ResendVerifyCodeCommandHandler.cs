@@ -12,6 +12,16 @@ using SNS.Shared.StatusCodes.Identity;
 
 namespace SNS.Application.Identity.Users.Registeration.Commands.ResendVerifyCode;
 
+/// <summary>
+/// Handles the execution of <see cref="ResendVerifyCodeCommand"/> to issue a new verification code.
+/// </summary>
+/// <remarks>
+/// Business operation and processing flow:
+/// 1. Fetches user entity and verifies that the user is active and unverified.
+/// 2. Generates a new secure token and constructs the account activation URL.
+/// 3. Sends a new verification email code via <see cref="ICodeService"/>.
+/// Side effects include code delivery notification generation and dispatching.
+/// </remarks>
 public sealed class ResendVerifyCodeCommandHandler : ICommandHandler<ResendVerifyCodeCommand, RegisterResponseDto>
 {
     private readonly IRepository<User> _userRepo;

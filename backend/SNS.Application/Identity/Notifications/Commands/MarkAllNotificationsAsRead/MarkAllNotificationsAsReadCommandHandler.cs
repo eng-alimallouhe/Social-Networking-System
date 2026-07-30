@@ -1,4 +1,4 @@
-﻿using SNS.Application.Abstractions.Messaging;
+using SNS.Application.Abstractions.Messaging;
 using SNS.Application.Identity.Shared.Abstractions;
 using SNS.Domain.Identity.Notifications.Entities;
 using SNS.Domain.Shared.Abstractions.Repositories;
@@ -7,6 +7,17 @@ using SNS.Shared.StatusCodes;
 using SNS.Shared.StatusCodes.Identity;
 namespace SNS.Application.Identity.Notifications.Commands.MarkAllNotificationsAsRead;
 
+/// <summary>
+/// Handles the execution of <see cref="MarkAllNotificationsAsReadCommand"/> to mark all user notifications as read.
+/// </summary>
+/// <remarks>
+/// Business operation and processing flow:
+/// 1. Resolves authenticated user ID.
+/// 2. Fetches all unread notifications for the user.
+/// 3. Updates state of each unread notification to read.
+/// 4. Commits changes to database.
+/// Side effects include batch notification state update and database transaction completion.
+/// </remarks>
 public sealed class MarkAllNotificationsAsReadCommandHandler
     : ICommandHandler<MarkAllNotificationsAsReadCommand>
 {

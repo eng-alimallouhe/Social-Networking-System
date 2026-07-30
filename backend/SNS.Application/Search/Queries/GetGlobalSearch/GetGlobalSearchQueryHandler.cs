@@ -15,6 +15,16 @@ using SNS.Shared.StatusCodes;
 
 namespace SNS.Application.Search.Queries.GlobalSearch;
 
+/// <summary>
+/// Handles the execution of <see cref="GetGlobalSearchQuery"/> to perform cross-category global search.
+/// </summary>
+/// <remarks>
+/// Data retrieval and query logic:
+/// 1. Validates search term presence.
+/// 2. Constructs search query specifications for profiles, projects, communities, and jobs.
+/// 3. Executes search service requests concurrently using <see cref="Task.WhenAll"/>.
+/// 4. Aggregates hit documents into <see cref="GlobalSearchResultDto"/> across all categories.
+/// </remarks>
 public class GetGlobalSearchQueryHandler
 : IQueryHandler<GetGlobalSearchQuery, GlobalSearchResultDto>
 {

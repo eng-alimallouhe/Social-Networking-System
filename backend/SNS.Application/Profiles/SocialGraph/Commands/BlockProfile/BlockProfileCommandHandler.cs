@@ -1,4 +1,4 @@
-﻿using SNS.Application.Abstractions.Messaging;
+using SNS.Application.Abstractions.Messaging;
 using SNS.Application.Identity.Shared.Abstractions;
 using SNS.Domain.Profiles.SocialGraph.Entities;
 using SNS.Domain.Shared.Abstractions.Repositories;
@@ -8,6 +8,18 @@ using SNS.Shared.StatusCodes.Profiles;
 
 namespace SNS.Application.Profiles.SocialGraph.Commands.BlockProfile;
 
+/// <summary>
+/// Handles the execution of <see cref="BlockProfileCommand"/> to block a profile.
+/// </summary>
+/// <remarks>
+/// Business operation and processing flow:
+/// 1. Resolves current authenticated profile ID.
+/// 2. Validates that the target profile is not self.
+/// 3. Verifies whether a block already exists.
+/// 4. Removes any existing mutual follow records between the two profiles.
+/// 5. Adds a new <see cref="Block"/> entity and commits database changes.
+/// Side effects include removing follow entities, creating a block entity, and database transaction commit.
+/// </remarks>
 internal class BlockProfileCommandHandler
     : ICommandHandler<BlockProfileCommand>
 {

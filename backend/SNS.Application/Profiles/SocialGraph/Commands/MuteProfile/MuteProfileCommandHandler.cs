@@ -1,4 +1,4 @@
-﻿using SNS.Application.Abstractions.Messaging;
+using SNS.Application.Abstractions.Messaging;
 using SNS.Application.Identity.Shared.Abstractions;
 using SNS.Domain.Profiles.SocialGraph.Entities;
 using SNS.Domain.Shared.Abstractions.Repositories;
@@ -8,6 +8,17 @@ using SNS.Shared.StatusCodes.Profiles;
 
 namespace SNS.Application.Profiles.SocialGraph.Commands.MuteProfile;
 
+/// <summary>
+/// Handles the execution of <see cref="MuteProfileCommand"/> to mute a followed profile.
+/// </summary>
+/// <remarks>
+/// Business operation and processing flow:
+/// 1. Resolves current authenticated profile ID.
+/// 2. Fetches the existing follow relationship with the target profile.
+/// 3. Updates mute state on the follow relationship entity with the specified time period.
+/// 4. Persists changes to database.
+/// Side effects include follow relationship entity property update and database persistence.
+/// </remarks>
 internal sealed class MuteProfileCommandHandler
     : ICommandHandler<MuteProfileCommand>
 {

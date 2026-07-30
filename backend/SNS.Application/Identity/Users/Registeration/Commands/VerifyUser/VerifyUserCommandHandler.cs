@@ -18,6 +18,18 @@ using SNS.Shared.StatusCodes.Identity;
 
 namespace SNS.Application.Identity.Users.Registeration.Commands.VerifyUser;
 
+/// <summary>
+/// Handles the execution of <see cref="VerifyUserCommand"/> to verify an account and issue initial authentication tokens.
+/// </summary>
+/// <remarks>
+/// Business operation and processing flow:
+/// 1. Verifies the provided activation code and token via <see cref="ICodeService"/>.
+/// 2. Updates user state to verified.
+/// 3. Registers device details and creates an initial security session.
+/// 4. Generates access and refresh authentication tokens.
+/// 5. Logs account activation, identity, and password entries in the user archive.
+/// Side effects include updating user status, session creation, user activity archiving, and transaction commitment.
+/// </remarks>
 public sealed class VerifyUserCommandHandler : ICommandHandler<VerifyUserCommand, AuthTokensDto>
 {
     private readonly ICodeService _codeService;

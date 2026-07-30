@@ -18,7 +18,7 @@ public static class ArchiveManagementInfrastructureDI
         services.AddScoped<IRepository<ExportDataRequest>, ExportDataRequestRepository>();
 
 
-        services.AddScoped<IJobSchedulerService, QuartzJobSchedulerService>();
+        services.AddScoped<IJobSchedulerService, JobSchedulerService>();
 
         return services;
     }

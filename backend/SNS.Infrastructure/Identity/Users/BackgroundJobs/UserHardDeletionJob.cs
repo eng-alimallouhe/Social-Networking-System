@@ -1,87 +1,64 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Quartz;
 using SNS.Domain.Identity.Users.Constants;
 using SNS.Domain.Identity.Users.Enums;
 using SNS.Infrastructure.Persistence;
 using SNS.Shared.Exceptions;
 
-namespace SNS.Infrastructure.Shared.BackgroundJobs;
+namespace SNS.Infrastructure.Identity.Users.BackgroundJobs;
 
-public sealed class UserHardDeletionBackgroundService : BackgroundService
+public sealed class UserHardDeletionJob : IJob
 {
     private readonly IServiceProvider _serviceProvider;
-    private readonly ILogger<UserHardDeletionBackgroundService> _logger;
+    private readonly ILogger<UserHardDeletionJob> _logger;
 
-    public UserHardDeletionBackgroundService(
+    public UserHardDeletionJob(
         IServiceProvider serviceProvider,
-        ILogger<UserHardDeletionBackgroundService> logger)
+        ILogger<UserHardDeletionJob> logger)
     {
         _serviceProvider = serviceProvider;
         _logger = logger;
     }
 
-    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+    public async Task Execute(IJobExecutionContext context)
     {
-        _logger.LogInformation("User Hard Deletion Background Service is starting.");
 
-        while (!stoppingToken.IsCancellationRequested)
+        try
         {
-            // 1️⃣ حساب الوقت المتبقي حتى الساعة 3 صباحاً
-            var now = DateTime.UtcNow;
-            var nextRun = DateTime.UtcNow.Date.AddHours(3); // الساعة 3 صباحاً اليوم
+            _logger.LogInformation("Executing scheduled user hard deletion...");
 
-            if (now > nextRun)
-            {
-                nextRun = nextRun.AddDays(1); // إذا عبرنا الساعة 3، ننتظر لـ 3 صباحاً الغد
-            }
+            using var scope = _serviceProvider.CreateScope();
+            
+            var dbContext = scope.ServiceProvider.GetRequiredService<SNSDbContext>();
 
-            var delay = nextRun - now;
-            _logger.LogInformation("Next cleanup execution scheduled at: {Time}. Delaying for {Delay}", nextRun, delay);
+            var thresholdDate = DateTime.UtcNow.AddDays(-60);
 
-            // الانتظار الآمن حتى يحين الوقت أو يتم إيقاف السيرفر
-            await Task.Delay(delay, stoppingToken);
-
-            try
-            {
-                _logger.LogInformation("Executing scheduled user hard deletion...");
-
-                // 2️⃣ إنشاء Scoped Context للتعامل مع قاعدة البيانات بنقاء
-                using var scope = _serviceProvider.CreateScope();
-                var dbContext = scope.ServiceProvider.GetRequiredService<SNSDbContext>();
-
-                var thresholdDate = DateTime.UtcNow.AddDays(-60);
-
-                var usersToDelet = await dbContext.Users
-                    .Where(u => u.Status != UserStatus.Active && u.DeactivatedAt.HasValue && u.DeactivatedAt.Value <= thresholdDate)
-                    .Select(u => new
-                    {
-                        u.Id,
-                        u.PurgeAllContentOnHardDelete
-                    })
-                    .ToListAsync(stoppingToken);
-
-                if (!usersToDelet.Any())
+            var usersToDelet = await dbContext.Users
+                .Where(u => u.Status != UserStatus.Active && u.DeactivatedAt.HasValue && u.DeactivatedAt.Value <= thresholdDate)
+                .Select(u => new
                 {
-                    _logger.LogInformation("There is not users to delete!");
-                }
+                    u.Id,
+                    u.PurgeAllContentOnHardDelete
+                })
+                .ToListAsync();
 
-                var userToPurgeAllContentIds = usersToDelet.Where(
-                    u => u.PurgeAllContentOnHardDelete).Select(u => u.Id).ToList();
+            var userToPurgeAllContentIds = usersToDelet.Where(
+                u => u.PurgeAllContentOnHardDelete).Select(u => u.Id).ToList();
 
-                var usersTransferOfOwnershipIds = usersToDelet.Where(
-                    u => !u.PurgeAllContentOnHardDelete).Select(u => u.Id).ToList();
+            var usersTransferOfOwnershipIds = usersToDelet.Where(
+                u => !u.PurgeAllContentOnHardDelete).Select(u => u.Id).ToList();
 
-                await TransferOfOwnershipAsync(usersTransferOfOwnershipIds, dbContext);
-                await PurgeUsersContentAsync(userToPurgeAllContentIds, dbContext);
+            await TransferOfOwnershipAsync(usersTransferOfOwnershipIds, dbContext);
+            
+            await PurgeUsersContentAsync(userToPurgeAllContentIds, dbContext);
 
-                _logger.LogInformation("Successfully hard deleted {Count} deactivated users from the system.", usersToDelet.Count());
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "An error occurred while executing user hard deletion.");
-            }
+            _logger.LogInformation("Successfully hard deleted {Count} deactivated users from the system.", usersToDelet.Count());
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "An error occurred while executing user hard deletion.");
         }
     }
 
@@ -103,7 +80,6 @@ public sealed class UserHardDeletionBackgroundService : BackgroundService
             return;
         }
 
-        // Profile Context:
         await dbContext.SavedProfiles.Where(ps => profilesIds.Contains(ps.SaverId) || profilesIds.Contains(ps.SavedId))
             .ExecuteDeleteAsync(cancellationToken);
         
@@ -121,7 +97,6 @@ public sealed class UserHardDeletionBackgroundService : BackgroundService
             .ExecuteDeleteAsync(cancellationToken);
 
 
-        // Content Managment Context
         await dbContext.Posts.Where(p => profilesIds.Contains(p.AuthorId))
             .ExecuteDeleteAsync(cancellationToken);
 
@@ -153,11 +128,6 @@ public sealed class UserHardDeletionBackgroundService : BackgroundService
         // Discussions Context
         await dbContext.Discussions.Where(d => profilesIds.Contains(d.AuthorId))
             .ExecuteDeleteAsync(cancellationToken);
-
-
-        //
-
-        //
     }
 
     private async Task TransferOfOwnershipAsync(List<Guid> usersIds, SNSDbContext dbContext)
@@ -169,6 +139,7 @@ public sealed class UserHardDeletionBackgroundService : BackgroundService
         {
             throw new ResourceNotFoundException("Default Profile Is Not Founded");
         }
+
 
     }
 }

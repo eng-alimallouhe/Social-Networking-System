@@ -16,6 +16,17 @@ using SNS.Shared.StatusCodes.Identity;
 
 namespace SNS.Application.Identity.SecuritySettings.MfaManagement.Commands.CompletePasskeyRegistration;
 
+/// <summary>
+/// Handles the execution of <see cref="CompletePasskeyRegistrationCommand"/> to complete FIDO2 passkey registration.
+/// </summary>
+/// <remarks>
+/// Business operation and processing flow:
+/// 1. Retrieves cached registration options for the current user and invalidates cache.
+/// 2. Verifies the authenticator attestation response and credential uniqueness via FIDO2.
+/// 3. Creates a new passkey record and updates user security settings to enable MFA with Passkey.
+/// 4. Persists passkey and security setting changes in database.
+/// Side effects include cache eviction, passkey creation, and updating user MFA settings.
+/// </remarks>
 public class CompletePasskeyRegistrationCommandHandler
     : ICommandHandler<CompletePasskeyRegistrationCommand, Unit>
 {

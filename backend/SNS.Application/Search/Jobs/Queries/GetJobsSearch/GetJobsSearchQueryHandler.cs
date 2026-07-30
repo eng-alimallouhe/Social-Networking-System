@@ -7,6 +7,14 @@ using SNS.Shared.StatusCodes;
 
 namespace SNS.Application.Search.Jobs.Queries.GetJobsSearch;
 
+/// <summary>
+/// Handles the execution of <see cref="GetJobsSearchQuery"/> to search job postings.
+/// </summary>
+/// <remarks>
+/// Data retrieval and query logic:
+/// 1. Invokes <see cref="IJobSearchService"/> passing request search criteria.
+/// 2. Returns <see cref="SearchResult{JobsDocument}"/> matching job postings.
+/// </remarks>
 public class GetJobsSearchQueryHandler
     : IQueryHandler<GetJobsSearchQuery, SearchResult<JobsDocument>>
 {

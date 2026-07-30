@@ -19,6 +19,19 @@ using SNS.Shared.StatusCodes.Identity;
 
 namespace SNS.Application.Identity.SecuritySettings.Recovery.Commands.RecoverAccountBySecurityCode;
 
+/// <summary>
+/// Handles the execution of <see cref="RecoverAccountBySecurityCodeCommand"/> to recover a user account using a security code.
+/// </summary>
+/// <remarks>
+/// Business operation and processing flow:
+/// 1. Hashes the security code and verifies the matching user.
+/// 2. Clears previous active sessions for the user.
+/// 3. Registers or fetches the device details and initiates a new security session.
+/// 4. Generates new access and refresh authentication tokens.
+/// 5. Logs user action into the user activity archive.
+/// 6. Raises <see cref="UserLoggedInBySecurityCodeEvent"/> if login alerts are active.
+/// Side effects include session clearance, session creation, user action archiving, domain event publication, and transactional state persistence.
+/// </remarks>
 public sealed class RecoverAccountBySecurityCodeCommandHandler : ICommandHandler<RecoverAccountBySecurityCodeCommand, AuthTokensDto>
 {
     private readonly IUnitOfWork _unitOfWork;

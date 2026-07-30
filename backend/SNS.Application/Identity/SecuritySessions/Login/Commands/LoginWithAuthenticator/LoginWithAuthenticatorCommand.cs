@@ -1,4 +1,4 @@
-﻿using SNS.Application.Abstractions.Messaging;
+using SNS.Application.Abstractions.Messaging;
 using SNS.Application.Identity.SecuritySessions.Login.Contracts;
 
 namespace SNS.Application.Identity.SecuritySessions.Login.Commands.LoginWithAuthenticator;

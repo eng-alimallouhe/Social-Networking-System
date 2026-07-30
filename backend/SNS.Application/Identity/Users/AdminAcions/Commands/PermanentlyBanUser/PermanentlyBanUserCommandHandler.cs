@@ -1,4 +1,4 @@
-﻿using SNS.Application.Abstractions.Messaging;
+using SNS.Application.Abstractions.Messaging;
 using SNS.Application.Identity.Shared.Abstractions;
 using SNS.Application.Shared.Abstractions.Data;
 using SNS.Domain.Identity.Shared.Enums;
@@ -13,6 +13,18 @@ using SNS.Shared.StatusCodes.Identity;
 
 namespace SNS.Application.Identity.Users.AdminAcions.Commands.PermanentlyBanUser;
 
+/// <summary>
+/// Handles the execution of <see cref="PermanentlyBanUserCommand"/> to permanently ban a user account.
+/// </summary>
+/// <remarks>
+/// Business operation and processing flow:
+/// 1. Validates administrative privileges of the requesting user.
+/// 2. Retrieves the target user entity and checks current ban status.
+/// 3. Marks the target user status as permanently banned.
+/// 4. Dispatches a <see cref="UserBannedEvent"/> domain event.
+/// 5. Commits the ban action within a database transaction.
+/// Side effects include entity status update, domain event dispatching, and transaction persistence.
+/// </remarks>
 public sealed class PermanentlyBanUserCommandHandler : ICommandHandler<PermanentlyBanUserCommand>
 {
     private readonly IApplicationDbContext _dbContext;

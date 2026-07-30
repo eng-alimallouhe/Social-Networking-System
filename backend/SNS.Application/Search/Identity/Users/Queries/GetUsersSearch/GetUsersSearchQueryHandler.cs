@@ -7,6 +7,14 @@ using SNS.Application.Shared.Abstractions.Messaging;
 
 namespace SNS.Application.Search.Identity.Users.Queries.GetUsersSearch;
 
+/// <summary>
+/// Handles the execution of <see cref="GetUsersSearchQuery"/> to search user documents.
+/// </summary>
+/// <remarks>
+/// Data retrieval and query logic:
+/// 1. Invokes <see cref="IUserSearchService"/> passing request search parameters.
+/// 2. Returns <see cref="SearchResult{UserDocument}"/> matching users.
+/// </remarks>
 public class GetUsersSearchQueryHandler
 : IQueryHandler<GetUsersSearchQuery, SearchResult<UserDocument>>
 {

@@ -7,7 +7,7 @@ using SNS.Domain.Shared.Entities;
 using SNS.Infrastructure.Persistence;
 using System.Text.Json;
 
-namespace SNS.Infrastructure.Shared.BackgroundJobs;
+namespace SNS.Infrastructure.Shared.BackgroundServices;
 
 public class ProcessOutboxMessagesJob : BackgroundService
 {

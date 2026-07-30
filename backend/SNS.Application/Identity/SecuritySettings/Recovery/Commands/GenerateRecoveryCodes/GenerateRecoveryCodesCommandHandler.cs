@@ -1,4 +1,4 @@
-﻿using SNS.Application.Abstractions.Common;
+using SNS.Application.Abstractions.Common;
 using SNS.Application.Abstractions.Messaging;
 using SNS.Application.Identity.Shared.Abstractions;
 using SNS.Application.Shared.Abstractions.Data;
@@ -11,6 +11,18 @@ using Microsoft.EntityFrameworkCore;
 
 namespace SNS.Application.Identity.SecuritySettings.Recovery.Commands.GenerateRecoveryCodes;
 
+/// <summary>
+/// Handles the execution of <see cref="GenerateRecoveryCodesCommand"/> to generate recovery codes.
+/// </summary>
+/// <remarks>
+/// Business operation and processing flow:
+/// 1. Resolves authenticated user ID.
+/// 2. Verifies user security settings ID and checks that no unused active recovery codes exist.
+/// 3. Generates 6 secret recovery codes using <see cref="IGeneratorService"/>.
+/// 4. Hashes each code via BCrypt and constructs <see cref="RecoveryCode"/> entities.
+/// 5. Saves new recovery code entities to database.
+/// Side effects include creation and persistence of hashed recovery code entities.
+/// </remarks>
 public sealed class GenerateRecoveryCodesCommandHandler
     : ICommandHandler<GenerateRecoveryCodesCommand, IReadOnlyCollection<string>>
 {

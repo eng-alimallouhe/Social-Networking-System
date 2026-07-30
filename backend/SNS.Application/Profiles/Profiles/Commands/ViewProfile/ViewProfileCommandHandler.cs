@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using SNS.Application.Abstractions.Messaging;
 using SNS.Application.Identity.Shared.Abstractions;
 using SNS.Application.Shared.Abstractions.Data;
@@ -10,6 +10,17 @@ using SNS.Shared.StatusCodes.Identity;
 
 namespace SNS.Application.Profiles.Profiles.Commands.ViewProfile;
 
+/// <summary>
+/// Handles the execution of <see cref="ViewProfileCommand"/> to log a profile view event.
+/// </summary>
+/// <remarks>
+/// Business operation and processing flow:
+/// 1. Resolves authenticated viewer profile ID.
+/// 2. Ensures the user is not viewing their own profile.
+/// 3. Checks if the viewer has already viewed the target profile.
+/// 4. Creates and saves a new <see cref="ProfileView"/> entity if not previously recorded.
+/// Side effects include profile view record creation and database persistence.
+/// </remarks>
 internal sealed class ViewProfileCommandHandler : ICommandHandler<ViewProfileCommand>
 {
     private readonly ICurrentUserService _currentUserService;

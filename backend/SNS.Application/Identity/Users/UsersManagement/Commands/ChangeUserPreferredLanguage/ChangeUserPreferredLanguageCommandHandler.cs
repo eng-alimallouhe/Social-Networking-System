@@ -1,4 +1,4 @@
-﻿using SNS.Application.Abstractions.Messaging;
+using SNS.Application.Abstractions.Messaging;
 using SNS.Application.Identity.Shared.Abstractions;
 using SNS.Domain.Identity.Users.Entities;
 using SNS.Domain.Shared.Abstractions.Repositories;
@@ -8,6 +8,17 @@ using SNS.Shared.StatusCodes.Identity;
 
 namespace SNS.Application.Identity.Users.UsersManagement.Commands.ChangeUserPreferredLanguage;
 
+/// <summary>
+/// Handles the execution of <see cref="ChangeUserPreferredLanguageCommand"/> to update language preferences.
+/// </summary>
+/// <remarks>
+/// Business operation and processing flow:
+/// 1. Verifies authentication of the requesting user identity.
+/// 2. Fetches user entity and checks current language preference.
+/// 3. Updates user's preferred language setting and saves database changes.
+/// 4. Evicts cached user data from <see cref="IUserCacheService"/>.
+/// Side effects include entity property modification, database persistence, and cache eviction.
+/// </remarks>
 public sealed class ChangeUserPreferredLanguageCommandHandler : ICommandHandler<ChangeUserPreferredLanguageCommand>
 {
     private readonly IRepository<User> _userRepo; // التزاماً بالقاعدة: الكتابة والتتبع عبر الـ Repo 🏗️

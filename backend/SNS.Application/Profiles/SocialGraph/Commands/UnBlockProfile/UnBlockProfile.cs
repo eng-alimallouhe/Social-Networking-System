@@ -1,4 +1,4 @@
-﻿using SNS.Application.Abstractions.Messaging;
+using SNS.Application.Abstractions.Messaging;
 using SNS.Application.Identity.Shared.Abstractions;
 using SNS.Domain.Profiles.SocialGraph.Entities;
 using SNS.Domain.Shared.Abstractions.Repositories;
@@ -8,10 +8,24 @@ using SNS.Shared.StatusCodes.Profiles;
 
 namespace SNS.Application.Profiles.SocialGraph.Commands.UnBlockProfile;
 
+/// <summary>
+/// Represents a command to unblock a previously blocked profile in the social graph.
+/// </summary>
+/// <param name="TargetProfileId">The unique identifier of the target profile to unblock.</param>
 public sealed record UnBlockProfileCommand(
     Guid TargetProfileId
 ) : ICommand;
 
+/// <summary>
+/// Handles the execution of <see cref="UnBlockProfileCommand"/> to unblock a profile.
+/// </summary>
+/// <remarks>
+/// Business operation and processing flow:
+/// 1. Resolves current authenticated profile ID.
+/// 2. Verifies block relationship state.
+/// 3. Removes block entity and commits changes.
+/// Side effects include block entity deletion and database transaction commit.
+/// </remarks>
 internal sealed class UnBlockProfileCommandHandler
     : ICommandHandler<UnBlockProfileCommand>
 {

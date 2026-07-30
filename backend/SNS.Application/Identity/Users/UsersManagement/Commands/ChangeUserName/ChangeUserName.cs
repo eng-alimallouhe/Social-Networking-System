@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using SNS.Application.Abstractions.Messaging;
 using SNS.Application.Identity.Shared.Abstractions;
 using SNS.Application.Shared.Abstractions.Data;
@@ -10,6 +10,17 @@ using SNS.Shared.StatusCodes.Identity;
 
 namespace SNS.Application.Identity.Users.UsersManagement.Commands.ChangeUserName;
 
+/// <summary>
+/// Handles the execution of <see cref="ChangeUserNameCommand"/> to update a user's username.
+/// </summary>
+/// <remarks>
+/// Business operation and processing flow:
+/// 1. Verifies authentication of the requesting user.
+/// 2. Cleans and checks username availability against existing users.
+/// 3. Updates the user entity username property and saves database changes.
+/// 4. Evicts cached user data from <see cref="IUserCacheService"/>.
+/// Side effects include entity property update, persistence, and cache eviction.
+/// </remarks>
 public sealed class ChangeUserNameCommandHandler : ICommandHandler<ChangeUserNameCommand>
 {
     private readonly IApplicationDbContext _dbContext; // للقراءة فقط بأعلى أداء 🔎

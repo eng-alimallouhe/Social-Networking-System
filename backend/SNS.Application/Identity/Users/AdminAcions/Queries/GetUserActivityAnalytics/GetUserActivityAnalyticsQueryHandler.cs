@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using SNS.Application.Identity.Shared.Abstractions;
 using SNS.Application.Shared.Abstractions.Data;
 using SNS.Application.Shared.Abstractions.Messaging;
@@ -10,6 +10,17 @@ using SNS.Shared.StatusCodes.Identity;
 
 namespace SNS.Application.Identity.Users.AdminAcions.Queries.GetUserActivityAnalytics;
 
+/// <summary>
+/// Handles the execution of <see cref="GetUserActivityAnalyticsQuery"/> to compute user activity analytics.
+/// </summary>
+/// <remarks>
+/// Data retrieval and query logic:
+/// 1. Enforces administrative authorization check.
+/// 2. Executes read-only queries (<c>AsNoTracking</c>) aggregating user activity counters across posts, comments, Q&amp;A, reactions, votes, and projects.
+/// 3. Computes percentage distribution across content, Q&amp;A, and project interactions.
+/// 4. Groups date points in-memory based on requested period unit (Day, Month, or Year).
+/// 5. Maps profile picture keys to public storage URLs.
+/// </remarks>
 public sealed class GetUserActivityAnalyticsQueryHandler
     : IQueryHandler<GetUserActivityAnalyticsQuery, UserActivityAnalyticsResult>
 {

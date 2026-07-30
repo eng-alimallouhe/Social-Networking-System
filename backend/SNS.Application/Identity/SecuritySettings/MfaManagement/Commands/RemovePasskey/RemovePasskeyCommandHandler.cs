@@ -1,4 +1,4 @@
-﻿using SNS.Application.Abstractions.Messaging;
+using SNS.Application.Abstractions.Messaging;
 using SNS.Application.Identity.Shared.Abstractions;
 using SNS.Domain.Identity.SecuritySettings.Entities;
 using SNS.Domain.Shared.Abstractions.Repositories;
@@ -11,6 +11,16 @@ using System.Text;
 
 namespace SNS.Application.Identity.SecuritySettings.MfaManagement.Commands.RemovePasskey;
 
+/// <summary>
+/// Handles the execution of <see cref="RemovePasskeyCommand"/> to remove an existing passkey for the current user.
+/// </summary>
+/// <remarks>
+/// Business operation and processing flow:
+/// 1. Retrieves the current authenticated user ID.
+/// 2. Fetches the target passkey from repository and validates ownership.
+/// 3. Deletes the passkey entity and commits changes to the database.
+/// Side effects include entity deletion from the persistence store.
+/// </remarks>
 internal sealed class RemovePasskeyCommandHandler : ICommandHandler<RemovePasskeyCommand>
 {
     private readonly IRepository<UserPasskey> _passkeyRepository;

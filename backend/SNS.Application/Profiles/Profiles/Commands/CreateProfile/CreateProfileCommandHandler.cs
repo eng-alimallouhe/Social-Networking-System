@@ -1,4 +1,4 @@
-﻿using SNS.Application.Abstractions.Messaging;
+using SNS.Application.Abstractions.Messaging;
 using SNS.Application.Identity.Shared.Abstractions;
 using SNS.Application.Profiles.Profiles.abstractions;
 using SNS.Application.Shared.Abstractions.Storage;
@@ -11,6 +11,18 @@ using SNS.Shared.StatusCodes.Identity;
 
 namespace SNS.Application.Profiles.Profiles.Commands.CreateProfile;
 
+/// <summary>
+/// Handles the execution of <see cref="CreateProfileCommand"/> to create a user profile.
+/// </summary>
+/// <remarks>
+/// Business operation and processing flow:
+/// 1. Verifies authentication and active status of the requesting user.
+/// 2. Ensures the user does not already possess a profile.
+/// 3. Uploads profile picture file to storage if provided.
+/// 4. Creates and persists the <see cref="Profile"/> entity within a database transaction.
+/// 5. Cleans up uploaded storage file if database commit fails.
+/// Side effects include avatar storage upload, profile entity creation, and transaction persistence.
+/// </remarks>
 internal sealed class CreateProfileCommandHandler : ICommandHandler<CreateProfileCommand>
 {
     private readonly ISoftDeletableRepository<Profile> _profileRepo;

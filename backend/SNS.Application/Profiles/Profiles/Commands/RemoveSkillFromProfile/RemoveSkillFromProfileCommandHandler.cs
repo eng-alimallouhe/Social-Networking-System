@@ -1,4 +1,4 @@
-﻿using SNS.Application.Abstractions.Messaging;
+using SNS.Application.Abstractions.Messaging;
 using SNS.Application.Identity.Shared.Abstractions;
 using SNS.Domain.Profiles.Profiles.Relations;
 using SNS.Domain.Shared.Abstractions.Repositories;
@@ -8,6 +8,16 @@ using SNS.Shared.StatusCodes.Identity;
 
 namespace SNS.Application.Profiles.Profiles.Commands.RemoveSkillFromProfile;
 
+/// <summary>
+/// Handles the execution of <see cref="RemoveSkillFromProfileCommand"/> to remove a skill from a user profile.
+/// </summary>
+/// <remarks>
+/// Business operation and processing flow:
+/// 1. Resolves authenticated user profile ID.
+/// 2. Fetches the target profile-skill association.
+/// 3. Removes the profile-skill entity and persists database changes.
+/// Side effects include entity deletion from database.
+/// </remarks>
 internal sealed record RemoveSkillFromProfileCommandHandler
     : ICommandHandler<RemoveSkillFromProfileCommand>
 {

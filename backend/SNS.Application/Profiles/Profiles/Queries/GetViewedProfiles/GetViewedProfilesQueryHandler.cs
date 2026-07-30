@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using SNS.Application.Identity.Shared.Abstractions;
 using SNS.Application.Profiles.Profiles.Contracts;
 using SNS.Application.Shared.Abstractions.Data;
@@ -11,6 +11,16 @@ using SNS.Shared.StatusCodes.Identity;
 
 namespace SNS.Application.Profiles.Profiles.Queries.GetViewedProfiles;
 
+/// <summary>
+/// Handles the execution of <see cref="GetViewedProfilesQuery"/> to retrieve viewed profiles history.
+/// </summary>
+/// <remarks>
+/// Data retrieval and query logic:
+/// 1. Resolves current user profile ID.
+/// 2. Queries profile view records where the current user is the viewer.
+/// 3. Applies descending ordering by view timestamp, pagination skipping, and page size limits.
+/// 4. Maps target profile picture keys to public storage URLs and returns <see cref="Paged{ProfileViewDto}"/>.
+/// </remarks>
 internal sealed class GetViewedProfilesQueryHandler : IQueryHandler<GetViewedProfilesQuery, Paged<ProfileViewDto>>
 {
     private readonly ICurrentUserService _currentUserService;

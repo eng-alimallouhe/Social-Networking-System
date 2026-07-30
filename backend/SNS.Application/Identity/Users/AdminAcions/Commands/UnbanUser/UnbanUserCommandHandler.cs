@@ -1,4 +1,4 @@
-﻿using SNS.Application.Abstractions.Messaging;
+using SNS.Application.Abstractions.Messaging;
 using SNS.Application.Identity.Shared.Abstractions;
 using SNS.Application.Shared.Abstractions.Data;
 using SNS.Domain.Identity.Shared.Enums;
@@ -13,6 +13,18 @@ using SNS.Shared.StatusCodes.Identity;
 
 namespace SNS.Application.Identity.Users.AdminAcions.Commands.UnbanUser;
 
+/// <summary>
+/// Handles the execution of <see cref="UnbanUserCommand"/> to restore a banned user account.
+/// </summary>
+/// <remarks>
+/// Business operation and processing flow:
+/// 1. Verifies that the performing user has administrative role authorization.
+/// 2. Fetches the target user entity and checks that their status is currently permanently banned.
+/// 3. Reverts the user status to active via unban logic.
+/// 4. Dispatches a <see cref="UserUnBannedEvent"/> domain event.
+/// 5. Commits changes within a database transaction.
+/// Side effects include status update, domain event publishing, and database transaction commit.
+/// </remarks>
 public sealed class UnbanUserCommandHandler : ICommandHandler<UnbanUserCommand>
 {
     private readonly IApplicationDbContext _dbContext;

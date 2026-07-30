@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using SNS.Application.Profiles.SocialGraph.Contracts;
 using SNS.Application.Shared.Abstractions.Data;
 using SNS.Application.Shared.Abstractions.Messaging;
@@ -9,6 +9,16 @@ using SNS.Shared.StatusCodes;
 
 namespace SNS.Application.Profiles.SocialGraph.Queries.GetProfileFollowings;
 
+/// <summary>
+/// Handles the execution of <see cref="GetProfileFollowingsQuery"/> to retrieve profile followings.
+/// </summary>
+/// <remarks>
+/// Data retrieval and query logic:
+/// 1. Queries follow records where the specified profile is the follower (<c>FollowerId</c>).
+/// 2. Applies search term filtering on followed full name and specialization if specified.
+/// 3. Sorts by follow date descending and applies pagination (<c>Skip</c>/<c>Take</c>).
+/// 4. Maps profile picture keys to public storage URLs and returns <see cref="Paged{ProfileFollowDto}"/>.
+/// </remarks>
 internal sealed class GetProfileFollowingsQueryHandler
     : IQueryHandler<GetProfileFollowingsQuery, Paged<ProfileFollowDto>>
 {

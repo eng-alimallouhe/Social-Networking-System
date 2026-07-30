@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using SNS.Application.Abstractions.Messaging;
 using SNS.Application.Identity.Shared.Abstractions;
 using SNS.Application.Shared.Abstractions.Data;
@@ -10,6 +10,17 @@ using SNS.Shared.StatusCodes.Identity;
 
 namespace SNS.Application.Identity.SecuritySettings.Recovery.Commands.RevokeRecoveryCodes;
 
+/// <summary>
+/// Handles the execution of <see cref="RevokeRecoveryCodesCommand"/> to revoke account recovery codes.
+/// </summary>
+/// <remarks>
+/// Business operation and processing flow:
+/// 1. Resolves authenticated user ID.
+/// 2. Fetches user security settings ID from database.
+/// 3. Deletes all associated <see cref="RecoveryCode"/> entities.
+/// 4. Saves database changes.
+/// Side effects include batch deletion of user recovery code entities and database persistence.
+/// </remarks>
 public sealed class RevokeRecoveryCodesCommandHandler : ICommandHandler<RevokeRecoveryCodesCommand>
 {
     private readonly IApplicationDbContext _dbContext;

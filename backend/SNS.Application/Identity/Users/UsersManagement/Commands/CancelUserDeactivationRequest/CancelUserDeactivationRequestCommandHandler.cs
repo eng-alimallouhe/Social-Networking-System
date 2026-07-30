@@ -20,6 +20,19 @@ using SNS.Shared.StatusCodes.Identity;
 
 namespace SNS.Application.Identity.Users.UsersManagement.Commands.CancelUserDeactivationRequest;
 
+/// <summary>
+/// Handles the execution of <see cref="CancelUserDeactivationRequestCommand"/> to reactivate a deactivated user account.
+/// </summary>
+/// <remarks>
+/// Business operation and processing flow:
+/// 1. Validates user existence, deactivation status, and grace period window.
+/// 2. Verifies the user activation challenge token using <see cref="IUserCacheService"/>.
+/// 3. Re-activates the user entity state.
+/// 4. Publishes <see cref="UserActivatedSynchronousEvent"/> and <see cref="UserActivatedIntegrationEvent"/> domain events.
+/// 5. Registers/fetches user device, creates a new security session, and generates access and refresh tokens.
+/// 6. Logs account activation in the activity archive and completes the activation challenge.
+/// Side effects include entity activation, domain event publishing, session creation, user activity archiving, cache state clearance, and database transaction commit.
+/// </remarks>
 public sealed class CancelUserDeactivationRequestCommandHandler : ICommandHandler<CancelUserDeactivationRequestCommand, AuthTokensDto>
 {
     private readonly IRepository<User> _userRepo;

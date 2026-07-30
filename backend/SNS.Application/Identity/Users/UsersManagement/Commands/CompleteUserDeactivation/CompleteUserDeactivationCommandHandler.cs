@@ -14,6 +14,18 @@ using SNS.Shared.StatusCodes.Identity;
 
 namespace SNS.Application.Identity.Users.UsersManagement.Commands.CompleteUserDeactivation;
 
+/// <summary>
+/// Handles the execution of <see cref="CompleteUserDeactivationCommand"/> to complete account deactivation.
+/// </summary>
+/// <remarks>
+/// Business operation and processing flow:
+/// 1. Verifies the deactivation code and token via <see cref="ICodeService"/>.
+/// 2. Sets user status to deactivated and soft-deletes the user's profile entity.
+/// 3. Raises a <see cref="UserDeactivatedEvent"/> domain event.
+/// 4. Commits changes within a database transaction.
+/// 5. Evicts user and profile caches, and revokes all active security sessions for the user.
+/// Side effects include user deactivation, profile soft-deletion, domain event publishing, session clearance, cache eviction, and transaction persistence.
+/// </remarks>
 public sealed class CompleteUserDeactivationCommandHandler : ICommandHandler<CompleteUserDeactivationCommand>
 {
     private readonly ICodeService _codeService;

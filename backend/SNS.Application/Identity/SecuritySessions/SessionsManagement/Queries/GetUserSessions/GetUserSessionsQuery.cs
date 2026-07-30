@@ -1,4 +1,4 @@
-﻿using SNS.Application.Shared.Abstractions.Messaging;
+using SNS.Application.Shared.Abstractions.Messaging;
 using SNS.Application.Shared.DTOs;
 
 namespace SNS.Application.Identity.SecuritySessions.SessionsManagement.Queries.GetUserSessions;

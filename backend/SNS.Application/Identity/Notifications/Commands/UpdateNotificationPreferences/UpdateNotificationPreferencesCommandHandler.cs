@@ -1,4 +1,4 @@
-﻿using SNS.Application.Abstractions.Messaging;
+using SNS.Application.Abstractions.Messaging;
 using SNS.Application.Identity.Shared.Abstractions;
 using SNS.Domain.Identity.Notifications.Entities;
 using SNS.Domain.Shared.Abstractions.Repositories;
@@ -8,6 +8,17 @@ using SNS.Shared.StatusCodes.Identity;
 
 namespace SNS.Application.Identity.Notifications.Commands.UpdateNotificationPreferences;
 
+/// <summary>
+/// Handles the execution of <see cref="UpdateNotificationPreferencesCommand"/> to update user notification preferences.
+/// </summary>
+/// <remarks>
+/// Business operation and processing flow:
+/// 1. Resolves authenticated user ID.
+/// 2. Fetches existing preferences entity or creates a new record if one does not exist.
+/// 3. Updates social, community, project, problem, security preferences, and channel delivery flags.
+/// 4. Saves entity changes to database.
+/// Side effects include creation or modification of user notification preferences and database persistence.
+/// </remarks>
 public sealed class UpdateNotificationPreferencesCommandHandler
     : ICommandHandler<UpdateNotificationPreferencesCommand>
 {

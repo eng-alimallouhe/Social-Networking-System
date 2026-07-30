@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using SNS.Application.Abstractions.Messaging;
 using SNS.Application.Identity.Shared.Abstractions;
 using SNS.Application.Shared.Abstractions.Data;
@@ -10,6 +10,17 @@ using SNS.Shared.StatusCodes.Identity;
 
 namespace SNS.Application.Profiles.Profiles.Commands.AddSkillToProfile;
 
+/// <summary>
+/// Handles the execution of <see cref="AddSkillToProfileCommand"/> to associate a skill with a user profile.
+/// </summary>
+/// <remarks>
+/// Business operation and processing flow:
+/// 1. Resolves authenticated user profile ID.
+/// 2. Validates skill existence and active status in the database.
+/// 3. Checks whether the profile already contains the skill.
+/// 4. Adds a new <see cref="ProfileSkill"/> entity and persists changes.
+/// Side effects include creating and saving a new profile-skill entity.
+/// </remarks>
 internal sealed class AddSkillToProfileCommandHandler :
     ICommandHandler<AddSkillToProfileCommand>
 {

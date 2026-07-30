@@ -15,4 +15,5 @@ public enum SendPurpose
     UserDeleting = 14, // this when the user want to deactivate his account, you should add this keys: UserName, Code, RedirectUrl, LogoObjectKey 
     HighRiskLogin = 15, // this is an alert for the user when there is an attempt to login and the attempt is high risk attempt you should add this keys: UserName, Device, OccuredDate, Country, City, IpAddress, Longitude, Latitude (the lat and long for like an button or link when the user click on it we redirect it to google maps on this location
     RoleChangedAlert = 16, // this is an alert we send it when the admin change the user role you should add this keys: OldRole, NewRole 
+    ExportDataCompleted = 17
 }

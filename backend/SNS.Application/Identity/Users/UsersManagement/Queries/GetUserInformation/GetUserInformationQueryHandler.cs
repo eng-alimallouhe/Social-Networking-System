@@ -1,4 +1,4 @@
-﻿using SNS.Application.Identity.Shared.Abstractions;
+using SNS.Application.Identity.Shared.Abstractions;
 using SNS.Application.Shared.Abstractions.Data;
 using SNS.Application.Shared.Abstractions.Messaging;
 using SNS.Shared.Results;
@@ -8,6 +8,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace SNS.Application.Identity.Users.UsersManagement.Queries.GetUserInformation;
 
+/// <summary>
+/// Handles the execution of <see cref="GetUserInformationQuery"/> to retrieve current user account details.
+/// </summary>
+/// <remarks>
+/// Data retrieval and query logic:
+/// 1. Verifies authentication of the requesting user.
+/// 2. Performs a non-tracking query (<c>AsNoTracking</c>) projecting user details, role, location, and latest session location.
+/// 3. Checks for existing data export requests to include in the <see cref="UserInformationResult"/>.
+/// </remarks>
 public sealed class GetUserInformationQueryHandler : IQueryHandler<GetUserInformationQuery, UserInformationResult>
 {
     private readonly IApplicationDbContext _dbContext;

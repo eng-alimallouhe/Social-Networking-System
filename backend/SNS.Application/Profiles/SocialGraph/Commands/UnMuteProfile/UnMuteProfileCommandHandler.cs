@@ -1,4 +1,4 @@
-﻿using SNS.Application.Abstractions.Messaging;
+using SNS.Application.Abstractions.Messaging;
 using SNS.Application.Identity.Shared.Abstractions;
 using SNS.Domain.Profiles.SocialGraph.Entities;
 using SNS.Domain.Shared.Abstractions.Repositories;
@@ -8,6 +8,16 @@ using SNS.Shared.StatusCodes.Profiles;
 
 namespace SNS.Application.Profiles.SocialGraph.Commands.UnMuteProfile;
 
+/// <summary>
+/// Handles the execution of <see cref="UnMuteProfileCommand"/> to unmute a followed profile.
+/// </summary>
+/// <remarks>
+/// Business operation and processing flow:
+/// 1. Resolves authenticated profile ID.
+/// 2. Fetches the existing follow relationship entity.
+/// 3. Clears mute state on the follow relationship entity and persists changes.
+/// Side effects include follow relationship property update and database persistence.
+/// </remarks>
 internal class UnMuteProfileCommandHandler :
     ICommandHandler<UnMuteProfileCommand>
 {

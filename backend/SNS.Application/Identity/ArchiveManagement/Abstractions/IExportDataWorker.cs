@@ -2,5 +2,5 @@
 
 public interface IExportDataWorker
 {
-    Task ProcessExportAsync(Guid requestId, CancellationToken cancellationToken);
+    Task ProcessExportAsync(Guid requestId);
 }

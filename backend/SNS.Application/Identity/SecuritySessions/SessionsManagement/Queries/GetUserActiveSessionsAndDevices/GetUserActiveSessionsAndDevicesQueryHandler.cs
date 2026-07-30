@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using SNS.Application.Identity.Shared.Abstractions;
 using SNS.Application.Shared.Abstractions.Data;
 using SNS.Application.Shared.Abstractions.Messaging;
@@ -8,6 +8,15 @@ using SNS.Shared.StatusCodes.Identity;
 
 namespace SNS.Application.Identity.SecuritySessions.SessionsManagement.Queries.GetUserActiveSessionsAndDevices;
 
+/// <summary>
+/// Handles the execution of <see cref="GetUserActiveSessionsAndDevicesQuery"/> to retrieve session and device information.
+/// </summary>
+/// <remarks>
+/// Data retrieval and query details:
+/// 1. Queries un-revoked sessions for the authenticated user without tracking (<c>AsNoTracking</c>), ordered by login timestamp descending.
+/// 2. Fetches up to 5 registered devices ordered by first seen date.
+/// 3. Maps the session and device data into <see cref="UserActiveSessionsAndDevicesResult"/>, identifying the current active session.
+/// </remarks>
 public sealed class GetUserActiveSessionsAndDevicesQueryHandler
     : IQueryHandler<GetUserActiveSessionsAndDevicesQuery, UserActiveSessionsAndDevicesResult>
 {

@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using SNS.Application.Abstractions.Loggings;
 using SNS.Application.Abstractions.Messaging;
 using SNS.Application.Identity.Shared.Abstractions;
@@ -16,6 +16,16 @@ using SNS.Shared.StatusCodes.Identity;
 
 namespace SNS.Application.ContentManagement.Posts.Commands.UpdatePost;
 
+/// <summary>
+/// Represents a command to update an existing post's title, content, media attachments, and tags.
+/// </summary>
+/// <param name="PostId">The unique identifier of the post being updated.</param>
+/// <param name="Title">The updated title of the post.</param>
+/// <param name="Content">The updated textual content of the post.</param>
+/// <param name="DeletedMediaIds">List of media attachment identifiers to delete.</param>
+/// <param name="NewMedia">List of new uploaded media files to attach to the post.</param>
+/// <param name="DeletedTagIds">List of tag identifiers to remove from the post.</param>
+/// <param name="NewTagIds">List of new tag identifiers to associate with the post.</param>
 public sealed record UpdatePostCommand(
     Guid PostId,
     string Title,
@@ -26,6 +36,18 @@ public sealed record UpdatePostCommand(
     List<Guid> NewTagIds
 ) : ICommand;
 
+/// <summary>
+/// Handles the execution of <see cref="UpdatePostCommand"/> to modify post details and media.
+/// </summary>
+/// <remarks>
+/// Business operation and processing flow:
+/// 1. Resolves authenticated profile ID and fetches post entity with media and tags.
+/// 2. Updates title, content, and removes requested deleted media attachments and tags.
+/// 3. Uploads new media files in parallel to file storage via <see cref="IFileStorageService"/>.
+/// 4. Raises a <see cref="PostUpdatedEvent"/> domain event.
+/// 5. Commits changes within a database transaction, deleting uploaded files if transaction fails or removing old storage files if successful.
+/// Side effects include storage uploads/deletions, media and tag entity mutations, domain event dispatch, and transaction persistence.
+/// </remarks>
 internal class UpdatePostCommandHandler
     : ICommandHandler<UpdatePostCommand>
 {

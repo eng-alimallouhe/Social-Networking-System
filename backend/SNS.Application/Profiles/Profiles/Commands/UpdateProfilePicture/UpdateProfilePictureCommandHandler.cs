@@ -1,4 +1,4 @@
-﻿using SNS.Application.Abstractions.Loggings;
+using SNS.Application.Abstractions.Loggings;
 using SNS.Application.Abstractions.Messaging;
 using SNS.Application.Identity.Shared.Abstractions;
 using SNS.Application.Shared.Abstractions.Storage;
@@ -10,6 +10,18 @@ using SNS.Shared.StatusCodes.Identity;
 
 namespace SNS.Application.Profiles.Profiles.Commands.UpdateProfilePicture;
 
+/// <summary>
+/// Handles the execution of <see cref="UpdateProfilePictureCommand"/> to update a profile picture.
+/// </summary>
+/// <remarks>
+/// Business operation and processing flow:
+/// 1. Resolves authenticated user profile ID and fetches the profile entity.
+/// 2. Uploads the new profile picture to file storage.
+/// 3. Updates the profile picture object key on the entity and saves database changes.
+/// 4. Deletes the previous profile picture file from storage if one existed.
+/// 5. Removes the uploaded file if database persistence fails.
+/// Side effects include storage file upload and deletion, profile entity property modification, and database transaction commit.
+/// </remarks>
 internal sealed class UpdateProfilePictureCommandHandler : ICommandHandler<UpdateProfilePictureCommand>
 {
     private readonly ICurrentUserService _currentUserService;

@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using SNS.Application.Abstractions.Messaging;
 using SNS.Application.Identity.Shared.Abstractions;
 using SNS.Application.Shared.Abstractions.Data;
@@ -13,6 +13,17 @@ using SNS.Shared.StatusCodes.Identity;
 
 namespace SNS.Application.Identity.Users.AdminAcions.Commands.ChangeUserRole;
 
+/// <summary>
+/// Handles the execution of <see cref="ChangeUserRoleCommand"/> to change a user's assigned role.
+/// </summary>
+/// <remarks>
+/// Business operation and processing flow:
+/// 1. Verifies administrative role permissions of the requesting user.
+/// 2. Resolves the target user and role identifier.
+/// 3. Updates the user's role and adds a <see cref="UserRoleChangedEvent"/> domain event.
+/// 4. Commits changes within a database transaction.
+/// Side effects include role entity mutation, domain event dispatch, and database transaction completion.
+/// </remarks>
 public sealed class ChangeUserRoleCommandHandler : ICommandHandler<ChangeUserRoleCommand>
 {
     private readonly IApplicationDbContext _dbContext;

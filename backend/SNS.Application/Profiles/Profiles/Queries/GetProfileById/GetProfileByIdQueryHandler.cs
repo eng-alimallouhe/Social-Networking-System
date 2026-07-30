@@ -10,6 +10,14 @@ using SNS.Shared.StatusCodes.Identity;
 
 namespace SNS.Application.Profiles.Profiles.Queries.GetProfileById;
 
+/// <summary>
+/// Handles the execution of <see cref="GetProfileByIdQuery"/> to retrieve comprehensive profile details.
+/// </summary>
+/// <remarks>
+/// Data retrieval and query logic:
+/// 1. Verifies viewer identity and checks for block relationship restrictions.
+/// 2. Executes a read-only query (<c>AsNoTracking</c>) projecting full profile metrics, skills, academic records, social links, follower/following counts, and viewer relationship flags.
+/// </remarks>
 public sealed record GetProfileByIdQueryHandler : IQueryHandler<GetProfileByIdQuery, ProfileDetailsDto>
 {
     private readonly IApplicationDbContext _dbContext;

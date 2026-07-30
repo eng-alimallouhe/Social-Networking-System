@@ -1,20 +1,16 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SNS.Application.Abstractions.Common;
 using SNS.Application.Abstractions.Messaging;
+using SNS.Application.Identity.ArchiveManagement.Abstractions;
 using SNS.Application.Identity.ArchiveManagement.Contracts;
+using SNS.Application.Identity.ArchiveManagement.Services;
 using SNS.Application.Identity.Shared.Abstractions;
 using SNS.Application.Shared.Abstractions.BackgroundJobs;
 using SNS.Application.Shared.Abstractions.Data;
-using SNS.Application.Shared.Abstractions.Messaging;
 using SNS.Domain.Identity.ArchiveManagement.Entities;
 using SNS.Domain.Shared.Abstractions.Repositories;
 using SNS.Shared.Results;
 using SNS.Shared.StatusCodes;
 using SNS.Shared.StatusCodes.Identity;
-using System;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace SNS.Application.Identity.ArchiveManagement.Commands.ExportAccountData;
 
@@ -67,7 +63,7 @@ public sealed class ExportAccountDataCommandHandler
         _exportDataRequestRepo.Add(exportRequest);
         await _unitOfWork.CompleteAsync(cancellationToken);
 
-        await _jobSchedulerService.TriggerExportJobAsync(exportRequest.Id);
+        _jobSchedulerService.Enqueue<IExportDataWorker>(t => t.ProcessExportAsync(exportRequest.Id));
 
         var response = new ExportAccountDataResponseDto(
             exportRequest.Id,
