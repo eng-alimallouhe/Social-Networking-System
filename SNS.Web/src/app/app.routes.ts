@@ -8,5 +8,9 @@ export const routes: Routes = [
     {
         path: 'demo',
         loadChildren: () => import('./demo/routes/demo.routes').then(m => m.DemoRoutes)
+    },
+    {
+        path: '**',
+        redirectTo: 'auth/login'
     }
 ];

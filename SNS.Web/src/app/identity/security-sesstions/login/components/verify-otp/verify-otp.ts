@@ -14,13 +14,13 @@ import { ValidateTwoFactorRequest } from '../../contracts/validate-two-factor-re
 import { ResendTwoFactorCodeRequest } from '../../contracts/resend-two-factor-code-request.dto';
 import { GeneratorService } from '../../../../../shared/services/generator.service';
 import { LoadingAuthService } from '../../../../shared/layout/services/loading-auth.service';
-import { LucideMailQuestionMark, LucideCircleCheck } from "@lucide/angular";
+import { LucideCircleCheck, LucideScanEye } from "@lucide/angular";
 
 
 @Component({
   selector: 'app-verify-otp',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterLink, TranslatePipe, LucideMailQuestionMark, LucideCircleCheck],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink, TranslatePipe, LucideCircleCheck, LucideScanEye],
   templateUrl: './verify-otp.html',
   styleUrl: './verify-otp.css'
 })

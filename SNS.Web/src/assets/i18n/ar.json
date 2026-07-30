@@ -14,6 +14,89 @@
         "Register_Prompt": "ليس لديك حساب؟",
         "Register_Link": "سجل الآن"
       }
+    },
+    "Users": {
+      "Registration": {
+        "Title": "إنشاء حساب جديد",
+        "Username": "اسم المستخدم",
+        "Username_Placeholder": "اختر اسم مستخدم",
+        "Email": "البريد الإلكتروني",
+        "Email_Placeholder": "أدخل بريدك الإلكتروني",
+        "Password": "كلمة المرور",
+        "Password_Placeholder": "أنشئ كلمة مرور قوية",
+        "Confirm_Password": "تأكيد كلمة المرور",
+        "Confirm_Password_Placeholder": "أعد إدخال كلمة المرور",
+        "Register": "إنشاء الحساب",
+        "Login_Prompt": "هل لديك حساب بالفعل؟",
+        "Login_Link": "تسجيل الدخول",
+        "Verify_Account": {
+          "Title": "تحقق من حسابك",
+          "Description": "تم إرسال رمز التحقق إلى",
+          "Verify": "تحقق من الحساب",
+          "Back_To_Register": "العودة إلى التسجيل",
+          "Did_Not_Receive": "لم تستلم الرمز؟",
+          "Resend": "إعادة الإرسال",
+          "Success_Title": "تم التحقق من الحساب",
+          "Success_Body": "تم التحقق من حسابك بنجاح. يرجى تسجيل الدخول.",
+          "Resend_Success_Title": "تم إعادة الإرسال",
+          "Resend_Success_Body": "تم إرسال رمز تحقق جديد إلى بريدك الإلكتروني."
+        }
+      }
+    }
+  },
+  "Shared": {
+    "Errors": {
+      "Username_Required": "اسم المستخدم مطلوب",
+      "Username_MinLength": "يجب أن يتكون اسم المستخدم من 3 أحرف على الأقل",
+      "Confirm_Password_Required": "يرجى تأكيد كلمة المرور",
+      "Passwords_Do_Not_Match": "كلمتا المرور غير متطابقتين"
+    }
+  },
+  "Demo": {
+    "Dashboard": {
+      "Title": "لوحة تحكم العرض التجريبي",
+      "Subtitle": "الوصول إلى جميع الميزات والصفحات التجريبية المتاحة في مكان واحد.",
+      "TotalPages": "إجمالي الصفحات",
+      "Search_Placeholder": "البحث في الصفحات أو الأوصاف...",
+      "Requires_Params": "هذا المسار يتطلب معلمات تم إنشاؤها ديناميكياً.",
+      "OpenPage": "فتح",
+      "NoResults": "لم يتم العثور على صفحات مطابقة",
+      "NoResults_Desc": "حاول تعديل كلمة البحث الخاصة بك.",
+      "Sections": {
+        "Authentication": "المصادقة",
+        "Registration": "التسجيل",
+        "DemoPages": "صفحات العرض التجريبي"
+      },
+      "Pages": {
+        "Login": "تسجيل الدخول بكلمة المرور",
+        "Login_Desc": "مسار تسجيل الدخول القياسي باستخدام البريد الإلكتروني وكلمة المرور.",
+        "LoginPasskey": "تسجيل الدخول بمفتاح المرور",
+        "LoginPasskey_Desc": "مسار تسجيل الدخول باستخدام المقاييس الحيوية أو مفاتيح الأمان.",
+        "LoginAuthApp": "تطبيق المصادقة",
+        "LoginAuthApp_Desc": "مسار تسجيل الدخول باستخدام رمز مصادقة مبني على الوقت.",
+        "VerifyOTP": "التحقق من الرمز",
+        "VerifyOTP_Desc": "خطوة المصادقة الثنائية باستخدام رمز لمرة واحدة مرسل عبر البريد الإلكتروني.",
+        "Register": "التسجيل",
+        "Register_Desc": "مسار تسجيل مستخدم جديد.",
+        "VerifyAccount": "التحقق من الحساب",
+        "VerifyAccount_Desc": "التحقق من الحساب عبر رمز لمرة واحدة.",
+        "RoleSwitcher": "تبديل الأدوار",
+        "RoleSwitcher_Desc": "التبديل بسرعة بين الأدوار المحددة مسبقًا.",
+        "Dashboard": "لوحة العرض التجريبي",
+        "Dashboard_Desc": "المركز الرئيسي لجميع الميزات التجريبية."
+      }
+    },
+    "RoleSwitcher": {
+      "Title": "اختر الدور",
+      "Subtitle": "اختر حسابًا تجريبيًا لتسجيل الدخول فورًا.",
+      "Roles": {
+        "Admin": "مدير النظام",
+        "User": "مستخدم عادي",
+        "Moderator": "مشرف",
+        "Guest": "وصول كضيف",
+        "Support": "فريق الدعم",
+        "Ghost": "وضع الشبح"
+      }
     }
   }
 }

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 
 @Component({
   selector: 'app-line-loader',
@@ -8,5 +8,5 @@ import { Component, Input } from '@angular/core';
   styleUrl: './line-loader.css',
 })
 export class LineLoader {
-  @Input() width: string = '100%';
+  width = input<string>('100%');
 }

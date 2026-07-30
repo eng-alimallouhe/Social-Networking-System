@@ -1,14 +1,14 @@
 .toast {
-    width: var(--toast-width);
+    width: var(--toast-width, 350px);
     background: var(--glass-bg);
-    backdrop-filter: blur(var(--glass-blur));
-    -webkit-backdrop-filter: blur(var(--glass-blur));
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     border: 1px solid var(--glass-border);
-    border-radius: var(--border-radius-md);
-    box-shadow: var(--glass-shadow), var(--shadow-md);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md), var(--shadow-lg);
     display: flex;
     align-items: flex-start;
-    padding: 16px;
+    padding: var(--spacing-4);
     position: relative;
     overflow: hidden;
     pointer-events: auto;
@@ -18,14 +18,13 @@
 
 .toast:hover {
     transform: translateY(-2px);
-    box-shadow: var(--glass-shadow), var(--shadow-lg);
+    box-shadow: var(--shadow-lg), var(--shadow-xl);
 }
 
 .toast.closing {
     animation: fadeOut 0.4s var(--transition-fast) forwards !important;
 }
 
-/* Status Indicators via Left Border Glow */
 .toast::before {
     content: '';
     position: absolute;
@@ -56,16 +55,15 @@
     box-shadow: 0 0 8px var(--info);
 }
 
-/* Icon Styling */
 .toast-icon {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-right: 16px;
+    margin-right: var(--spacing-4);
     font-size: 24px;
     flex-shrink: 0;
-    padding: 8px;
-    border-radius: 50%;
+    padding: var(--spacing-2);
+    border-radius: var(--radius-full);
     background: rgba(255, 255, 255, 0.5);
     transition: transform var(--transition-base);
 }
@@ -78,23 +76,11 @@
     background: rgba(0, 0, 0, 0.2);
 }
 
-.toast.success .toast-icon {
-    color: var(--success);
-}
+.toast.success .toast-icon { color: var(--success); }
+.toast.error .toast-icon { color: var(--error); }
+.toast.warning .toast-icon { color: var(--warning); }
+.toast.info .toast-icon { color: var(--info); }
 
-.toast.error .toast-icon {
-    color: var(--error);
-}
-
-.toast.warning .toast-icon {
-    color: var(--warning);
-}
-
-.toast.info .toast-icon {
-    color: var(--info);
-}
-
-/* Content Styling */
 .toast-content {
     flex: 1;
     display: flex;
@@ -105,28 +91,27 @@
 
 .toast-title {
     font-weight: var(--font-weight-bold);
-    color: var(--text-color);
+    color: var(--text-primary);
     font-size: var(--text-base);
-    margin-bottom: 4px;
-    line-height: 1.2;
+    margin-bottom: var(--spacing-1);
+    line-height: var(--line-height-tight);
 }
 
 .toast-message {
     font-size: var(--text-sm);
     color: var(--text-muted);
     margin: 0;
-    line-height: 1.5;
+    line-height: var(--line-height-normal);
 }
 
-/* Close Button */
 .toast-close {
     background: transparent;
     border: none;
     cursor: pointer;
     color: var(--text-muted);
-    padding: 4px;
-    margin-left: 8px;
-    border-radius: var(--border-radius-sm);
+    padding: var(--spacing-1);
+    margin-left: var(--spacing-2);
+    border-radius: var(--radius-sm);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -134,12 +119,11 @@
 }
 
 .toast-close:hover {
-    color: var(--text-color);
+    color: var(--text-primary);
     background: var(--bg-hover);
     transform: rotate(90deg);
 }
 
-/* Progress Bar */
 .progress-track {
     position: absolute;
     bottom: 0;
@@ -158,33 +142,20 @@
     animation-fill-mode: forwards;
 }
 
-.toast.success .progress-bar {
-    background-color: var(--success);
-}
-
-.toast.error .progress-bar {
-    background-color: var(--error);
-}
-
-.toast.warning .progress-bar {
-    background-color: var(--warning);
-}
-
-.toast.info .progress-bar {
-    background-color: var(--info);
-}
+.toast.success .progress-bar { background-color: var(--success); }
+.toast.error .progress-bar { background-color: var(--error); }
+.toast.warning .progress-bar { background-color: var(--warning); }
+.toast.info .progress-bar { background-color: var(--info); }
 
 .toast:hover .progress-bar {
     animation-play-state: paused !important;
 }
 
-/* Animations */
 @keyframes slideInRight {
     from {
         transform: translateX(120%) scale(0.9);
         opacity: 0;
     }
-
     to {
         transform: translateX(0) scale(1);
         opacity: 1;
@@ -196,7 +167,6 @@
         transform: translateY(-120%) scale(0.9);
         opacity: 0;
     }
-
     to {
         transform: translateY(0) scale(1);
         opacity: 1;
@@ -208,7 +178,6 @@
         opacity: 1;
         transform: scale(1) translateX(0);
     }
-
     to {
         opacity: 0;
         transform: scale(0.9) translateX(20px);
@@ -216,21 +185,15 @@
 }
 
 @keyframes timer {
-    from {
-        width: 100%;
-    }
-
-    to {
-        width: 0%;
-    }
+    from { width: 100%; }
+    to { width: 0%; }
 }
 
-/* Mobile Responsive */
 @media screen and (max-width: 480px) {
     .toast {
         animation: slideInTop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         width: 100%;
         margin: 0;
-        border-radius: var(--border-radius-md);
+        border-radius: var(--radius-md);
     }
 }

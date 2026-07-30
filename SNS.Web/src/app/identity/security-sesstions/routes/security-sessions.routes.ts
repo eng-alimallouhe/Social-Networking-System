@@ -6,31 +6,13 @@ export const SecuritySessionsRoutes: Routes = [
         loadComponent: () => import('../../shared/layout/components/auth-layout/auth-layout').then(m => m.AuthLayout),
         children: [
             {
-                path: 'login',
-                loadComponent: () => import('../login/components/login-with-password/login-with-password').then(m => m.LoginWithPassword)
-            },
-            {
-                path: 'login-with-authenticator-app',
-                loadComponent: () => import('../login/components/login-with-authenticator-app/login-with-authenticator-app').then(m => m.LoginWithAuthenticatorApp)
-            },
-            {
-                path: 'login-with-passkey',
-                loadComponent: () => import('../login/components/login-with-passkey/login-with-passkey').then(m => m.LoginWithPasskey)
-            },
-            {
-                path: 'verify-otp',
-                loadComponent: () => import('../login/components/verify-otp/verify-otp').then(m => m.VerifyOtp)
-            },
-            {
                 path: '',
-                redirectTo: 'auth/login',
-                pathMatch: 'full'
+                loadChildren: () => import('../login/routes/login.routes').then(m => m.LoginRoutes)
             }
         ]
     },
     {
-        path: '',
-        redirectTo: 'auth/login',
-        pathMatch: 'full'
+        path: 'sessions',
+        loadChildren: () => import('../session-management/routes/session-management.routes').then(m => m.SessionManagementRoutes)
     }
 ];

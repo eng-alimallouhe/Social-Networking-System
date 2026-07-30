@@ -16,21 +16,23 @@ import { LucideLifeBuoy, LucideFingerprint, LucideEllipsis } from '@lucide/angul
 import { TranslateService } from '@ngx-translate/core';
 import { forkJoin } from 'rxjs';
 import { LineLoader } from "../../../shared/components/loaders/line-loader/line-loader";
+import { DemoLoadingService } from '../../services/demo-loading.service';
 
 @Component({
   selector: 'app-demo-layout',
   standalone: true,
-  imports: [RouterOutlet, LucideLifeBuoy, LucideFingerprint, LucideEllipsis, LineLoader],
+  imports: [RouterOutlet, LineLoader],
   templateUrl: './demo-layout.html',
   styleUrl: './demo-layout.css',
 })
 export class DemoLayout implements OnDestroy {
   private router = inject(Router);
   private translateService = inject(TranslateService);
+  private loadingService = inject(DemoLoadingService);
 
   @ViewChild('particleCanvas') canvasRef!: ElementRef<HTMLCanvasElement>;
 
-  isLoading = signal<boolean>(false);
+  isLoading = this.loadingService.isLoading;
 
   private ctx!: CanvasRenderingContext2D;
   private particles: Particle[] = [];

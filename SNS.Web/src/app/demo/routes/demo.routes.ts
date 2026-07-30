@@ -9,17 +9,17 @@ export const DemoRoutes: Routes = [
         component: DemoLayout,
         children: [
             {
+                path: '',
+                redirectTo: 'role-switcher',
+                pathMatch: 'full'
+            },
+            {
                 path: 'dashboard',
                 component: DemoDashboard
             },
             {
                 path: 'role-switcher',
                 component: RoleSwitcher
-            },
-            {
-                path: '',
-                redirectTo: 'role-switcher',
-                pathMatch: 'full'
             }
         ]
     }

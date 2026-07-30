@@ -7,33 +7,15 @@
         </div>
         <h2>SyrianDevs</h2>
     </div>
-    <div class="auth-links-wrapper">
-        <div class="links-menu-button" [class.menu-button-active]="isOptionsMenuOpen()"
-            [class.busy-on-loading]="isLoading()" (click)="toggleOptionsMenu()">
-            <svg lucideEllipsis></svg>
-        </div>
-        <div class="options" [class.is-options-menu-open]="isOptionsMenuOpen()" [class.busy-on-loading]="isLoading()">
-            <a (click)="navigateTo('support')" [class.busy-on-loading]="isLoading()" (click)="onLinkClick($event)"
-                class="option">
-                <svg lucideLifeBuoy></svg>
-                <p> Support </p>
-            </a>
-            <a (click)="navigateTo('login-options')" [class.busy-on-loading]="isLoading()" (click)="onLinkClick($event)"
-                class="option">
-                <svg lucideFingerprint></svg>
-                <p> Login Options </p>
-            </a>
-        </div>
+    @if (isLoading()) {
+    <div class="loading-wrapper">
+        <app-line-loader class="loader" [width]="'100%'"></app-line-loader>
     </div>
+    }
 </div>
 
-@if (isLoading()) {
-<div class="loading-wrapper">
-    <app-line-loader class="loader" [width]="'100%'"></app-line-loader>
-</div>
-}
-
-
-<div class="form-container">
-    <router-outlet class="router-outlet"></router-outlet>
+<div class="identity-wrapper">
+    <div class="form-container">
+        <router-outlet class="router-outlet"></router-outlet>
+    </div>
 </div>

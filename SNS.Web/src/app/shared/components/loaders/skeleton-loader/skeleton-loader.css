@@ -1,86 +1,65 @@
-/* ===== Skeleton Loader – AccountOnPhone ===== */
-
 .skeleton-container {
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-/* ---------- Pulse animation ---------- */
 @keyframes skeleton-shimmer {
-    0% {
-        background-position: -200% 0;
-    }
-
-    100% {
-        background-position: 200% 0;
-    }
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
 }
 
 .skeleton-pulse {
     background: linear-gradient(90deg,
-            var(--surface-bg) 25%,
+            var(--bg-surface) 25%,
             var(--border-color) 50%,
-            var(--surface-bg) 75%);
+            var(--bg-surface) 75%);
     background-size: 200% 100%;
     animation: skeleton-shimmer 1.5s ease-in-out infinite;
 }
 
-/* ---------- AccountOnPhone layout ---------- */
 .account-phone-skeleton {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: var(--spacing-4);
     width: 100%;
-    padding: 16px 20px;
-    background-color: var(--secondary-bg);
-    border-radius: var(--border-radius-md);
+    padding: var(--spacing-4) var(--spacing-5);
+    background-color: var(--bg-surface);
+    border-radius: var(--radius-md);
     border: 1px solid var(--border-color);
 }
 
-/* Circular avatar placeholder */
 .skeleton-avatar {
     width: 56px;
     height: 56px;
     min-width: 56px;
-    border-radius: var(--border-radius-pill);
+    border-radius: var(--radius-full);
 }
 
-/* Text lines container */
 .skeleton-info {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: var(--spacing-2);
     flex: 1;
 }
 
-/* Generic skeleton line */
 .skeleton-line {
     height: 14px;
-    border-radius: var(--border-radius-sm);
+    border-radius: var(--radius-sm);
 }
 
-/* Name line – wider */
-.skeleton-line--name {
-    width: 55%;
-}
+.skeleton-line--name { width: 55%; }
+.skeleton-line--email { width: 75%; }
 
-/* Email line – narrower */
-.skeleton-line--email {
-    width: 75%;
-}
-
-/* ---------- Placeholder for unimplemented types ---------- */
 .skeleton-placeholder {
     display: flex;
     align-items: center;
     justify-content: center;
     width: 100%;
-    padding: 24px;
-    background-color: var(--surface-bg);
-    border-radius: var(--border-radius-md);
+    padding: var(--spacing-6);
+    background-color: var(--bg-surface);
+    border-radius: var(--radius-md);
     border: 1px dashed var(--border-color);
     color: var(--text-muted);
     font-size: var(--text-sm);
-    font-family: var(--font-main);
 }

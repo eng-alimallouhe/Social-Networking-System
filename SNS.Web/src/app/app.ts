@@ -1,13 +1,13 @@
 import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { SkeletonLoaderComponent } from "./shared/components/loaders/skeleton-loader/skeleton-loader";
 import { ToastContainerComponent } from "./identity/notifications/components/toast-container/toast-container.component";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, SkeletonLoaderComponent, ToastContainerComponent],
+  standalone: true,
+  imports: [RouterOutlet, ToastContainerComponent],
   templateUrl: './app.html',
-  styleUrl: './app.css'
+  styleUrls: ['./app.css']
 })
 export class App {
   protected readonly title = signal('Social Networking System');

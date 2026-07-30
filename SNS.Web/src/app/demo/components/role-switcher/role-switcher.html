@@ -1,1 +1,20 @@
-<p>role-switcher works!</p>
+<div class="role-switcher-container">
+    <div class="header">
+        <h1 class="title">{{ 'Demo.RoleSwitcher.Title' | translate }}</h1>
+        <p class="subtitle">{{ 'Demo.RoleSwitcher.Subtitle' | translate }}</p>
+    </div>
+
+    <div class="roles-grid">
+        @for (role of roles; track role.id) {
+            <div class="role-card" (click)="selectRole(role)" role="button" tabindex="0">
+                <div class="icon-wrapper">
+                    <ng-container *ngComponentOutlet="role.icon"></ng-container>
+                </div>
+                <div class="role-info">
+                    <h3>{{ role.titleKey | translate }}</h3>
+                    <p>{{ role.email }}</p>
+                </div>
+            </div>
+        }
+    </div>
+</div>

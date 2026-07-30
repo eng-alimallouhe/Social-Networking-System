@@ -79,6 +79,34 @@
                 "Login_Options": "Login Options"
             }
         },
+        "Users": {
+            "Registration": {
+                "Title": "Create an Account",
+                "Username": "Username",
+                "Username_Placeholder": "Choose a username",
+                "Email": "Email Address",
+                "Email_Placeholder": "Enter your email address",
+                "Password": "Password",
+                "Password_Placeholder": "Create a strong password",
+                "Confirm_Password": "Confirm Password",
+                "Confirm_Password_Placeholder": "Repeat your password",
+                "Register": "Create Account",
+                "Login_Prompt": "Already have an account?",
+                "Login_Link": "Sign in",
+                "Verify_Account": {
+                    "Title": "Verify Your Account",
+                    "Description": "A verification code was sent to",
+                    "Verify": "Verify Account",
+                    "Back_To_Register": "Back to register",
+                    "Did_Not_Receive": "Didn't receive the code?",
+                    "Resend": "Resend code",
+                    "Success_Title": "Account Verified",
+                    "Success_Body": "Your account has been verified successfully. Please sign in.",
+                    "Resend_Success_Title": "Code Resent",
+                    "Resend_Success_Body": "A new verification code has been sent to your email."
+                }
+            }
+        },
         "Security_Settings": {
             "Personal_Info": {
                 "Title": "Personal Information",
@@ -115,7 +143,11 @@
             "Password_Required": "Password is required",
             "Password_MinLength": "Password must be at least 8 characters long",
             "Failed": "Failed",
-            "Invalid_Code": "Code must be 6-digits"
+            "Invalid_Code": "Code must be 6-digits",
+            "Username_Required": "Username is required",
+            "Username_MinLength": "Username must be at least 3 characters long",
+            "Confirm_Password_Required": "Please confirm your password",
+            "Passwords_Do_Not_Match": "Passwords do not match"
         },
         "Role_Type": {
             "USER": "Normal User",
@@ -159,5 +191,52 @@
     "Loader": {
         "System_Busy_Title": "System Busy",
         "System_Busy_Body": "We are currently processing your request. Please hold for a moment."
+    },
+    "Demo": {
+        "Dashboard": {
+            "Title": "Demo Dashboard",
+            "Subtitle": "Access all available demo features and pages in one place.",
+            "TotalPages": "Total Pages",
+            "Search_Placeholder": "Search pages or descriptions...",
+            "Requires_Params": "This route requires generated parameters.",
+            "OpenPage": "Open",
+            "NoResults": "No matching pages found",
+            "NoResults_Desc": "Try adjusting your search query.",
+            "Sections": {
+                "Authentication": "Authentication",
+                "Registration": "Registration",
+                "DemoPages": "Demo Pages"
+            },
+            "Pages": {
+                "Login": "Password Login",
+                "Login_Desc": "Standard login flow using email and password.",
+                "LoginPasskey": "Passkey Login",
+                "LoginPasskey_Desc": "Login flow using biometrics or security keys.",
+                "LoginAuthApp": "Authenticator App",
+                "LoginAuthApp_Desc": "Login flow using a time-based authenticator code.",
+                "VerifyOTP": "Verify OTP",
+                "VerifyOTP_Desc": "Two-factor authentication step using an OTP code sent via email.",
+                "Register": "Register",
+                "Register_Desc": "New user registration flow.",
+                "VerifyAccount": "Verify Account",
+                "VerifyAccount_Desc": "Account verification via OTP.",
+                "RoleSwitcher": "Role Switcher",
+                "RoleSwitcher_Desc": "Quickly switch between predefined roles.",
+                "Dashboard": "Demo Dashboard",
+                "Dashboard_Desc": "The hub for all demo features."
+            }
+        },
+        "RoleSwitcher": {
+            "Title": "Select Role",
+            "Subtitle": "Choose a demo account to instantly sign in.",
+            "Roles": {
+                "Admin": "Administrator",
+                "User": "Standard User",
+                "Moderator": "Moderator",
+                "Guest": "Guest Access",
+                "Support": "Support Staff",
+                "Ghost": "Ghost Mode"
+            }
+        }
     }
 }

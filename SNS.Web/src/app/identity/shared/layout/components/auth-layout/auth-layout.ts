@@ -131,20 +131,33 @@ export class AuthLayout implements OnDestroy {
 
     const canvas = this.canvasRef.nativeElement;
     this.ctx = canvas.getContext('2d')!;
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
 
+    // 1. خليه ياخد الحجم الحقيقي للعنصر من الـ DOM بعد تطبيق الـ CSS
+    const displayWidth = canvas.clientWidth;
+    const displayHeight = canvas.clientHeight;
+
+    // 2. ضبط أبعاد الرسم الداخلية بدقة بدون زيادة أي بكسل
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = Math.floor(displayWidth * dpr);
+    canvas.height = Math.floor(displayHeight * dpr);
+
+    // 3. عمل Scale للمحتوى الداخلي
+    this.ctx.scale(dpr, dpr);
+
+    // إعادة بناء النقاط
     this.particles = [];
-    const numberOfParticles = Math.floor((canvas.width * canvas.height) / 12000);
+    const numberOfParticles = Math.floor((displayWidth * displayHeight) / 12000);
     for (let i = 0; i < numberOfParticles; i++) {
       this.particles.push(new Particle(canvas, this.ctx));
     }
   }
 
   private animate() {
-    if (!this.ctx) return;
+    if (!this.ctx || !this.canvasRef) return;
 
-    this.ctx.clearRect(0, 0, this.canvasRef.nativeElement.width, this.canvasRef.nativeElement.height);
+    // 2. استخدام أبعاد الـ canvas المسجلة نفسها بدلاً من إعادة قراءتها
+    const canvas = this.canvasRef.nativeElement;
+    this.ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     const isDark = this.isDarkMode();
     for (const particle of this.particles) {

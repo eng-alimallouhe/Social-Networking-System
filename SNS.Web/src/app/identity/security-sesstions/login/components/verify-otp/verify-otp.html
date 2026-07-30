@@ -4,7 +4,7 @@
 
         <div class="user-notice">
             <p>
-                <svg class="notice-icon" lucideScanEye></svg>
+                <svg class="notice-icon" lucideScanEye aria-hidden="true"></svg>
                 {{ 'Identity.Security_Sessions.Authenticator.Enter_Code_For' | translate }}
                 <strong class="user-id-text">{{ recipientAddress }}</strong>
                 {{ 'Identity.Security_Sessions.Authenticator.Using_Authenticator' | translate }}
@@ -26,7 +26,7 @@
 
         <button type="submit" class="submit-btn" id="verifyBtn" [disabled]="otpForm.invalid || isLoading()">
             <span>{{ 'Identity.Security_Sessions.OTP.Verify' | translate }}</span>
-            <svg class="submit-icon" lucideCircleCheck></svg>
+            <svg class="submit-icon" lucideCircleCheck aria-hidden="true"></svg>
         </button>
 
         <div class="resend-container">

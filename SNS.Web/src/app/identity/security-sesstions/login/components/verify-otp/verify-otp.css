@@ -1,21 +1,22 @@
 .login-wrapper {
-    background: var(--secondary-bg);
+    background: var(--glass-bg);
     position: relative;
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     outline: none;
     overflow: hidden;
-    border-radius: var(--border-radius-md);
-    box-shadow: var(--glass-shadow);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-xl);
     width: 95%;
     margin: 0 auto;
     max-width: 450px;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all var(--transition-slow);
     animation: formEntry 0.8s ease-out forwards;
+    border: 1px solid var(--glass-border);
 }
 
 .login-form {
-    padding: 2rem 1.5rem;
+    padding: var(--spacing-8) var(--spacing-6);
 }
 
 @keyframes formEntry {
@@ -23,29 +24,27 @@
         opacity: 0;
         transform: translateY(20px) scale(0.98);
     }
-
     to {
         opacity: 1;
         transform: translateY(0) scale(1);
     }
 }
 
-
 .login-form h2 {
-    margin-bottom: 1.5rem;
+    margin-bottom: var(--spacing-6);
     text-align: center;
     color: var(--primary-color);
     font-size: var(--header-2);
-    font-weight: var(--font-weight-medium);
+    font-weight: var(--font-weight-semibold);
 }
 
 .user-notice {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0.75rem;
-    margin-bottom: 2rem;
-    color: var(--text-main);
+    gap: var(--spacing-3);
+    margin-bottom: var(--spacing-8);
+    color: var(--text-secondary);
 }
 
 .user-notice .notice-icon {
@@ -59,7 +58,7 @@
     font-size: var(--text-base);
     display: flex;
     align-items: first baseline;
-    gap: 3px;
+    gap: var(--spacing-1);
 }
 
 .user-id-text {
@@ -69,7 +68,7 @@
 }
 
 .code-group {
-    margin-bottom: 2.5rem;
+    margin-bottom: var(--spacing-10);
     position: relative;
     text-align: center;
 }
@@ -77,7 +76,7 @@
 .code-inputs {
     display: flex;
     justify-content: center;
-    gap: 16px;
+    gap: var(--spacing-4);
     direction: ltr;
 }
 
@@ -87,35 +86,32 @@
     text-align: center;
     font-size: var(--header-2);
     font-weight: var(--font-weight-medium);
-    color: var(--text-color);
+    color: var(--text-primary);
     border: none;
-    /* إخفاء المؤشر */
     caret-color: transparent;
-    /* توسيط النص */
-    text-align: center;
-    /* إجبار النص ليكون في المنتصف */
     line-height: 50px;
-    border-bottom: 2px solid var(--text-muted);
+    border-bottom: 2px solid var(--border-color);
     border-radius: 0;
     padding: 0;
-    transition: all 0.3s ease;
+    background: transparent;
+    transition: var(--transition-base);
 }
 
 .code-inputs input::selection {
     background-color: transparent !important;
-    color: var(--text-color) !important;
+    color: var(--text-primary) !important;
 }
 
 .code-inputs input:focus {
     outline: none;
     border-bottom: 2px solid var(--accent-color);
-    background: var(--glass-border) !important;
+    background: var(--bg-hover) !important;
     transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow-sm);
 }
 
 .code-inputs input.ng-valid {
-    border-bottom-color: var(--accent-color);
+    border-bottom-color: var(--success);
 }
 
 .code-inputs input::-webkit-outer-spin-button,
@@ -126,35 +122,38 @@
 
 .code-group .error-message {
     position: absolute;
-    bottom: -1.5rem;
+    bottom: calc(var(--spacing-6) * -1);
     left: 0;
     right: 0;
     text-align: center;
     color: var(--error);
     font-size: var(--text-sm);
-    font-weight: 400;
-    opacity: 0.8;
+    font-weight: var(--font-weight-medium);
     transition: var(--transition-fast);
-    padding-top: 0.8rem;
 }
 
 .submit-btn {
     width: 100%;
-    padding: 0.8rem;
-    background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
-    color: white;
+    padding: var(--spacing-4);
+    background: var(--primary-color);
+    color: var(--text-inverse);
     border: none;
-    border-radius: var(--border-radius-md);
+    border-radius: var(--radius-md);
     cursor: pointer;
-    font-weight: 700;
+    font-weight: var(--font-weight-bold);
     font-size: var(--text-base);
-    margin-top: 1rem;
+    margin-top: var(--spacing-4);
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 0.5rem;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+    gap: var(--spacing-2);
+    transition: var(--transition-base);
+    box-shadow: var(--shadow-glow-primary);
+}
+
+.submit-btn:hover:not(:disabled) {
+    background: var(--primary-hover);
+    transform: translateY(-2px);
 }
 
 .submit-btn:disabled {
@@ -169,39 +168,38 @@
     transition: var(--transition-slow);
 }
 
-.submit-btn:not(:disabled):hover .submit-icon {
+.submit-btn:hover:not(:disabled) .submit-icon {
     visibility: visible;
     opacity: 1;
 }
 
-.submit-btn:not(:disabled):active .submit-icon {
+.submit-btn:active:not(:disabled) .submit-icon {
     visibility: visible;
     opacity: 1;
     transform: translateX(5px);
 }
 
 .form-footer {
-    margin-top: 1.5rem;
+    margin-top: var(--spacing-6);
     width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     border-top: 1px solid var(--border-color);
-    padding-top: 1rem;
+    padding-top: var(--spacing-4);
 }
 
 .register-link {
     color: var(--text-muted);
     text-decoration: none;
-    font-weight: 500;
+    font-weight: var(--font-weight-medium);
     font-size: var(--text-sm);
-    transition: color 0.3s ease;
+    transition: var(--transition-fast);
 }
 
 .register-link:hover {
     color: var(--primary-color);
 }
-
 
 :host {
     width: 100%;

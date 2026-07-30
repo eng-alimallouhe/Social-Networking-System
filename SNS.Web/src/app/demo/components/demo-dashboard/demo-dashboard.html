@@ -1,1 +1,60 @@
-<p>demo-dashboard works!</p>
+<div class="dashboard-container">
+    <div class="dashboard-header">
+        <div class="header-content">
+            <h1 class="title">{{ 'Demo.Dashboard.Title' | translate }}</h1>
+            <p class="subtitle">{{ 'Demo.Dashboard.Subtitle' | translate }}</p>
+            <div class="stats-badge">
+                <span class="count">{{ totalPages() }}</span>
+                <span class="label">{{ 'Demo.Dashboard.TotalPages' | translate }}</span>
+            </div>
+        </div>
+        <div class="search-box">
+            <svg lucideSearch class="search-icon"></svg>
+            <input type="text" [placeholder]="'Demo.Dashboard.Search_Placeholder' | translate"
+                   [ngModel]="searchQuery()" (ngModelChange)="searchQuery.set($event)" class="search-input">
+        </div>
+    </div>
+
+    <div class="sections-container">
+        @for (section of filteredSections(); track section.titleKey) {
+            <section class="dashboard-section">
+                <h2 class="section-title">{{ section.titleKey | translate }}</h2>
+                <div class="pages-grid">
+                    @for (page of section.pages; track page.route) {
+                        <a [routerLink]="page.route" [queryParams]="page.queryParams" class="page-card">
+                            <div class="card-header">
+                                <div class="icon-wrapper">
+                                    <ng-container *ngComponentOutlet="page.icon"></ng-container>
+                                </div>
+                                @if (page.generateQueryParams || page.queryParams) {
+                                    <div class="params-badge" [title]="'Demo.Dashboard.Requires_Params' | translate">
+                                        <svg lucideAlertCircle class="params-icon"></svg>
+                                        <span>Params</span>
+                                    </div>
+                                }
+                            </div>
+                            <div class="card-body">
+                                <h3>{{ page.titleKey | translate }}</h3>
+                                <p>{{ page.descriptionKey | translate }}</p>
+                            </div>
+                            <div class="card-footer">
+                                <span class="open-btn">
+                                    {{ 'Demo.Dashboard.OpenPage' | translate }}
+                                    <svg lucideArrowRight class="arrow-icon"></svg>
+                                </span>
+                            </div>
+                        </a>
+                    }
+                </div>
+            </section>
+        }
+
+        @if (filteredSections().length === 0) {
+            <div class="empty-state">
+                <svg lucideSearch class="empty-icon"></svg>
+                <h3>{{ 'Demo.Dashboard.NoResults' | translate }}</h3>
+                <p>{{ 'Demo.Dashboard.NoResults_Desc' | translate }}</p>
+            </div>
+        }
+    </div>
+</div>
