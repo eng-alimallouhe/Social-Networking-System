@@ -3,6 +3,8 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SNS.API.Extensions;
+using SNS.API.Helpers;
+using SNS.Application.Identity.SecuritySessions.Login.Commands.RefreshTokens;
 using SNS.Application.Identity.SecuritySessions.SessionsManagement.Commands.ForceRevokeUserSessions;
 using SNS.Application.Identity.SecuritySessions.SessionsManagement.Commands.Logout;
 using SNS.Application.Identity.SecuritySessions.SessionsManagement.Commands.LogoutFromOtherDevices;
@@ -10,6 +12,7 @@ using SNS.Application.Identity.SecuritySessions.SessionsManagement.Commands.Logo
 using SNS.Application.Identity.SecuritySessions.SessionsManagement.Queries.GetSessionDetails;
 using SNS.Application.Identity.SecuritySessions.SessionsManagement.Queries.GetUserActiveSessionsAndDevices;
 using SNS.Application.Identity.SecuritySessions.SessionsManagement.Queries.GetUserSessions;
+using SNS.Application.Identity.Shared.DTOs.Authentication;
 using SNS.Application.Shared.DTOs;
 using SNS.Shared.Results;
 
@@ -143,5 +146,34 @@ public class SessionsManagementController : ControllerBase
     public async Task<ActionResult<Result<Paged<SessionSummaryDto>>>> GetUserSessionAsync([FromRoute] GetUserSessionsQuery request)
     {
         return (await _mediator.Send(request)).ToActionResult(this);
+    }
+
+
+    /// <summary>
+    /// Re-generate refresh tokens and access tokens for user
+    /// the Bearer Token doesn't necessarily have to be inexhaustible, but it must be included.
+    /// </summary>
+    /// <remarks>
+    /// Upon successful authentication, issues access token and sets HTTP-only refresh token cookie.
+    /// </remarks>
+    /// <param name="request">The query containing refresh token.</param>
+    /// <response code="200">Returns an object aontains the new access token <see cref="AuthTokenDto"/>.</response>
+    /// <response code="401">The token was not included, or the session was expired or revoked.</response>
+    [HttpGet("user-sessions/{targetUserId:guid}")]
+    [Consumes("application/json")]
+    [ProducesResponseType(typeof(AuthTokenDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<ActionResult<Result<Paged<AuthTokenDto>>>> RefreshTokensAsync([FromBody] RefreshTokensCommand request)
+    {
+        var result = await _mediator.Send(request);
+        if (result.IsSuccess)
+        {
+            Response.Cookies.Append(
+                CookieFactory.RefreshTokenCookieName,
+                result.Value?.RefreshToken ?? string.Empty,
+                CookieFactory.CreateRefreshTokenCookie(true));
+        }
+
+        return (result).ToActionResult(this);
     }
 }

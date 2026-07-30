@@ -52,7 +52,6 @@ public sealed class RefreshTokensCommandHandler : ICommandHandler<RefreshTokensC
         }
 
         var spec = new SessionByTokenOrIdSpecification(currentSessionId, request.refreshToken);
-        
         var session = await _sessionRepo.GetSingleAsync(spec, cancellationToken);
 
         if (session == null || !session.IsActive || session.IsRevoked || session.LogoutAt != null)
@@ -80,11 +79,9 @@ public sealed class RefreshTokensCommandHandler : ICommandHandler<RefreshTokensC
                 SessionId: currentSessionId.Value));
             
             var refreshToken = _generatorService.GenerateSecureString();
-
             session.UpdateRefreshToken(refreshToken, DateTime.UtcNow.AddDays(7));
 
             await _unitOfWork.CompleteAsync(cancellationToken);
-            
             await _unitOfWork.CommitTransactionAsync(cancellationToken);
 
             return Result<AuthTokensDto>.Success(
