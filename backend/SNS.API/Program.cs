@@ -1,6 +1,7 @@
 ﻿using Asp.Versioning;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi;
 using Scalar.AspNetCore;
 using SNS.Application;
 using SNS.Infrastructure;
@@ -23,9 +24,38 @@ builder.Services.AddOpenApi(options =>
             Description = "REST API for the Syrian Developers Network."
         };
 
+        document.Components ??= new();
+
+        document.Components.SecuritySchemes ??=
+            new Dictionary<string, IOpenApiSecurityScheme>();
+
+        document.Components.SecuritySchemes["Bearer"] = new OpenApiSecurityScheme
+        {
+            Type = SecuritySchemeType.Http,
+            Scheme = "bearer",
+            BearerFormat = "JWT",
+            In = ParameterLocation.Header,
+            Name = "Authorization",
+            Description = "Enter your JWT token."
+        };
+
+        return Task.CompletedTask;
+    });
+
+    options.AddDocumentTransformer((document, context, cancellationToken) =>
+    {
+        document.Info = new()
+        {
+            Title = "Syrian Developers Network API",
+            Version = "v1",
+            Description = "REST API for the Syrian Developers Network."
+        };
+
         return Task.CompletedTask;
     });
 });
+
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddHttpContextAccessor();
 
