@@ -22,7 +22,6 @@ import { passwordMatchValidator } from '../../../../../shared/validators/passwor
         RouterLink,
         TranslatePipe,
         ReactiveFormsModule,
-        LucideSquareUserRound,
         LucideMail,
         LucideLockKeyhole,
         LucideUserPlus
@@ -43,7 +42,6 @@ export class Register {
 
     registerForm: FormGroup = this.fb.group(
         {
-            username: ['', [Validators.required, Validators.minLength(3)]],
             email: ['', [Validators.required, Validators.email]],
             password: ['', [Validators.required, Validators.minLength(8)]],
             confirmPassword: ['', [Validators.required]]

@@ -136,14 +136,13 @@
 
 .form-container {
     width: 100%;
-    height: calc(100vh - var(--navbar-mobile-height));
-    height: calc(100dvh - var(--navbar-mobile-height));
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: var(--navbar-mobile-height);
-    box-sizing: border-box;
-    overflow: hidden;
+    padding-top: calc(var(--navbar-mobile-height) + 1rem);
+    padding-bottom: 1rem;
+    box-shadow: none;
+    overflow-x: hidden;
 }
 
 @media (min-width: 991px) {
@@ -170,9 +169,7 @@
     }
 
     .form-container {
-        height: calc(100vh - var(--navbar-desktop-height));
-        height: calc(100dvh - var(--navbar-desktop-height));
-        margin-top: var(--navbar-desktop-height);
+        padding-top: calc(var(--navbar-desktop-height) + 1rem);
     }
 
     .options .option {

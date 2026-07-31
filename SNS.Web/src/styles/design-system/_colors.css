@@ -1,9 +1,9 @@
 :root {
     /* ==== Core Brand Colors ==== */
-    --primary-color: #2563EB;
+    --primary-color: #1D4ED8;
     --secondary-color: #7C3AED;
     --accent-color: #06B6D4;
-    
+
     --success: #22C55E;
     --warning: #F59E0B;
     --error: #EF4444;
@@ -12,45 +12,47 @@
     /* ==== Light Theme (Default) ==== */
     --bg-main: #F8FAFC;
     --bg-surface: #FFFFFF;
+    --bg-secondary: #e9ecef;
     --bg-card: #FFFFFF;
     --border-color: #E2E8F0;
-    
+
     --text-primary: #0F172A;
     --text-secondary: #475569;
     --text-muted: #64748b;
     --text-inverse: #F8FAFC;
-    
+
     /* Interactive States */
-    --primary-hover: #1D4ED8;
+    --primary-hover: #2b1f1f;
     --secondary-hover: #6D28D9;
     --accent-hover: #0891B2;
-    --bg-hover: rgba(15, 23, 42, 0.05);
-    
+    --bg-hover: #b3d7ef;
+
     /* Glassmorphism */
     --glass-bg: rgba(255, 255, 255, 0.8);
     --glass-border: rgba(255, 255, 255, 0.4);
 }
 
 .dark-mode {
-     --primary-color: #60A5FA;
+    --primary-color: #60A5FA;
 
     /* ==== Dark Theme Overrides ==== */
     --bg-main: #0F172A;
     --bg-surface: #1E293B;
+    --bg-secondary: #1e1e1e;
     --bg-card: #1F2937;
     --border-color: #334155;
-    
+
     --text-primary: #F8FAFC;
     --text-secondary: #CBD5E1;
     --text-muted: #94A3B8;
     --text-inverse: #0F172A;
-    
+
     /* Interactive States */
-    --primary-hover: #3B82F6;
+    --primary-hover: #c2e7ff;
     --secondary-hover: #8B5CF6;
     --accent-hover: #22D3EE;
-    --bg-hover: rgba(255, 255, 255, 0.05);
-    
+    --bg-hover: #105682;
+
     /* Glassmorphism */
     --glass-bg: rgba(15, 23, 42, 0.85);
     --glass-border: rgba(255, 255, 255, 0.1);

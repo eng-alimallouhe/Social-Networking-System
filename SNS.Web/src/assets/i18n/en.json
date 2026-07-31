@@ -15,12 +15,27 @@
             "Settings": {
                 "Title": "Account Settings",
                 "Home": "Account Home",
+                "Home_Desc": "Overview of your account.",
                 "Personal_Info": "Personal Information",
+                "Personal_Info_Desc": "Manage your personal details.",
                 "Security_Settings": "Security Settings",
+                "Security_Settings_Desc": "Manage your security settings.",
                 "Sessions": "Sessions & Sign-in",
+                "Sessions_Desc": "Manage your active sessions.",
                 "Password_Management": "Password Management",
+                "Password_Management_Desc": "Change or reset your password.",
                 "Archive": "Account Archive",
-                "Search": "Search for any settings"
+                "Archive_Desc": "Download or delete your data.",
+                "Search": "Search for any settings",
+                "Search_Placeholder": "Search settings...",
+                "Recent": "Recent Settings",
+                "No_Results": "No results found",
+                "No_Results_Desc": "Try different keywords",
+                "Category": {
+                    "Account": "Account",
+                    "Security": "Security",
+                    "Data": "Data"
+                }
             }
         },
         "Menu": {
@@ -205,7 +220,8 @@
             "Sections": {
                 "Authentication": "Authentication",
                 "Registration": "Registration",
-                "DemoPages": "Demo Pages"
+                "DemoPages": "Demo Pages",
+                "AccountSettings": "Account Settings"
             },
             "Pages": {
                 "Login": "Password Login",

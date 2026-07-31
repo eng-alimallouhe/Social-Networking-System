@@ -7,7 +7,12 @@ import {
     LucideLayoutDashboard,
     LucideKeyRound,
     LucideSmartphone,
-    LucideShieldCheck
+    LucideShieldCheck,
+    LucideIdCard,
+    LucideFingerprintPattern,
+    LucideShieldPlus,
+    LucideArchive,
+    LucideHouse
 } from '@lucide/angular';
 import { DemoDataService } from './services/demo-data.service';
 
@@ -96,6 +101,47 @@ export const DEMO_CONFIG: DemoSection[] = [
                 descriptionKey: 'Demo.Dashboard.Pages.Dashboard_Desc',
                 route: '/demo/dashboard',
                 icon: LucideLayoutDashboard
+            }
+        ]
+    },
+    {
+        titleKey: 'Demo.Dashboard.Sections.AccountSettings',
+        pages: [
+            {
+                titleKey: 'App.Layout.Settings.Home',
+                descriptionKey: 'App.Layout.Settings.Home_Desc',
+                route: '/account-settings',
+                icon: LucideHouse
+            },
+            {
+                titleKey: 'App.Layout.Settings.Personal_Info',
+                descriptionKey: 'App.Layout.Settings.Personal_Info_Desc',
+                route: '/account-settings/personal-information',
+                icon: LucideIdCard
+            },
+            {
+                titleKey: 'App.Layout.Settings.Security_Settings',
+                descriptionKey: 'App.Layout.Settings.Security_Settings_Desc',
+                route: '/account-settings/security-settings',
+                icon: LucideFingerprintPattern
+            },
+            {
+                titleKey: 'App.Layout.Settings.Sessions',
+                descriptionKey: 'App.Layout.Settings.Sessions_Desc',
+                route: '/account-settings/sessions',
+                icon: LucideShieldPlus
+            },
+            {
+                titleKey: 'App.Layout.Settings.Password_Management',
+                descriptionKey: 'App.Layout.Settings.Password_Management_Desc',
+                route: '/account-settings/password-management',
+                icon: LucideKeyRound
+            },
+            {
+                titleKey: 'App.Layout.Settings.Archive',
+                descriptionKey: 'App.Layout.Settings.Archive_Desc',
+                route: '/account-settings/archive',
+                icon: LucideArchive
             }
         ]
     }

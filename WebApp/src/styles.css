@@ -224,7 +224,7 @@ body {
     color: var(--text-main);
     transition: var(--transition-base);
     width: 100vw;
-    height: 100vh;
+    min-height: 100vh;
     font-display: swap;
     overflow-x: hidden;
 }

@@ -2,25 +2,6 @@
     <form class="login-form" [formGroup]="registerForm" (ngSubmit)="onSubmit()" autocomplete="off">
         <h2>{{ 'Identity.Users.Registration.Title' | translate }}</h2>
 
-        <!-- Username -->
-        <div class="form-group">
-            <label for="username">{{ 'Identity.Users.Registration.Username' | translate }}</label>
-            <div class="input-wrapper">
-                <input type="text" id="username" formControlName="username" autocomplete="off"
-                    placeholder="{{ 'Identity.Users.Registration.Username_Placeholder' | translate }}" required />
-                <svg class="fluent-icon" lucideSquareUserRound aria-hidden="true"></svg>
-            </div>
-            <div *ngIf="registerForm.get('username')?.invalid && (registerForm.get('username')?.touched || registerForm.get('username')?.dirty)"
-                class="error-message">
-                <span *ngIf="registerForm.get('username')?.hasError('required')">
-                    {{ 'Shared.Errors.Username_Required' | translate }}
-                </span>
-                <span *ngIf="registerForm.get('username')?.hasError('minlength')">
-                    {{ 'Shared.Errors.Username_MinLength' | translate }}
-                </span>
-            </div>
-        </div>
-
         <!-- Email -->
         <div class="form-group">
             <label for="email">{{ 'Identity.Users.Registration.Email' | translate }}</label>

@@ -11,7 +11,6 @@ export const IdentityRoutes: Routes = [
     },
     {
         path: '',
-        redirectTo: 'auth/login',
-        pathMatch: 'full'
+        loadChildren: () => import('../account-settings/routes/account-settings.routes').then(m => m.AccountSettingsRoutes)
     }
 ];

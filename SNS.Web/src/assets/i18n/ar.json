@@ -1,4 +1,33 @@
 {
+  "App": {
+    "Layout": {
+      "Settings": {
+        "Title": "إعدادات الحساب",
+        "Home": "الرئيسية",
+        "Home_Desc": "نظرة عامة على حسابك.",
+        "Personal_Info": "المعلومات الشخصية",
+        "Personal_Info_Desc": "إدارة تفاصيلك الشخصية.",
+        "Security_Settings": "إعدادات الأمان",
+        "Security_Settings_Desc": "إدwارة إعدادات الأمان الخاصة بك.",
+        "Sessions": "الجلسات وتسجيل الدخول",
+        "Sessions_Desc": "إدارة الجلسات النشطة.",
+        "Password_Management": "إدارة كلمة المرور",
+        "Password_Management_Desc": "تغيير أو إعادة ضبط كلمة المرور.",
+        "Archive": "أرشيف الحساب",
+        "Archive_Desc": "تنزيل أو حذف بياناتك.",
+        "Search": "ابحث عن أي إعدادات",
+        "Search_Placeholder": "ابحث في الإعدادات...",
+        "Recent": "الإعدادات الأخيرة",
+        "No_Results": "لم يتم العثور على نتائج",
+        "No_Results_Desc": "جرب كلمات مفتاحية مختلفة",
+        "Category": {
+          "Account": "الحساب",
+          "Security": "الأمان",
+          "Data": "البيانات"
+        }
+      }
+    }
+  },
   "Identity": {
     "Security_Sessions": {
       "Login": {
@@ -65,7 +94,8 @@
       "Sections": {
         "Authentication": "المصادقة",
         "Registration": "التسجيل",
-        "DemoPages": "صفحات العرض التجريبي"
+        "DemoPages": "صفحات العرض التجريبي",
+        "AccountSettings": "إعدادات الحساب"
       },
       "Pages": {
         "Login": "تسجيل الدخول بكلمة المرور",

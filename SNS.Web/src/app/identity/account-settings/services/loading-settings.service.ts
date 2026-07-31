@@ -1,5 +1,5 @@
 import { inject, Injectable, signal } from "@angular/core";
-import { PageService } from "../../../../shared/services/page.service";
+import { PageService } from "../../../shared/services/page.service";
 
 @Injectable({ providedIn: 'root' })
 export class LoadingSettingsService {

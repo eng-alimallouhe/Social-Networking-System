@@ -3,6 +3,11 @@ import { Routes } from '@angular/router';
 export const routes: Routes = [
     {
         path: '',
+        redirectTo: 'demo/role-switcher',
+        pathMatch: 'full'
+    },
+    {
+        path: '',
         loadChildren: () => import('./identity/routes/identity.routes').then(m => m.IdentityRoutes)
     },
     {

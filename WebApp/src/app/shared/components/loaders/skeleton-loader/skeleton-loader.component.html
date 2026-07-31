@@ -1,4 +1,5 @@
 <div class="skeleton-container">
+  @if (type === SkeletonType.AccountOnPhone){
   <div class="account-phone-skeleton">
     <div class="skeleton-avatar skeleton-pulse"></div>
     <div class="skeleton-info">
@@ -6,6 +7,7 @@
       <div class="skeleton-line skeleton-line--email skeleton-pulse"></div>
     </div>
   </div>
+  }
 
 
   @if (type === SkeletonType.AccountOnDesktop) {
@@ -28,7 +30,3 @@
   </div>
   }
 </div>
-
-<p>type = {{ type }}</p>
-<p>enum = {{ SkeletonType.AccountOnPhone }}</p>
-<p>equals = {{ type === SkeletonType.AccountOnPhone }}</p>

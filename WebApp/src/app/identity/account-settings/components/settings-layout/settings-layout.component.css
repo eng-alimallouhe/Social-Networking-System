@@ -73,18 +73,17 @@
 
 .settings-wrapper {
     width: 100%;
-    min-height: 100%;
-    padding-top: var(--mini-nav-height);
+    height: calc(100% - var(--mini-nav-height));
+    margin: var(--mini-nav-height) auto 2rem auto;
     display: flex;
     flex-direction: column;
     gap: 2rem;
-    margin-bottom: 3rem;
 }
 
 .sidebar-menu {
     display: flex;
     flex-direction: column;
-    width: 100%;
+    width: var(spa);
     height: 100%;
     padding: 10px 15px;
     gap: 1rem;
@@ -254,7 +253,7 @@ app-skeleton-loader {
     display: none;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 991px) {
     .settings-wrapper {
         flex-direction: row;
         padding: var(--mini-nav-height) 0.5rem;
@@ -264,6 +263,9 @@ app-skeleton-loader {
 
     .sidebar-menu {
         width: var(--sidebar-width);
+        position: fixed;
+        top: var(--mini-nav-height);
+        left: 1rem;
         flex-shrink: 0;
     }
 
