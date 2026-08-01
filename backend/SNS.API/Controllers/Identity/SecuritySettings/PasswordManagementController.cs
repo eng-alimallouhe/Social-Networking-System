@@ -1,3 +1,4 @@
+using Asp.Versioning;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -16,7 +17,8 @@ namespace SNS.API.Controllers.Identity.SecuritySettings;
 /// <summary>
 /// Handles user password changes, forgot password initiation, verification code validation, and password reset operations.
 /// </summary>
-[Route("api/identity/password-management/[controller]")]
+[Route("api/v{version:apiVersion}/identity/password-management/[controller]")]
+[ApiVersion("1.0")]
 [ApiController]
 [Produces("application/json")]
 public class PasswordManagementController : ControllerBase
@@ -40,6 +42,7 @@ public class PasswordManagementController : ControllerBase
     /// <response code="401">The user is not authenticated.</response>
     [Authorize]
     [HttpPost("change-password")]
+    [MapToApiVersion("1.0")]
     [Consumes("application/json")]
     [ProducesResponseType(typeof(AuthTokensDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -57,6 +60,7 @@ public class PasswordManagementController : ControllerBase
     /// <response code="400">Invalid user identifier payload.</response>
     /// <response code="404">No matching user account was found.</response>
     [HttpPost("forgot-password")]
+    [MapToApiVersion("1.0")]
     [Consumes("application/json")]
     [ProducesResponseType(typeof(PasswordResetResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -73,6 +77,7 @@ public class PasswordManagementController : ControllerBase
     /// <response code="200">Returns updated reset challenge details <see cref="PasswordResetResponse"/>.</response>
     /// <response code="400">Password reset session is invalid or expired.</response>
     [HttpPost("resend-password-reset-verification-code")]
+    [MapToApiVersion("1.0")]
     [Consumes("application/json")]
     [ProducesResponseType(typeof(PasswordResetResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -88,6 +93,7 @@ public class PasswordManagementController : ControllerBase
     /// <response code="200">OTP code verified successfully, returns final reset token <see cref="VerifyResetPasswordResponseDto"/>.</response>
     /// <response code="400">The OTP verification code is invalid or expired.</response>
     [HttpPost("verify-reset-password")]
+    [MapToApiVersion("1.0")]
     [Consumes("application/json")]
     [ProducesResponseType(typeof(VerifyResetPasswordResponseDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -103,6 +109,7 @@ public class PasswordManagementController : ControllerBase
     /// <response code="200">Password reset complete, returns authentication tokens <see cref="AuthTokensDto"/>.</response>
     /// <response code="400">The reset token is invalid or new password violates password complexity rules.</response>
     [HttpPost("reset-password")]
+    [MapToApiVersion("1.0")]
     [Consumes("application/json")]
     [ProducesResponseType(typeof(AuthTokensDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]

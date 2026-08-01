@@ -1,3 +1,4 @@
+using Asp.Versioning;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using SNS.API.Extensions;
@@ -13,7 +14,8 @@ namespace SNS.API.Controllers.Identity.Users;
 /// <summary>
 /// Handles administrative management actions for user accounts, roles, and administrative analytics.
 /// </summary>
-[Route("api/identity/users/[controller]")]
+[Route("api/v{version:apiVersion}/identity/users/[controller]")]
+[ApiVersion("1.0")]
 [ApiController]
 [Produces("application/json")]
 public class AdminActionsController : ControllerBase
@@ -38,6 +40,7 @@ public class AdminActionsController : ControllerBase
     /// <response code="403">The caller does not have administrator authorization.</response>
     /// <response code="404">The target user account was not found.</response>
     [HttpPost("change-user-role")]
+    [MapToApiVersion("1.0")]
     [Consumes("application/json")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -62,6 +65,7 @@ public class AdminActionsController : ControllerBase
     /// <response code="403">The caller lacks administrator authorization.</response>
     /// <response code="404">The target user account was not found.</response>
     [HttpPost("permanently-ban-user")]
+    [MapToApiVersion("1.0")]
     [Consumes("application/json")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -86,6 +90,7 @@ public class AdminActionsController : ControllerBase
     /// <response code="403">The caller lacks administrator authorization.</response>
     /// <response code="404">The target user account was not found.</response>
     [HttpPost("unban-user")]
+    [MapToApiVersion("1.0")]
     [Consumes("application/json")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -109,6 +114,7 @@ public class AdminActionsController : ControllerBase
     /// <response code="403">The caller lacks administrator authorization.</response>
     /// <response code="404">The target user account was not found.</response>
     [HttpGet("user-activity-analytics")]
+    [MapToApiVersion("1.0")]
     [Consumes("application/json")]
     [ProducesResponseType(typeof(UserActivityAnalyticsResult), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -131,6 +137,7 @@ public class AdminActionsController : ControllerBase
     /// <response code="403">The caller lacks administrator authorization.</response>
     /// <response code="404">The target user account was not found.</response>
     [HttpGet("user-details")]
+    [MapToApiVersion("1.0")]
     [Consumes("application/json")]
     [ProducesResponseType(typeof(UserDetailsDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]

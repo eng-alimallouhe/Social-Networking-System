@@ -1,3 +1,4 @@
+using Asp.Versioning;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using SNS.API.Extensions;
@@ -12,7 +13,8 @@ namespace SNS.API.Controllers.Identity.Users;
 /// <summary>
 /// Handles user account registration, verification code dispatch, and email verification completion.
 /// </summary>
-[Route("api/[controller]")]
+[Route("api/v{version:apiVersion}/[controller]")]
+[ApiVersion("1.0")]
 [ApiController]
 [Produces("application/json")]
 public class RegisterationController : ControllerBase
@@ -35,6 +37,7 @@ public class RegisterationController : ControllerBase
     /// <response code="400">The registration details are invalid.</response>
     /// <response code="409">The email address or username is already registered.</response>
     [HttpPost]
+    [MapToApiVersion("1.0")]
     [Consumes("application/json")]
     [ProducesResponseType(typeof(RegisterResponseDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -52,6 +55,7 @@ public class RegisterationController : ControllerBase
     /// <response code="400">Account is already verified or request parameters are invalid.</response>
     /// <response code="404">No matching user account was found.</response>
     [HttpPost("resend-verify-code")]
+    [MapToApiVersion("1.0")]
     [Consumes("application/json")]
     [ProducesResponseType(typeof(RegisterResponseDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -68,6 +72,7 @@ public class RegisterationController : ControllerBase
     /// <response code="200">User account verified successfully <see cref="RegisterResponseDto"/>.</response>
     /// <response code="400">The verification code is invalid or expired.</response>
     [HttpPost("verify-user")]
+    [MapToApiVersion("1.0")]
     [Consumes("application/json")]
     [ProducesResponseType(typeof(RegisterResponseDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]

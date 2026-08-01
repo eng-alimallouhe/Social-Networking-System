@@ -1,8 +1,8 @@
+using Asp.Versioning;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SNS.API.Extensions;
-using SNS.Application.Identity.SecuritySettings.MfaManagement.Commands.ChangeMfaProvider;
 using SNS.Application.Identity.SecuritySettings.Recovery.Commands.GenerateRecoveryCodes;
 using SNS.Application.Identity.SecuritySettings.Recovery.Commands.RecoverAccountBySecurityCode;
 using SNS.Application.Identity.SecuritySettings.Recovery.Commands.RevokeRecoveryCodes;
@@ -14,7 +14,8 @@ namespace SNS.API.Controllers.Identity.SecuritySettings;
 /// <summary>
 /// Handles account recovery code generation, revocation, and account recovery authentication workflows.
 /// </summary>
-[Route("api/identity/security-settings/[controller]")]
+[Route("api/v{version:apiVersion}/identity/security-settings/[controller]")]
+[ApiVersion("1.0")]
 [ApiController]
 [Produces("application/json")]
 public class RecoveryController : ControllerBase
@@ -36,9 +37,10 @@ public class RecoveryController : ControllerBase
     /// <response code="401">The user is not authenticated.</response>
     [Authorize]
     [HttpGet("generate-recovery-codes")]
+    [MapToApiVersion("1.0")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<ActionResult<Result>> GenerateRecoveyrCodesAsync()
+    public async Task<ActionResult<Result>> GenerateRecoveryCodesAsync()
     {
         return (await _mediator.Send(new GenerateRecoveryCodesCommand())).ToActionResult(this);
     }
@@ -53,6 +55,7 @@ public class RecoveryController : ControllerBase
     /// <response code="401">The user is not authenticated.</response>
     [Authorize]
     [HttpPost("revoke-recovery-codes")]
+    [MapToApiVersion("1.0")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult<Result>> RevokeRecoveyrCodesAsync()
@@ -71,6 +74,7 @@ public class RecoveryController : ControllerBase
     /// <response code="400">The emergency recovery code is invalid or has already been used.</response>
     /// <response code="404">No matching user account was found.</response>
     [HttpPost("recover-account-by-recovery-code")]
+    [MapToApiVersion("1.0")]
     [Consumes("application/json")]
     [ProducesResponseType(typeof(AuthTokensDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
