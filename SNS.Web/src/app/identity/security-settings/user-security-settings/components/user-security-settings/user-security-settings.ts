@@ -4,11 +4,10 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { LucideShield, LucideMail, LucideKey, LucideCheckCircle2, LucideXCircle, LucideChevronRight, LucideScanQrCode } from '@lucide/angular';
+import { LucideShield, LucideMail, LucideKey, LucideCheckCircle2, LucideXCircle, LucideChevronRight, LucideScanQrCode, LucideMonitor, LucideClock } from '@lucide/angular';
 import { UserSecuritySettingsService } from '../../services/user-security-settings.service';
 import { LoadingSettingsService } from '../../../shared/services/loading-settings.service';
 import { MfaProvider } from '../../../../shared/contracts/mfa-provider.enum';
-import { CommunicationMethod } from '../../../../shared/contracts/communication-method.enum';
 import { AppConfirmDialog } from '../../../../../shared/components/app-confirm-dialog/app-confirm-dialog';
 import { AppSelect, SelectOption } from '../../../../../shared/components/app-select/app-select';
 import { map, finalize } from 'rxjs';
@@ -24,6 +23,8 @@ import { map, finalize } from 'rxjs';
     LucideCheckCircle2,
     LucideXCircle,
     LucideChevronRight,
+    LucideMonitor,
+    LucideClock,
     AppConfirmDialog,
     AppSelect,
     FormsModule,
@@ -39,19 +40,14 @@ export class UserSecuritySettings implements OnInit {
   private translateService = inject(TranslateService);
   private router = inject(Router);
 
-
   selectedMfaProvider = signal<MfaProvider | null>(null);
-  selectedMethod = signal<CommunicationMethod | null>(null);
 
   MfaProvider = MfaProvider;
-  CommunicationMethod = CommunicationMethod;
 
   showConfirmDisable = signal(false);
   isUpdatingProvider = signal(false);
-  isUpdatingMethod = signal(false);
 
   providerOptions: SelectOption[] = [];
-  communicationMethodOptions: SelectOption[] = [];
 
   securitySettingsResource = rxResource({
     stream: () => {
@@ -68,24 +64,20 @@ export class UserSecuritySettings implements OnInit {
     effect(() => {
       const settings = this.securitySettingsResource.value();
       if (settings) {
-        this.selectedMfaProvider.set(settings.mfaProvider);
-        this.selectedMethod.set(settings.defaultCommunicationMethod);
+        this.selectedMfaProvider.set(settings.mfaProvider as unknown as MfaProvider); // wait, the dto returns string now
+        // wait, let me check DTO: `mfaProvider: string;`. 
+        // Previously it might have been an enum? I'll set it as string.
       }
     }, { allowSignalWrites: true });
   }
 
   ngOnInit() {
     this.providerOptions = [
-      { value: MfaProvider.None, label: this.translateService.instant('Identity.Security_Settings.Security_Settings_Page.Providers.0') },
-      { value: MfaProvider.RecoveryEmail, label: this.translateService.instant('Identity.Security_Settings.Security_Settings_Page.Providers.1') },
-      { value: MfaProvider.Email, label: this.translateService.instant('Identity.Security_Settings.Security_Settings_Page.Providers.2') },
-      { value: MfaProvider.AuthenticatorApp, label: this.translateService.instant('Identity.Security_Settings.Security_Settings_Page.Providers.3') },
-      { value: MfaProvider.Passkey, label: this.translateService.instant('Identity.Security_Settings.Security_Settings_Page.Providers.4') }
-    ];
-
-    this.communicationMethodOptions = [
-      { value: CommunicationMethod.Email, label: this.translateService.instant('Identity.Security_Settings.Security_Settings_Page.Methods.0') },
-      { value: CommunicationMethod.RecoveryEmail, label: this.translateService.instant('Identity.Security_Settings.Security_Settings_Page.Methods.1') }
+      { value: 'None', label: this.translateService.instant('Identity.Security_Settings.Security_Settings_Page.Providers.0') },
+      { value: 'RecoveryEmail', label: this.translateService.instant('Identity.Security_Settings.Security_Settings_Page.Providers.1') },
+      { value: 'Email', label: this.translateService.instant('Identity.Security_Settings.Security_Settings_Page.Providers.2') },
+      { value: 'AuthenticatorApp', label: this.translateService.instant('Identity.Security_Settings.Security_Settings_Page.Providers.3') },
+      { value: 'Passkey', label: this.translateService.instant('Identity.Security_Settings.Security_Settings_Page.Providers.4') }
     ];
   }
 
@@ -116,7 +108,7 @@ export class UserSecuritySettings implements OnInit {
   }
 
   changeMfaProvider(newProvider: any) {
-    const providerVal: MfaProvider = Number(newProvider);
+    const providerVal: any = newProvider;
     this.isUpdatingProvider.set(true);
     this.loadingService.show();
 
@@ -140,35 +132,6 @@ export class UserSecuritySettings implements OnInit {
         },
         error: (err) => {
           this.selectedMfaProvider.set(oldProvider);
-        }
-      });
-  }
-
-  changeDefaultCommunicationMethod(newMethod: any) {
-    const methodVal: CommunicationMethod = Number(newMethod);
-    this.isUpdatingMethod.set(true);
-    this.loadingService.show();
-
-    const oldMethod = this.selectedMethod();
-    this.selectedMethod.set(methodVal);
-
-    this.securityService.changeDefaultCommunicationMethod({ newCommunicationMethod: methodVal })
-      .pipe(
-        finalize(() => {
-          this.isUpdatingMethod.set(false);
-          this.loadingService.hide();
-        })
-      )
-      .subscribe({
-        next: (res) => {
-          if (res.isSuccess) {
-            this.refreshSettings();
-          } else {
-            this.selectedMethod.set(oldMethod);
-          }
-        },
-        error: (err) => {
-          this.selectedMethod.set(oldMethod);
         }
       });
   }

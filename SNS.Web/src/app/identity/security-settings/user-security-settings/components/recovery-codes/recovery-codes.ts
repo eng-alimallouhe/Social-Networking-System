@@ -27,9 +27,10 @@ export class RecoveryCodes implements OnInit {
   private securityService = inject(UserSecuritySettingsService);
   private loadingService = inject(LoadingSettingsService);
 
-  activeCodesCount = signal<number>(0);
+  unusedCodesCount = signal<number>(0);
+  usedCodesCount = signal<number>(0);
   recoveryCodes = signal<string[]>([]);
-  codesExist = computed(() => this.activeCodesCount() > 0);
+  codesExist = computed(() => this.unusedCodesCount() > 0 || this.usedCodesCount() > 0);
   
   showRegenerateConfirm = signal(false);
 
@@ -44,7 +45,8 @@ export class RecoveryCodes implements OnInit {
       .subscribe({
         next: (res) => {
           if (res.isSuccess && res.value) {
-            this.activeCodesCount.set(res.value.activeRecoveryCodesCount);
+            this.unusedCodesCount.set(res.value.unusedRecoveryCodesCount);
+            this.usedCodesCount.set(res.value.usedRecoveryCodesCount);
             // In a future task, if the backend returned the active codes, we would set them here.
           }
         }

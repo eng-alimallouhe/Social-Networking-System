@@ -71,7 +71,7 @@ public class InitiateAuthenticatorCommandHandler
             return Result<AuthenticatorSetupDto>.Failure(ResourceStatusCode.NotFound);
         }
 
-        string secretKey = _generatorService.GenerateSecureString(16);
+        string secretKey = GenerateBase32Secret(16);
 
         string? accountName = securitySettings.RecoveryEmail;
 
@@ -96,5 +96,21 @@ public class InitiateAuthenticatorCommandHandler
         return Result<AuthenticatorSetupDto>.Success(
             new AuthenticatorSetupDto(secretKey, qrCodeUri),
             OperationStatusCode.Success);
+    }
+
+    private string GenerateBase32Secret(int length)
+    {
+        const string validChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
+
+        var random = new Random();
+
+        var chars = new char[length];
+
+        for (int i = 0; i < length; i++)
+        {
+            chars[i] = validChars[random.Next(validChars.Length)];
+        }
+
+        return new string(chars);
     }
 }

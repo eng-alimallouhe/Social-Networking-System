@@ -125,7 +125,7 @@
                         <span class="item-title">{{
                             'Identity.Security_Settings.Security_Settings_Page.Recovery.Codes_Count' | translate
                             }}</span>
-                        <span class="item-sub code-count-badge">{{ settings.activeRecoveryCodesCount }}</span>
+                        <span class="item-sub code-count-badge">{{ settings.unusedRecoveryCodesCount }}</span>
                     </div>
                 </div>
                 <div class="item-right-chevron">
@@ -135,29 +135,36 @@
         </div>
     </div>
 
-    <!-- Card 3: Communication Preferences Section -->
+    <!-- Card 3: Account Activity & Devices -->
     <div class="security-card">
         <div class="card-header-section">
-            <h2>{{ 'Identity.Security_Settings.Security_Settings_Page.Preferences.Header' | translate }}</h2>
+            <h2>Account Activity</h2>
         </div>
 
         <div class="card-content">
-            <!-- Row 1: Default Communication Method -->
+            <!-- Row 1: Last Password Change -->
             <div class="settings-item-row">
                 <div class="item-left">
                     <div class="icon-rapper preference-icon">
-                        <svg lucideKey></svg>
+                        <svg lucideClock></svg>
                     </div>
                     <div class="item-details">
-                        <span class="item-title">{{
-                            'Identity.Security_Settings.Security_Settings_Page.Preferences.Default_Method' | translate
-                            }}</span>
+                        <span class="item-title">Last Password Change</span>
+                        <span class="item-sub">{{ settings.lastPasswordChange | date:'medium' }}</span>
                     </div>
                 </div>
-                <div class="item-right-select">
-                    <app-select [ngModel]="selectedMethod()" (ngModelChange)="changeDefaultCommunicationMethod($event)"
-                        [disabled]="isUpdatingMethod()" [options]="communicationMethodOptions">
-                    </app-select>
+            </div>
+
+            <!-- Row 2: Registered Devices -->
+            <div class="settings-item-row">
+                <div class="item-left">
+                    <div class="icon-rapper preference-icon">
+                        <svg lucideMonitor></svg>
+                    </div>
+                    <div class="item-details">
+                        <span class="item-title">Registered Devices</span>
+                        <span class="item-sub">{{ settings.totalDevicesCount }} Active Devices</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -180,6 +187,7 @@
                         <span class="item-title">{{
                             'Identity.Security_Settings.Security_Settings_Page.Passkeys_Page.Subtitle' | translate
                             }}</span>
+                        <span class="item-sub code-count-badge">{{ settings.passkeysCount }} Registered</span>
                     </div>
                 </div>
                 <div class="item-right-chevron">

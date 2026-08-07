@@ -8,6 +8,11 @@
         <h2>{{ 'Identity.Security_Settings.Security_Settings_Page.Recovery.Header' | translate }}</h2>
         <p class="codes-instruction">Store these codes in a safe place. They can be used to access your account if you lose your MFA device.</p>
         
+        <p class="codes-instruction">
+            <strong>Used Codes:</strong> {{ usedCodesCount() }} <br>
+            <strong>Unused Codes:</strong> {{ unusedCodesCount() }}
+        </p>
+
         <div class="codes-grid">
             <div class="code-item" *ngFor="let code of recoveryCodes()">
                 {{ code }}

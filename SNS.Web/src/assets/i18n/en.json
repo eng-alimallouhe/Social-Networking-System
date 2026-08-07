@@ -274,7 +274,19 @@
                 },
                 "Passkeys_Page": {
                     "Title": "Passkey Management",
-                    "Subtitle": "Manage your registered WebAuthn passkeys here."
+                    "Subtitle": "Manage your registered WebAuthn passkeys here.",
+                    "Add_Passkey": "Add Passkey",
+                    "No_Passkeys": "You don't have any registered passkeys yet.",
+                    "Register_Passkey": "To register a passkey, click the 'Add Passkey' button and follow the instructions.",
+                    "Supported_Devices": "Passkeys work on your phone, tablet, and computer",
+                    "Login_Faster": "Login faster and more securely without a password",
+                    "Device_Name": "Device Name",
+                    "Device_Name_Placeholder": "Enter your device name",
+                    "Registering": "Registering...",
+                    "Registration_Failed": "Registration failed",
+                    "Delete_Confirm": "Are you sure you want to delete this passkey?",
+                    "Enter_Device_Name": "Enter Device Name",
+                    "Registration_Success": "Passkey registered successfully"
                 }
             },
             "Search": {}
@@ -317,7 +329,8 @@
         "Actions": {
             "Continue": "Continue",
             "Close": "Close",
-            "Cancel": "Cancel"
+            "Cancel": "Cancel",
+            "Back": "Back"
         }
     },
     "Status_Codes": {

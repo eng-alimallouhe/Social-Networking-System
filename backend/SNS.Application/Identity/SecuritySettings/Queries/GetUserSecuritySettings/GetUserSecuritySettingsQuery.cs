@@ -44,7 +44,7 @@ public sealed class GetUserSecuritySettingsQueryHandler : IQueryHandler<GetUserS
             .Select(uss => new 
             {
                 IsMfaEnabled = uss.IsMfaEnabled,
-                IsAuthenticatorLinked = uss.IsAuthenticatorLinked,
+                IsAuthenticatorLinked = uss.AuthenticatorSecretKey != null,
                 MfaProvider = uss.MfaProvider,
                 RecoveryEmail = uss.RecoveryEmail,
                 DefaultCommunicationMethod = uss.DefaultCommunicationMethod,

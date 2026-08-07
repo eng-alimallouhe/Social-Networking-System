@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../../environments/environment.development';
 import { Result } from '../../../../shared/contracts/result';
-import { UserSecuritySettingsDto } from '../contracts/user-security-settings.dto';
+import { UserSecurityDetailsDto } from '../contracts/user-security-details.dto';
 import { AuthenticatorSetupDto } from '../contracts/authenticator-setup.dto';
 import { ChangeMfaProviderCommand } from '../contracts/change-mfa-provider-request.dto';
 import { EnableMFACommand } from '../contracts/enable-mfa-request.dto';
@@ -15,6 +15,8 @@ import { ResendRecoveryEmailChangeVerificationCodeCommand } from '../contracts/r
 import { IdentifierChangeResponseDto } from '../../email-change/contracts/identifier-change-response.dto';
 import { PasskeyDto } from '../contracts/passkey.dto';
 import { RemovePasskeyCommand } from '../contracts/remove-passkey-request.dto';
+import { InitiatePasskeyRegistrationCommand, CredentialCreateOptionsDto } from '../contracts/initiate-passkey-registration.dto';
+import { CompletePasskeyRegistrationCommand } from '../contracts/complete-passkey-registration.dto';
 
 @Injectable({
   providedIn: 'root',
@@ -23,8 +25,8 @@ export class UserSecuritySettingsService {
   private apiUrl = environment.apiUrl + 'identity/security-settings/MfaManagement';
   private http = inject(HttpClient);
 
-  public getSecuritySettings(): Observable<Result<UserSecuritySettingsDto>> {
-    return this.http.get<Result<UserSecuritySettingsDto>>(`${this.apiUrl}/user-security-settings`);
+  public getSecuritySettings(): Observable<Result<UserSecurityDetailsDto>> {
+    return this.http.get<Result<UserSecurityDetailsDto>>(`${this.apiUrl}/user-security-settings`);
   }
 
   public changeMfaProvider(request: ChangeMfaProviderCommand): Observable<Result> {
@@ -69,5 +71,13 @@ export class UserSecuritySettingsService {
 
   public removePasskey(request: RemovePasskeyCommand): Observable<Result> {
     return this.http.post<Result>(`${this.apiUrl}/remove-passkey`, request);
+  }
+
+  public initiatePasskeyRegistration(request: InitiatePasskeyRegistrationCommand): Observable<Result<CredentialCreateOptionsDto>> {
+    return this.http.post<Result<CredentialCreateOptionsDto>>(`${this.apiUrl}/initiate-passkey-registration`, request);
+  }
+
+  public completePasskeyRegistration(request: CompletePasskeyRegistrationCommand): Observable<Result> {
+    return this.http.post<Result>(`${this.apiUrl}/complete-passkey-registration`, request);
   }
 }
