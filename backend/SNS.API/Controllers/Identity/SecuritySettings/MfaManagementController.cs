@@ -13,6 +13,7 @@ using SNS.Application.Identity.SecuritySettings.MfaManagement.Commands.EnableMFA
 using SNS.Application.Identity.SecuritySettings.MfaManagement.Commands.InitialRecoverEmailChange;
 using SNS.Application.Identity.SecuritySettings.MfaManagement.Commands.InitiateAuthenticatorRegistration;
 using SNS.Application.Identity.SecuritySettings.MfaManagement.Commands.InitiatePasskeyRegistration;
+using SNS.Application.Identity.SecuritySettings.MfaManagement.Commands.RemoveAuthenticatorApp;
 using SNS.Application.Identity.SecuritySettings.MfaManagement.Commands.RemovePasskey;
 using SNS.Application.Identity.SecuritySettings.MfaManagement.Commands.VerifyRecoveryEmailChange;
 using SNS.Application.Identity.SecuritySettings.MfaManagement.DTOs;
@@ -269,5 +270,21 @@ public class MfaManagementController : ControllerBase
     public async Task<ActionResult<Result<IEnumerable<PasskeyDto>>>> GetUserSecuritySettingsAsync()
     {
         return (await _mediator.Send(new GetUserSecuritySettingsQuery())).ToActionResult(this);
+    }
+
+
+    /// <summary>
+    /// Check if the user has an authenticator app linked and remove it.
+    /// </summary>
+    /// <response code="200">Returns current security settings configuration.</response>
+    /// <response code="401">The user or his security settings is not found.</response>
+    /// <response code="401">The user is not authenticated.</response>
+    [HttpDelete("authenticator-app")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<Result>> RemoveAuthenticatorAsync()
+    {
+        return (await _mediator.Send(new RemoveAuthenticatorAppCommand())).ToActionResult(this);
     }
 }

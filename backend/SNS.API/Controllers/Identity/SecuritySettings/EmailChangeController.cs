@@ -79,7 +79,7 @@ public class EmailChangeController : ControllerBase
     /// <response code="200">Returns fresh authentication tokens <see cref="AuthTokensDto"/>.</response>
     /// <response code="400">The verification code is invalid or expired.</response>
     /// <response code="401">The user is not authenticated.</response>
-    [HttpPost("verify-email-change")]
+    [HttpPut("verify-email-change")]
     [Consumes("application/json")]
     [ProducesResponseType(typeof(AuthTokensDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]

@@ -82,6 +82,18 @@ public class UserSecuritySettings : Entity, IHardDeletable
         return newSecret;
     }
 
+    public void RemoveAuthenticator()
+    {
+        if (string.IsNullOrEmpty(this.AuthenticatorSecretKey))
+            throw new InvalidOperationException("Cannot remove authenticator without setup.");
+
+        if (this.MfaProvider == MfaProvider.None)
+        {
+            this.MfaProvider = MfaProvider.None;
+        }
+        this.AuthenticatorSecretKey = string.Empty;
+    }
+
     public void ChangeMfaProvider(MfaProvider provider)
     {
         if (provider == MfaProvider.RecoveryEmail && string.IsNullOrEmpty(this.RecoveryEmail))
