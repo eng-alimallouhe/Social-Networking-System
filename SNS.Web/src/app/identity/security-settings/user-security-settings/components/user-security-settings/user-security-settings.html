@@ -71,11 +71,11 @@
                         <span class="item-title">{{
                             'Identity.Security_Settings.Security_Settings_Page.MFA.Authenticator_Linked' | translate
                             }}</span>
-                        <span class="badge" [class.enabled]="settings.isAuthenticatorLinked"
-                            [class.disabled]="!settings.isAuthenticatorLinked">
-                            <svg *ngIf="settings.isAuthenticatorLinked" lucideCheckCircle2 class="status-icon"></svg>
-                            <svg *ngIf="!settings.isAuthenticatorLinked" lucideXCircle class="status-icon"></svg>
-                            {{ (settings.isAuthenticatorLinked ?
+                        <span class="badge" [class.enabled]="settings.isAuthenticatorAppLinked"
+                            [class.disabled]="!settings.isAuthenticatorAppLinked">
+                            <svg *ngIf="settings.isAuthenticatorAppLinked" lucideCheckCircle2 class="status-icon"></svg>
+                            <svg *ngIf="!settings.isAuthenticatorAppLinked" lucideXCircle class="status-icon"></svg>
+                            {{ (settings.isAuthenticatorAppLinked ?
                             'Identity.Security_Settings.Security_Settings_Page.MFA.Linked' :
                             'Identity.Security_Settings.Security_Settings_Page.MFA.Not_Linked') | translate }}
                         </span>
@@ -161,7 +161,7 @@
                 </div>
             </div>
         </div>
-    </div>  
+    </div>
 
     <!-- Card 4: Passkeys Section -->
     <div class="security-card">
