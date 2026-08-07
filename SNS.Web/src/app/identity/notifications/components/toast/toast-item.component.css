@@ -1,5 +1,5 @@
 .toast {
-    width: var(--toast-width, 350px);
+    width: var(--toast-width);
     background: var(--glass-bg);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
@@ -76,10 +76,21 @@
     background: rgba(0, 0, 0, 0.2);
 }
 
-.toast.success .toast-icon { color: var(--success); }
-.toast.error .toast-icon { color: var(--error); }
-.toast.warning .toast-icon { color: var(--warning); }
-.toast.info .toast-icon { color: var(--info); }
+.toast.success .toast-icon {
+    color: var(--success);
+}
+
+.toast.error .toast-icon {
+    color: var(--error);
+}
+
+.toast.warning .toast-icon {
+    color: var(--warning);
+}
+
+.toast.info .toast-icon {
+    color: var(--info);
+}
 
 .toast-content {
     flex: 1;
@@ -142,10 +153,21 @@
     animation-fill-mode: forwards;
 }
 
-.toast.success .progress-bar { background-color: var(--success); }
-.toast.error .progress-bar { background-color: var(--error); }
-.toast.warning .progress-bar { background-color: var(--warning); }
-.toast.info .progress-bar { background-color: var(--info); }
+.toast.success .progress-bar {
+    background-color: var(--success);
+}
+
+.toast.error .progress-bar {
+    background-color: var(--error);
+}
+
+.toast.warning .progress-bar {
+    background-color: var(--warning);
+}
+
+.toast.info .progress-bar {
+    background-color: var(--info);
+}
 
 .toast:hover .progress-bar {
     animation-play-state: paused !important;
@@ -156,6 +178,7 @@
         transform: translateX(120%) scale(0.9);
         opacity: 0;
     }
+
     to {
         transform: translateX(0) scale(1);
         opacity: 1;
@@ -167,6 +190,7 @@
         transform: translateY(-120%) scale(0.9);
         opacity: 0;
     }
+
     to {
         transform: translateY(0) scale(1);
         opacity: 1;
@@ -178,6 +202,7 @@
         opacity: 1;
         transform: scale(1) translateX(0);
     }
+
     to {
         opacity: 0;
         transform: scale(0.9) translateX(20px);
@@ -185,14 +210,21 @@
 }
 
 @keyframes timer {
-    from { width: 100%; }
-    to { width: 0%; }
+    from {
+        width: 100%;
+    }
+
+    to {
+        width: 0%;
+    }
 }
 
 @media screen and (max-width: 480px) {
     .toast {
         animation: slideInTop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-        width: 100%;
+        width: 100% !important;
+        /* 👈 ضمان أخذ العرض كاملاً */
+        max-width: 100%;
         margin: 0;
         border-radius: var(--radius-md);
     }

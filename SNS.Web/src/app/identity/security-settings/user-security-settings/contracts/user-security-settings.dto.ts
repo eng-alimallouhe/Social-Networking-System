@@ -3,7 +3,7 @@ import { CommunicationMethod } from "../../../shared/contracts/communication-met
 
 export interface UserSecuritySettingsDto {
     isMfaEnabled: boolean;
-    isAuthenticatorLinked: boolean;
+    isAuthenticatorAppLinked: boolean;
     mfaProvider: MfaProvider | null;
     recoveryEmail: string | null;
     defaultCommunicationMethod: CommunicationMethod;

@@ -44,7 +44,7 @@ public sealed class GetUserSecurityDetailsQueryHandler : IQueryHandler<GetUserSe
                 u.LastPasswordChange,
                 IsMfaEnabled = u.UserSecuritySettings.IsMfaEnabled,
                 MfaProvider = u.UserSecuritySettings.MfaProvider.ToString(),
-                IsAuthenticatorAppLinked = u.UserSecuritySettings.IsAuthenticatorLinked,
+                IsAuthenticatorAppLinked = u.UserSecuritySettings.AuthenticatorSecretKey != null,
                 RecoveryEmail = u.UserSecuritySettings.RecoveryEmail,
                 PasskeysCount = u.Passkeys.Count(),
                 TotalDevicesCount = u.Devices.Count(),
