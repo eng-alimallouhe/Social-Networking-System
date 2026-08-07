@@ -43,8 +43,8 @@ export class DemoLayout implements OnDestroy {
 
   isOptionsMenuOpen = signal(false);
 
+  currentUrl = signal<string | null>(null);
 
-  // استخدام إشارة (Signal) لإدارة الحالة
   isDarkMode = signal<boolean>(false);
   showControls = false;
 

@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using SNS.Application.Abstractions.Common;
 using SNS.Application.Abstractions.Messaging;
 using SNS.Application.Identity.SecuritySettings.MfaManagement.DTOs;
 using SNS.Application.Identity.Shared.Abstractions;
@@ -20,21 +21,25 @@ public class InitiateAuthenticatorCommandHandler
     private readonly AppSettings _appSettings;
     private readonly IApplicationDbContext _dbContext;
     private readonly IRepository<UserSecuritySettings> _userSecuritySettingsRepo;
-    private readonly IUnitOfWork _unitOfWork;
     private readonly ICurrentUserService _currentUserService;
+    private readonly IUserCacheService _userCacheService;
+    private readonly IGeneratorService _generatorService;
+
 
     public InitiateAuthenticatorCommandHandler(
         IOptions<AppSettings> options,
         IApplicationDbContext dbContext,
         IRepository<UserSecuritySettings> userSecuritySettingsRepo,
-        IUnitOfWork unitOfWork,
-        ICurrentUserService currentUserService)
+        ICurrentUserService currentUserService,
+        IUserCacheService userCacheService,
+        IGeneratorService generatorService)
     {
         _appSettings = options.Value;
         _dbContext = dbContext;
         _userSecuritySettingsRepo = userSecuritySettingsRepo;
-        _unitOfWork = unitOfWork;
         _currentUserService = currentUserService;
+        _userCacheService = userCacheService;
+        _generatorService = generatorService;
     }
 
     public async Task<Result<AuthenticatorSetupDto>> Handle(
@@ -48,36 +53,39 @@ public class InitiateAuthenticatorCommandHandler
             return Result<AuthenticatorSetupDto>.Failure(OperationStatusCode.AuthenticationRequired);
         }
 
-        var securitySettings = await _userSecuritySettingsRepo
-            .GetSingleByExpressionAsync(s => s.UserId == userId.Value, cancellationToken);
+        var securitySettings = await _dbContext
+            .Users
+            .Where(s => s.Id == userId.Value)
+            .Select(s => new 
+            {
+                Id = s.Id,
+                UserId = s.Id,
+                UserName = s.UserName,
+                AuthenticatorSecretKey = s.UserSecuritySettings.AuthenticatorSecretKey,
+                RecoveryEmail = s.UserSecuritySettings.RecoveryEmail
+            })
+            .FirstOrDefaultAsync(cancellationToken);
 
         if (securitySettings == null)
         {
             return Result<AuthenticatorSetupDto>.Failure(ResourceStatusCode.NotFound);
         }
 
-        // ??? ????? ?????: ??? ??? ??????? ?????? ??????? ??????? ???? ????? ????? ??? Secret ????????
-        if (securitySettings.MfaProvider == MfaProvider.AuthenticatorApp)
+        if (!string.IsNullOrEmpty(securitySettings.AuthenticatorSecretKey))
         {
             return Result<AuthenticatorSetupDto>.Failure(SecurityStatusCodes.MfaAlreadyEnabled);
         }
 
-        string secretKey = securitySettings.InitiateAuthenticatorSetup();
+        string secretKey = _generatorService.GenerateSecureString(16);
 
         string? accountName = securitySettings.RecoveryEmail;
 
         if (string.IsNullOrWhiteSpace(accountName))
         {
-            var userName = await _dbContext.Users
-                .Where(u => u.Id == userId.Value)
-                .Select(s => s.UserName)
-                .FirstOrDefaultAsync(cancellationToken);
-
-            if (userName == null)
-                return Result<AuthenticatorSetupDto>.Failure(UserStatusCodes.NotFound);
-
-            accountName = userName;
+            accountName = securitySettings.UserName;
         }
+        
+        await _userCacheService.InitiateAuthenticatorAsync(userId.Value, secretKey, cancellationToken);
 
         var brandName = _appSettings.BrandName ?? "SNS";
         var labelFormatted = $"{brandName}:{accountName}";
@@ -88,7 +96,7 @@ public class InitiateAuthenticatorCommandHandler
 
         var qrCodeUri = $"otpauth://totp/{escapedLabel}?secret={escapedSecret}&issuer={escapedIssuer}&algorithm=SHA1&digits=6&period=30";
 
-        await _unitOfWork.CompleteAsync(cancellationToken);
+        await _userCacheService.InitiateAuthenticatorAsync(userId.Value, secretKey, cancellationToken);
 
         return Result<AuthenticatorSetupDto>.Success(
             new AuthenticatorSetupDto(secretKey, qrCodeUri),

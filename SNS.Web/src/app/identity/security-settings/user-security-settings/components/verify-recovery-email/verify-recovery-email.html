@@ -1,0 +1,45 @@
+<div class="verify-email-wrapper">
+    <div class="title-section">
+        <h1>{{ 'Identity.Security_Settings.Security_Settings_Page.RecoveryEmail.Verify_Title' | translate }}</h1>
+    </div>
+    
+    <form [formGroup]="otpForm" class="verify-email-form" autocomplete="off" (ngSubmit)="onSubmit()">
+        <h2>{{ 'Identity.Security_Settings.Security_Settings_Page.RecoveryEmail.Verify_Subtitle' | translate }}</h2>
+
+        <div class="form-group code-group">
+            <div class="code-inputs" formArrayName="code">
+                @for (control of codeControls.controls; track $index) {
+                <input type="text" [formControlName]="$index" maxlength="1" inputmode="numeric" pattern="[0-9]*"
+                    (input)="onInput($event, $index)" (keydown)="onKeyDown($event, $index)" (focus)="onFocus($event)"
+                    (paste)="onPaste($event)" #codeInput>
+                }
+            </div>
+            <div *ngIf="otpForm.invalid && (otpForm.touched || otpForm.dirty)" class="error-message">
+                <span>{{ 'Shared.Errors.Invalid_Code' | translate }}</span>
+            </div>
+        </div>
+
+        <div class="buttons-group">
+            <button type="button" class="cancel-button" [routerLink]="['/account-settings/security-settings']">
+                {{ 'Identity.Security_Settings.Security_Settings_Page.Actions.Cancel' | translate }}
+            </button>
+            <button type="submit" [disabled]="otpForm.invalid" class="submit-btn" id="verifyRecoveryEmailBtn">
+                <span>{{ 'Identity.Security_Settings.Security_Settings_Page.Actions.Verify' | translate }}</span>
+                <svg lucideCheckLine></svg>
+            </button>
+        </div>
+
+        <div class="resend-container">
+            <p class="resend-text">
+                {{ 'Identity.Security_Settings.Personal_Info.Change_Email.Did_Not_Receive' | translate }}
+                @if (!canResend()) {
+                <span class="cooldown-timer">({{ resendCooldown() }}s)</span>
+                } @else {
+                <a (click)="resendCode()" class="resend-link">
+                    {{ 'Identity.Security_Settings.Personal_Info.Change_Email.Resend' | translate }}
+                </a>
+                }
+            </p>
+        </div>
+    </form>
+</div>

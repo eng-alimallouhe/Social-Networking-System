@@ -27,4 +27,8 @@ public class SecurityStatusCodes
 
 
     public static readonly StatusCode TokenGenerationError = new(Category, 5001);
+
+    public static readonly StatusCode RecoveryEmailNotLinked = new(Category, 4091);
+    public static readonly StatusCode AuthenticatorAppNotLinked = new(Category, 4092);
+    public static readonly StatusCode PasskeyNotAdded = new(Category, 4093);
 }

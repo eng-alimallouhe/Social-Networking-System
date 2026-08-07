@@ -48,10 +48,12 @@
 .brand-area h2 {
     font-size: var(--header-4);
     font-weight: var(--font-weight-bold);
-    letter-spacing: var(--tracking-tight);
-    color: var(--primary-color);
-    cursor: pointer;
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
     transition: var(--transition-base);
+    margin: 0;
 }
 
 .auth-links-wrapper {

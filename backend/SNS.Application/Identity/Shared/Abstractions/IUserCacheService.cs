@@ -16,4 +16,8 @@ public interface IUserCacheService
     Task<Result> VerifyUserActivationChanlageAsync(Guid userId, string token, CancellationToken cancellationToken = default);
 
     Task<Result> CompleteUserActivationChanlageAsync(Guid userId, CancellationToken cancellationToken = default);
+
+    Task<Result> InitiateAuthenticatorAsync(Guid userId, string secretKey, CancellationToken cancellationToken = default);
+    
+    Task<string?> GetAuthenticatorSecretKeyAsync(Guid userId, CancellationToken cancellationToken = default);
 }

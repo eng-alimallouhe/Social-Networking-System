@@ -1,0 +1,45 @@
+<div class="select-container" [class.disabled]="disabled()" [class.invalid]="invalid" [class.open]="isOpen()">
+    <label class="select-label" *ngIf="label">{{ label }}</label>
+
+    <!-- 1. إضافة cdkOverlayOrigin للزر ليتم اعتباره نقطة الارتكاز -->
+    <div class="select-trigger" cdkOverlayOrigin #trigger="cdkOverlayOrigin" (click)="toggleOpen()" tabindex="0">
+        <span class="select-value">{{ selectedLabel }}</span>
+        <svg class="select-arrow" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+    </div>
+
+    <!-- 2. تغليف القائمة بـ ng-template واستخدام cdkConnectedOverlay -->
+    <ng-template cdkConnectedOverlay [cdkConnectedOverlayOrigin]="trigger" [cdkConnectedOverlayOpen]="isOpen()"
+        [cdkConnectedOverlayHasBackdrop]="true" cdkConnectedOverlayBackdropClass="cdk-overlay-transparent-backdrop"
+        [cdkConnectedOverlayWidth]="trigger.elementRef.nativeElement.offsetWidth" (backdropClick)="isOpen.set(false)"
+        (detach)="isOpen.set(false)">
+
+        <!-- تم إزالة *ngIf="isOpen()" من هنا لأن الـ Overlay سيتكفل بالفتح والإغلاق -->
+        <div class="select-dropdown">
+            <div class="select-search" *ngIf="enableSearch" (click)="$event.stopPropagation()">
+                <input type="text" [placeholder]="searchPlaceholder" [value]="searchQuery()"
+                    (input)="searchQuery.set(searchInput.value)" #searchInput>
+            </div>
+
+            <div class="select-options-list">
+                <div class="select-loading" *ngIf="isLoading">
+                    <div class="spinner"></div>
+                </div>
+
+                <ng-container *ngIf="!isLoading">
+                    <div class="select-option" *ngFor="let option of filteredOptions(); let idx = index"
+                        [class.selected]="option.value === selectedValue()" [class.focused]="idx === focusedIndex()"
+                        (click)="selectOption(option)">
+                        <span class="option-text">{{ option.label }}</span>
+                    </div>
+
+                    <div class="select-empty" *ngIf="filteredOptions().length === 0">
+                        No options found
+                    </div>
+                </ng-container>
+            </div>
+        </div>
+    </ng-template>
+</div>

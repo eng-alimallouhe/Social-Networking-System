@@ -8,6 +8,7 @@ import { loginWithAuthenticatorRequest } from '../contracts/login-with-authentic
 import { ValidateTwoFactorRequest } from '../contracts/validate-two-factor-reqest.dto';
 import { ResendTwoFactorCodeRequest } from '../contracts/resend-two-factor-code-request.dto';
 import { Result } from '../../../../shared/contracts/result';
+import { AuthTokenDto } from '../../../shared/contracts/auth-token.dto';
 
 
 @Injectable({
@@ -40,5 +41,11 @@ export class LoginService {
 
   public resendTfaCode(request: ResendTwoFactorCodeRequest): Observable<Result> {
     return this.http.post<Result>(`${this.apiUrl}/resend-tfa-code`, request);
+  }
+
+  public refreshToken(): Observable<Result<AuthTokenDto>> {
+    return this.http.post<Result<AuthTokenDto>>(`${this.apiUrl}/refresh-token`, {}, {
+      withCredentials: true
+    });
   }
 }

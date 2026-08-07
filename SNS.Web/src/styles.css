@@ -6,6 +6,7 @@
 @import './styles/design-system/_shadows.css';
 @import './styles/design-system/_animations.css';
 @import './styles/design-system/_utilities.css';
+@import './styles/design-system/rtl/_layout.css';
 
 /* ==== Global Resets & Base Styles ==== */
 * {
@@ -40,10 +41,14 @@ html {
     font-display: swap;
     overflow-x: hidden;
     line-height: var(--line-height-normal);
+    overscroll-behavior: none;
 }
 
 /* ==== Form Overrides ==== */
-input, textarea, select, button {
+input,
+textarea,
+select,
+button {
     font-family: inherit;
     font-size: inherit;
 }

@@ -3,14 +3,14 @@ import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { FormsModule } from '@angular/forms';
-import { LucideSearch, LucideAlertCircle, LucideArrowRight } from '@lucide/angular';
+import { LucideSearch, LucideAlertCircle, LucideArrowRight, LucideChevronDown, LucideChevronUp } from '@lucide/angular';
 import { DEMO_CONFIG, DemoSection } from '../../demo.config';
 import { DemoDataService } from '../../services/demo-data.service';
 
 @Component({
   selector: 'app-demo-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterLink, TranslatePipe, FormsModule, LucideSearch, LucideAlertCircle, LucideArrowRight],
+  imports: [CommonModule, RouterLink, TranslatePipe, FormsModule, LucideSearch, LucideAlertCircle, LucideArrowRight, LucideChevronDown, LucideChevronUp],
   templateUrl: './demo-dashboard.html',
   styleUrl: './demo-dashboard.css',
 })
@@ -19,6 +19,19 @@ export class DemoDashboard {
   private translateService = inject(TranslateService);
 
   searchQuery = signal('');
+  collapsedSections = signal<Set<string>>(new Set<string>(DEMO_CONFIG.map(section => section.titleKey)));
+
+  toggleSection(sectionKey: string) {
+    this.collapsedSections.update(set => {
+      const newSet = new Set(set);
+      if (newSet.has(sectionKey)) {
+        newSet.delete(sectionKey);
+      } else {
+        newSet.add(sectionKey);
+      }
+      return newSet;
+    });
+  }
 
   // Map the config to resolve dynamic query parameters once
   private baseSections = signal<DemoSection[]>(

@@ -10,7 +10,7 @@ import { LoginWithPasswordRequest } from '../../contracts/login-with-password-re
 import { LoginService } from '../../services/login.service';
 import { ToastService } from '../../../../notifications/services/toast.service';
 import { AuthFlowService } from '../../../../shared/services/auth-flow.service';
-import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { TokenService } from '../../../../shared/services/token.service';
 import { RequestInformationService } from '../../../../shared/services/request-information.service';
 import { LucideCheck, LucideLockKeyhole, LucideSquareUserRound, LucideLogIn } from '@lucide/angular';
@@ -38,7 +38,6 @@ export class LoginWithPassword implements OnInit {
   private authFlowService = inject(AuthFlowService);
   private router = inject(Router);
   private loadingService = inject(LoadingAuthService);
-  private translateService = inject(TranslateService);
   private tokenService = inject(TokenService);
   private requestInformationService = inject(RequestInformationService);
 
@@ -98,31 +97,6 @@ export class LoginWithPassword implements OnInit {
 
             this.toastService.success('Login Success', 'you will be redirected in 5 secounds', 5000);
             this.router.navigate(['/']);
-          },
-          error: (err) => {
-            var errorResult = err.error as Result<LoginResponse>;
-
-            if (errorResult && errorResult.statusCode) {
-              let category = errorResult.statusCode.category;
-              let code = errorResult.statusCode.code;
-
-              if (category === 'User' && code === 404) {
-                forkJoin({
-                  message: this.translateService.get(`Identity.Security_Sessions.Login.Login_Error_Body`),
-                  title: this.translateService.get(`Identity.Security_Sessions.Login.Login_Error_Title`)
-                }).subscribe(translations => {
-                  this.toastService.error(translations.title, translations.message, 5000);
-                });
-              }
-              else {
-                forkJoin({
-                  message: this.translateService.get(`Status_Codes.${category}.${code}`),
-                  title: this.translateService.get(`Status_Codes.Shared.Error_Title`)
-                }).subscribe(translations => {
-                  this.toastService.error(translations.title, translations.message, 5000);
-                });
-              }
-            }
           }
         })
     } else {

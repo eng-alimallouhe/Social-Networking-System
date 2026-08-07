@@ -4,17 +4,57 @@
         <p class="subtitle">{{ 'Demo.RoleSwitcher.Subtitle' | translate }}</p>
     </div>
 
+    <div class="status-card" (click)="navigateToDemoDashboard()">
+        <div class="status-header">
+            <span class="status-label">{{ 'Demo.RoleSwitcher.CurrentRoleLabel' | translate }}:</span>
+            @if (isAuthenticated()) {
+                <span class="status-badge authenticated">
+                    <span class="badge-dot"></span>
+                    {{ 'Demo.RoleSwitcher.Authenticated' | translate }}
+                </span>
+            } @else {
+                <span class="status-badge guest">
+                    <span class="badge-dot"></span>
+                    {{ 'Demo.RoleSwitcher.NotAuthenticated' | translate }}
+                </span>
+            }
+        </div>
+        <div class="active-role-display">
+            @if (isAuthenticated() && activeRole()) {
+                <div class="active-role-info">
+                    <div class="active-icon-wrapper">
+                        <ng-container *ngComponentOutlet="activeRole()?.icon"></ng-container>
+                    </div>
+                    <div class="active-role-details">
+                        <h4>{{ activeRole()?.titleKey | translate }}</h4>
+                        <p>{{ activeRole()?.email }}</p>
+                    </div>
+                </div>
+            } @else {
+                <div class="active-role-info guest-info">
+                    <div class="active-icon-wrapper guest-icon">
+                        <ng-container *ngComponentOutlet="guestIcon"></ng-container>
+                    </div>
+                    <div class="active-role-details">
+                        <h4>{{ 'Demo.RoleSwitcher.Roles.Guest' | translate }}</h4>
+                        <p>No active session</p>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
     <div class="roles-grid">
         @for (role of roles; track role.id) {
-            <div class="role-card" (click)="selectRole(role)" role="button" tabindex="0">
-                <div class="icon-wrapper">
-                    <ng-container *ngComponentOutlet="role.icon"></ng-container>
-                </div>
-                <div class="role-info">
-                    <h3>{{ role.titleKey | translate }}</h3>
-                    <p>{{ role.email }}</p>
-                </div>
+        <div class="role-card" (click)="selectRole(role)" role="button" tabindex="0">
+            <div class="icon-wrapper">
+                <ng-container *ngComponentOutlet="role.icon"></ng-container>
             </div>
+            <div class="role-info">
+                <h3>{{ role.titleKey | translate }}</h3>
+                <p>{{ role.email }}</p>
+            </div>
+        </div>
         }
     </div>
 </div>

@@ -15,14 +15,17 @@ public class CompleteAuthenticatorRegistrationCommandHandler
     private readonly IRepository<UserSecuritySettings> _securitySettingsRepo;
     private readonly IUnitOfWork _unitOfWork;
     private readonly ICurrentUserService _currentUserService;
+    private readonly IUserCacheService _userCacheService;
 
     public CompleteAuthenticatorRegistrationCommandHandler(
         IRepository<UserSecuritySettings> securitySettingsRepository,
         IUnitOfWork unitOfWork,
-        ICurrentUserService currentUserService)
+        ICurrentUserService currentUserService,
+        IUserCacheService userCacheService)
     {
         _securitySettingsRepo = securitySettingsRepository;
         _unitOfWork = unitOfWork;
+        _userCacheService = userCacheService;
         _currentUserService = currentUserService;
     }
 
@@ -40,7 +43,9 @@ public class CompleteAuthenticatorRegistrationCommandHandler
         var securitySettings = await _securitySettingsRepo
             .GetSingleByExpressionAsync(u => u.UserId == userId.Value, cancellationToken);
 
-        if (securitySettings == null || string.IsNullOrEmpty(securitySettings.AuthenticatorSecretKey))
+        var secretKey = await _userCacheService.GetAuthenticatorSecretKeyAsync(userId.Value, cancellationToken);
+
+        if (securitySettings == null || string.IsNullOrEmpty(secretKey))
         {
             return Result.Failure(OperationStatusCode.Conflict);
         }
@@ -48,7 +53,7 @@ public class CompleteAuthenticatorRegistrationCommandHandler
         byte[] secretBytes;
         try
         {
-            secretBytes = Base32Encoding.ToBytes(securitySettings.AuthenticatorSecretKey);
+            secretBytes = Base32Encoding.ToBytes(secretKey);
         }
         catch (Exception)
         {
@@ -77,7 +82,7 @@ public class CompleteAuthenticatorRegistrationCommandHandler
         try
         {
             // Enable the authenticator for the user
-            securitySettings.EnableAuthenticator();
+            securitySettings.EnableAuthenticator(secretKey);
 
             // Save the changes to the database
             await _unitOfWork.CompleteAsync(cancellationToken);

@@ -9,7 +9,6 @@ import { Result } from '../../../../../shared/contracts/result';
 import { RegisterResponse } from '../../contracts/register-response.dto';
 import { RegisterUserCommand } from '../../contracts/register-user-command.dto';
 import { RegisterationService } from '../../services/registeration.service';
-import { ToastService } from '../../../../notifications/services/toast.service';
 import { AuthFlowService } from '../../../../shared/services/auth-flow.service';
 import { LoadingAuthService } from '../../../../shared/layout/services/loading-auth.service';
 import { passwordMatchValidator } from '../../../../../shared/validators/password-match.validator';
@@ -32,11 +31,9 @@ import { passwordMatchValidator } from '../../../../../shared/validators/passwor
 export class Register {
     private fb = inject(FormBuilder);
     private registerService = inject(RegisterationService);
-    private toastService = inject(ToastService);
     private authFlowService = inject(AuthFlowService);
     private router = inject(Router);
     private loadingService = inject(LoadingAuthService);
-    private translateService = inject(TranslateService);
 
     isLoading = this.loadingService.isLoading;
 
@@ -77,21 +74,8 @@ export class Register {
                             'challenge-token': registerResponse?.challengeToken
                         }
                     });
-                },
-                error: (err) => this.handleError(err)
+                }
             });
     }
 
-    private handleError(err: any): void {
-        const errorResult = err.error as Result<RegisterResponse>;
-        if (errorResult?.statusCode) {
-            const { category, code } = errorResult.statusCode;
-            forkJoin({
-                message: this.translateService.get(`Status_Codes.${category}.${code}`),
-                title: this.translateService.get('Status_Codes.Shared.Error_Title')
-            }).subscribe(translations => {
-                this.toastService.error(translations.title, translations.message, 5000);
-            });
-        }
-    }
 }

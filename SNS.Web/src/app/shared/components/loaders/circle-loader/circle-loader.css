@@ -4,7 +4,6 @@
     border-radius: var(--radius-lg);
     text-align: center;
     width: 320px;
-    border: 1px solid var(--border-color);
 }
 
 .circle-loader-wrapper {
@@ -130,5 +129,26 @@
     to {
         transform: scale(2.5);
         opacity: 0;
+    }
+}
+
+.loader-message {
+    margin-top: var(--spacing-8);
+    color: var(--text-primary);
+    font-size: var(--text-lg);
+    font-weight: var(--font-weight-semibold);
+    text-align: center;
+    letter-spacing: 0.5px;
+    animation: fade-in 0.5s ease-out;
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }

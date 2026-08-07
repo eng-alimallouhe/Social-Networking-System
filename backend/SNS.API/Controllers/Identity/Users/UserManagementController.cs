@@ -187,4 +187,3 @@ public class UserManagementController : ControllerBase
         return (await _mediator.Send(new CheckUsernameAvailabiltyQuery(username))).ToActionResult(this);
     }
 }
-

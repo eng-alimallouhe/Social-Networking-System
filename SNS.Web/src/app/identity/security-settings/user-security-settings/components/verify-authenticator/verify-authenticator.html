@@ -1,0 +1,33 @@
+<div class="verify-authenticator-wrapper">
+    <div class="title-section">
+        <h1>{{ 'Identity.Security_Settings.Security_Settings_Page.Authenticator.Title' | translate }}</h1>
+    </div>
+
+    <form [formGroup]="otpForm" class="verify-authenticator-form" autocomplete="off" (ngSubmit)="onSubmit()">
+        <h2>{{ 'Identity.Security_Settings.Security_Settings_Page.Authenticator.Subtitle' | translate }}</h2>
+
+        <div class="form-group code-group">
+            <label class="code-title-label">{{ 'Identity.Security_Settings.Security_Settings_Page.Authenticator.Enter_Code' | translate }}</label>
+            <div class="code-inputs" formArrayName="code">
+                @for (control of codeControls.controls; track $index) {
+                <input type="text" [formControlName]="$index" maxlength="1" inputmode="numeric" pattern="[0-9]*"
+                    (input)="onInput($event, $index)" (keydown)="onKeyDown($event, $index)" (focus)="onFocus($event)"
+                    (paste)="onPaste($event)" #codeInput [autofocus]="$index === 0">
+                }
+            </div>
+            <div *ngIf="otpForm.invalid && (otpForm.touched || otpForm.dirty)" class="error-message">
+                <span>{{ 'Shared.Errors.Invalid_Code' | translate }}</span>
+            </div>
+        </div>
+
+        <div class="buttons-group">
+            <button type="button" class="cancel-button" [routerLink]="['/account-settings/security-settings/link-authenticator']">
+                {{ 'Identity.Security_Settings.Security_Settings_Page.Actions.Back' | translate }}
+            </button>
+            <button type="submit" [disabled]="otpForm.invalid" class="submit-btn" id="verifyAuthBtn">
+                <span>{{ 'Identity.Security_Settings.Security_Settings_Page.Actions.Verify' | translate }}</span>
+                <svg lucideCheckLine></svg>
+            </button>
+        </div>
+    </form>
+</div>

@@ -8,4 +8,8 @@
 
         <div class="core"></div>
     </div>
+
+    @if (translatedText()) {
+        <div class="loader-message">{{ translatedText() }}</div>
+    }
 </div>

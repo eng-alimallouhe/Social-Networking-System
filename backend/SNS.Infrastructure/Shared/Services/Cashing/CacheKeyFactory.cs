@@ -6,8 +6,8 @@ using SNS.Domain.Identity.Users.Enums;
 
 namespace SNS.Infrastructure.Shared.Services.Cashing;
 
-public class CacheKeyFactory : 
-    IIdentityCacheKeyFactory, 
+public class CacheKeyFactory :
+    IIdentityCacheKeyFactory,
     IProfileCacheKeyFactory,
     ICommunityCacheKeyFactory,
     IPostCacheKeyFactory
@@ -64,4 +64,7 @@ public class CacheKeyFactory :
 
     public string GetFeedBuildingKey(Guid profileId)
         => $"feed:building:profileId:{profileId}";
+
+    public string GetUserAuthenticatorKey(Guid userId)
+        => $"user:{userId}:authenticator-setup";
 }

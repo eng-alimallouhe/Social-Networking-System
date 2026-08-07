@@ -1,0 +1,11 @@
+body[dir="rtl"] {
+    --direction: rtl;
+    --float-start: right;
+    --float-end: left;
+}
+
+
+html[dir="rtl"] label {
+    left: unset !important;
+    right: var(--spacing-4) !important;
+}

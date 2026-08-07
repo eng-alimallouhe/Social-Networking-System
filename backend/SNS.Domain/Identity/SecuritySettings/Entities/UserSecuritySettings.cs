@@ -88,6 +88,14 @@ public class UserSecuritySettings : Entity, IHardDeletable
         {
             throw new DomainException("Cannot set MFA provider to RecoveryEmail without a recovery email.");
         }
+        else if (provider == MfaProvider.AuthenticatorApp && string.IsNullOrEmpty(this.AuthenticatorSecretKey))
+        {
+            throw new DomainException("Cannot set MFA provider to AuthenticatorApp without setup.");
+        }
+        if (provider == MfaProvider.RecoveryEmail && string.IsNullOrEmpty(this.RecoveryEmail))
+        {
+            throw new DomainException("Cannot set MFA provider to RecoveryEmail without a recovery email.");
+        }
 
         this.MfaProvider = provider;
     }
@@ -116,12 +124,13 @@ public class UserSecuritySettings : Entity, IHardDeletable
         this.MfaProvider = mfaProvider;
     }
 
-    public void EnableAuthenticator()
+    public void EnableAuthenticator(string secretKey)
     {
-        if (string.IsNullOrEmpty(AuthenticatorSecretKey))
+        if (string.IsNullOrEmpty(secretKey))
             throw new InvalidOperationException("Cannot enable authenticator without setup.");
 
         this.MfaProvider = MfaProvider.AuthenticatorApp;
+        this.AuthenticatorSecretKey = secretKey;
     }
 
     // دالة مساعدة لتوليد نص عشوائي متوافق مع Base32

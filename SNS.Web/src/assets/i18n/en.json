@@ -22,7 +22,7 @@
                 "Security_Settings_Desc": "Manage your security settings.",
                 "Sessions": "Sessions & Sign-in",
                 "Sessions_Desc": "Manage your active sessions.",
-                "Password_Management": "Password Management",
+                "Password_Management": "Manage Passwords",
                 "Password_Management_Desc": "Change or reset your password.",
                 "Archive": "Account Archive",
                 "Archive_Desc": "Download or delete your data.",
@@ -50,6 +50,40 @@
         }
     },
     "Identity": {
+        "Onboarding": {
+            "Create_Profile": {
+                "Title": "Create Your Profile",
+                "Subtitle": "Tell the community a little about yourself.",
+                "Upload_Photo": "Upload Photo",
+                "Remove": "Remove",
+                "Full_Name": "Full Name",
+                "Full_Name_Placeholder": "e.g. Ahmad Al-Hassan",
+                "Bio": "Bio",
+                "Optional": "(optional)",
+                "Bio_Placeholder": "Tell the community a bit about yourself...",
+                "Specialization": "Specialization",
+                "Specialization_Placeholder": "Search specializations...",
+                "Specialization_Empty": "No matching specializations found.",
+                "Continue": "Continue",
+                "Errors": {
+                    "Full_Name_Required": "Full name is required.",
+                    "Full_Name_Max_Length": "Full name must be at most {{max}} characters.",
+                    "Bio_Max_Length": "Bio must be at most {{max}} characters."
+                }
+            },
+            "Follow_People": {
+                "Title": "Follow People",
+                "Subtitle_Start": "Follow at least",
+                "Subtitle_End": "people to personalise your feed.",
+                "Following_Count_Label": "Following",
+                "Ready": "Ready!",
+                "Continue": "Continue",
+                "Followers": "Followers",
+                "Following_Stat": "Following",
+                "Follow": "Follow",
+                "Following_Btn": "Following"
+            }
+        },
         "Security_Sessions": {
             "Login": {
                 "Title": "Welcome Back again",
@@ -116,7 +150,7 @@
                     "Did_Not_Receive": "Didn't receive the code?",
                     "Resend": "Resend code",
                     "Success_Title": "Account Verified",
-                    "Success_Body": "Your account has been verified successfully. Please sign in.",
+                    "Success_Body": "Your account has been verified successfully. Let's set up your profile.",
                     "Resend_Success_Title": "Code Resent",
                     "Resend_Success_Body": "A new verification code has been sent to your email."
                 }
@@ -144,6 +178,103 @@
                     "Apply": "Apply",
                     "Back": "Back",
                     "Current_Username": "your current name"
+                },
+                "Language": {
+                    "Change_Language_DESC": "Choose your preferred, this action will be synchronized",
+                    "Changing_AR": "جاري مزامنة اللغة",
+                    "Changing_EN": "Your Language is loading"
+                },
+                "Change_Email": {
+                    "Title": "Change Email",
+                    "Description": "Enter your new email address. A verification code will be sent to confirm the change.",
+                    "New_Email": "New Email Address",
+                    "Continue": "Continue",
+                    "Not_Your_Email": "Is not your email?",
+                    "Change_It": "change it",
+                    "Verify_Title": "Verify Email Change",
+                    "Verify_Description": "Enter the 6-digit verification code sent to your new email address.",
+                    "Verify": "Verify",
+                    "Did_Not_Receive": "Didn't receive the code?",
+                    "Resend": "Resend code",
+                    "Back": "Back",
+                    "Cancel": "Cancel"
+                }
+            },
+            "Security_Settings_Page": {
+                "Title": "Security Settings",
+                "MFA": {
+                    "Header": "Multi-Factor Authentication",
+                    "Status": "MFA Status",
+                    "Enabled": "Enabled",
+                    "Disabled": "Disabled",
+                    "Provider": "Current MFA Provider",
+                    "Authenticator_Linked": "Authenticator App Linked",
+                    "Linked": "Linked",
+                    "Not_Linked": "Not Linked"
+                },
+                "Recovery": {
+                    "Header": "Recovery Information",
+                    "Email": "Recovery Email",
+                    "No_Email": "No recovery email configured",
+                    "Codes_Count": "Active Recovery Codes"
+                },
+                "Preferences": {
+                    "Header": "Communication Preferences",
+                    "Default_Method": "Default Communication Method"
+                },
+                "Providers": {
+                    "0": "None",
+                    "1": "Recovery Email Address",
+                    "2": "Primary Email Address",
+                    "3": "Authenticator App",
+                    "4": "Passkey"
+                },
+                "Methods": {
+                    "0": "Primary Email Address",
+                    "1": "Recovery Email Address"
+                },
+                "Actions": {
+                    "Enable": "Enable",
+                    "Disable": "Disable",
+                    "Change": "Change",
+                    "Link": "Link",
+                    "Save": "Save Changes",
+                    "Verify": "Verify",
+                    "Cancel": "Cancel",
+                    "Status_Codes": {
+                        "Success": "Success"
+                    }
+                },
+                "Dialogs": {
+                    "DisableMfaTitle": "Disable Multi-Factor Authentication",
+                    "DisableMfaMessage": "Are you sure you want to disable Multi-Factor Authentication? Your account will be less secure."
+                },
+                "ChangeMfa": {
+                    "Title": "Change MFA Provider",
+                    "Subtitle": "Select your preferred active Multi-Factor Authentication provider."
+                },
+                "Authenticator": {
+                    "Title": "Link Authenticator App",
+                    "Subtitle": "Configure your TOTP authenticator application (such as Google Authenticator, Authy, or 1Password).",
+                    "Scan_Instruction": "Scan the QR code below or enter the secret key manually into your app.",
+                    "Secret_Key": "Secret Key",
+                    "Enter_Code": "Verification Code",
+                    "Code_Placeholder": "Enter 6-digit verification code"
+                },
+                "RecoveryEmail": {
+                    "Title": "Change Recovery Email",
+                    "Subtitle": "Set or update your backup email address for account recovery.",
+                    "New_Email": "New Recovery Email Address",
+                    "Verify_Title": "Verify Recovery Email Change",
+                    "Verify_Subtitle": "A verification code has been sent to your new recovery email address."
+                },
+                "Communication": {
+                    "Title": "Default Communication Method",
+                    "Subtitle": "Select your default method for receiving security alerts and updates."
+                },
+                "Passkeys_Page": {
+                    "Title": "Passkey Management",
+                    "Subtitle": "Manage your registered WebAuthn passkeys here."
                 }
             },
             "Search": {}
@@ -173,8 +304,8 @@
             "GHOST": "Ghost"
         },
         "Supported_Languages": {
-            "1": "Arabic",
-            "2": "English"
+            "0": "Arabic",
+            "1": "English"
         },
         "Logical_Values": {
             "true": "Yes",
@@ -245,6 +376,9 @@
         "RoleSwitcher": {
             "Title": "Select Role",
             "Subtitle": "Choose a demo account to instantly sign in.",
+            "Authenticated": "Authenticated",
+            "NotAuthenticated": "Not Authenticated",
+            "CurrentRoleLabel": "Current Role",
             "Roles": {
                 "Admin": "Administrator",
                 "User": "Standard User",

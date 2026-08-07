@@ -1,0 +1,22 @@
+<nav class="onboarding-nav" role="navigation" aria-label="Onboarding navigation">
+    <div class="brand-area">
+        <div class="logo" aria-hidden="true">
+            <img src="assets/icons/github.svg" alt="">
+        </div>
+        <h2>SyrianDevs</h2>
+    </div>
+
+    <div class="nav-actions" aria-label="Navigation actions">
+        <!-- Reserved for future actions (e.g. language switcher, help) -->
+    </div>
+
+    @if (isLoading()) {
+    <div class="loading-wrapper" role="status" aria-live="polite" aria-label="Loading">
+        <app-line-loader class="loader" [width]="'100%'"></app-line-loader>
+    </div>
+    }
+</nav>
+
+<main class="content" role="main">
+    <router-outlet></router-outlet>
+</main>

@@ -1,0 +1,18 @@
+<div class="modal-backdrop" (click)="onCancel()">
+    <div class="modal-card" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+            <h3>{{ titleKey | translate }}</h3>
+        </div>
+        <div class="modal-body">
+            <p>{{ messageKey | translate }}</p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="cancel-button" (click)="onCancel()">
+                {{ cancelTextKey | translate }}
+            </button>
+            <button type="button" class="confirm-button" (click)="onConfirm()">
+                {{ confirmTextKey | translate }}
+            </button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,32 @@
+<div class="link-authenticator-wrapper">
+    <div class="title-section">
+        <h1>{{ 'Identity.Security_Settings.Security_Settings_Page.Authenticator.Title' | translate }}</h1>
+    </div>
+
+    <div class="link-authenticator-form">
+        <h2>{{ 'Identity.Security_Settings.Security_Settings_Page.Authenticator.Subtitle' | translate }}</h2>
+
+        <div class="setup-instructions">
+            <p>{{ 'Identity.Security_Settings.Security_Settings_Page.Authenticator.Scan_Instruction' | translate }}</p>
+            
+            <div class="qr-code-container" *ngIf="qrCodeImageUrl">
+                <img [src]="qrCodeImageUrl" alt="MFA QR Code" class="qr-code-img" />
+            </div>
+
+            <div class="secret-key-container" *ngIf="secretKey()">
+                <span class="secret-label">{{ 'Identity.Security_Settings.Security_Settings_Page.Authenticator.Secret_Key' | translate }}:</span>
+                <span class="secret-value">{{ secretKey() }}</span>
+            </div>
+        </div>
+
+        <div class="buttons-group">
+            <button type="button" class="cancel-button" [routerLink]="['/account-settings/security-settings']">
+                {{ 'Identity.Security_Settings.Security_Settings_Page.Actions.Cancel' | translate }}
+            </button>
+            <button type="button" class="submit-btn" [disabled]="!isLoaded()" (click)="onContinue()">
+                <span>{{ 'Shared.Actions.Continue' | translate }}</span>
+                <svg lucideChevronRight></svg>
+            </button>
+        </div>
+    </div>
+</div>

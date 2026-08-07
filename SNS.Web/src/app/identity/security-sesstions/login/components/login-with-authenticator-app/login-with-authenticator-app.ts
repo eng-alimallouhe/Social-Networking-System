@@ -2,12 +2,11 @@ import { Component, ElementRef, OnInit, QueryList, ViewChildren, inject } from '
 import { CommonModule } from '@angular/common';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { loginWithAuthenticatorRequest } from '../../contracts/login-with-authenticator-request.dto';
 import { LoginService } from '../../services/login.service';
-import { finalize, forkJoin } from 'rxjs';
+import { finalize } from 'rxjs';
 import { TokenService } from '../../../../shared/services/token.service';
-import { ToastService } from '../../../../notifications/services/toast.service';
 import { Result } from '../../../../../shared/contracts/result';
 import { LoginResponse } from '../../contracts/login-response.dto';
 import { RequestInformationService } from '../../../../shared/services/request-information.service';
@@ -34,8 +33,6 @@ export class LoginWithAuthenticatorApp implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private fb = inject(FormBuilder);
-  private toatsService = inject(ToastService);
-  private translateService = inject(TranslateService);
   private requestInformationService = inject(RequestInformationService);
 
   authenticatorForm: FormGroup;
@@ -144,19 +141,6 @@ export class LoginWithAuthenticatorApp implements OnInit {
         error: (err) => {
           this.codeControls.reset();
           this.codeInputs.first.nativeElement.focus();
-          var errorResult = err.error as Result<LoginResponse>;
-
-          if (errorResult && errorResult.statusCode) {
-            let category = errorResult.statusCode.category;
-            let code = errorResult.statusCode.code;
-
-            forkJoin({
-              message: this.translateService.get(`Status_Codes.${category}.${code}`),
-              title: this.translateService.get(`Status_Codes.Shared.Error_Title`)
-            }).subscribe(translations => {
-              this.toatsService.error(translations.title, translations.message, 5000);
-            });
-          }
         }
       });
   }

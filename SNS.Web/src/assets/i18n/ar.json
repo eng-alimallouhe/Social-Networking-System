@@ -29,6 +29,40 @@
     }
   },
   "Identity": {
+    "Onboarding": {
+      "Create_Profile": {
+        "Title": "أنشئ ملفك الشخصي",
+        "Subtitle": "أخبر المجتمع قليلاً عن نفسك.",
+        "Upload_Photo": "رفع صورة",
+        "Remove": "إزالة",
+        "Full_Name": "الاسم الكامل",
+        "Full_Name_Placeholder": "مثال: أحمد الحسن",
+        "Bio": "نبذة",
+        "Optional": "(اختياري)",
+        "Bio_Placeholder": "أخبر المجتمع قليلاً عن نفسك...",
+        "Specialization": "التخصص",
+        "Specialization_Placeholder": "ابحث عن التخصصات...",
+        "Specialization_Empty": "لم يتم العثور على تخصصات مطابقة.",
+        "Continue": "متابعة",
+        "Errors": {
+          "Full_Name_Required": "الاسم الكامل مطلوب.",
+          "Full_Name_Max_Length": "يجب ألا يتجاوز الاسم الكامل {{max}} حرفًا.",
+          "Bio_Max_Length": "يجب ألا تتجاوز النبذة {{max}} حرفًا."
+        }
+      },
+      "Follow_People": {
+        "Title": "تابع الأشخاص",
+        "Subtitle_Start": "تابع على الأقل",
+        "Subtitle_End": "شخص لتخصيص موجزك.",
+        "Following_Count_Label": "متابعين",
+        "Ready": "جاهز!",
+        "Continue": "متابعة",
+        "Followers": "متابعون",
+        "Following_Stat": "يتابع",
+        "Follow": "متابعة",
+        "Following_Btn": "يتابع"
+      }
+    },
     "Security_Sessions": {
       "Login": {
         "Title": "تسجيل الدخول",
@@ -67,19 +101,188 @@
           "Resend": "إعادة الإرسال",
           "Success_Title": "تم التحقق من الحساب",
           "Success_Body": "تم التحقق من حسابك بنجاح. يرجى تسجيل الدخول.",
-          "Resend_Success_Title": "تم إعادة الإرسال",
-          "Resend_Success_Body": "تم إرسال رمز تحقق جديد إلى بريدك الإلكتروني."
+          "Resend_Success_Title": "تم إعادة الإرسال"
         }
       }
+    },
+    "Security_Settings": {
+      "Personal_Info": {
+        "Title": "المعلومات الشخصية",
+        "User_Name": "اسم المستخدم",
+        "Role": "الصلاحية",
+        "Email": "البريد الإلكتروني",
+        "Preferred_Language": "اللغة المفضلة",
+        "Last_Password_Change": "آخر تغيير لكلمة المرور",
+        "Location": "الموقع الحالي",
+        "Last_Location": "آخر موقع نشط",
+        "Has_Active_Download_Request": "هل لديك طلب تنزيل نشط؟",
+        "Change_Username": {
+          "Title": "تغيير اسم المستخدم",
+          "Subtitle": "تغيير اسم المستخدم الخاص بك",
+          "description": "اختر اسم مستخدم فريد. سيظهر هذا للمستخدمين الآخرين.",
+          "New_Username": "اسم المستخدم الجديد",
+          "New_Username_Placeholder": "أدخل اسم المستخدم الجديد الخاص بك",
+          "Avalable": "اسم المستخدم متاح",
+          "Not_Avaliable": "اسم المستخدم محجوز",
+          "Apply": "تطبيق",
+          "Back": "رجوع",
+          "Current_Username": "اسم المستخدم الحالي"
+        },
+        "Language": {
+          "Change_Language_DESC": "اختر لغتك المفضلة, سيتم مزامنة هذا الاجراء",
+          "Changing_AR": "جاري مزامنة اللغة",
+          "Changing_EN": "Your Language is loading"
+        },
+        "Change_Email": {
+          "Title": "تغيير البريد الإلكتروني",
+          "Description": "أدخل بريدك الإلكتروني الجديد. سيتم إرسال رمز تحقق لتأكيد التغيير.",
+          "New_Email": "البريد الإلكتروني الجديد",
+          "Continue": "متابعة",
+          "Back": "رجوع",
+          "Verify_Title": "تحقق من تغيير البريد الإلكتروني",
+          "Verify_Description": "أدخل رمز التحقق المكون من 6 أرقام المُرسل إلى بريدك الإلكتروني الجديد.",
+          "Verify": "تحقق",
+          "Did_Not_Receive": "لم تستلم الرمز؟",
+          "Resend": "إعادة الإرسال"
+        }
+      },
+      "Security_Settings_Page": {
+        "Title": "إعدادات الأمان",
+        "MFA": {
+          "Header": "المصادقة الثنائية",
+          "Status": "حالة المصادقة الثنائية",
+          "Enabled": "مفعّلة",
+          "Disabled": "غير مفعّلة",
+          "Provider": "مزود المصادقة الحالي",
+          "Authenticator_Linked": "تطبيق المصادقة مرتبط",
+          "Linked": "مرتبط",
+          "Not_Linked": "غير مرتبط"
+        },
+        "Recovery": {
+          "Header": "معلومات الاسترداد",
+          "Email": "بريد الاسترداد الإلكتروني",
+          "No_Email": "لم يتم إعداد بريد استرداد إلكتروني",
+          "Codes_Count": "رموز الاسترداد النشطة"
+        },
+        "Preferences": {
+          "Header": "تفضيلات الاتصال",
+          "Default_Method": "طريقة الاتصال الافتراضية"
+        },
+        "Providers": {
+          "None": "لا يوجد",
+          "1": "بريد الاسترداد الإلكتروني",
+          "2": "البريد الإلكتروني الأساسي",
+          "3": "تطبيق المصادقة",
+          "4": "مفتاح المرور (Passkey)"
+        },
+        "Methods": {
+          "0": "البريد الإلكتروني الأساسي",
+          "1": "بريد الاسترداد الإلكتروني"
+        },
+        "Actions": {
+          "Enable": "تفعيل",
+          "Disable": "تعطيل",
+          "Change": "تعديل",
+          "Link": "ربط",
+          "Save": "حفظ التغييرات",
+          "Verify": "تحقق",
+          "Cancel": "إلغاء",
+          "Status_Codes": {
+            "Success": "نجاح"
+          }
+        },
+        "Dialogs": {
+          "DisableMfaTitle": "تعطيل المصادقة الثنائية",
+          "DisableMfaMessage": "هل أنت متأكد من رغبتك في تعطيل المصادقة الثنائية؟ سيصبح حسابك أقل أماناً."
+        },
+        "ChangeMfa": {
+          "Title": "تغيير مزود المصادقة الثنائية",
+          "Subtitle": "اختر مزود المصادقة الثنائية النشط المفضل لديك."
+        },
+        "Authenticator": {
+          "Title": "ربط تطبيق المصادقة",
+          "Subtitle": "قم بتهيئة تطبيق المصادقة الخاص بك (مثل Google Authenticator أو Authy أو 1Password).",
+          "Scan_Instruction": "امسح رمز الاستجابة السريعة (QR) أدناه أو أدخل المفتاح السري يدوياً في التطبيق.",
+          "Secret_Key": "المفتاح السري",
+          "Enter_Code": "رمز التحقق",
+          "Code_Placeholder": "أدخل رمز التحقق المكون من 6 أرقام"
+        },
+        "RecoveryEmail": {
+          "Title": "تغيير بريد الاسترداد",
+          "Subtitle": "قم بإعداد أو تحديث بريدك الإلكتروني الاحتياطي لاسترداد الحساب.",
+          "New_Email": "البريد الإلكتروني الجديد للاسترداد",
+          "Verify_Title": "التحقق من بريد الاسترداد",
+          "Verify_Subtitle": "تم إرسال رمز التحقق إلى بريد الاسترداد الجديد الخاص بك."
+        },
+        "Communication": {
+          "Title": "طريقة الاتصال الافتراضية",
+          "Subtitle": "اختر طريقة الاتصال الافتراضية لاستلام تنبيهات الأمان والتحديثات."
+        },
+        "Passkeys_Page": {
+          "Title": "إدارة مفاتيح المرور",
+          "Subtitle": "إدارة مفاتيح المرور (Passkeys) المسجلة الخاصة بك هنا."
+        }
+      },
+      "Search": {}
     }
   },
   "Shared": {
+    "Error_Title": "خطأ!",
+    "Seccuess_Title": "نجاح",
     "Errors": {
+      "Email_Required": "البريد الإلكتروني مطلوب",
+      "Email_Invalid": "البريد الإلكتروني غير صحيح",
+      "Password_Required": "كلمة المرور مطلوبة",
+      "Password_MinLength": "يجب أن تتكون كلمة المرور من 8 أحرف على الأقل",
+      "Failed": "فشل",
+      "Invalid_Code": "يجب أن يتكون الرمز من 6 أرقام",
       "Username_Required": "اسم المستخدم مطلوب",
       "Username_MinLength": "يجب أن يتكون اسم المستخدم من 3 أحرف على الأقل",
       "Confirm_Password_Required": "يرجى تأكيد كلمة المرور",
       "Passwords_Do_Not_Match": "كلمتا المرور غير متطابقتين"
+    },
+    "Role_Type": {
+      "USER": "مستخدم عادي",
+      "ADMIN": "مدير",
+      "MODERATOR": "مشرف",
+      "GUEST": "ضيف",
+      "SUPPORT": "دعم",
+      "GHOST": "شبح"
+    },
+    "Supported_Languages": {
+      "0": "العربية",
+      "1": "الإنجليزية"
+    },
+    "Logical_Values": {
+      "true": "نعم",
+      "false_Found": "غير موجود"
+    },
+    "Loaders": {
+      "Checking_Username_Availablity": "التحقق من توفر اسم المستخدم"
     }
+  },
+  "Status_Codes": {
+    "Shared": {
+      "Error_Title": "خطأ!",
+      "Success_Title": "نجاح"
+    },
+    "User": {
+      "404": "عذرًا، لم نتمكن من العثور على حساب مرتبط بهذا المُعرف.",
+      "4091": "عذرًا، هذا المُعرف مستخدم بالفعل في حساب آخر",
+      "4036": "عذرًا، اسم المستخدم هذا محجوز لمستخدم آخر"
+    },
+    "Operation": {
+      "200": "تمت العملية بنجاح",
+      "400": "تمت العملية مع وجود أخطاء",
+      "401": "يجب أن تكون مصدقًا لتنفيذ هذه العملية",
+      "403": "ليس لديك الصلاحية لتنفيذ هذه العملية",
+      "4221": "لقد أدخلت بيانات غير صحيحة",
+      "500": "حدث خطأ ما، يرجى المحاولة مرة أخرى لاحقًا"
+    }
+  },
+  "Loader": {
+    "System_Busy_Title": "النظام مشغول",
+    "System_Busy_Body": "جاري معالجة طلبك حاليًا، يرجى الانتظار لحظة"
   },
   "Demo": {
     "Dashboard": {
@@ -119,6 +322,9 @@
     "RoleSwitcher": {
       "Title": "اختر الدور",
       "Subtitle": "اختر حسابًا تجريبيًا لتسجيل الدخول فورًا.",
+      "Authenticated": "مُسجّل الدخول",
+      "NotAuthenticated": "غير مُسجّل الدخول",
+      "CurrentRoleLabel": "الدور الحالي",
       "Roles": {
         "Admin": "مدير النظام",
         "User": "مستخدم عادي",

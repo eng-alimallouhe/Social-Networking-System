@@ -1,0 +1,113 @@
+/* =============================================
+   ONBOARDING NAV
+   Mirrors .auth-nav from auth-layout.css
+   ============================================= */
+.onboarding-nav {
+    position: fixed;
+    top: 0;
+    inset-inline-start: 0;
+    width: 100%;
+    height: var(--navbar-mobile-height);
+    z-index: 1000;
+    background-color: var(--bg-surface);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 var(--spacing-4);
+    box-shadow: var(--shadow-md);
+    border-bottom: 1px solid var(--border-color);
+    transition: background-color var(--transition-base);
+}
+
+@media (min-width: 991px) {
+    .onboarding-nav {
+        height: var(--navbar-desktop-height);
+        padding: 0 var(--spacing-8);
+    }
+}
+
+/* Brand */
+.brand-area {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-3);
+}
+
+.brand-area .logo {
+    width: 40px;
+    height: 40px;
+}
+
+.brand-area h2 {
+    font-size: var(--header-4);
+    font-weight: var(--font-weight-extrabold);
+    letter-spacing: var(--tracking-tight);
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin: 0;
+    user-select: none;
+}
+
+/* Future actions slot */
+.nav-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-2);
+}
+
+/* =============================================
+   LOADING OVERLAY
+   Exact same pattern as auth-layout & settings-layout
+   ============================================= */
+.loading-wrapper {
+    position: fixed;
+    top: var(--navbar-mobile-height);
+    inset-inline-start: 0;
+    inset-inline-end: 0;
+    bottom: 0;
+    width: 100%;
+    height: calc(100vh - var(--navbar-mobile-height));
+    background-color: var(--glass-bg);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    display: flex;
+    justify-content: center;
+    border: 1px solid var(--border-color);
+    z-index: var(--z-index);
+}
+
+.loader {
+    width: 100%;
+    height: 6px;
+}
+
+@media (min-width: 991px) {
+    .loading-wrapper {
+        top: var(--navbar-desktop-height);
+        height: calc(100vh - var(--navbar-desktop-height));
+    }
+}
+
+/* =============================================
+   CONTENT AREA
+   ============================================= */
+.content {
+    width: 100%;
+    min-height: 100vh;
+    padding-top: calc(var(--navbar-mobile-height) + var(--spacing-6));
+    padding-bottom: var(--spacing-8);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* NOTE: No overflow-x: hidden here — setting overflow on any axis creates a new
+       scroll container, which breaks position: sticky on all children. Horizontal
+       overflow is already handled globally on body/html. */
+}
+
+@media (min-width: 991px) {
+    .content {
+        padding-top: calc(var(--navbar-desktop-height) + var(--spacing-6));
+    }
+}

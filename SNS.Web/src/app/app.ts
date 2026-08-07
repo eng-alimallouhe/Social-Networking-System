@@ -1,6 +1,7 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { ToastContainerComponent } from "./identity/notifications/components/toast-container/toast-container.component";
+import { LanguageService } from './shared/services/language.service';
 
 @Component({
   selector: 'app-root',
@@ -11,4 +12,10 @@ import { ToastContainerComponent } from "./identity/notifications/components/toa
 })
 export class App {
   protected readonly title = signal('Social Networking System');
+  private languageService = inject(LanguageService);
+
+
+  constructor() {
+    this.languageService.loadStoredLanguage();
+  }
 }

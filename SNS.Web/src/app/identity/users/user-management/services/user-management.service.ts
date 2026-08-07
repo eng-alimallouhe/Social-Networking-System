@@ -6,6 +6,8 @@ import { UserAccount } from '../contracts/user-account.dto';
 import { Result } from '../../../../shared/contracts/result';
 import { PersonalInformationDto } from '../contracts/user-personal-informations.dto';
 import { ChangeUsernameRequest } from '../contracts/change-username-request.dto';
+import { ChangePreferredLanguageRequest } from '../contracts/change-preferred-language-request.dto';
+import { SupportedLanguage } from '../../../../shared/contracts/supported-language.enum';
 
 @Injectable({
   providedIn: 'root',
@@ -36,5 +38,12 @@ export class UserManagementService {
       newUsername: username
     }
     return this.http.put<Result<string>>(`${this.apiUrl}/update-username`, request);
+  }
+
+  public changePreferredLanguage(language: SupportedLanguage): Observable<Result<null>> {
+    const request: ChangePreferredLanguageRequest = {
+      preferredLanguage: language
+    };
+    return this.http.post<Result<null>>(`${this.apiUrl}/update-user-preferred-language`, request);
   }
 }

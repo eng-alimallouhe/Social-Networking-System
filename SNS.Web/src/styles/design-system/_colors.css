@@ -1,59 +1,90 @@
 :root {
     /* ==== Core Brand Colors ==== */
-    --primary-color: #1D4ED8;
-    --secondary-color: #7C3AED;
-    --accent-color: #06B6D4;
+    --primary-color: #428177;
+    /* Forest - أفتح درجة (اللون الأساسي الجديد) */
+    --secondary-color: #6b1f2a;
+    /* Deep Umber - أفتح درجة (اللون الثانوي) */
+    --accent-color: #988561;
+    /* Golden Wheat - أغمق درجة */
 
-    --success: #22C55E;
-    --warning: #F59E0B;
-    --error: #EF4444;
-    --info: #3B82F6;
+    /* Semantic Colors */
+    --success: #054239;
+    /* Forest - الدرجة الوسطى */
+    --warning: #b9a779;
+    /* Golden Wheat - الدرجة الوسطى */
+    --error: #4a151e;
+    /* Deep Umber - الدرجة الوسطى */
+    --info: #428177;
+    /* Forest - أفتح درجة */
 
     /* ==== Light Theme (Default) ==== */
-    --bg-main: #F8FAFC;
-    --bg-surface: #FFFFFF;
-    --bg-secondary: #e9ecef;
-    --bg-card: #FFFFFF;
-    --border-color: #E2E8F0;
+    --bg-main: #ffffff;
+    /* Charcoal - أفتح درجة (أبيض) */
+    --bg-surface: #edebe0;
+    /* Golden Wheat - أفتح درجة (خلفية البطاقات) */
+    --bg-secondary: #f4f5f6;
+    --bg-card: #ffffff;
+    --border-color: #b9a779;
+    /* Golden Wheat - الدرجة الوسطى */
 
-    --text-primary: #0F172A;
-    --text-secondary: #475569;
-    --text-muted: #64748b;
-    --text-inverse: #F8FAFC;
+    --text-primary: #161616;
+    /* Charcoal - أغمق درجة */
+    --text-secondary: #3d3a3b;
+    /* Charcoal - الدرجة الوسطى */
+    --text-muted: #988561;
+    /* Golden Wheat - أغمق درجة */
+    --text-inverse: #ffffff;
 
     /* Interactive States */
-    --primary-hover: #2b1f1f;
-    --secondary-hover: #6D28D9;
-    --accent-hover: #0891B2;
-    --bg-hover: #b3d7ef;
+    --primary-hover: #054239;
+    /* Forest - الدرجة الوسطى عند التمرير */
+    --secondary-hover: #4a151e;
+    /* Deep Umber - الدرجة الوسطى عند التمرير */
+    --accent-hover: #b9a779;
+    --bg-hover: #edebe0;
 
     /* Glassmorphism */
-    --glass-bg: rgba(255, 255, 255, 0.8);
-    --glass-border: rgba(255, 255, 255, 0.4);
+    --glass-bg: rgba(255, 255, 255, 0.85);
+    --glass-border: rgba(66, 129, 119, 0.3);
+    /* حدود شفافة مائلة للأخضر الأساسي */
 }
 
 .dark-mode {
-    --primary-color: #60A5FA;
-
     /* ==== Dark Theme Overrides ==== */
-    --bg-main: #0F172A;
-    --bg-surface: #1E293B;
-    --bg-secondary: #1e1e1e;
-    --bg-card: #1F2937;
-    --border-color: #334155;
+    --primary-color: #428177;
+    /* Forest - أفتح درجة */
+    --secondary-color: #6b1f2a;
+    /* Deep Umber - أفتح درجة */
+    --accent-color: #b9a779;
+    /* Golden Wheat - الدرجة الوسطى */
 
-    --text-primary: #F8FAFC;
-    --text-secondary: #CBD5E1;
-    --text-muted: #94A3B8;
-    --text-inverse: #0F172A;
+    --bg-main: #161616;
+    /* Charcoal - أغمق درجة كخلفية أساسية */
+    --bg-surface: #3d3a3b;
+    /* Charcoal - الدرجة الوسطى للبطاقات */
+    --bg-secondary: #002623;
+    /* Forest - أغمق درجة (خلفية ثانوية متناغمة مع اللون الأساسي) */
+    --bg-card: #3d3a3b;
+    --border-color: #988561;
+    /* Golden Wheat - أغمق درجة */
+
+    --text-primary: #ffffff;
+    /* Charcoal - أفتح درجة للنصوص */
+    --text-secondary: #edebe0;
+    /* Golden Wheat - أفتح درجة للنصوص الثانوية */
+    --text-muted: #b9a779;
+    --text-inverse: #161616;
 
     /* Interactive States */
-    --primary-hover: #c2e7ff;
-    --secondary-hover: #8B5CF6;
-    --accent-hover: #22D3EE;
-    --bg-hover: #105682;
+    --primary-hover: #054239;
+    /* Forest - الدرجة الوسطى */
+    --secondary-hover: #4a151e;
+    /* Deep Umber - الدرجة الوسطى */
+    --accent-hover: #edebe0;
+    --bg-hover: #002623;
+    /* Forest - أغمق درجة لتأثير التمرير */
 
     /* Glassmorphism */
-    --glass-bg: rgba(15, 23, 42, 0.85);
+    --glass-bg: rgba(22, 22, 22, 0.85);
     --glass-border: rgba(255, 255, 255, 0.1);
 }

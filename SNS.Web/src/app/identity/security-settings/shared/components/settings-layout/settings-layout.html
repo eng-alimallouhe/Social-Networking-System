@@ -1,0 +1,162 @@
+@if (isBusy()) {
+<div class="state-loader-container">
+    <div class="blur">
+        <app-circle-loader [translationKey]="actionState().messageKey"></app-circle-loader>
+    </div>
+</div>
+}
+<div class="auth-nav">
+    <div [routerLink]="['/']" class="brand-area">
+        <div class="logo">
+            <img src="../../../../assets/icons/github.svg" alt="">
+        </div>
+        <h2>SyrianDevs</h2>
+    </div>
+
+    <button class="mobile-menu-toggle" (click)="toggleMobileNav()">
+        @if (isMobileNavOpen()) {
+        <svg lucideX></svg>
+        } @else {
+        <svg lucideMenu></svg>
+        }
+    </button>
+</div>
+<div class="parent-element">
+    @if (isLoadingSettings()) {
+    <div class="loading-wrapper">
+        <app-line-loader class="loader-c" [width]="'100%'"></app-line-loader>
+    </div>
+    }
+
+    <div class="settings-wrapper">
+        <aside class="sidebar-menu" [class.mobile-open]="isMobileNavOpen()">
+            <div class="title">{{ 'App.Layout.Settings.Title' | translate }}</div>
+
+            <div class="links">
+                <div class="link-group">
+                    <div class="link home-link" (click)="goHome()" [class.active-link]="isRootRoute()">
+                        <div class="link-icon" [ngClass]="homeSetting!.iconClass">
+                            <ng-container *ngComponentOutlet="homeSetting!.icon"></ng-container>
+                        </div>
+                        <p class="link-title">{{ homeSetting!.titleKey | translate }}</p>
+                    </div>
+                </div>
+
+                <div class="link-group">
+                    @for (setting of navSettings; track setting.id) {
+                    <div class="link" [routerLink]="setting.route" routerLinkActive="active-link"
+                        (click)="isMobileNavOpen.set(false)">
+                        <div class="link-icon" [ngClass]="setting.iconClass">
+                            <ng-container *ngComponentOutlet="setting.icon"></ng-container>
+                        </div>
+                        <p class="link-title">{{ setting.titleKey | translate }}</p>
+                    </div>
+                    }
+                </div>
+
+                <div class="link-group">
+                    @for (setting of archiveSettings; track setting.id) {
+                    <div class="link archive-link" [routerLink]="setting.route" routerLinkActive="active-link"
+                        (click)="isMobileNavOpen.set(false)">
+                        <div class="link-icon" [ngClass]="setting.iconClass">
+                            <ng-container *ngComponentOutlet="setting.icon"></ng-container>
+                        </div>
+                        <p class="link-title">{{ setting.titleKey | translate }}</p>
+                    </div>
+                    }
+                </div>
+            </div>
+        </aside>
+
+        <div class="layout-wrapper">
+            @if (isRootRoute()) {
+            <main class="main-container home-content">
+                @if (userResource.value()) {
+                <div class="account-info">
+                    <div class="picture-wrapper">
+                        <img [src]="userResource.value()!.profilePictureUrl" [alt]="userResource.value()!.userName">
+                    </div>
+                    <div class="info">
+                        <h1>{{userResource.value()!.userName}}</h1>
+                        <p>{{userResource.value()!.email}}</p>
+                    </div>
+                </div>
+                } @else if (isLoadingSettings()) {
+                <div class="account-loader">
+                    <app-skeleton-loader></app-skeleton-loader>
+                </div>
+                }
+
+                <div class="search-container">
+                    <div class="search-bar">
+                        <svg lucideSearch class="search-icon"></svg>
+                        <input type="search" [placeholder]="'App.Layout.Settings.Search_Placeholder' | translate"
+                            [ngModel]="searchQuery()" (ngModelChange)="searchQuery.set($event)"
+                            (focus)="onSearchFocus()" (blur)="onSearchBlur()">
+                    </div>
+
+                    @if (searchQuery() || (isSearchFocused() && recentSettings().length > 0)) {
+                    <div class="search-results-overlay">
+                        @if (searchQuery()) {
+                        @for (group of searchResults(); track group.categoryKey) {
+                        <div class="search-group">
+                            <h3 class="group-title">{{ group.categoryKey | translate }}</h3>
+                            <div class="group-items">
+                                @for (result of group.items; track result.id) {
+                                <div class="search-item" (click)="selectSetting(result)">
+                                    <div class="item-icon" [ngClass]="result.iconClass">
+                                        <ng-container *ngComponentOutlet="result.icon"></ng-container>
+                                    </div>
+                                    <div class="item-content">
+                                        <h4 [innerHTML]="(result.titleKey | translate) | highlight:searchQuery()"></h4>
+                                        <p [innerHTML]="(result.descriptionKey | translate) | highlight:searchQuery()">
+                                        </p>
+                                    </div>
+                                    <svg lucideChevronRight class="arrow-icon"></svg>
+                                </div>
+                                }
+                            </div>
+                        </div>
+                        }
+
+                        @if (searchResults().length === 0) {
+                        <div class="empty-state">
+                            <svg lucideSearchX class="empty-icon"></svg>
+                            <h4>{{ 'App.Layout.Settings.No_Results' | translate }}</h4>
+                            <p>{{ 'App.Layout.Settings.No_Results_Desc' | translate }}</p>
+                        </div>
+                        }
+                        } @else if (recentSettings().length > 0) {
+                        <div class="search-group">
+                            <h3 class="group-title recent-title">
+                                <svg lucideClock class="recent-icon"></svg>
+                                {{ 'App.Layout.Settings.Recent' | translate }}
+                            </h3>
+                            <div class="group-items">
+                                @for (result of recentSettings(); track result.id) {
+                                <div class="search-item" (click)="selectSetting(result)">
+                                    <div class="item-icon" [ngClass]="result.iconClass">
+                                        <ng-container *ngComponentOutlet="result.icon"></ng-container>
+                                    </div>
+                                    <div class="item-content">
+                                        <h4>{{ result.titleKey | translate }}</h4>
+                                        <p>{{ result.descriptionKey | translate }}</p>
+                                    </div>
+                                    <svg lucideChevronRight class="arrow-icon"></svg>
+                                </div>
+                                }
+                            </div>
+                        </div>
+                        }
+                    </div>
+                    }
+                </div>
+            </main>
+            } @else {
+            <div class="router-container">
+                <router-outlet></router-outlet>
+            </div>
+            }
+        </div>
+    </div>
+</div>

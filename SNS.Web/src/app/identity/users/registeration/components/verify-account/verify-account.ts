@@ -166,9 +166,8 @@ export class VerifyAccount implements OnInit, OnDestroy {
                         this.toastService.success(translations.title, translations.message, 5000);
                     });
                     this.authFlowService.clear();
-                    this.router.navigate(['/auth/login']);
-                },
-                error: (err) => this.handleError(err)
+                    this.router.navigate(['/onboarding/create-profile']);
+                }
             });
     }
 
@@ -190,8 +189,7 @@ export class VerifyAccount implements OnInit, OnDestroy {
                         this.toastService.success(translations.title, translations.message, 4000);
                     });
                     this.startResendTimer();
-                },
-                error: (err) => this.handleError(err)
+                }
             });
     }
 
@@ -209,17 +207,4 @@ export class VerifyAccount implements OnInit, OnDestroy {
         }, 1000);
     }
 
-    // ── Error handler ─────────────────────────────────────────────────
-    private handleError(err: any): void {
-        const errorResult = err.error as Result<RegisterResponse>;
-        if (errorResult?.statusCode) {
-            const { category, code } = errorResult.statusCode;
-            forkJoin({
-                message: this.translateService.get(`Status_Codes.${category}.${code}`),
-                title: this.translateService.get('Status_Codes.Shared.Error_Title')
-            }).subscribe(translations => {
-                this.toastService.error(translations.title, translations.message, 5000);
-            });
-        }
-    }
 }

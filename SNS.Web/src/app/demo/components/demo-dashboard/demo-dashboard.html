@@ -17,35 +17,46 @@
 
     <div class="sections-container">
         @for (section of filteredSections(); track section.titleKey) {
-            <section class="dashboard-section">
-                <h2 class="section-title">{{ section.titleKey | translate }}</h2>
-                <div class="pages-grid">
-                    @for (page of section.pages; track page.route) {
-                        <a [routerLink]="page.route" [queryParams]="page.queryParams" class="page-card">
-                            <div class="card-header">
-                                <div class="icon-wrapper">
-                                    <ng-container *ngComponentOutlet="page.icon"></ng-container>
-                                </div>
-                                @if (page.generateQueryParams || page.queryParams) {
-                                    <div class="params-badge" [title]="'Demo.Dashboard.Requires_Params' | translate">
-                                        <svg lucideAlertCircle class="params-icon"></svg>
-                                        <span>Params</span>
-                                    </div>
-                                }
-                            </div>
-                            <div class="card-body">
-                                <h3>{{ page.titleKey | translate }}</h3>
-                                <p>{{ page.descriptionKey | translate }}</p>
-                            </div>
-                            <div class="card-footer">
-                                <span class="open-btn">
-                                    {{ 'Demo.Dashboard.OpenPage' | translate }}
-                                    <svg lucideArrowRight class="arrow-icon"></svg>
-                                </span>
-                            </div>
-                        </a>
-                    }
+            <section class="dashboard-section" [class.collapsed]="collapsedSections().has(section.titleKey)">
+                <div class="section-header" (click)="toggleSection(section.titleKey)">
+                    <h2 class="section-title">{{ section.titleKey | translate }}</h2>
+                    <div class="collapse-icon-wrapper">
+                        @if (collapsedSections().has(section.titleKey)) {
+                            <svg lucideChevronDown class="collapse-icon"></svg>
+                        } @else {
+                            <svg lucideChevronUp class="collapse-icon"></svg>
+                        }
+                    </div>
                 </div>
+                @if (!collapsedSections().has(section.titleKey)) {
+                    <div class="pages-grid">
+                        @for (page of section.pages; track page.route) {
+                            <a [routerLink]="page.route" [queryParams]="page.queryParams" class="page-card">
+                                <div class="card-header">
+                                    <div class="icon-wrapper">
+                                        <ng-container *ngComponentOutlet="page.icon"></ng-container>
+                                    </div>
+                                    @if (page.generateQueryParams || page.queryParams) {
+                                        <div class="params-badge" [title]="'Demo.Dashboard.Requires_Params' | translate">
+                                            <svg lucideAlertCircle class="params-icon"></svg>
+                                            <span>Params</span>
+                                        </div>
+                                    }
+                                </div>
+                                <div class="card-body">
+                                    <h3>{{ page.titleKey | translate }}</h3>
+                                    <p>{{ page.descriptionKey | translate }}</p>
+                                </div>
+                                <div class="card-footer">
+                                    <span class="open-btn">
+                                        {{ 'Demo.Dashboard.OpenPage' | translate }}
+                                        <svg lucideArrowRight class="arrow-icon"></svg>
+                                    </span>
+                                </div>
+                            </a>
+                        }
+                    </div>
+                }
             </section>
         }
 

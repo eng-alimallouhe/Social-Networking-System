@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { finalize, forkJoin } from 'rxjs';
 import { Result } from '../../../../../shared/contracts/result';
@@ -21,7 +21,6 @@ export class LoginWithPasskey {
   private loginService = inject(LoginService);
   private toastService = inject(ToastService);
   private route = inject(ActivatedRoute);
-  private translateService = inject(TranslateService);
   private tokenService = inject(TokenService);
   private requestInformationService = inject(RequestInformationService);
   private router = inject(Router);
@@ -91,21 +90,6 @@ export class LoginWithPasskey {
                   this.tokenService.setToken(response.value?.accessToken!, response.value?.refreshToken!);
                   this.requestInformationService.setDeviceId(response.value?.deviceId!);
                   this.router.navigate(['/']);
-                },
-                error: (err) => {
-                  var errorResult = err.error as Result<LoginResponse>;
-
-                  if (errorResult && errorResult.statusCode) {
-                    let category = errorResult.statusCode.category;
-                    let code = errorResult.statusCode.code;
-
-                    forkJoin({
-                      message: this.translateService.get(`Status_Codes.${category}.${code}`),
-                      title: this.translateService.get(`Status_Codes.Shared.Error_Title`)
-                    }).subscribe(translations => {
-                      this.toastService.error(translations.title, translations.message, 5000);
-                    });
-                  }
                 }
               });
 
@@ -113,8 +97,7 @@ export class LoginWithPasskey {
             this.loadingService.hide();
             this.toastService.error("The operation was cancelled or a documentation error occurred", "");
           }
-        },
-        error: () => this.toastService.error("No registered keys were found for this user", "")
+        }
       });
   }
 }

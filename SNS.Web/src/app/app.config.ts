@@ -7,12 +7,13 @@ import { provideTranslateService, TranslateLoader } from '@ngx-translate/core';
 import { authInterceptor } from './identity/shared/interceptors/auth.interceptor';
 import { Observable } from 'rxjs';
 import { environment } from '../environments/environment.development';
+import { errorInterceptor } from './shared/interceptors/error-interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
-    provideHttpClient(withFetch(), withInterceptors([authInterceptor])),
+    provideHttpClient(withFetch(), withInterceptors([authInterceptor, errorInterceptor])),
     provideTranslateService({
       fallbackLang: 'en',
       loader: {

@@ -18,4 +18,6 @@ public interface IIdentityCacheKeyFactory
     string GetUpdateKey(Guid userId, UpdateType type);
 
     string GetUserActivationChanlageKey(Guid userId);
+
+    string GetUserAuthenticatorKey(Guid userId);
 }

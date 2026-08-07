@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { finalize, forkJoin, Subscription } from 'rxjs';
+import { finalize, Subscription } from 'rxjs';
 import { AuthFlowService } from '../../../../shared/services/auth-flow.service';
 import { LoginService } from '../../services/login.service';
 import { TokenService } from '../../../../shared/services/token.service';
@@ -30,8 +30,7 @@ export class VerifyOtp implements OnInit, OnDestroy {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private fb = inject(FormBuilder);
-  private toastService = inject(ToastService);
-  private translateService = inject(TranslateService);
+    private toastService = inject(ToastService);
   private requestInfoService = inject(RequestInformationService);
   private authFlowService = inject(AuthFlowService);
   private generatorService = inject(GeneratorService);
@@ -143,8 +142,7 @@ export class VerifyOtp implements OnInit, OnDestroy {
           this.tokenService.setToken(response.value?.accessToken!, response.value?.refreshToken!);
           this.requestInfoService.setDeviceId(response.value?.deviceId!);
           this.router.navigate(['/']);
-        },
-        error: (err) => this.handleError(err)
+        }
       });
   }
 
@@ -160,8 +158,7 @@ export class VerifyOtp implements OnInit, OnDestroy {
         next: () => {
           this.toastService.success("تم إرسال الرمز الجديد بنجاح", "نجاح");
           this.startResendTimer(); // إعادة تشغيل العداد
-        },
-        error: (err) => this.handleError(err)
+        }
       });
   }
 
@@ -178,17 +175,4 @@ export class VerifyOtp implements OnInit, OnDestroy {
     }, 1000);
   }
 
-  private handleError(err: any) {
-    var errorResult = err.error as Result<any>;
-    if (errorResult && errorResult.statusCode) {
-      let category = errorResult.statusCode.category;
-      let code = errorResult.statusCode.code;
-      forkJoin({
-        message: this.translateService.get(`Status_Codes.${category}.${code}`),
-        title: this.translateService.get(`Status_Codes.Shared.Error_Title`)
-      }).subscribe(translations => {
-        this.toastService.error(translations.title, translations.message, 5000);
-      });
-    }
-  }
 }

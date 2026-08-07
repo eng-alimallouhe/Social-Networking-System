@@ -1,0 +1,28 @@
+<div class="enable-mfa-wrapper">
+    <div class="title-section">
+        <h1>{{ 'Identity.Security_Settings.Security_Settings_Page.MFA.Header' | translate }}</h1>
+    </div>
+    
+    <form [formGroup]="form" class="enable-mfa-form" (ngSubmit)="onSubmit()">
+        <h2>{{ 'Identity.Security_Settings.Security_Settings_Page.ChangeMfa.Subtitle' | translate }}</h2>
+        
+        <div class="form-group">
+            <app-select 
+                formControlName="provider"
+                [label]="'Identity.Security_Settings.Security_Settings_Page.MFA.Provider' | translate"
+                [options]="providerOptions"
+                [invalid]="!!(form.get('provider')?.touched && form.get('provider')?.invalid)">
+            </app-select>
+        </div>
+
+        <div class="buttons-group">
+            <button class="cancel-button" [routerLink]="['/account-settings/security-settings']" type="button">
+                {{ 'Identity.Security_Settings.Security_Settings_Page.Actions.Cancel' | translate }}
+            </button>
+            <button type="submit" [disabled]="form.invalid" class="submit-btn">
+                <span>{{ 'Identity.Security_Settings.Security_Settings_Page.Actions.Enable' | translate }}</span>
+                <svg lucideCheckLine></svg>
+            </button>
+        </div>
+    </form>
+</div>

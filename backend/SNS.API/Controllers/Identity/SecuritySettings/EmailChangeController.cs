@@ -38,7 +38,7 @@ public class EmailChangeController : ControllerBase
     /// <response code="400">The provided email address is invalid.</response>
     /// <response code="401">The user is not authenticated.</response>
     /// <response code="409">The new email address is already in use by another account.</response>
-    [HttpPost("initiate-email-change")]
+    [HttpPut("initiate-email-change")]
     [Consumes("application/json")]
     [ProducesResponseType(typeof(IdentifierChangeResponseDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -59,7 +59,7 @@ public class EmailChangeController : ControllerBase
     /// <response code="200">Returns updated verification details <see cref="IdentifierChangeResponseDto"/>.</response>
     /// <response code="400">No active pending email change request was found.</response>
     /// <response code="401">The user is not authenticated.</response>
-    [HttpPost("resend-email-change-code")]
+    [HttpPut("resend-email-change-code")]
     [Consumes("application/json")]
     [ProducesResponseType(typeof(IdentifierChangeResponseDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]

@@ -1,16 +1,16 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { finalize, forkJoin } from 'rxjs';
+import { TranslatePipe } from '@ngx-translate/core';
+import { finalize } from 'rxjs';
 import { LucideShield, LucideUser, LucideUserCheck, LucideEyeOff, LucideLifeBuoy, LucideGhost } from '@lucide/angular';
 
 import { LoginService } from '../../../identity/security-sesstions/login/services/login.service';
 import { DemoLoadingService } from '../../services/demo-loading.service';
-import { ToastService } from '../../../identity/notifications/services/toast.service';
 import { TokenService } from '../../../identity/shared/services/token.service';
 import { RequestInformationService } from '../../../identity/shared/services/request-information.service';
 import { LoginWithPasswordRequest } from '../../../identity/security-sesstions/login/contracts/login-with-password-request.dto';
+import { AuthenticationService } from '../../../identity/shared/services/authentication.service';
 
 interface DemoRole {
     id: string;
@@ -29,14 +29,20 @@ interface DemoRole {
 export class RoleSwitcher {
     private loginService = inject(LoginService);
     private loadingService = inject(DemoLoadingService);
-    private toastService = inject(ToastService);
     private router = inject(Router);
     private tokenService = inject(TokenService);
     private requestInfoService = inject(RequestInformationService);
-    private translateService = inject(TranslateService);
+    private authenticationService = inject(AuthenticationService);
+
+    public isAuthenticated = this.authenticationService.isAuthenticated;
+    public currentRole = this.authenticationService.currentRole;
+    public activeRole = computed(() => {
+        const roleId = this.currentRole()?.toLowerCase();
+        return this.roles.find(r => r.id === roleId);
+    });
+    public guestIcon = LucideUser;
 
     private readonly SHARED_PASSWORD = 'alimallohi0947041713A';
-
     roles: DemoRole[] = [
         { id: 'admin', titleKey: 'Demo.RoleSwitcher.Roles.Admin', email: 'admin_omar@example.com', icon: LucideShield },
         { id: 'user', titleKey: 'Demo.RoleSwitcher.Roles.User', email: 'engalimallouhe@gmail.com', icon: LucideUser },
@@ -44,6 +50,10 @@ export class RoleSwitcher {
         { id: 'support', titleKey: 'Demo.RoleSwitcher.Roles.Support', email: 'support_ahmad@example.com', icon: LucideLifeBuoy },
         { id: 'ghost', titleKey: 'Demo.RoleSwitcher.Roles.Ghost', email: 'deleted_user@gmail.com', icon: LucideGhost }
     ];
+
+    navigateToDemoDashboard() {
+        this.router.navigate(['/demo/dashboard']);
+    }
 
     selectRole(role: DemoRole) {
         if (this.loadingService.isLoading()) return;
@@ -63,18 +73,6 @@ export class RoleSwitcher {
                         this.tokenService.setToken(response.value.accessToken, response.value.refreshToken!);
                         this.requestInfoService.setDeviceId(response.value.deviceId!);
                         this.router.navigate(['/demo/dashboard']);
-                    }
-                },
-                error: (err) => {
-                    const errorResult = err.error;
-                    if (errorResult && errorResult.statusCode) {
-                        const { category, code } = errorResult.statusCode;
-                        forkJoin({
-                            message: this.translateService.get(`Status_Codes.${category}.${code}`),
-                            title: this.translateService.get(`Status_Codes.Shared.Error_Title`)
-                        }).subscribe(translations => {
-                            this.toastService.error(translations.title, translations.message, 5000);
-                        });
                     }
                 }
             });

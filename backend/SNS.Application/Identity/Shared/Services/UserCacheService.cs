@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using SNS.Application.Abstractions.Caching;
 using SNS.Application.Identity.Shared.Abstractions;
 using SNS.Application.Identity.Shared.DTOs.Users;
@@ -7,8 +8,6 @@ using SNS.Domain.Identity.Users.Specifications;
 using SNS.Domain.Shared.Abstractions.Repositories;
 using SNS.Shared.Results;
 using SNS.Shared.StatusCodes;
-using Microsoft.EntityFrameworkCore;
-using System.Net.NetworkInformation;
 
 
 namespace SNS.Application.Identity.Shared.Services;
@@ -102,5 +101,17 @@ public class UserCacheService : IUserCacheService
         var key = _identityCacheKeyFactory.GetUserActivationChanlageKey(userId);
         await _cacheService.RemoveAsync(key, cancellationToken);
         return Result.Success(OperationStatusCode.Success);
+    }
+
+    public async Task<Result> InitiateAuthenticatorAsync(Guid userId, string secretKey, CancellationToken cancellationToken = default)
+    {
+        var key = _identityCacheKeyFactory.GetUserAuthenticatorKey(userId);
+        await _cacheService.SetAsync(key, secretKey, _cacheDuration, cancellationToken);
+        return Result.Success(OperationStatusCode.Success);
+    }
+
+    public async Task<string?> GetAuthenticatorSecretKeyAsync(Guid userId, CancellationToken cancellationToken = default)
+    {
+        return await _cacheService.GetAsync<string>(_identityCacheKeyFactory.GetUserAuthenticatorKey(userId), cancellationToken);
     }
 }
