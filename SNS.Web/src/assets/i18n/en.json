@@ -313,6 +313,11 @@
         },
         "Loaders": {
             "Checking_Username_Availablity": "Checking Username Availablity"
+        },
+        "Actions": {
+            "Continue": "Continue",
+            "Close": "Close",
+            "Cancel": "Cancel"
         }
     },
     "Status_Codes": {

@@ -71,11 +71,6 @@ public class InitiateAuthenticatorCommandHandler
             return Result<AuthenticatorSetupDto>.Failure(ResourceStatusCode.NotFound);
         }
 
-        if (!string.IsNullOrEmpty(securitySettings.AuthenticatorSecretKey))
-        {
-            return Result<AuthenticatorSetupDto>.Failure(SecurityStatusCodes.MfaAlreadyEnabled);
-        }
-
         string secretKey = _generatorService.GenerateSecureString(16);
 
         string? accountName = securitySettings.RecoveryEmail;
