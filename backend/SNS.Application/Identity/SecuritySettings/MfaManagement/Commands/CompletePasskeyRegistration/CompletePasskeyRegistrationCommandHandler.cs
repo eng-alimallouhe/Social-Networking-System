@@ -123,8 +123,10 @@ public class CompletePasskeyRegistrationCommandHandler
 
             return Result<Unit>.Success(Unit.Value, OperationStatusCode.Success);
         }
-        catch (Fido2VerificationException)
+        catch (Fido2VerificationException ex)
         {
+            Console.WriteLine("====== FIDO2 VERIFICATION ERROR ======");
+            Console.WriteLine(ex.Message);
             return Result<Unit>.Failure(SecurityStatusCodes.VerificationFailed);
         }
         catch (Exception)
