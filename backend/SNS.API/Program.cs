@@ -121,7 +121,8 @@ builder.Services.AddCors(options =>
                 "http://localhost:60311",
                 "https://localhost:60311",
                 "http://localhost:4200",
-                "https://localhost:4200"
+                "https://localhost:4200",
+                "https://syrian-devs.duckdns.org"
             )
             .AllowCredentials()
             .AllowAnyHeader()
