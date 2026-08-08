@@ -81,7 +81,7 @@ export class UserPasskeys {
           if (res.isSuccess && res.value) {
             try {
               const options = res.value;
-              
+
               const publicKeyCredentialCreationOptions: PublicKeyCredentialCreationOptions = {
                 rp: options.rp,
                 user: {
@@ -101,7 +101,7 @@ export class UserPasskeys {
               };
 
               const credential = await navigator.credentials.create({ publicKey: publicKeyCredentialCreationOptions }) as PublicKeyCredential;
-              
+
               const response = credential.response as AuthenticatorAttestationResponse;
 
               const attestationResponse = {
@@ -111,7 +111,7 @@ export class UserPasskeys {
                 response: {
                   attestationObject: WebAuthnUtils.bufferToBase64url(response.attestationObject),
                   clientDataJSON: WebAuthnUtils.bufferToBase64url(response.clientDataJSON),
-                  transports: credential.authenticatorAttachment ? [credential.authenticatorAttachment] : [] // best effort mapping
+                  transports: typeof response.getTransports === 'function' ? response.getTransports() : []
                 }
               };
 
@@ -139,7 +139,7 @@ export class UserPasskeys {
   onDeviceNameConfirm(deviceName: string) {
     this.showDeviceNameDialog.set(false);
     const attestation = this.pendingAttestationResponse();
-    
+
     if (!attestation) return;
 
     this.loadingService.show();
@@ -147,23 +147,23 @@ export class UserPasskeys {
       attestationResponse: attestation,
       deviceName: deviceName
     })
-    .pipe(finalize(() => {
-      this.loadingService.hide();
-      this.pendingAttestationResponse.set(null);
-    }))
-    .subscribe({
-      next: (res) => {
-        if (res.isSuccess) {
-          this.toastService.success('Identity.Security_Settings.Security_Settings_Page.Passkeys_Page.RegistrationSuccess', 'Success');
-          this.loadPasskeys();
-        } else {
-          this.toastService.error('Identity.Security_Settings.Security_Settings_Page.Passkeys_Page.RegistrationFailed', 'Registration failed');
+      .pipe(finalize(() => {
+        this.loadingService.hide();
+        this.pendingAttestationResponse.set(null);
+      }))
+      .subscribe({
+        next: (res) => {
+          if (res.isSuccess) {
+            this.toastService.success('Identity.Security_Settings.Security_Settings_Page.Passkeys_Page.RegistrationSuccess', 'Success');
+            this.loadPasskeys();
+          } else {
+            this.toastService.error('Identity.Security_Settings.Security_Settings_Page.Passkeys_Page.RegistrationFailed', 'Registration failed');
+          }
+        },
+        error: () => {
+          this.toastService.error('Identity.Security_Settings.Security_Settings_Page.Passkeys_Page.RegistrationFailed', 'Network error');
         }
-      },
-      error: () => {
-        this.toastService.error('Identity.Security_Settings.Security_Settings_Page.Passkeys_Page.RegistrationFailed', 'Network error');
-      }
-    });
+      });
   }
 
   onDeviceNameCancel() {
