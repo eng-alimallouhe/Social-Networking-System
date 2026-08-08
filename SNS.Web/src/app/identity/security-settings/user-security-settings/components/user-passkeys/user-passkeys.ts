@@ -108,6 +108,7 @@ export class UserPasskeys {
                 id: credential.id,
                 rawId: WebAuthnUtils.bufferToBase64url(credential.rawId),
                 type: credential.type,
+                clientExtensionResults: credential.getClientExtensionResults ? credential.getClientExtensionResults() : {},
                 response: {
                   attestationObject: WebAuthnUtils.bufferToBase64url(response.attestationObject),
                   clientDataJSON: WebAuthnUtils.bufferToBase64url(response.clientDataJSON),
