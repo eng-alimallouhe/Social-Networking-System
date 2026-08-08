@@ -50,6 +50,7 @@ public static class IdentityApplicationDI
                 ServerDomain = fidoOptions.ServerDomain,
                 ServerName = fidoOptions.ServerName,
                 ServerIcon = fidoOptions.ServerIcon,
+                Origins = fidoOptions.Origins,
                 TimestampDriftTolerance = fidoOptions.TimestampDriftTolerance <= 0 ? 300000 : fidoOptions.TimestampDriftTolerance
             });
         });
