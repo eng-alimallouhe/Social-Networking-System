@@ -99,6 +99,20 @@ services:
     networks:
       - backend
 
+  reverse-proxy:
+    image: caddy:latest
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - backend-api
+      - frontend-app
+
 networks:
   elk:
   backend:
@@ -106,3 +120,5 @@ networks:
 volumes:
   minio_data:
   mssql_data:
+  caddy_data:
+  caddy_config:
