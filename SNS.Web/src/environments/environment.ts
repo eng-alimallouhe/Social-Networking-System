@@ -1,5 +1,6 @@
 export const environment = {
-    apiUrl: "https://syrian-devs.duckdns.org/api/v1/",
+    apiUrl: "https://api.syrian-devs.duckdns.org/api/v1/",
     production: true,
-    appVersion: '1.0.1.3'
+    // MAJOR.MINOR.PATCH.ZERO
+    appVersion: '2.1.2.0'
 };
