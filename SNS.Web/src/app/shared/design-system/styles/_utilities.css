@@ -1,0 +1,171 @@
+/* ==== Utility Classes ==== */
+
+/* Layout */
+.flex-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.flex-between {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.flex-col {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Spacing */
+.gap-2 {
+    gap: var(--spacing-2);
+}
+
+.gap-3 {
+    gap: var(--spacing-3);
+}
+
+.gap-4 {
+    gap: var(--spacing-4);
+}
+
+.gap-6 {
+    gap: var(--spacing-6);
+}
+
+.m-0 {
+    margin: 0;
+}
+
+.mt-2 {
+    margin-top: var(--spacing-2);
+}
+
+.mt-4 {
+    margin-top: var(--spacing-4);
+}
+
+.mb-2 {
+    margin-bottom: var(--spacing-2);
+}
+
+.mb-4 {
+    margin-bottom: var(--spacing-4);
+}
+
+.p-4 {
+    padding: var(--spacing-4);
+}
+
+.p-6 {
+    padding: var(--spacing-6);
+}
+
+/* Typography */
+.text-center {
+    text-align: center;
+}
+
+.text-left {
+    text-align: left;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.font-bold {
+    font-weight: var(--font-weight-bold);
+}
+
+.font-semibold {
+    font-weight: var(--font-weight-semibold);
+}
+
+.font-medium {
+    font-weight: var(--font-weight-medium);
+}
+
+.text-sm {
+    font-size: var(--text-sm);
+}
+
+.text-xs {
+    font-size: var(--text-xs);
+}
+
+.text-lg {
+    font-size: var(--text-lg);
+}
+
+.text-xl {
+    font-size: var(--text-xl);
+}
+
+.text-muted {
+    color: var(--text-muted);
+}
+
+.text-error {
+    color: var(--error);
+}
+
+.text-success {
+    color: var(--success);
+}
+
+/* Accessibility */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+.focus-ring {
+    outline: none;
+    transition: box-shadow var(--transition-fast);
+}
+
+.focus-ring:focus-visible {
+    box-shadow: 0 0 0 2px var(--bg-main), 0 0 0 4px var(--primary-color);
+}
+
+
+.active-link .link-title {
+    color: var(--primary-hover) !important;
+}
+
+.active-link {
+    background-color: var(--bg-hover) !important;
+}
+
+.link:hover {
+    background-color: var(--bg-hover);
+    color: var(--primary-hover);
+    cursor: pointer;
+}
+
+.brand-area h2 {
+    font-family: var(--font-family-english) !important;
+}
+
+.link:hover .link-title {
+    color: var(--primary-hover) !important;
+}
+
+
+.directional-icon {
+    transition: transform var(--transition-base);
+}
+
+:host-context([dir="rtl"]) .directional-icon {
+    transform: rotate(180deg);
+}

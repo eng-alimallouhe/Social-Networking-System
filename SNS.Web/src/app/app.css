@@ -1,0 +1,29 @@
+:host {
+    display: block;
+    padding-top: calc(var(--navbar-mobile-height) + var(--spacing-4));
+}
+
+@media (min-width: 991px) {
+    :host {
+        padding-top: calc(var(--navbar-desktop-height) + var(--spacing-4));
+    }
+}
+
+
+.global-loader-container {
+    width: 100%;
+    position: absolute;
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    top: calc(var(--navbar-mobile-height) + 0px);
+    left: 0;
+    right: 0;
+    height: 100%;
+    z-index: 99999;
+}
+
+@media (min-width: 991px) {
+    .global-loader-container {
+        top: calc(var(--navbar-desktop-height) + 0px);
+    }
+}

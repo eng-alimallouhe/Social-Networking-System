@@ -1,6 +1,6 @@
 {
     "App": {
-        "Site_Name": "Syrian Developers Network",
+        "Site_Name": "SyrianDevs",
         "Site_Name_1": "Syrian",
         "Site_Name_2": "Developers",
         "Site_Name_3": "Platform",
@@ -49,39 +49,45 @@
             "Register": "Register"
         }
     },
+    "Profiles": {
+        "Profiles": {
+            "Full_Name": "Full Name",
+            "Full_Name_Placeholder": "e.g. Ahmad Al-Hassan",
+            "Bio": "Bio",
+            "Optional": "(optional)",
+            "Bio_Placeholder": "Tell the community a bit about yourself...",
+            "Specialization": "Specialization",
+            "Specialization_Placeholder": "Search specializations...",
+            "Specialization_Empty": "No matching specializations found.",
+            "Errors": {
+                "Full_Name_Required": "Full name is required.",
+                "Full_Name_Max_Length": "Full name must be at most {{max}} characters.",
+                "Bio_Max_Length": "Bio must be at most {{max}} characters."
+            }
+        },
+        "Social_Graph": {
+            "Follows": {
+                "Following_Count_Label": "Following",
+                "Followers": "Followers",
+                "Following_Stat": "Following",
+                "Follow": "Follow",
+                "Following_Btn": "Following"
+            },
+            "Blocks": {}
+        }
+    },
     "Identity": {
         "Onboarding": {
             "Create_Profile": {
                 "Title": "Create Your Profile",
-                "Subtitle": "Tell the community a little about yourself.",
-                "Upload_Photo": "Upload Photo",
-                "Remove": "Remove",
-                "Full_Name": "Full Name",
-                "Full_Name_Placeholder": "e.g. Ahmad Al-Hassan",
-                "Bio": "Bio",
-                "Optional": "(optional)",
-                "Bio_Placeholder": "Tell the community a bit about yourself...",
-                "Specialization": "Specialization",
-                "Specialization_Placeholder": "Search specializations...",
-                "Specialization_Empty": "No matching specializations found.",
-                "Continue": "Continue",
-                "Errors": {
-                    "Full_Name_Required": "Full name is required.",
-                    "Full_Name_Max_Length": "Full name must be at most {{max}} characters.",
-                    "Bio_Max_Length": "Bio must be at most {{max}} characters."
-                }
+                "Subtitle": "Tell the community a little about yourself."
             },
             "Follow_People": {
                 "Title": "Follow People",
                 "Subtitle_Start": "Follow at least",
                 "Subtitle_End": "people to personalise your feed.",
-                "Following_Count_Label": "Following",
                 "Ready": "Ready!",
-                "Continue": "Continue",
-                "Followers": "Followers",
-                "Following_Stat": "Following",
-                "Follow": "Follow",
-                "Following_Btn": "Following"
+                "Continue": "Continue"
             }
         },
         "Security_Sessions": {
@@ -116,7 +122,8 @@
             },
             "OTP": {
                 "Title": "Verify OTP Code",
-                "Enter_Code_Send_To": "Check your email {{email}} and enter the code sent to it",
+                "Enter_Code_Send_To_1": "Check your email ",
+                "Enter_Code_Send_To_2": "and enter the code sent to it",
                 "Verify": "Verify",
                 "Back_To_Login": "Back to login",
                 "Using_Authenticator": "using your Authenticator App",
@@ -159,14 +166,21 @@
         "Security_Settings": {
             "Personal_Info": {
                 "Title": "Personal Information",
-                "User_Name": "UserName",
+                "Description": "Manage your profile details and contact information.",
+                "General_Information": "General Information",
+                "Account_Overview": "Account Overview",
+                "Data_Privacy_Status": "Data Privacy Status",
+                "Primary_Location": "Primary Location",
+                "User_Name": "Username",
                 "Role": "Role",
-                "Email": "Email",
+                "Email": "Email Address",
                 "Preferred_Language": "Preferred Language",
                 "Last_Password_Change": "Last Password Change",
                 "Location": "Location",
                 "Last_Location": "Last Active Location",
                 "Has_Active_Download_Request": "Has Active Download Request",
+                "Contact_And_Preferences": "Contact & Preferences",
+                "Security_And_Activity": "Security & Activity",
                 "Change_Username": {
                     "Title": "Change Username",
                     "Subtitle": "Change your username",
@@ -180,6 +194,8 @@
                     "Current_Username": "your current name"
                 },
                 "Language": {
+                    "Title": "Change Language",
+                    "Language_Label": "Language",
                     "Change_Language_DESC": "Choose your preferred, this action will be synchronized",
                     "Changing_AR": "جاري مزامنة اللغة",
                     "Changing_EN": "Your Language is loading"
@@ -200,38 +216,126 @@
                     "Cancel": "Cancel"
                 }
             },
+            "Session_Management": {
+                "Title": "Sessions & Sign-in",
+                "Description": "Manage your active sessions and connected devices.",
+                "Active_Sessions": "Active Sessions",
+                "No_Active_Sessions": "No active sessions found.",
+                "Registered_Devices": "Registered Devices",
+                "No_Registered_Devices": "No registered devices found.",
+                "Current_Session": "Current Session",
+                "Logout": "Logout",
+                "Logout_All_Other": "Logout from all other devices",
+                "Created_At": "Started at",
+                "Show_All_Sessions": "Show all sessions",
+                "Show_All_Devices": "Show all devices",
+                "View_Location": "View location",
+                "Browser_On_OS": "{{browser}} on {{os}}",
+                "Confirm_Logout_Title": "Logout from Session",
+                "Confirm_Logout_Message": "Are you sure you want to log out from this session?",
+                "Confirm_Logout_All_Title": "Logout from All Other Devices",
+                "Confirm_Logout_All_Message": "Are you sure you want to log out from all other active devices? You will remain logged in on this current device.",
+                "Session_Details": "Session Details",
+                "Unknown": "Unknown",
+                "Device_Information": "Device Information",
+                "Device_Name": "Device Name",
+                "Browser": "Browser",
+                "Manufacturer": "Manufacturer",
+                "Operating_System": "Operating System",
+                "First_Seen": "First Seen",
+                "Connection_And_Activity": "Connection & Activity",
+                "Last_Seen": "Last Seen",
+                "Login_Time": "Login Time",
+                "IP_Address": "IP Address",
+                "Session_Duration": "Session Duration",
+                "City": "City",
+                "Country": "Country",
+                "Session_Actions": "Session Actions",
+                "Session_Actions_Desc": "This is your currently active session. Logging out will terminate it.",
+                "Duration_Minutes": "{{minutes}} Minutes",
+                "Duration_Hours": "{{hours}} Hours and {{minutes}} Minutes",
+                "Active_Now": "Active Now",
+                "Inactive": "Inactive",
+                "Session_History": "Session History",
+                "All_Sessions": "All Sessions",
+                "Just_Active_Sessions": "Just Active Sessions",
+                "No_Sessions_Found": "No sessions found.",
+                "Page": "Page",
+                "Previous": "Previous",
+                "Next": "Next"
+            },
             "Security_Settings_Page": {
                 "Title": "Security Settings",
+                "Description": "Manage your authentication methods and account access.",
                 "MFA": {
-                    "Header": "Multi-Factor Authentication",
+                    "Header": "Multi-Factor Authentication (MFA)",
+                    "Choose_Provider_Title": "Choose authentication method",
                     "Status": "MFA Status",
+                    "Status_Desc": "Add an extra layer of security to your account",
                     "Enabled": "Enabled",
                     "Disabled": "Disabled",
-                    "Provider": "Current MFA Provider",
+                    "Provider": "Current Provider",
+                    "Provider_Desc": "Default method for authentication",
+                    "Authenticator_App": "Authenticator App",
+                    "Authenticator_App_Desc": "Manage connected apps",
                     "Authenticator_Linked": "Authenticator App Linked",
                     "Linked": "Linked",
                     "Not_Linked": "Not Linked"
+                },
+                "Account_Access": {
+                    "Header": "Account Access",
+                    "Passkeys": "Passkeys",
+                    "Passkeys_Linked": "{{count}} Passkeys linked",
+                    "Recovery_Email": "Recovery Email",
+                    "Recovery_Codes": "Recovery Codes",
+                    "Recovery_Codes_Status": "{{used}} used, {{remaining}} remaining"
+                },
+                "Status_Details": {
+                    "Header": "Status Details",
+                    "Last_Password_Change": "Last Password Change",
+                    "Registered_Devices": "Registered Devices",
+                    "Active_Devices": "{{count}} Active Devices"
                 },
                 "Recovery": {
                     "Header": "Recovery Information",
                     "Email": "Recovery Email",
                     "No_Email": "No recovery email configured",
-                    "Codes_Count": "Active Recovery Codes"
+                    "Codes_Count": "Active Recovery Codes",
+                    "Codes_Instruction": "Store these codes in a safe place. They can be used to access your account if you lose your MFA device.",
+                    "Used_Codes": "Used Codes",
+                    "Unused_Codes": "Unused Codes",
+                    "Generated": "Generated",
+                    "Used": "Used",
+                    "Not_Used": "Not Used",
+                    "No_Codes_Exist": "No recovery codes exist",
+                    "Generate_Instruction": "Generate recovery codes to secure your account in case you lose access to your primary authentication device.",
+                    "Save_Your_Codes": "Save Your Recovery Codes",
+                    "Warning_Text": "These codes are only shown once. Please save them securely. Generating new codes has invalidated any previously generated recovery codes.",
+                    "Regenerate_Title": "Regenerate Recovery Codes",
+                    "Regenerate_Message": "Are you sure you want to regenerate recovery codes? All previous recovery codes will be invalidated immediately.",
+                    "Revoke_Title": "Revoke Recovery Codes",
+                    "Revoke_Message": "Are you sure you want to revoke all recovery codes? You will not be able to use them to access your account."
                 },
                 "Preferences": {
                     "Header": "Communication Preferences",
-                    "Default_Method": "Default Communication Method"
+                    "Default_Method": "Default Communication Method",
+                    "Change_Method": "Change Default Method",
+                    "Recovery_Email_Required": "You need to add a recovery email before you can change the default communication method.",
+                    "Add_Recovery_Email": "Add Recovery Email"
                 },
                 "Providers": {
                     "0": "None",
                     "1": "Recovery Email Address",
                     "2": "Primary Email Address",
                     "3": "Authenticator App",
-                    "4": "Passkey"
+                    "4": "Passkey",
+                    "None": "None"
                 },
                 "Methods": {
                     "0": "Primary Email Address",
-                    "1": "Recovery Email Address"
+                    "1": "Recovery Email Address",
+                    "Email": "Primary Email Address",
+                    "RecoveryEmail": "Recovery Email Address"
                 },
                 "Actions": {
                     "Enable": "Enable",
@@ -286,7 +390,19 @@
                     "Registration_Failed": "Registration failed",
                     "Delete_Confirm": "Are you sure you want to delete this passkey?",
                     "Enter_Device_Name": "Enter Device Name",
-                    "Registration_Success": "Passkey registered successfully"
+                    "Registration_Success": "Passkey registered successfully",
+                    "Name_Dialog_Title": "Name Your Passkey",
+                    "Name_Dialog_Desc": "Enter a name for your new passkey to easily identify it.",
+                    "Name_Dialog_Placeholder": "e.g. My Phone",
+                    "Unsupported": "Passkeys are not supported on this device.",
+                    "RegistrationFailed": "Registration failed",
+                    "InvalidResponse": "Invalid response",
+                    "RegistrationSuccess": "Passkey registered successfully",
+                    "Created": "Created",
+                    "No_Passkeys_Registered": "No passkeys registered",
+                    "Empty_Description": "Passkeys provide a secure, passwordless login experience using device biometrics or security keys.",
+                    "Remove_Passkey_Title": "Remove Passkey",
+                    "Remove_Passkey_Message": "Are you sure you want to remove this passkey? You won't be able to use it to log in anymore."
                 }
             },
             "Search": {}
@@ -330,26 +446,101 @@
             "Continue": "Continue",
             "Close": "Close",
             "Cancel": "Cancel",
-            "Back": "Back"
+            "Back": "Back",
+            "Confirm": "Confirm",
+            "Upload_Photo": "Upload Photo",
+            "Remove": "Remove",
+            "Back_To_Home": "Back to Home",
+            "Revoke_All": "Revoke All Codes",
+            "Regenerate": "Regenerate Codes",
+            "Generate": "Generate Recovery Codes",
+            "Copy_To_Clipboard": "Copy to Clipboard",
+            "Download_JSON": "Download JSON",
+            "Done": "Done",
+            "Change": "Change"
+        },
+        "Statuses": {
+            "Ready": "Ready!"
+        },
+        "Labels": {
+            "Optional": "(optional)",
+            "Required": "required"
         }
     },
     "Status_Codes": {
         "Shared": {
             "Error_Title": "Error",
-            "Success_Title": "Success"
+            "Success_Title": "Success",
+            "Confirm": "Confirm"
         },
         "User": {
             "404": "Sorry, we couldn't find an account associated with this identifier.",
-            "4091": "Sorry, this identifier is alredy used in another account",
-            "4036": "Sorry, this username is taken by another user"
+            "4036": "Sorry, this username is taken by another user",
+            "4091": "Sorry, this identifier is already used in another account",
+            "401": "This login attempt was flagged as high risk. Please verify your identity and try again.",
+            "201": "Your account has been created successfully.",
+            "400": "You are not authorized to perform this action.",
+            "200": "The requested user account was found successfully.",
+            "2001": "This username is available.",
+            "4092": "The new password cannot be the same as your current password.",
+            "403": "This account has been deactivated.",
+            "429": "Your account is temporarily locked due to too many failed login attempts. Please try again later.",
+            "4031": "This account has been permanently banned due to a violation of our policies.",
+            "4032": "This account has been temporarily suspended.",
+            "4033": "Your account has not been verified yet. Please verify your email or phone number.",
+            "4034": "Your account is verified, but your profile setup is not completed yet. Please complete your profile.",
+            "4050": "The login attempt failed. Please check your credentials and try again.",
+            "4051": "You have reached the maximum number of login attempts. Please try again later."
         },
         "Operation": {
-            "200": "the Operation is done successfully",
-            "400": "the Operation is done with errors",
-            "401": "you need to be authenticated to perform this operation",
-            "403": "you do not have a permission to perform this operation",
-            "4221": "you had entered unvalid data",
-            "500": "Something went wrong, please try again later"
+            "200": "The operation completed successfully.",
+            "400": "The operation could not be completed.",
+            "401": "Authentication is required to continue.",
+            "403": "You do not have permission to perform this action.",
+            "404": "The requested resource could not be found.",
+            "409": "The operation could not be completed due to a conflict with the current state.",
+            "422": "The provided input is invalid.",
+            "4221": "The provided token is invalid.",
+            "500": "An unexpected error occurred. Please try again later.",
+            "4091": "The requested information has expired."
+        },
+        "Titles": {
+            "Success": "Success"
+        },
+        "Session": {
+            "404": "Session not found"
+        },
+        "Verification": {
+            "201": "The verification code was sent successfully.",
+            "200": "The verification code was verified successfully.",
+            "202": "The verification code was resent successfully.",
+            "404": "There is no active verification code for this operation.",
+            "410": "The verification code has expired. Please request a new code.",
+            "400": "The verification code you entered is invalid.",
+            "429": "You have reached the maximum number of verification attempts. Please try again later.",
+            "4291": "Too many verification requests. Please wait approximately 10 minutes before trying again."
+        },
+        "Security": {
+            "401": "Authentication is required to continue.",
+            "403": "You are not authorized to perform this action.",
+            "4041": "Verification failed. Please try again.",
+            "2001": "Two-factor authentication is required to continue.",
+            "2002": "Multi-factor authentication is required to continue.",
+            "4043": "Multi-factor authentication is already enabled.",
+            "4044": "The authentication code you entered is invalid.",
+            "406": "This login attempt was identified as a critical security risk.",
+            "407": "The requested role could not be found.",
+            "409": "You do not have permission to access this resource.",
+            "410": "The request was rejected.",
+            "5001": "An error occurred while generating the security token.",
+            "4091": "No recovery email is linked to your account.",
+            "4092": "No authenticator app is linked to your account.",
+            "4093": "No passkey has been added to your account."
+        },
+        "Resources": {
+            "200": "The requested resource was found successfully.",
+            "404": "The requested resource could not be found.",
+            "500": "An error occurred while reading the requested resource."
         }
     },
     "Loader": {
@@ -406,5 +597,21 @@
                 "Ghost": "Ghost Mode"
             }
         }
+    },
+    "Responses": {
+        "Not_Found": {
+            "Title": "Page Not Found",
+            "Message": "The requested resource could not be found.",
+            "Image_Alt": "Page Not Found"
+        },
+        "Server_Error": {
+            "Title": "Something Went Wrong",
+            "Message": "An unexpected server error occurred. Please try again later.",
+            "Image_Alt": "Server Error"
+        }
+    },
+    "Common": {
+        "Copy": "Copy",
+        "Copied": "Copied!"
     }
 }

@@ -1,7 +1,7 @@
 export enum MfaProvider {
-    None = 0,
-    RecoveryEmail = 1,
-    Email = 2,
-    AuthenticatorApp = 3,
-    Passkey = 4,
+    None = "None",
+    RecoveryEmail = "RecoveryEmail",
+    Email = "Email",
+    AuthenticatorApp = "AuthenticatorApp",
+    Passkey = "Passkey",
 }

@@ -17,7 +17,7 @@
 
     <div class="sections-container">
         @for (section of filteredSections(); track section.titleKey) {
-            <section class="dashboard-section" [class.collapsed]="collapsedSections().has(section.titleKey)">
+            <section class="dashboard-section">
                 <div class="section-header" (click)="toggleSection(section.titleKey)">
                     <h2 class="section-title">{{ section.titleKey | translate }}</h2>
                     <div class="collapse-icon-wrapper">

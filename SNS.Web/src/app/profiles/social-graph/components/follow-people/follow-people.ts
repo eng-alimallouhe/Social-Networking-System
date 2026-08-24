@@ -4,9 +4,8 @@ import { Router } from '@angular/router';
 import { inject } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { SuggestedUser } from '../../contracts/suggested-user';
+import { rxResource } from '@angular/core/rxjs-interop';
 
-/** Static mock data — replace stream with an API service call later
- *  without touching the component template or state management. */
 const MOCK_SUGGESTED_USERS: SuggestedUser[] = [
   {
     id: '1',
@@ -128,6 +127,15 @@ export class FollowPeople {
 
   followedCount = computed(() => this.followedIds().size);
   canContinue = computed(() => this.followedCount() >= MIN_FOLLOWS);
+
+  // suggestedFollowingsResource = rxResource({
+  //   params: () => ({
+
+  //   }),
+  //   stream: ({ params }) => {
+
+  //   }
+  // });
 
   progressPercent = computed(() =>
     Math.min((this.followedCount() / MIN_FOLLOWS) * 100, 100)

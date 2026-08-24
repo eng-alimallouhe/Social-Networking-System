@@ -1,0 +1,167 @@
+<div class="settings-page-wrapper">
+    <div class="title-section">
+        <button class="btn btn-icon-text back-btn" (click)="goBack()">
+            <svg lucideArrowLeft></svg>
+        </button>
+        <h1>{{ 'Identity.Security_Settings.Session_Management.Session_Details' | translate }}</h1>
+    </div>
+
+    @if (error()) {
+    <div class="error-wrapper">
+        <p>{{ error() }}</p>
+        <button class="btn btn-outlined btn-sm" (click)="reload()">{{ 'Shared.Retry' | translate }}</button>
+    </div>
+    } @else if (session()) {
+    <div class="content-grid">
+        <!-- Main Column -->
+        <div class="main-column">
+
+            <!-- Device Information Card -->
+            <div class="info-card">
+                <div class="card-header">
+                    <div class="header-title">
+                        <h2>{{ 'Identity.Security_Settings.Session_Management.Device_Information' | translate }}</h2>
+                        <svg lucideMonitor></svg>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="details-grid">
+                        <div class="detail-item">
+                            <span class="detail-label">{{ 'Identity.Security_Settings.Session_Management.Device_Name' |
+                                translate }}</span>
+                            <span class="detail-value" dir="ltr">{{ session()!.deviceName ||
+                                ('Identity.Security_Settings.Session_Management.Unknown' | translate) }}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">{{ 'Identity.Security_Settings.Session_Management.Browser' |
+                                translate }}</span>
+                            <span class="detail-value" dir="ltr">{{ session()!.browser ||
+                                ('Identity.Security_Settings.Session_Management.Unknown' | translate) }}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">{{
+                                'Identity.Security_Settings.Session_Management.Operating_System' | translate }}</span>
+                            <span class="detail-value" dir="ltr">{{ session()!.operatingSystem ||
+                                ('Identity.Security_Settings.Session_Management.Unknown' | translate) }}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">{{ 'Identity.Security_Settings.Session_Management.Manufacturer' |
+                                translate }}</span>
+                            <span class="detail-value" dir="ltr">{{ session()!.deviceVendor ||
+                                ('Identity.Security_Settings.Session_Management.Unknown' | translate) }}</span>
+                        </div>
+                    </div>
+                    <div class="detail-item full-width-row">
+                        <span class="detail-label">{{ 'Identity.Security_Settings.Session_Management.First_Seen' |
+                            translate }}</span>
+                        <span class="detail-value date-value">
+                            {{ session()!.deviceFirstSeenAt | localDate }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Connection and Activity Card -->
+            <div class="info-card">
+                <div class="card-header">
+                    <div class="header-title">
+                        <h2>{{ 'Identity.Security_Settings.Session_Management.Connection_And_Activity' | translate }}
+                        </h2>
+                        <svg lucideWifi></svg>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="details-grid">
+                        <div class="detail-item">
+                            <span class="detail-label">{{ 'Identity.Security_Settings.Session_Management.Login_Time' |
+                                translate }}</span>
+                            <span class="detail-value">{{ session()!.loginAt | localDate }}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">{{ 'Identity.Security_Settings.Session_Management.Last_Seen' |
+                                translate }}</span>
+                            <span class="detail-value">{{ session()!.lastSeenAt | localDate }}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">{{
+                                'Identity.Security_Settings.Session_Management.Session_Duration' | translate }}</span>
+                            <span class="detail-value">{{ formatDuration(session()!.durationMinutes) }}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">{{ 'Identity.Security_Settings.Session_Management.IP_Address' |
+                                translate }}</span>
+                            <span class="detail-value code-block" dir="ltr">{{ session()!.ipAddress ||
+                                ('Identity.Security_Settings.Session_Management.Unknown' | translate) }}</span>
+                        </div>
+                    </div>
+                    <div class="details-grid border-top-grid">
+                        <div class="detail-item">
+                            <span class="detail-label">{{ 'Identity.Security_Settings.Session_Management.City' |
+                                translate }}</span>
+                            <span class="detail-value">{{ session()!.city ||
+                                ('Identity.Security_Settings.Session_Management.Unknown' | translate) }}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">{{ 'Identity.Security_Settings.Session_Management.Country' |
+                                translate }}</span>
+                            <span class="detail-value">{{ session()!.country ||
+                                ('Identity.Security_Settings.Session_Management.Unknown' | translate) }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Sidebar Column -->
+        <div class="sidebar-column">
+
+            <!-- Session Status / Icon Card -->
+            <div class="status-card">
+                <div class="status-header">
+                    @if (isCurrentSession(session()!)) {
+                    <h3>{{ 'Identity.Security_Settings.Session_Management.Current_Session' | translate }}</h3>
+                    } @else {
+                    <h3>{{ 'Identity.Security_Settings.Session_Management.Session_Details' | translate }}</h3>
+                    }
+                    <div class="status-icon">
+                        @if (getIconName(session()!.operatingSystem, session()!.deviceName) === 'smartphone') {
+                        <svg lucideSmartphone></svg>
+                        } @else if (getIconName(session()!.operatingSystem, session()!.deviceName) === 'tablet') {
+                        <svg lucideTablet></svg>
+                        } @else {
+                        <svg lucideLaptop></svg>
+                        }
+                    </div>
+                </div>
+
+                <div class="status-badges">
+                    @if (!session()!.isRevoked && !session()!.logoutAt) {
+                    <span class="active-badge">
+                        <span class="pulse-dot"></span>
+                        {{ 'Identity.Security_Settings.Session_Management.Active_Now' | translate }}
+                    </span>
+                    } @else {
+                    <span class="inactive-badge">
+                        {{ 'Identity.Security_Settings.Session_Management.Inactive' | translate }}
+                    </span>
+                    }
+                </div>
+            </div>
+
+            <!-- Session Actions Card -->
+            @if (session()!.isViewrOwner && !session()!.isRevoked && !session()!.logoutAt) {
+            <div class="actions-card">
+                <h3>{{ 'Identity.Security_Settings.Session_Management.Session_Actions' | translate }}</h3>
+                <p>{{ 'Identity.Security_Settings.Session_Management.Session_Actions_Desc' | translate }}</p>
+                <button class="btn btn-delete" (click)="triggerLogout()">
+                    <svg lucideLogOut></svg>
+                    {{ 'Identity.Security_Settings.Session_Management.Logout' | translate }}
+                </button>
+            </div>
+            }
+
+        </div>
+    </div>
+    }
+</div>

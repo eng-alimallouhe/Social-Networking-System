@@ -7,22 +7,16 @@ import { StorageKey, StorageService } from "../../../shared/services/storage.ser
 export class TokenService {
     private storageService = inject(StorageService);
 
-    setToken(accessToken: string, refreshToken: string): void {
+    setToken(accessToken: string): void {
         this.storageService.set(StorageKey.AccessToken, accessToken);
-        this.storageService.set(StorageKey.RefreshToken, refreshToken);
     }
 
     getAccessToken(): string | null {
         return this.storageService.get(StorageKey.AccessToken);
     }
 
-    getRefreshToken(): string | null {
-        return this.storageService.get(StorageKey.RefreshToken);
-    }
-
     removeToken(): void {
         this.storageService.remove(StorageKey.AccessToken);
-        this.storageService.remove(StorageKey.RefreshToken);
     }
 
     setAccessToken(token: string): void {
@@ -34,6 +28,10 @@ export class TokenService {
         if (!token) return null;
         const claims = this.parseClaims(token);
         return claims[claimName] || null;
+    }
+
+    getUserId(): string | null {
+        return this.getClaim('sub');
     }
 
     private parseClaims(token: string): Record<string, any> {
@@ -48,7 +46,6 @@ export class TokenService {
 
             return JSON.parse(jsonPayload);
         } catch (error) {
-            console.error('Failed to parse JWT claims', error);
             return {};
         }
     }

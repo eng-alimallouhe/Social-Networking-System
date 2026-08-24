@@ -1,0 +1,58 @@
+<div class="change-username-wrapper">
+    <div class="header-content">
+        <h1>{{'Identity.Security_Settings.Personal_Info.Change_Username.Title' | translate }}</h1>
+        <p class="subtitle">{{'Identity.Security_Settings.Personal_Info.Change_Username.description' | translate }}</p>
+    </div>
+    
+    <form [formGroup]="form" class="change-username-form" autocomplete="off" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+            <label for="username">{{ 'Identity.Security_Settings.Personal_Info.Change_Username.New_Username' | translate }}</label>
+            <div class="input-with-prefix" [class.invalid]="!!(form.get('username')?.invalid && (form.get('username')?.touched || form.get('username')?.dirty))">
+                <span class="prefix">@</span>
+                <input type="text" id="username" formControlName="username" autocomplete="one-time-code" />
+            </div>
+        </div>
+
+        @if (currentUsername !== enteredUsername) {
+        <div class="validation-message-container">
+            @if (!isLoadingAvalibilityResult() && isAvailable()) {
+            <div class="status-box success">
+                <svg lucideCircleCheckBig></svg>
+                <span>{{ 'Identity.Security_Settings.Personal_Info.Change_Username.Avalable' | translate }}</span>
+            </div>
+            }
+            @else if (!isLoadingAvalibilityResult() && !isAvailable()) {
+            <div class="status-box error">
+                <svg lucideCircleX></svg>
+                <span>{{ 'Identity.Security_Settings.Personal_Info.Change_Username.Not_Avaliable' | translate }}</span>
+            </div>
+            }@else if (isLoadingAvalibilityResult()){
+            <div class="status-box loading">
+                <div class="loader-container">
+                    <div class="spinner"></div>
+                </div>
+                <span>{{ 'Shared.Loaders.Checking_Username_Availablity' | translate }}</span>
+            </div>
+            }
+        </div>
+        } @else {
+        <div class="validation-message-container">
+            <div class="status-box current">
+                <svg lucideCircleCheckBig></svg>
+                <span>{{ 'Identity.Security_Settings.Personal_Info.Change_Username.Current_Username' | translate }}</span>
+            </div>
+        </div>
+        }
+
+        <hr class="divider" />
+
+        <div class="buttons-group">
+            <button type="button" class="btn btn-outlined" [routerLink]="['/account-settings/personal-information']">
+                {{ 'Identity.Security_Settings.Personal_Info.Change_Username.Back' | translate }}
+            </button>
+            <button type="submit" [disabled]="!isAvailable()" class="btn btn-primary" id="loginBtn">
+                <span>{{ 'Identity.Security_Settings.Personal_Info.Change_Username.Apply' | translate }}</span>
+            </button>
+        </div>
+    </form>
+</div>

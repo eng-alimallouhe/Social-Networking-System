@@ -5,6 +5,7 @@ using SNS.Application.Shared.Abstractions.Data;
 using SNS.Domain.Identity.SecuritySessions.Entities;
 using SNS.Domain.Shared.Abstractions.Repositories;
 
+
 namespace SNS.Application.Identity.SecuritySessions.Shared.Services;
 
 public sealed class DeviceService : IDeviceService

@@ -6,6 +6,7 @@ using SNS.API.Extensions;
 using SNS.Application.Identity.SecuritySettings.Recovery.Commands.GenerateRecoveryCodes;
 using SNS.Application.Identity.SecuritySettings.Recovery.Commands.RecoverAccountBySecurityCode;
 using SNS.Application.Identity.SecuritySettings.Recovery.Commands.RevokeRecoveryCodes;
+using SNS.Application.Identity.SecuritySettings.Recovery.Queries.GetUserRecoveryCodes;
 using SNS.Application.Identity.Shared.DTOs.Authentication;
 using SNS.Shared.Results;
 
@@ -79,9 +80,33 @@ public class RecoveryController : ControllerBase
     [ProducesResponseType(typeof(AuthTokensDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<Result<AuthTokensDto>>> RevokeRecoveyrCodesAsync([FromBody] RecoverAccountBySecurityCodeCommand request)
+    public async Task<ActionResult<Result<AuthTokensDto>>> RecoverAccountByRecoveryCodeAsync([FromBody] RecoverAccountBySecurityCodeCommand request)
     {
         return (await _mediator.Send(request)).ToActionResult(this);
     }
+
+
+    /// <summary>
+    /// Get the current user's recovery codes usage history and counts of used and unused codes.
+    /// </summary>
+    /// <remarks>
+    /// Requires authentication. Returns a summary of the user's recovery codes usage, including counts of used and unused codes, and a history of recovery code usage events.
+    /// </remarks>
+    /// <response code="200">Account recovered successfully, returns new authentication tokens <see cref="AuthTokensDto"/>.</response>
+    /// <response code="400">The emergency recovery code is invalid or has already been used.</response>
+    /// <response code="404">No matching user account was found.</response>
+    [HttpGet]
+    [Authorize]
+    [MapToApiVersion("1.0")]
+    [Consumes("application/json")]
+    [ProducesResponseType(typeof(UserRecoveryCodesDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<ActionResult<Result<UserRecoveryCodesDto?>>> GetUserRecoveryCodesAsync()
+    {
+        return (await _mediator.Send(new GetUserRecoveryCodesQuery())).ToActionResult(this);
+    }
+
+
 }
 

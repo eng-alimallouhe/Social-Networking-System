@@ -56,6 +56,7 @@ public static class IdentityApplicationDI
         });
 
         services.AddSingleton<IOnlineUserTracker, OnlineUserTracker>();
+        services.AddScoped<IAuthenticationFlowService, AuthenticationFlowService>();
 
         services.AddScoped<INotificationDeliveryService, NotificationDeliveryService>();
         services.AddScoped<INotificationLocalizerService, NotificationLocalizerService>();

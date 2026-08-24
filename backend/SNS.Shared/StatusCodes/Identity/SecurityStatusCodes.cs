@@ -4,14 +4,15 @@ public class SecurityStatusCodes
 {
     private const string Category = "Security";
 
-    public static readonly StatusCode AuthenticationRequired = new(Category, 4041);
-    public static readonly StatusCode UnAuthorized = new(Category, 4041);
+    public static readonly StatusCode AuthenticationRequired = new(Category, 401);
+    public static readonly StatusCode UnAuthorized = new(Category, 403);
 
     public static readonly StatusCode VerificationFailed = new(Category, 4041);
 
-    public static readonly StatusCode TfaRequired = new(Category, 4042);
 
-    public static readonly StatusCode MfaRequired = new(Category, 4041);
+    public static readonly StatusCode TfaRequired = new(Category, 2001);
+
+    public static readonly StatusCode MfaRequired = new(Category, 2002);
 
     public static readonly StatusCode MfaAlreadyEnabled = new(Category, 4043);
 

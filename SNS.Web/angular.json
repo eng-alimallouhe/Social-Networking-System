@@ -40,7 +40,8 @@
               "src/assets/i18n",
               "src/assets/images",
               "src/assets/icons",
-              "src/assets/data"
+              "src/assets/data",
+              "src/assets/fonts"
             ],
             "styles": [
               "src/styles.css"

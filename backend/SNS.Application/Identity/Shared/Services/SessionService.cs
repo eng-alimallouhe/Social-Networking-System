@@ -9,6 +9,7 @@ using SNS.Domain.Identity.SecuritySessions.Specifications;
 using SNS.Domain.Shared.Abstractions.Repositories;
 using SNS.Shared.Results;
 using SNS.Shared.StatusCodes;
+using SNS.Shared.StatusCodes.Identity;
 
 namespace SNS.Application.Identity.Shared.Services;
 
@@ -201,5 +202,42 @@ public class SessionService : ISessionService
             }
         }
         return sessions;
+    }
+
+    public async Task<Result<string>> RotateRefreshTokenAsync(
+        Guid sessionId,
+        Guid userId,
+        CancellationToken cancellationToken = default)
+    {
+        var session = await _sessionRepo.GetByIdAsync(
+            sessionId,
+            cancellationToken);
+
+        if (session == null)
+        {
+            return Result<string>.Failure(ResourceStatusCode.NotFound);
+        }
+
+        if (!session.IsActive ||
+            session.UserId != userId ||
+            session.LogoutAt != null ||
+            session.IsRevoked)
+        {
+            return Result<string>.Failure(SecurityStatusCodes.UnAuthorized);
+        }
+
+        var refreshToken = _generatorService.GenerateSecureString();
+
+        var expiresAt = DateTime.UtcNow.AddDays(7);
+
+        session.UpdateRefreshToken(
+            newRefreshToken: refreshToken,
+            newExpiresAt: expiresAt);
+
+        session.UpdateLastSeen();
+
+        return Result<string>.Success(
+            refreshToken,
+            OperationStatusCode.Success);
     }
 }

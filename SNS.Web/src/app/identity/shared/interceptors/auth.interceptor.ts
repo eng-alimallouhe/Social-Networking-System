@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { catchError, switchMap, throwError } from 'rxjs';
 import { TokenService } from '../services/token.service';
 import { RequestInformationService } from '../services/request-information.service';
-import { LoginService } from '../../security-sesstions/login/services/login.service';
 import { RefreshTokenService } from '../services/refresh-token.service';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
@@ -14,6 +13,8 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
     const refreshTokenService = inject(RefreshTokenService);
 
     let accessToken = tokenService.getAccessToken();
+    console.log(accessToken);
+
     const deviceId = reqInfoService.getDeviceId();
     const deviceToken = reqInfoService.getDeviceToken();
     const fingerprint = reqInfoService.getFingerprintHash();

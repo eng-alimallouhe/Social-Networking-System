@@ -7,7 +7,6 @@ import { Injectable } from "@angular/core";
 export class GeneratorService {
 
     generateEmailMask(email: string): string {
-        email = 'engalimallouhe@gmail.com';
         if (!email || !email.includes('@')) {
             return email;
         }

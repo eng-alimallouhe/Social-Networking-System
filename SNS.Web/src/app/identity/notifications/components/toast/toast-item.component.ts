@@ -3,6 +3,7 @@ import { Component, Input, Output, EventEmitter, OnInit, OnDestroy } from '@angu
 import { CommonModule } from '@angular/common';
 import { LucideInfo, LucideX, LucideBan, LucideBadgeCheck, LucideOctagonAlert, LucideCircleX } from "@lucide/angular";
 import { Toast } from '../../services/toast.service';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-toast-item',
@@ -14,7 +15,8 @@ import { Toast } from '../../services/toast.service';
     LucideX,
     LucideCircleX,
     LucideBadgeCheck,
-    LucideOctagonAlert
+    LucideOctagonAlert,
+    TranslatePipe
   ],
   template: `
     <div 
@@ -34,8 +36,8 @@ import { Toast } from '../../services/toast.service';
       </div>
       
       <div class="toast-content">
-        <div class="toast-title">{{ toast.title }}</div>
-        <div class="toast-message">{{ toast.message }}</div>
+        <div class="toast-title">{{ toast.title | translate }}</div>
+        <div class="toast-message">{{ toast.message | translate }}</div>
       </div>
       
       <button class="toast-close" (click)="close()">

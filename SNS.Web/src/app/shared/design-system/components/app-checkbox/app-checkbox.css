@@ -1,0 +1,87 @@
+.checkbox-container {
+    display: inline-block;
+    position: relative;
+}
+
+.checkbox-wrapper {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.checkbox-container.disabled .checkbox-wrapper {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.checkbox-input-wrapper {
+    position: relative;
+    width: 20px;
+    height: 20px;
+    margin-right: var(--spacing-2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Visually hidden native checkbox but still accessible and focusable */
+.native-checkbox {
+    position: absolute;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    cursor: inherit;
+    z-index: 2;
+}
+
+.custom-checkbox {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 1.5px solid var(--text-muted);
+    border-radius: var(--radius-sm);
+    background-color: transparent;
+    transition: all var(--transition-fast);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+}
+
+.custom-checkbox svg {
+    width: 14px;
+    height: 14px;
+    color: var(--bg-surface, #fff); 
+}
+
+.native-checkbox:focus + .custom-checkbox {
+    box-shadow: 0 0 0 2px var(--bg-hover), 0 0 0 4px var(--primary-color);
+}
+
+.custom-checkbox.checked {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.checkbox-container.invalid .custom-checkbox {
+    border-color: var(--error);
+}
+
+.checkbox-label {
+    color: var(--text-primary);
+    font-size: var(--text-sm);
+    user-select: none;
+}
+
+.required-asterisk {
+    color: var(--error);
+}
+
+/* RTL Support */
+:host-context([dir="rtl"]) .checkbox-input-wrapper {
+    margin-right: 0;
+    margin-left: var(--spacing-2);
+}

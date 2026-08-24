@@ -11,7 +11,7 @@ export class PageService {
         this.lockCount++;
 
         if (this.lockCount === 1) {
-            document.body.classList.add('no-scroll');
+            document.documentElement.classList.add('no-scroll');
         }
     }
 
@@ -21,7 +21,7 @@ export class PageService {
         }
 
         if (this.lockCount === 0) {
-            document.body.classList.remove('no-scroll');
+            document.documentElement.classList.remove('no-scroll');
         }
     }
 }

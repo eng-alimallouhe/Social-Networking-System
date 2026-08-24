@@ -4,7 +4,8 @@
     <header class="page-header">
         <h1 class="page-title">{{ 'Identity.Onboarding.Follow_People.Title' | translate }}</h1>
         <p class="page-subtitle">
-            {{ 'Identity.Onboarding.Follow_People.Subtitle_Start' | translate }} <strong>{{ minFollows }}</strong> {{ 'Identity.Onboarding.Follow_People.Subtitle_End' | translate }}
+            {{ 'Identity.Onboarding.Follow_People.Subtitle_Start' | translate }} <strong>{{ minFollows }}</strong> {{
+            'Identity.Onboarding.Follow_People.Subtitle_End' | translate }}
         </p>
     </header>
 
@@ -15,32 +16,29 @@
             <!-- Left: label + badge -->
             <div class="sticky-bar__label">
                 <span class="progress-text">
-                    {{ 'Identity.Onboarding.Follow_People.Following_Count_Label' | translate }}
-                    <strong class="progress-count"
-                        [class.progress-count--met]="canContinue()">{{ followedCount() }}</strong>
+                    {{ 'Profiles.Social_Graph.Following_Count_Label' | translate }}
+                    <strong class="progress-count" [class.progress-count--met]="canContinue()">{{ followedCount()
+                        }}</strong>
                     <span class="progress-total">/ {{ minFollows }}</span>
                 </span>
 
                 @if (canContinue()) {
                 <span class="progress-met-badge" aria-label="Minimum reached">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
-                        stroke-linejoin="round" aria-hidden="true">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                         <polyline points="20 6 9 17 4 12" />
                     </svg>
-                    {{ 'Identity.Onboarding.Follow_People.Ready' | translate }}
+                    {{ 'Shared.Statuses.Ready' | translate }}
                 </span>
                 }
             </div>
 
             <!-- Right: Continue button -->
-            <button type="button" id="followPeopleContinueBtn" class="btn-continue"
-                [disabled]="!canContinue()" (click)="onContinue()"
-                [attr.aria-disabled]="!canContinue()">
-                {{ 'Identity.Onboarding.Follow_People.Continue' | translate }}
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                    stroke-linejoin="round" class="btn-icon" aria-hidden="true">
+            <button type="button" id="followPeopleContinueBtn" class="btn btn-primary" [disabled]="!canContinue()"
+                (click)="onContinue()" [attr.aria-disabled]="!canContinue()">
+                {{ 'Shared.Actions.Continue' | translate }}
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                     <line x1="5" y1="12" x2="19" y2="12" />
                     <polyline points="12 5 19 12 12 19" />
                 </svg>
@@ -48,14 +46,10 @@
         </div>
 
         <!-- Progress track -->
-        <div class="progress-track" role="progressbar"
-            [attr.aria-valuenow]="followedCount()"
-            [attr.aria-valuemin]="0"
+        <div class="progress-track" role="progressbar" [attr.aria-valuenow]="followedCount()" [attr.aria-valuemin]="0"
             [attr.aria-valuemax]="minFollows"
             [attr.aria-valuetext]="followedCount() + ' of ' + minFollows + ' followed'">
-            <div class="progress-fill"
-                [style.width.%]="progressPercent()"
-                [class.progress-fill--met]="canContinue()">
+            <div class="progress-fill" [style.width.%]="progressPercent()" [class.progress-fill--met]="canContinue()">
             </div>
         </div>
     </div>
@@ -63,13 +57,11 @@
     <!-- ── User cards grid ──────────────────────────────────────────── -->
     <ul class="users-grid" role="list" aria-label="Suggested people to follow">
         @for (user of users(); track user.id) {
-        <li class="user-card" role="listitem"
-            [class.user-card--following]="isFollowing(user.id)">
+        <li class="user-card" role="listitem" [class.user-card--following]="isFollowing(user.id)">
 
             <!-- Avatar -->
             <div class="avatar-wrap" aria-hidden="true">
-                <div class="avatar"
-                    [style.background-color]="user.avatarColor ?? '#4f46e5'">
+                <div class="avatar" [style.background-color]="user.avatarColor ?? '#4f46e5'">
                     @if (user.avatarUrl) {
                     <img [src]="user.avatarUrl" [alt]="user.fullName" class="avatar-img" />
                     } @else {
@@ -94,37 +86,38 @@
             <div class="user-stats" aria-label="User statistics">
                 <div class="stat">
                     <span class="stat-value">{{ formatCount(user.followerCount) }}</span>
-                    <span class="stat-label">{{ 'Identity.Onboarding.Follow_People.Followers' | translate }}</span>
+                    <span class="stat-label">{{ 'Profiles.Social_Graph.Follows.Followers' | translate }}</span>
                 </div>
                 <div class="stat-divider" aria-hidden="true"></div>
                 <div class="stat">
                     <span class="stat-value">{{ formatCount(user.followingCount) }}</span>
-                    <span class="stat-label">{{ 'Identity.Onboarding.Follow_People.Following_Stat' | translate }}</span>
+                    <span class="stat-label">{{ 'Profiles.Social_Graph.Follows.Following_Stat' | translate }}</span>
                 </div>
             </div>
 
             <!-- Follow button -->
-            <button type="button" class="follow-btn"
+            <button type="button" class="btn btn-block" 
+                [class.btn-outlined]="isFollowing(user.id)" 
+                [class.btn-primary]="!isFollowing(user.id)"
                 [class.follow-btn--following]="isFollowing(user.id)"
                 [attr.aria-pressed]="isFollowing(user.id)"
                 [attr.aria-label]="isFollowing(user.id) ? 'Unfollow ' + user.fullName : 'Follow ' + user.fullName"
                 (click)="toggleFollow(user.id)">
 
                 @if (isFollowing(user.id)) {
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
-                    stroke-linejoin="round" class="btn-icon" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="btn-icon"
+                    aria-hidden="true">
                     <polyline points="20 6 9 17 4 12" />
                 </svg>
-                <span>{{ 'Identity.Onboarding.Follow_People.Following_Btn' | translate }}</span>
+                <span>{{ 'Profiles.Social_Graph.Follows.Following_Btn' | translate }}</span>
                 } @else {
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                    stroke-linejoin="round" class="btn-icon" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                     <line x1="12" y1="5" x2="12" y2="19" />
                     <line x1="5" y1="12" x2="19" y2="12" />
                 </svg>
-                <span>{{ 'Identity.Onboarding.Follow_People.Follow' | translate }}</span>
+                <span>{{ 'Profiles.Social_Graph.Follows.Follow' | translate }}</span>
                 }
             </button>
         </li>

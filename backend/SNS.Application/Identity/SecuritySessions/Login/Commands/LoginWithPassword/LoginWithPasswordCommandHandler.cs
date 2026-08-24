@@ -117,19 +117,19 @@ public sealed class LoginWithPasswordCommandHandler : ICommandHandler<LoginWithP
         }
 
         var requestInformationModel = new RequestInformationModel(
-        IpAddress: _requestInfoService.IpAddress,
-        Country: _requestInfoService.Country,
-        DeviceName: _requestInfoService.DeviceName,
-        Browser: _requestInfoService.Browser,
-        Longitude: _requestInfoService.Longitude,
-        Latitude: _requestInfoService.Latitude,
-        City: _requestInfoService.City,
-        DeviceId: _requestInfoService.DeviceId,
-        FingerprintHash: _requestInfoService.FingerprintHash,
-        OperatingSystem: _requestInfoService.OperatingSystem,
-        DeviceToken: _requestInfoService.DeviceToken,
-        DeviceModel: _requestInfoService.DeviceModel,
-        DeviceVendor: _requestInfoService.DeviceVendor);
+            IpAddress: _requestInfoService.IpAddress,
+            Country: _requestInfoService.Country,
+            DeviceName: _requestInfoService.DeviceName,
+            Browser: _requestInfoService.Browser,
+            Longitude: _requestInfoService.Longitude,
+            Latitude: _requestInfoService.Latitude,
+            City: _requestInfoService.City,
+            DeviceId: _requestInfoService.DeviceId,
+            FingerprintHash: _requestInfoService.FingerprintHash,
+            OperatingSystem: _requestInfoService.OperatingSystem,
+            DeviceToken: _requestInfoService.DeviceToken,
+            DeviceModel: _requestInfoService.DeviceModel,
+            DeviceVendor: _requestInfoService.DeviceVendor);
 
         // detect the target send (email or sms) for sending notifications about the login attempt based on the user's security settings and available contact information, then include that information in the relevant domain events so that the notification service can use it to send alerts to the user about important account activities such as successful logins from new devices or locations, failed login attempts, password changes, or other security-related events. This helps keep users informed about their account activity and can alert them to potential unauthorized access.
         var recipientAddress = user.UserSecuritySettings.DefaultCommunicationMethod switch
@@ -215,7 +215,17 @@ public sealed class LoginWithPasswordCommandHandler : ICommandHandler<LoginWithP
 
             if (user.UserProfile == null)
             {
-                return await HandleLowRiskLoginAsync(user, requestInformationModel, recipientAddress, cancellationToken);
+                var result = await HandleLowRiskLoginAsync(user, requestInformationModel, recipientAddress, cancellationToken);
+                if (result.IsFailure)
+                {
+                    await _unitOfWork.RollbackTransactionAsync(cancellationToken);
+                }
+                else
+                {
+                    await _unitOfWork.CompleteAsync(cancellationToken);
+                    await _unitOfWork.CommitTransactionAsync(cancellationToken);
+                }
+                return result;
             }
 
             // Calculate risk score based on various factors such as IP address, device fingerprint, geolocation, and historical login patterns. This can help determine if additional verification steps are needed or if the login attempt should be blocked.
@@ -228,29 +238,57 @@ public sealed class LoginWithPasswordCommandHandler : ICommandHandler<LoginWithP
                 //Low Risk, normal login, just check if the user has enabled any additional security measures like 2FA and proceed accordingly
                 case <= 25:
                     var lowRiskHandlerResult = await HandleLowRiskLoginAsync(user, requestInformationModel, recipientAddress, cancellationToken);
-                    await _unitOfWork.CompleteAsync(cancellationToken);
-                    await _unitOfWork.CommitTransactionAsync(cancellationToken);
+                    if (lowRiskHandlerResult.IsFailure)
+                    {
+                        await _unitOfWork.RollbackTransactionAsync(cancellationToken);
+                    }
+                    else
+                    {
+                        await _unitOfWork.CompleteAsync(cancellationToken);
+                        await _unitOfWork.CommitTransactionAsync(cancellationToken);
+                    }
                     return lowRiskHandlerResult;
 
                 //Medium Risk, require TFA only
                 case > 25 and <= 50:
                     var mediumRiskHandlerResult = await HandleMediumRiskLoginAsync(user, recipientAddress, cancellationToken);
-                    await _unitOfWork.CompleteAsync(cancellationToken);
-                    await _unitOfWork.CommitTransactionAsync(cancellationToken);
+                    if (mediumRiskHandlerResult.IsFailure)
+                    {
+                        await _unitOfWork.RollbackTransactionAsync(cancellationToken);
+                    }
+                    else
+                    {
+                        await _unitOfWork.CompleteAsync(cancellationToken);
+                        await _unitOfWork.CommitTransactionAsync(cancellationToken);
+                    }
                     return mediumRiskHandlerResult;
 
                 //High Risk, force TFA and alert user by sending email or sms
                 case > 50 and <= 85:
                     var highRiskHandlerResult = await HandleHighRiskLoginAsync(user, requestInformationModel, recipientAddress, cancellationToken);
-                    await _unitOfWork.CompleteAsync(cancellationToken);
-                    await _unitOfWork.CommitTransactionAsync(cancellationToken);
+                    if (highRiskHandlerResult.IsFailure)
+                    {
+                        await _unitOfWork.RollbackTransactionAsync(cancellationToken);
+                    }
+                    else
+                    {
+                        await _unitOfWork.CompleteAsync(cancellationToken);
+                        await _unitOfWork.CommitTransactionAsync(cancellationToken);
+                    }
                     return highRiskHandlerResult;
 
                 //Critical Risk, Block the login attempt, suspend account for a longer period, and require user to contact support to verify identity and unlock account, also send high priority alert to user about the blocked login attempt and recommend enabling additional security measures then enable TFA if not already enabled
                 case > 85:
                     var criticalRiskHandlerResult = await HandleCriticalRiskLoginAsync(user, recipientAddress, cancellationToken);
-                    await _unitOfWork.CompleteAsync(cancellationToken);
-                    await _unitOfWork.CommitTransactionAsync(cancellationToken);
+                    if (criticalRiskHandlerResult.IsFailure)
+                    {
+                        await _unitOfWork.RollbackTransactionAsync(cancellationToken);
+                    }
+                    else
+                    {
+                        await _unitOfWork.CompleteAsync(cancellationToken);
+                        await _unitOfWork.CommitTransactionAsync(cancellationToken);
+                    }
                     return criticalRiskHandlerResult;
             }
 
@@ -435,7 +473,7 @@ public sealed class LoginWithPasswordCommandHandler : ICommandHandler<LoginWithP
         {
             return Result<LoginInitialResponseDto>.Success(
                 new LoginInitialResponseDto(
-                    RequiresTwoFactor: true,
+                    IsMfaRequired: true,
                     MfaProviderType: MfaProvider.AuthenticatorApp),
                 SecurityStatusCodes.TfaRequired);
         }
@@ -476,13 +514,12 @@ public sealed class LoginWithPasswordCommandHandler : ICommandHandler<LoginWithP
 
         if (sendResult.IsFailure)
         {
-            await _unitOfWork.RollbackTransactionAsync(cancellationToken);
             return Result<LoginInitialResponseDto>.Failure(sendResult.StatusCode);
         }
 
         return Result<LoginInitialResponseDto>.Success(
             new LoginInitialResponseDto(
-                RequiresTwoFactor: true,
+                IsMfaRequired: true,
                 UserId: user.Id,
                 ChallengeToken: token,
                 MfaProviderType: user.UserSecuritySettings.MfaProvider),
@@ -525,7 +562,6 @@ public sealed class LoginWithPasswordCommandHandler : ICommandHandler<LoginWithP
 
         if (sessionResult.IsFailure || sessionResult.Value == null)
         {
-            await _unitOfWork.RollbackTransactionAsync(cancellationToken);
             return Result<LoginInitialResponseDto>.Failure(sessionResult.StatusCode);
         }
 
@@ -551,7 +587,6 @@ public sealed class LoginWithPasswordCommandHandler : ICommandHandler<LoginWithP
 
         if (accessToken == null)
         {
-            await _unitOfWork.RollbackTransactionAsync(cancellationToken);
             return Result<LoginInitialResponseDto>.Failure(SecurityStatusCodes.TokenGenerationError);
         }
 

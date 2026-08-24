@@ -37,7 +37,7 @@ public sealed class GetUserSessionsQueryHandler : IQueryHandler<GetUserSessionsQ
 
         if (request.JustActiveSessions)
         {
-            query = query.Where(ss => ss.Logout == null);
+            query = query.Where(ss => ss.LogoutAt == null);
         }
         
         var response = await query

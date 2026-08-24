@@ -1,0 +1,17 @@
+<div class="server-error-wrapper">
+    <img [src]="'assets/images/not-found-' + (currentTheme() === Theme.Dark ? 'dark' : 'light') + '-theme.png'"
+        [alt]="'Responses.Not_Found.Image_Alt' | translate" class="error-image" />
+
+    <h1 class="error-title">
+        {{ 'Responses.Not_Found.Title' | translate }}
+    </h1>
+
+    <p class="error-desc">
+        {{ 'Responses.Server_Error.Message' | translate }}
+    </p>
+
+    <a routerLink="/" class="back-home-btn">
+        {{ 'Shared.Actions.Back_To_Home' | translate }}
+        <svg lucideHome class="icon"></svg>
+    </a>
+</div>

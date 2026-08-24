@@ -18,6 +18,7 @@ public class RecoveryCode : Entity, IHardDeletable
 
     public DateTime CreatedAt { get; private set; }
     public bool IsUsed { get; private set; }
+    public DateTime? UsedAt { get; private set; } = null;
 
     private RecoveryCode()
     {
@@ -40,5 +41,6 @@ public class RecoveryCode : Entity, IHardDeletable
     public void MarkAsUsed()
     {
         IsUsed = true;
+        UsedAt = DateTime.UtcNow;
     }
 }

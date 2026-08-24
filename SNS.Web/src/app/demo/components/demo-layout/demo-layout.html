@@ -5,13 +5,13 @@
         <div class="logo">
             <img src="../../../../assets/icons/github.svg" alt="">
         </div>
-        <h2>SyrianDevs</h2>
+        <h2>{{'App.Site_Name' | translate }}</h2>
     </div>
-    @if (isLoading()) {
-    <div class="loading-wrapper">
-        <app-line-loader class="loader" [width]="'100%'"></app-line-loader>
+    <div class="links">
+        <div (click)="logout()" class="link">
+            Logout
+        </div>
     </div>
-    }
 </div>
 
 <div class="identity-wrapper">

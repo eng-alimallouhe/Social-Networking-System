@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { OnboardingLayout } from '../../shared/components/layouts/onboarding-layout/onboarding-layout';
+import { profileExistsGuard } from '../../profiles/profiles/guards/profile-exists-guard';
 
 export const OnboardingRoutes: Routes = [
     {

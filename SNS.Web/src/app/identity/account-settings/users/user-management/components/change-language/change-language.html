@@ -1,0 +1,27 @@
+<div class="change-language-wrapper">
+    <div class="header-content">
+        <h1>{{'Identity.Security_Settings.Personal_Info.Language.Title' | translate }}</h1>
+        <p class="subtitle">{{'Identity.Security_Settings.Personal_Info.Language.Change_Language_DESC' | translate }}</p>
+    </div>
+        
+    <form [formGroup]="form" class="change-language-form" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+            <label for="preferredLanguage">{{ 'Identity.Security_Settings.Personal_Info.Language.Language_Label' | translate }}</label>
+            <app-select id="preferredLanguage" formControlName="preferredLanguage"
+                [options]="[
+                    { value: supportedLanguage.Arabic, label: 'العربية' },
+                    { value: supportedLanguage.English, label: 'English (United States)' }
+                ]">
+            </app-select>
+        </div>
+
+        <div class="buttons-group">
+            <button type="button" class="btn btn-outlined" [routerLink]="['/account-settings/personal-information']">
+                {{ 'Identity.Security_Settings.Personal_Info.Change_Username.Back' | translate }}
+            </button>
+            <button type="submit" [disabled]="!hasChanged || isSubmitting()" class="btn btn-primary">
+                <span>{{ 'Identity.Security_Settings.Personal_Info.Change_Username.Apply' | translate }}</span>
+            </button>
+        </div>
+    </form>
+</div>

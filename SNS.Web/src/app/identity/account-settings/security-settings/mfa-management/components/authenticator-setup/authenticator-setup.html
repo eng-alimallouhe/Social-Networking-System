@@ -1,0 +1,50 @@
+<div class="auth-setup-card">
+    <div class="header-icon-container">
+        <div class="icon-circle">
+            <svg lucideScanQrCode></svg>
+        </div>
+    </div>
+
+    <div class="text-center">
+        <h1 class="card-title">{{ 'Identity.Security_Settings.Security_Settings_Page.Authenticator.Title' | translate }}</h1>
+        <p class="card-subtitle">{{ 'Identity.Security_Settings.Security_Settings_Page.Authenticator.Scan_Instruction' | translate }}</p>
+    </div>
+
+    <div class="qr-code-section" *ngIf="qrCodeImageUrl">
+        <div class="qr-code-container">
+            <img [src]="qrCodeImageUrl" alt="MFA QR Code" class="qr-code-img" />
+        </div>
+    </div>
+
+    <div class="divider">
+        <span>OR</span>
+    </div>
+
+    <div class="secret-key-section" *ngIf="secretKey()">
+        <p class="manual-entry-text">{{ 'Identity.Security_Settings.Security_Settings_Page.Authenticator.Subtitle' | translate }}</p>
+        
+        <div class="secret-key-box">
+            <span class="secret-value">{{ secretKey() }}</span>
+            <button type="button" class="copy-btn" (click)="copyToClipboard()" [appTooltip]="'Common.Copied'" [tooltipVisible]="isCopied()">
+                <ng-container *ngIf="!isCopied()">
+                    <svg lucideCopy></svg>
+                    <span>{{ 'Common.Copy' | translate }}</span>
+                </ng-container>
+                <ng-container *ngIf="isCopied()">
+                    <svg lucideCheck></svg>
+                    <span>{{ 'Common.Copied' | translate }}</span>
+                </ng-container>
+            </button>
+        </div>
+    </div>
+
+    <div class="card-footer">
+        <button type="button" class="btn btn-outlined" [routerLink]="['/account-settings/security-settings']">
+            {{ 'Identity.Security_Settings.Security_Settings_Page.Actions.Cancel' | translate }}
+        </button>
+        <button type="button" class="btn btn-primary" [disabled]="!isLoaded()" (click)="onContinue()">
+            <span>{{ 'Shared.Actions.Continue' | translate }}</span>
+            <svg lucideArrowRight></svg>
+        </button>
+    </div>
+</div>

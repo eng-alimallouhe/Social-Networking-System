@@ -48,6 +48,7 @@ public sealed class GetUserSecurityDetailsQueryHandler : IQueryHandler<GetUserSe
                 RecoveryEmail = u.UserSecuritySettings.RecoveryEmail,
                 PasskeysCount = u.Passkeys.Count(),
                 TotalDevicesCount = u.Devices.Count(),
+                DefualtCommunicationMethod = u.UserSecuritySettings.DefaultCommunicationMethod,
                 UsedCodes = _dbContext.RecoveryCodes.Count(rc => rc.UserSecuritySettingsId == u.UserSecuritySettings.Id && rc.IsUsed),
                 UnusedCodes = _dbContext.RecoveryCodes.Count(rc => rc.UserSecuritySettingsId == u.UserSecuritySettings.Id && !rc.IsUsed)
             })
@@ -63,6 +64,7 @@ public sealed class GetUserSecurityDetailsQueryHandler : IQueryHandler<GetUserSe
             MfaProvider: securityData.MfaProvider,
             IsAuthenticatorAppLinked: securityData.IsAuthenticatorAppLinked,
             PasskeysCount: securityData.PasskeysCount,
+            DefualtCommunicationMethod: securityData.DefualtCommunicationMethod,
             LastPasswordChange: securityData.LastPasswordChange,
             TotalDevicesCount: securityData.TotalDevicesCount,
             RecoveryEmail: securityData.RecoveryEmail,

@@ -1,5 +1,6 @@
 using SNS.Application.Abstractions.Common;
 using SNS.Application.Abstractions.Messaging;
+using SNS.Application.Identity.SecuritySessions.Login.Contracts;
 using SNS.Application.Identity.Shared.Abstractions;
 using SNS.Application.Identity.Shared.DTOs.VerificationCodes;
 using SNS.Domain.Identity.SecuritySettings.Enums;
@@ -13,7 +14,7 @@ using SNS.Shared.StatusCodes.Identity;
 
 namespace SNS.Application.Identity.SecuritySessions.Login.Commands.ResendTwoFactorCode;
 
-public sealed class ResendTwoFactorCodeCommandHandler : ICommandHandler<ResendTwoFactorCodeCommand>
+public sealed class ResendTwoFactorCodeCommandHandler : ICommandHandler<ResendTwoFactorCodeCommand, OtpChallengeDto>
 {
     private readonly IRepository<User> _userRepo;
     private readonly IUrlGeneratorService _urlGenerator;
@@ -32,14 +33,14 @@ public sealed class ResendTwoFactorCodeCommandHandler : ICommandHandler<ResendTw
         _generatorService = generatorService;
     }
 
-    public async Task<Result> Handle(ResendTwoFactorCodeCommand request, CancellationToken cancellationToken)
+    public async Task<Result<OtpChallengeDto>> Handle(ResendTwoFactorCodeCommand request, CancellationToken cancellationToken)
     {
         var spec = new UserWithSecuritySettingsSpecification(request.UserId);
         var user = await _userRepo.GetSingleAsync(spec, cancellationToken);
 
         if (user == null)
         {
-            return Result.Failure(UserStatusCodes.NotFound);
+            return Result<OtpChallengeDto>.Failure(UserStatusCodes.NotFound);
         }
 
         if (!user.UserSecuritySettings.IsMfaEnabled 
@@ -47,7 +48,7 @@ public sealed class ResendTwoFactorCodeCommandHandler : ICommandHandler<ResendTw
             && user.UserSecuritySettings.MfaProvider == MfaProvider.AuthenticatorApp
             && user.UserSecuritySettings.MfaProvider == MfaProvider.Passkey)
         {
-            return Result.Failure(OperationStatusCode.Conflict);
+            return Result<OtpChallengeDto>.Failure(OperationStatusCode.Conflict);
         }
 
 
@@ -75,9 +76,11 @@ public sealed class ResendTwoFactorCodeCommandHandler : ICommandHandler<ResendTw
 
         if (sendResult.IsFailure)
         {
-            return Result.Failure(sendResult.StatusCode);
+            return Result<OtpChallengeDto>.Failure(sendResult.StatusCode);
         }
 
-        return Result.Success(OperationStatusCode.Success);
+        return Result<OtpChallengeDto>.Success(
+            new OtpChallengeDto(user.Id, token)
+            , OperationStatusCode.Success);
     }
 }

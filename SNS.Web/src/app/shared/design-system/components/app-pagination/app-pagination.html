@@ -1,0 +1,26 @@
+<nav class="pagination-container" aria-label="Pagination">
+    <button class="btn btn-icon pagination-btn prev-btn" 
+            [disabled]="currentPage() <= 1" 
+            (click)="onPrevious()"
+            [attr.aria-label]="'Identity.Security_Settings.Session_Management.Previous' | translate">
+        <svg lucideChevronLeft class="rtl-icon"></svg>
+    </button>
+    
+    <div class="pages-group">
+        @for (page of pages(); track page) {
+            <button class="btn pagination-btn page-number"
+                    [class.active]="page === currentPage()"
+                    (click)="onPageChange(page)"
+                    [attr.aria-label]="('Identity.Security_Settings.Session_Management.Page' | translate) + ' ' + page">
+                {{ page }}
+            </button>
+        }
+    </div>
+
+    <button class="btn btn-icon pagination-btn next-btn" 
+            [disabled]="currentPage() >= totalPages() || totalPages() === 0" 
+            (click)="onNext()"
+            [attr.aria-label]="'Identity.Security_Settings.Session_Management.Next' | translate">
+        <svg lucideChevronRight class="rtl-icon"></svg>
+    </button>
+</nav>

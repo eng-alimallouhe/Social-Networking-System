@@ -4,13 +4,12 @@ import { Router } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { finalize } from 'rxjs';
 import { LucideShield, LucideUser, LucideUserCheck, LucideEyeOff, LucideLifeBuoy, LucideGhost } from '@lucide/angular';
-
-import { LoginService } from '../../../identity/security-sesstions/login/services/login.service';
-import { DemoLoadingService } from '../../services/demo-loading.service';
-import { TokenService } from '../../../identity/shared/services/token.service';
-import { RequestInformationService } from '../../../identity/shared/services/request-information.service';
-import { LoginWithPasswordRequest } from '../../../identity/security-sesstions/login/contracts/login-with-password-request.dto';
+import { LoginService } from '../../../identity/account-settings/security-sessions/login/services/login.service';
+import { GlobalLoaderService } from '../../../shared/Loading/services/global-loader.service';
+import { LoginWithPasswordRequest } from '../../../identity/account-settings/security-sessions/login/contracts/login-with-password-request.dto';
 import { AuthenticationService } from '../../../identity/shared/services/authentication.service';
+import { RequestInformationService } from '../../../identity/shared/services/request-information.service';
+import { TokenService } from '../../../identity/shared/services/token.service';
 
 interface DemoRole {
     id: string;
@@ -28,7 +27,7 @@ interface DemoRole {
 })
 export class RoleSwitcher {
     private loginService = inject(LoginService);
-    private loadingService = inject(DemoLoadingService);
+    private loadingService = inject(GlobalLoaderService);
     private router = inject(Router);
     private tokenService = inject(TokenService);
     private requestInfoService = inject(RequestInformationService);
@@ -43,6 +42,7 @@ export class RoleSwitcher {
     public guestIcon = LucideUser;
 
     private readonly SHARED_PASSWORD = 'alimallohi0947041713A';
+
     roles: DemoRole[] = [
         { id: 'admin', titleKey: 'Demo.RoleSwitcher.Roles.Admin', email: 'admin_omar@example.com', icon: LucideShield },
         { id: 'user', titleKey: 'Demo.RoleSwitcher.Roles.User', email: 'engalimallouhe@gmail.com', icon: LucideUser },
@@ -70,7 +70,7 @@ export class RoleSwitcher {
             .subscribe({
                 next: (response) => {
                     if (response.value?.accessToken) {
-                        this.tokenService.setToken(response.value.accessToken, response.value.refreshToken!);
+                        this.tokenService.setToken(response.value.accessToken);
                         this.requestInfoService.setDeviceId(response.value.deviceId!);
                         this.router.navigate(['/demo/dashboard']);
                     }

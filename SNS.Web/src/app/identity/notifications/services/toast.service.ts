@@ -32,7 +32,6 @@ export class ToastService {
     }
 
     public success(title: string, message: string, duration?: number) {
-        console.log('Success');
         this.show('success', title, message, duration);
     }
 

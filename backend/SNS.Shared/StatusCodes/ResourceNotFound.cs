@@ -7,7 +7,7 @@ namespace SNS.Shared.StatusCodes;
 public static class ResourceStatusCode
 {
     // Category is fixed to "Resource" for translation keys (e.g., RESOURCE_404)
-    private const string Category = "Resource";
+    private const string Category = "Resources";
 
     /// <summary>
     /// Indicates that the requested resource (file/template) was found successfully.

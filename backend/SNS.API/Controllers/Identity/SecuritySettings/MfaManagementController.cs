@@ -17,8 +17,7 @@ using SNS.Application.Identity.SecuritySettings.MfaManagement.Commands.RemoveAut
 using SNS.Application.Identity.SecuritySettings.MfaManagement.Commands.RemovePasskey;
 using SNS.Application.Identity.SecuritySettings.MfaManagement.Commands.VerifyRecoveryEmailChange;
 using SNS.Application.Identity.SecuritySettings.MfaManagement.DTOs;
-using SNS.Application.Identity.SecuritySettings.Queries.GetUserPasskeys;
-using SNS.Application.Identity.SecuritySettings.Queries.GetUserSecuritySettings;
+using SNS.Application.Identity.SecuritySettings.MfaManagement.Queries.GetUserPasskeys;
 using SNS.Application.Identity.Shared.DTOs.PendingUpdates;
 using SNS.Application.Identity.Users.UsersManagement.Queries.GetUserSecurityDetails;
 using SNS.Shared.Results;
@@ -258,19 +257,6 @@ public class MfaManagementController : ControllerBase
     public async Task<ActionResult<Result<IEnumerable<PasskeyDto>>>> GetUserPasskeysAsync()
     {
         return (await _mediator.Send(new GetUserPasskeysQuery())).ToActionResult(this);
-    }
-
-    /// <summary>
-    /// Retrieves security settings configuration status for the authenticated user.
-    /// </summary>
-    /// <response code="200">Returns current security settings configuration.</response>
-    /// <response code="401">The user is not authenticated.</response>
-    [HttpGet("user-security-settings")]
-    [ProducesResponseType(typeof(UserSecurityDetailsResult), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<ActionResult<Result<UserSecurityDetailsResult>>> GetUserSecuritySettingsAsync()
-    {
-        return (await _mediator.Send(new GetUserSecurityDetailsQuery())).ToActionResult(this);
     }
 
 

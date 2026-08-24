@@ -1,0 +1,17 @@
+<div class="code-inputs-container" [class.disabled]="disabled">
+    <ng-container *ngFor="let digit of digits; let i = index; trackBy: trackByIndex">
+        <input 
+            type="text" 
+            maxlength="1" 
+            inputmode="numeric" 
+            autocomplete="one-time-code"
+            [value]="digits[i]"
+            [disabled]="disabled"
+            (input)="onInput($event, i)" 
+            (keydown)="onKeyDown($event, i)" 
+            (focus)="onFocus($event)"
+            (paste)="onPaste($event)" 
+            class="code-input"
+            #codeInput>
+    </ng-container>
+</div>

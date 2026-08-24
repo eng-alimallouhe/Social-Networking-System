@@ -1,0 +1,131 @@
+<div class="settings-page-wrapper">
+    <div class="title-section">
+        <button class="btn btn-icon-text back-btn" (click)="goBack()">
+            <svg lucideArrowLeft></svg>
+        </button>
+        <h1>{{ 'Identity.Security_Settings.Session_Management.All_Sessions' | translate }}</h1>
+    </div>
+
+    @if (error()) {
+    <div class="error-wrapper">
+        <p>{{ error() }}</p>
+        <button class="btn btn-outlined btn-sm" (click)="sessionsResource.reload()">{{ 'Shared.Retry' | translate
+            }}</button>
+    </div>
+    } @else {
+    <div class="content-container">
+
+        <div class="settings-section">
+            <div class="section-header align-between">
+                <div class="section-title-group">
+                    <h3 class="section-title">{{ 'Identity.Security_Settings.Session_Management.Session_History' |
+                        translate }}</h3>
+                </div>
+                <div class="filter-group">
+                    <label class="toggle-switch">
+                        <input type="checkbox" [checked]="justActiveSessions()" (change)="toggleActiveFilter($event)">
+                        <span class="slider"></span>
+                        <span class="label-text">{{ 'Identity.Security_Settings.Session_Management.Just_Active_Sessions'
+                            | translate }}</span>
+                    </label>
+                </div>
+            </div>
+
+            @if (isLoading()) {
+            <div class="loader-wrapper">
+                <p>{{ 'Shared.Loading' | translate }}...</p>
+            </div>
+            } @else {
+            <div class="sessions-grid">
+                @if (sessions().length === 0) {
+                <div class="settings-row empty-state">
+                    <p>{{ 'Identity.Security_Settings.Session_Management.No_Sessions_Found' | translate }}</p>
+                </div>
+                }
+
+                @for (session of sessions(); track session.id) {
+                <div class="session-card" [class.current-session-card]="isCurrentSession(session)">
+                    <div class="card-header">
+                        <div class="device-identity-group">
+                            <div class="card-icon">
+                                @if (getIconName('unknown', session.deviceName) === 'smartphone') {
+                                <svg lucideSmartphone></svg>
+                                } @else if (getIconName('unknown', session.deviceName) === 'tablet') {
+                                <svg lucideTablet></svg>
+                                } @else {
+                                <svg lucideLaptop></svg>
+                                }
+                            </div>
+                            <div class="card-title-area">
+                                <h4 class="device-name" dir="ltr">{{ session.deviceName ||
+                                    ('Identity.Security_Settings.Session_Management.Unknown' | translate) }}</h4>
+                            </div>
+                        </div>
+
+                        <div class="badge-area">
+                            @if (isCurrentSession(session)) {
+                            <div class="current-session-badge">{{
+                                'Identity.Security_Settings.Session_Management.Current_Session' | translate }}</div>
+                            } @else if (session.isRevoked) {
+                            <div class="inactive-badge">{{
+                                'Identity.Security_Settings.Session_Management.Inactive' | translate }}</div>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="info-row">
+                            @if (session.city && session.counrty) {
+                            <a [href]="getGoogleMapsUrl(session.city + ', ' + session.counrty)" target="_blank"
+                                class="location-link" (click)="$event.stopPropagation()">
+                                <svg lucideMapPin></svg>
+                                <span>{{ session.city }}, {{ session.counrty }}</span>
+                            </a>
+                            } @else {
+                            <div class="location-text">
+                                <svg lucideMapPin></svg>
+                                <span>{{ 'Identity.Security_Settings.Session_Management.Unknown' | translate }}</span>
+                            </div>
+                            }
+                        </div>
+                        <div class="info-row text-muted">
+                            <svg lucideClock></svg>
+                            <span>{{ 'Identity.Security_Settings.Session_Management.Created_At' | translate }}: {{
+                                session.loginAt | localDate }}</span>
+                        </div>
+                    </div>
+
+                    <div class="card-footer">
+                        <div class="footer-actions">
+                            @if (!session.isRevoked && !session.logoutAt) {
+                            <button class="btn btn-delete btn-sm" (click)="promptLogoutSession(session.id)">
+                                <svg lucideLogOut></svg>
+                                {{ 'Identity.Security_Settings.Session_Management.Logout' | translate }}
+                            </button>
+                            }
+                            <button class="btn btn-outlined btn-sm" (click)="viewSessionDetails(session.id)">
+                                {{ 'Identity.Security_Settings.Session_Management.Session_Details' | translate }}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                }
+            </div>
+
+            @if (totalPages() > 1) {
+            <app-pagination [currentPage]="currentPage()" [totalPages]="totalPages()"
+                (pageChange)="onPageChange($event)">
+            </app-pagination>
+            }
+            }
+        </div>
+    </div>
+    }
+</div>
+
+<!-- Confirmation Dialogs -->
+<app-confirm-dialog *ngIf="showLogoutConfirm()" [action]="ConfirmAction.Revoke"
+    [titleKey]="'Identity.Security_Settings.Session_Management.Confirm_Logout_Title'"
+    [messageKey]="'Identity.Security_Settings.Session_Management.Confirm_Logout_Message'"
+    (cancel)="cancelLogoutSession()">
+</app-confirm-dialog>

@@ -1,0 +1,199 @@
+<div class="settings-page-wrapper">
+    <div class="title-section">
+        <h1>{{ 'Identity.Security_Settings.Session_Management.Title' | translate }}</h1>
+        <p class="description">{{ 'Identity.Security_Settings.Session_Management.Description' | translate }}</p>
+    </div>
+
+    @if (error()) {
+    <div class="error-wrapper">
+        <p>{{ error() }}</p>
+        <button class="btn btn-outlined btn-sm" (click)="reload()">{{ 'Shared.Retry' | translate }}</button>
+    </div>
+    } @else if (sessionsAndDevicesResource.value()) {
+    <div class="content-container">
+
+        <!-- Active Sessions Section -->
+        <div class="settings-section">
+            <div class="section-header">
+                <div class="section-title-group">
+                    <svg lucideWifi></svg>
+                    <h3 class="section-title">{{ 'Identity.Security_Settings.Session_Management.Active_Sessions' |
+                        translate }}</h3>
+                </div>
+            </div>
+
+            <div class="sessions-grid">
+                @if (activeSessions().length === 0) {
+                <div class="settings-row empty-state">
+                    <p>{{ 'Identity.Security_Settings.Session_Management.No_Active_Sessions' | translate }}</p>
+                </div>
+                }
+
+                @for (session of recentSessions(); track session.sessionId) {
+                <div class="session-card" [class.current-session-card]="isCurrentSession(session)">
+                    <div class="card-header">
+                        <div class="device-identity-group">
+                            <div class="card-icon">
+                                @if (getIconName(session.operatingSystem, session.deviceName) === 'smartphone') {
+                                <svg lucideSmartphone></svg>
+                                } @else if (getIconName(session.operatingSystem, session.deviceName) === 'tablet') {
+                                <svg lucideTablet></svg>
+                                } @else {
+                                <svg lucideLaptop></svg>
+                                }
+                            </div>
+                            <div class="card-title-area">
+                                <h4 class="device-name" dir="ltr">{{ session.deviceName ||
+                                    ('Identity.Security_Settings.Session_Management.Unknown' | translate) }}</h4>
+                                <span class="os-info" dir="ltr">{{ session.browser ||
+                                    ('Identity.Security_Settings.Session_Management.Unknown' | translate) }} &bull; {{
+                                    session.operatingSystem || ('Identity.Security_Settings.Session_Management.Unknown'
+                                    | translate) }}</span>
+                            </div>
+                        </div>
+
+                        <div class="badge-area">
+                            @if (isCurrentSession(session)) {
+                            <div class="current-session-badge">{{
+                                'Identity.Security_Settings.Session_Management.Current_Session' | translate }}</div>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="info-row">
+                            @if (session.location) {
+                            <a [href]="getGoogleMapsUrl(session.location)" target="_blank" class="location-link"
+                                (click)="$event.stopPropagation()">
+                                <svg lucideMapPin></svg>
+                                <span>{{ session.location }}</span>
+                            </a>
+                            } @else {
+                            <div class="location-text">
+                                <svg lucideMapPin></svg>
+                                <span>{{ 'Identity.Security_Settings.Session_Management.Unknown' | translate }}</span>
+                            </div>
+                            }
+                        </div>
+                        <div class="info-row text-muted">
+                            <svg lucideClock></svg>
+                            <span>{{ 'Identity.Security_Settings.Session_Management.Created_At' | translate }}: {{
+                                session.createdAt | localDate }}</span>
+                        </div>
+                    </div>
+
+                    <div class="card-footer">
+                        <div class="footer-actions">
+                            @if (isCurrentSession(session)) {
+                            <button class="btn btn-delete btn-sm" (click)="promptLogoutSession(session.sessionId)">
+                                <svg lucideLogOut></svg>
+                                {{ 'Identity.Security_Settings.Session_Management.Logout' | translate }}
+                            </button>
+                            } @else {
+                            <button class="btn btn-delete btn-sm" (click)="promptLogoutSession(session.sessionId)">
+                                <svg lucideLogOut></svg>
+                                {{ 'Identity.Security_Settings.Session_Management.Logout' | translate }}
+                            </button>
+                            }
+
+                            <button class="btn btn-outlined btn-sm" (click)="viewSessionDetails(session.sessionId)">
+                                <svg lucideInfo></svg>
+                                {{ 'Identity.Security_Settings.Session_Management.Session_Details' | translate }}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                }
+            </div>
+
+            @if (hasMoreSessions()) {
+            <div class="show-all-wrapper">
+                <button class="show-all-btn btn btn-outlined" (click)="viewAllSessions()">
+                    {{ 'Identity.Security_Settings.Session_Management.Show_All_Sessions' | translate }}
+                </button>
+            </div>
+            }
+        </div>
+
+        <!-- Registered Devices Section -->
+        <div class="settings-section">
+            <div class="section-header">
+                <div class="section-title-group">
+                    <h3 class="section-title">{{ 'Identity.Security_Settings.Session_Management.Registered_Devices' |
+                        translate }}</h3>
+                    <svg lucideShieldCheck></svg>
+                </div>
+            </div>
+
+            <div class="settings-panel">
+                @if (registeredDevices().length === 0) {
+                <div class="settings-row empty-state">
+                    <p>{{ 'Identity.Security_Settings.Session_Management.No_Registered_Devices' | translate }}</p>
+                </div>
+                }
+
+                @for (device of recentDevices(); track device.deviceId) {
+                <div class="device-row">
+                    <div class="device-info-main">
+                        <div class="device-icon-area">
+                            @if (getIconName(device.operatingSystem, device.deviceName) === 'smartphone') {
+                            <svg lucideSmartphone></svg>
+                            } @else if (getIconName(device.operatingSystem, device.deviceName) === 'tablet') {
+                            <svg lucideTablet></svg>
+                            } @else {
+                            <svg lucideLaptop></svg>
+                            }
+                        </div>
+                        <div class="device-title-area">
+                            <h4 class="device-name" dir="ltr">{{ device.deviceName }}</h4>
+                            <span class="os-info" dir="ltr">{{ device.operatingSystem }}</span>
+                        </div>
+                    </div>
+
+
+                    <div class="device-details">
+                        <div class="device-date-info text-muted">
+                            <svg lucideHistory></svg>
+                            <span>آخر ظهور: {{ device.lastSeenAt | localDate }}</span>
+                            <span class="dot-separator">&bull;</span>
+                            <svg lucideCalendar></svg>
+                            <span>أول ظهور: {{ device.firstSeenAt | localDate }}</span>
+                        </div>
+                    </div>
+
+                    <div class="device-actions">
+                        <button class="btn-icon btn-ghost text-danger">
+                            <svg lucideTrash2></svg>
+                        </button>
+                        <button class="btn-icon btn-ghost">
+                            <svg lucideSettings></svg>
+                        </button>
+                    </div>
+                </div>
+                }
+            </div>
+
+            @if (hasMoreDevices()) {
+            <div class="show-all-wrapper">
+                <button class="show-all-btn btn btn-outlined" (click)="viewAllDevices()">
+                    {{ 'Identity.Security_Settings.Session_Management.Show_All_Devices' | translate }}
+                </button>
+            </div>
+            }
+        </div>
+    </div>
+    }
+</div>
+
+<!-- Confirmation Dialogs -->
+<app-confirm-dialog *ngIf="showLogoutConfirm()" [action]="ConfirmAction.Revoke"
+    [titleKey]="'Identity.Security_Settings.Session_Management.Confirm_Logout_Title'"
+    [messageKey]="'Identity.Security_Settings.Session_Management.Confirm_Logout_Message'"
+    (cancel)="cancelLogoutSession()">
+</app-confirm-dialog>
+
+<app-confirm-dialog *ngIf="showLogoutAllConfirm()" [action]="ConfirmAction.Revoke"
+    [titleKey]="'Identity.Security_Settings.Session_Management.Confirm_Logout_All_Title'"
+    [messageKey]="'Identity.Security_Settings.Session_Management.Confirm_Logout_All_Message'"
+    (cancel)="cancelLogoutAllOther()">
+</app-confirm-dialog>

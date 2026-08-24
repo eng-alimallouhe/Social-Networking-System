@@ -50,7 +50,6 @@ export class LanguageService {
       }),
       map(() => void 0),
       catchError((err) => {
-        console.log(err);
         return of(void 0);
       })
     );

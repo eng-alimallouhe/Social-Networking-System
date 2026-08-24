@@ -1,13 +1,11 @@
 syrian-devs.duckdns.org {
-    handle /api/* {
-        reverse_proxy backend-api:8080
-    }
-    
-    handle /hubs/* {
-        reverse_proxy backend-api:8080
-    }
-    
-    handle {
-        reverse_proxy frontend-app:80
-    }
+    reverse_proxy frontend-app:80
+}
+
+api.syrian-devs.duckdns.org {
+    reverse_proxy backend-api:8080
+}
+
+hub.syrian-devs.duckdns.org {
+    reverse_proxy backend-api:8080
 }

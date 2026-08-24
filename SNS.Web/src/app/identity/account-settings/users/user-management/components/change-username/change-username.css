@@ -1,0 +1,187 @@
+.change-username-wrapper {
+    background: var(--glass-bg, #ffffff);
+    backdrop-filter: blur(var(--glass-blur, 10px));
+    border: 1px solid var(--glass-border, #eaeaea);
+    border-radius: var(--radius-xl, 16px);
+    box-shadow: var(--shadow-xl, 0 4px 20px rgba(0, 0, 0, 0.05));
+    padding: var(--spacing-6, 32px) var(--spacing-6, 32px) var(--spacing-4, 24px);
+    width: 94%;
+    max-width: 600px;
+    margin: 2rem auto;
+    animation: formEntry 0.8s ease-out forwards;
+}
+
+@keyframes formEntry {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.98);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.header-content {
+    margin-bottom: var(--spacing-6, 32px);
+    text-align: left;
+}
+
+.header-content h1 {
+    font-size: var(--header-3, 24px);
+    font-weight: var(--font-weight-bold, 700);
+    color: var(--text-color, #1a202c);
+    margin: 0 0 var(--spacing-2, 8px) 0;
+}
+
+.header-content .subtitle {
+    font-size: var(--text-sm, 14px);
+    color: var(--text-secondary, #718096);
+    margin: 0;
+    font-weight: var(--font-weight-regular, 400);
+}
+
+.change-username-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-4, 16px);
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-2, 8px);
+}
+
+.form-group label {
+    font-size: var(--text-sm, 14px);
+    font-weight: var(--font-weight-medium, 500);
+    color: var(--text-primary, #2d3748);
+}
+
+.input-with-prefix {
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--border-color, #e2e8f0);
+    border-radius: var(--radius-md, 8px);
+    padding: 0 var(--spacing-3, 12px);
+    height: 48px;
+    background: transparent;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.input-with-prefix:focus-within {
+    border-color: var(--primary-color, #3182ce);
+}
+
+.input-with-prefix.invalid {
+    border-color: var(--error, #e53e3e);
+}
+
+.prefix {
+    color: var(--text-muted, #a0aec0);
+    margin-right: var(--spacing-2, 8px);
+    font-size: var(--text-base, 16px);
+    font-weight: var(--font-weight-medium, 500);
+}
+
+.input-with-prefix input {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    height: 100%;
+    color: var(--text-primary, #2d3748);
+    font-size: var(--text-base, 16px);
+}
+
+.input-with-prefix input::placeholder {
+    color: var(--text-muted, #a0aec0);
+}
+
+.validation-message-container {
+    margin-top: var(--spacing-1, 4px);
+}
+
+.status-box {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-2, 8px);
+    padding: var(--spacing-3, 12px) var(--spacing-4, 16px);
+    border-radius: var(--radius-md, 8px);
+    font-size: var(--text-sm, 14px);
+    font-weight: var(--font-weight-medium, 500);
+}
+
+.status-box svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* Current Username / Available */
+.status-box.current,
+.status-box.success {
+    background-color: color-mix(in srgb, var(--success, #38a169) 10%, transparent);
+    color: var(--success, #38a169);
+}
+
+/* Not Available */
+.status-box.error {
+    background-color: color-mix(in srgb, var(--error, #e53e3e) 10%, transparent);
+    color: var(--error, #e53e3e);
+}
+
+/* Loading */
+.status-box.loading {
+    background-color: color-mix(in srgb, var(--text-secondary, #718096) 10%, transparent);
+    color: var(--text-secondary, #718096);
+}
+
+.loader-container .spinner {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 3px solid color-mix(in srgb, var(--text-secondary, #718096) 30%, transparent);
+    border-top-color: var(--text-secondary, #718096);
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.divider {
+    border: 0;
+    height: 1px;
+    background: var(--border-color, #edf2f7);
+    margin: var(--spacing-6, 32px) 0 var(--spacing-4, 16px) 0;
+}
+
+.buttons-group {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--spacing-3, 12px);
+}
+
+/* For RTL Support */
+[dir="rtl"] .header-content,
+[dir="rtl"] .form-group {
+    text-align: right;
+}
+
+[dir="rtl"] .prefix {
+    margin-right: 0;
+    margin-left: var(--spacing-2, 8px);
+}
+
+@media (max-width: 768px) {
+    .change-username-wrapper {
+        padding: var(--spacing-4, 24px);
+    }
+}
+
+@media (max-width: 480px) {
+    .change-username-wrapper {
+        padding: var(--spacing-3, 16px);
+    }
+}

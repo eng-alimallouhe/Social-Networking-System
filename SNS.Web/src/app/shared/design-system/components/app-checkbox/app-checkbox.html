@@ -1,0 +1,28 @@
+<div class="checkbox-container" [class.disabled]="disabled" [class.invalid]="invalid" [class.focused]="focused()">
+    <label class="checkbox-wrapper" [for]="inputId">
+        <div class="checkbox-input-wrapper">
+            <input 
+                type="checkbox" 
+                [id]="inputId"
+                [checked]="checked()"
+                [disabled]="disabled"
+                [required]="required"
+                (change)="onInputChange($event)"
+                (blur)="onBlur()"
+                (focus)="onFocus()"
+                class="native-checkbox"
+            >
+            <div class="custom-checkbox" [class.checked]="checked()">
+                <svg *ngIf="checked()" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+            </div>
+        </div>
+        <span class="checkbox-label" *ngIf="label">
+            {{ label }} <span *ngIf="required" class="required-asterisk">*</span>
+        </span>
+        <span class="checkbox-label" *ngIf="!label">
+             <ng-content></ng-content>
+        </span>
+    </label>
+</div>

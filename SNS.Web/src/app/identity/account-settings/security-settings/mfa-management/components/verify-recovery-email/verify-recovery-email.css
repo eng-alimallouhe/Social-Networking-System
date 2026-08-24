@@ -1,0 +1,190 @@
+﻿.title-section {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
+    align-items: center;
+    gap: var(--spacing-4);
+    padding: 0 var(--spacing-4) var(--spacing-2) var(--spacing-4);
+}
+
+.title-section h1 {
+    font-size: var(--header-3);
+    font-weight: var(--font-weight-regular);
+    color: var(--text-color);
+}
+
+.verify-email-wrapper {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-xl);
+    padding: var(--spacing-3);
+    max-width: 600px;
+    width: 94%;
+    margin: 0 auto;
+    animation: formEntry 0.8s ease-out forwards;
+}
+
+@keyframes formEntry {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.98);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.verify-email-form {
+    padding: var(--spacing-6);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-6);
+}
+
+.verify-email-form h2 {
+    font-size: var(--text-md);
+    color: var(--text-secondary);
+    margin: 0;
+    font-weight: var(--font-weight-medium);
+    text-align: center;
+}
+
+/* â”€â”€ OTP Code Inputs â”€â”€ */
+
+.code-group {
+    margin-bottom: var(--spacing-4);
+    position: relative;
+    text-align: center;
+}
+
+.code-inputs {
+    display: flex;
+    justify-content: center;
+    gap: var(--spacing-4);
+    direction: ltr;
+}
+
+.code-inputs input {
+    width: 45px;
+    height: 55px;
+    text-align: center;
+    font-size: var(--header-2);
+    font-weight: var(--font-weight-medium);
+    color: var(--text-primary);
+    border: none;
+    caret-color: transparent;
+    line-height: 50px;
+    border-bottom: 2px solid var(--border-color);
+    border-radius: 0;
+    padding: 0;
+    background: transparent;
+    transition: var(--transition-base);
+}
+
+.code-inputs input::selection {
+    background-color: transparent !important;
+    color: var(--text-primary) !important;
+}
+
+.code-inputs input:focus {
+    outline: none;
+    border-bottom: 2px solid var(--accent-color);
+    background: var(--bg-hover) !important;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+}
+
+.code-inputs input.ng-valid {
+    border-bottom-color: var(--success);
+}
+
+.code-inputs input::-webkit-outer-spin-button,
+.code-inputs input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.code-group .error-message {
+    position: absolute;
+    bottom: calc(var(--spacing-6) * -1);
+    left: 0;
+    right: 0;
+    text-align: center;
+    color: var(--error);
+    font-size: var(--text-sm);
+    font-weight: var(--font-weight-medium);
+    transition: var(--transition-fast);
+}
+
+/* â”€â”€ Buttons â”€â”€ */
+
+.buttons-group {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--spacing-4);
+    margin-top: var(--spacing-8);
+}
+
+/* â”€â”€ Resend â”€â”€ */
+
+.resend-container {
+    margin-top: var(--spacing-4);
+    text-align: center;
+}
+
+.resend-text {
+    margin: 0;
+    font-size: var(--text-sm);
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-1);
+    flex-wrap: wrap;
+}
+
+.cooldown-timer {
+    color: var(--text-muted);
+    font-weight: var(--font-weight-medium);
+}
+
+.resend-link {
+    color: var(--accent-color);
+    cursor: pointer;
+    font-weight: var(--font-weight-semibold);
+    text-decoration: none;
+    transition: var(--transition-fast);
+}
+
+.resend-link:hover {
+    color: var(--accent-hover);
+    text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+    .verify-email-form {
+        padding: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .verify-email-form {
+        padding: 1rem;
+    }
+
+    .code-inputs {
+        gap: var(--spacing-2);
+    }
+
+    .code-inputs input {
+        width: 38px;
+        height: 48px;
+    }
+}
+

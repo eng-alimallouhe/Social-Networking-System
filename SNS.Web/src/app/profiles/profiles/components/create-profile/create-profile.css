@@ -1,10 +1,10 @@
-/* Host */
+﻿/* Host */
 :host {
     display: block;
     width: 100%;
 }
 
-/* ── Page Wrapper ──────────────────────────────────────────────────── */
+/* â”€â”€ Page Wrapper â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .page-wrapper {
     width: 100%;
     display: flex;
@@ -13,7 +13,7 @@
     animation: slideUp var(--transition-slow) both;
 }
 
-/* ── Card Shell ────────────────────────────────────────────────────── */
+/* â”€â”€ Card Shell â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .card {
     width: 95%;
     max-width: 520px;
@@ -30,7 +30,7 @@
     transition: background-color var(--transition-base);
 }
 
-/* ── Card Header ───────────────────────────────────────────────────── */
+/* â”€â”€ Card Header â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .card-header {
     text-align: center;
 }
@@ -49,7 +49,7 @@
     margin: 0;
 }
 
-/* ── Avatar Section ────────────────────────────────────────────────── */
+/* â”€â”€ Avatar Section â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .avatar-section {
     display: flex;
     flex-direction: column;
@@ -102,58 +102,14 @@
     gap: var(--spacing-3);
 }
 
-.btn-upload {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--spacing-2);
-    padding: var(--spacing-2) var(--spacing-4);
-    border: 1.5px solid var(--border-color);
-    border-radius: var(--radius-full);
-    background: transparent;
-    color: var(--text-secondary);
-    font-size: var(--text-sm);
-    font-weight: var(--font-weight-medium);
-    cursor: pointer;
-    transition: var(--transition-base);
-}
-
-.btn-upload svg {
-    width: 16px;
-    height: 16px;
-}
-
-.btn-upload:hover {
-    border-color: var(--primary-color);
-    color: var(--primary-color);
-    background-color: var(--bg-hover);
-}
-
-.btn-remove {
-    border: none;
-    background: none;
-    color: var(--error);
-    font-size: var(--text-sm);
-    font-weight: var(--font-weight-medium);
-    cursor: pointer;
-    transition: var(--transition-fast);
-    padding: var(--spacing-1) var(--spacing-2);
-    border-radius: var(--radius-sm);
-    text-decoration: underline;
-    text-underline-offset: 3px;
-}
-
-.btn-remove:hover {
-    opacity: 0.8;
-}
-
-/* ── Profile Form ──────────────────────────────────────────────────── */
+/* â”€â”€ Profile Form â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .profile-form {
     display: flex;
     flex-direction: column;
     gap: var(--spacing-6);
 }
 
-/* ── Form Group ────────────────────────────────────────────────────── */
+/* â”€â”€ Form Group â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .form-group {
     display: flex;
     flex-direction: column;
@@ -214,7 +170,7 @@
     box-shadow: 0 0 0 3px color-mix(in srgb, var(--error) 15%, transparent);
 }
 
-/* ── Error Message ─────────────────────────────────────────────────── */
+/* â”€â”€ Error Message â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .error-message {
     font-size: var(--text-xs);
     font-weight: var(--font-weight-medium);
@@ -225,7 +181,7 @@
     animation: slideUp var(--transition-fast) both;
 }
 
-/* ── Textarea ──────────────────────────────────────────────────────── */
+/* â”€â”€ Textarea â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .textarea-wrapper {
     position: relative;
 }
@@ -276,7 +232,7 @@
     color: var(--warning);
 }
 
-/* ── Specialization Dropdown ───────────────────────────────────────── */
+/* â”€â”€ Specialization Dropdown â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .dropdown-wrapper {
     position: relative;
 }
@@ -375,53 +331,7 @@
     list-style: none;
 }
 
-/* ── Continue Button ───────────────────────────────────────────────── */
-.btn-primary {
-    width: 100%;
-    padding: var(--spacing-3) var(--spacing-4);
-    background: var(--primary-color);
-    color: var(--text-inverse);
-    border: none;
-    border-radius: var(--radius-md);
-    cursor: pointer;
-    font-weight: var(--font-weight-bold);
-    font-size: var(--text-base);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: var(--spacing-2);
-    transition: var(--transition-base);
-    box-shadow: var(--shadow-glow-primary);
-    margin-top: var(--spacing-2);
-}
-
-.btn-primary:hover:not(:disabled) {
-    opacity: 0.9;
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-md), var(--shadow-glow-primary);
-}
-
-.btn-primary:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-    box-shadow: none;
-    transform: none;
-}
-
-.btn-icon {
-    width: 18px;
-    height: 18px;
-    opacity: 0;
-    transform: translateX(-4px);
-    transition: var(--transition-base);
-}
-
-.btn-primary:hover:not(:disabled) .btn-icon {
-    opacity: 1;
-    transform: translateX(0);
-}
-
-/* ── Scrollbar styling for dropdown ───────────────────────────────── */
+.btn-primary:hover:not(:disabled) /* â”€â”€ Scrollbar styling for dropdown â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .dropdown-list::-webkit-scrollbar {
     width: 4px;
 }
@@ -430,3 +340,4 @@
     background-color: var(--border-color);
     border-radius: var(--radius-full);
 }
+

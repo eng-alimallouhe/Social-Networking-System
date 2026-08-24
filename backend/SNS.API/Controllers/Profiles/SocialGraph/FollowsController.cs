@@ -1,3 +1,4 @@
+using Asp.Versioning;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using SNS.API.DTOs.Shared;
@@ -18,7 +19,8 @@ namespace SNS.API.Controllers.Profiles.SocialGraph;
 /// <summary>
 /// Handles social graph interactions including following, unfollowing, muting, and querying followers/followings.
 /// </summary>
-[Route("api/profiles/social-graph/[controller]")]
+[Route("api/v{version:apiVersion}/profiles/social-graph/[controller]")]
+[ApiVersion("1.0")]
 [ApiController]
 [Produces("application/json")]
 public class FollowsController : ControllerBase

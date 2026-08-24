@@ -1,8 +1,9 @@
 using SNS.Application.Abstractions.Messaging;
+using SNS.Application.Identity.SecuritySessions.Login.Contracts;
 using SNS.Domain.Identity.Shared.Enums;
 
 namespace SNS.Application.Identity.SecuritySessions.Login.Commands.ResendTwoFactorCode;
 
 public sealed record ResendTwoFactorCodeCommand(
     Guid UserId,
-    CommunicationMethod? ResendMethod = null) : ICommand;
+    CommunicationMethod? ResendMethod = null) : ICommand<OtpChallengeDto>;

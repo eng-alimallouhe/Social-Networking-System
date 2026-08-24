@@ -1,0 +1,23 @@
+@if (isOpen()) {
+<div class="modal-backdrop" (click)="onCancel()">
+    <div class="modal-card" (click)="$event.stopPropagation()">
+        <button class="btn-close" (click)="onCancel()" aria-label="Close">
+            <svg lucideX></svg>
+        </button>
+        <div class="modal-header">
+            <h3>{{ titleKey() | translate }}</h3>
+        </div>
+        <div class="modal-body">
+            <p>{{ messageKey() | translate }}</p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="onCancel()">
+                {{ cancelTextKey() | translate }}
+            </button>
+            <button type="button" class="btn btn-primary" (click)="onConfirm()">
+                {{ confirmTextKey() | translate }}
+            </button>
+        </div>
+    </div>
+</div>
+}

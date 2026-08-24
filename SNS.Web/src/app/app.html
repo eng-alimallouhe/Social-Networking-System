@@ -1,3 +1,8 @@
 <router-outlet />
 
 <app-toast-container></app-toast-container>
+@if (isLoading()) {
+<div class="global-loader-container">
+    <app-line-loader class="global-loader" [width]="'100%'"></app-line-loader>
+</div>
+}

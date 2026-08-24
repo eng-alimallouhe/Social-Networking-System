@@ -1,0 +1,55 @@
+<div class="settings-page-wrapper">
+    <div class="title-section">
+        <button class="btn btn-icon-text back-btn" (click)="goBack()">
+            <svg lucideArrowLeft></svg>
+            {{ 'Shared.Actions.Back' | translate }}
+        </button>
+        <h1>{{ 'Identity.Security_Settings.Session_Management.Registered_Devices' | translate }}</h1>
+    </div>
+
+    @if (isLoading()) {
+    <div class="loader-wrapper">
+        <p>{{ 'Shared.Loading' | translate }}...</p>
+    </div>
+    } @else if (error()) {
+    <div class="error-wrapper">
+        <p>{{ error() }}</p>
+        <button class="btn btn-outlined btn-sm" (click)="loadDevices()">{{ 'Shared.Retry' | translate }}</button>
+    </div>
+    } @else {
+    <div class="content-container">
+        <div class="settings-section">
+            <div class="settings-panel">
+                @if (registeredDevices().length === 0) {
+                <div class="settings-row empty-state">
+                    <p>{{ 'Identity.Security_Settings.Session_Management.No_Registered_Devices' | translate }}</p>
+                </div>
+                }
+
+                @for (device of registeredDevices(); track device.deviceId) {
+                <div class="settings-row">
+                    <div class="row-icon">
+                        @if (getIconName(device.operatingSystem, device.deviceName) === 'smartphone') {
+                            <svg lucideSmartphone></svg>
+                        } @else if (getIconName(device.operatingSystem, device.deviceName) === 'tablet') {
+                            <svg lucideTablet></svg>
+                        } @else {
+                            <svg lucideLaptop></svg>
+                        }
+                    </div>
+
+                    <div class="row-content">
+                        <span class="row-label">
+                            {{ device.deviceName }}
+                        </span>
+                        <span class="row-value">
+                            {{ device.operatingSystem }}
+                        </span>
+                    </div>
+                </div>
+                }
+            </div>
+        </div>
+    </div>
+    }
+</div>

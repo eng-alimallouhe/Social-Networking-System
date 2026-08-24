@@ -1,0 +1,73 @@
+<div class="passkeys-page-wrapper">
+    <div class="title-section">
+        <h1>{{ 'Identity.Security_Settings.Security_Settings_Page.Passkeys_Page.Title' | translate }}</h1>
+        <p class="page-description">{{ 'Identity.Security_Settings.Security_Settings_Page.Passkeys_Page.Subtitle' |
+            translate }}</p>
+    </div>
+
+    <div class="passkeys-content-card">
+        <div class="header-action-row">
+            <button class="btn btn-primary add-btn" (click)="onAddPasskey()"
+                [disabled]="isRegistering() || !isWebAuthnSupported()">
+                <svg lucidePlus></svg> {{ 'Identity.Security_Settings.Security_Settings_Page.Passkeys_Page.Add_Passkey'
+                | translate }}
+            </button>
+        </div>
+
+        <div *ngIf="!isWebAuthnSupported()" class="unsupported-banner">
+            {{ 'Identity.Security_Settings.Security_Settings_Page.Passkeys_Page.Unsupported' | translate }}
+        </div>
+
+        <!-- State A: Passkeys Exist -->
+        <div class="passkeys-list" *ngIf="hasPasskeys()">
+            <div class="passkey-glass-card" *ngFor="let passkey of passkeysList()">
+                <div class="passkey-header">
+                    <div class="passkey-info">
+                        <div class="passkey-icon-wrapper">
+                            <svg lucideKeyRound></svg>
+                        </div>
+                        <div class="passkey-details">
+                            <span class="device-name">{{ passkey.deviceName }}</span>
+                            <span class="created-at">{{ 'Identity.Security_Settings.Security_Settings_Page.Passkeys_Page.Created' | translate }}: {{ passkey.createdAt | date:'longDate' }}</span>
+                        </div>
+                    </div>
+                    <button class="btn btn-delete btn-icon" (click)="onDeleteClick(passkey.id)">
+                        <svg lucideTrash2></svg>
+                    </button>
+                </div>
+                <!-- Future metadata goes here -->
+                <div class="passkey-metadata">
+                    <!-- Reserved for Last Used, Platform, Browser, etc. -->
+                </div>
+            </div>
+        </div>
+
+        <!-- State B: No Passkeys Exist -->
+        <div class="empty-state-card" *ngIf="!hasPasskeys()">
+            <div class="empty-illustration">
+                <svg viewBox="0 0 24 24" width="80" height="80" fill="none" stroke="currentColor" stroke-width="1.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path
+                        d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4">
+                    </path>
+                </svg>
+            </div>
+            <h2>{{ 'Identity.Security_Settings.Security_Settings_Page.Passkeys_Page.No_Passkeys_Registered' | translate }}</h2>
+            <p>{{ 'Identity.Security_Settings.Security_Settings_Page.Passkeys_Page.Empty_Description' | translate }}</p>
+        </div>
+    </div>
+
+    <div class="buttons-group back-action">
+        <button type="button" class="btn btn-secondary" [routerLink]="['/account-settings/security-settings']">
+            {{ 'Shared.Actions.Back' | translate }}
+        </button>
+    </div>
+</div>
+
+<app-confirm-dialog [(isOpen)]="showDeleteConfirm" [action]="ConfirmAction.Delete" [titleKey]="'Identity.Security_Settings.Security_Settings_Page.Passkeys_Page.Remove_Passkey_Title'"
+    [messageKey]="'Identity.Security_Settings.Security_Settings_Page.Passkeys_Page.Remove_Passkey_Message'">
+</app-confirm-dialog>
+
+<app-device-name-dialog *ngIf="showDeviceNameDialog()" (confirm)="onDeviceNameConfirm($event)"
+    (cancel)="onDeviceNameCancel()">
+</app-device-name-dialog>

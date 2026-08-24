@@ -15,9 +15,7 @@ public class UserPasskeyConfigurations : IEntityTypeConfiguration<UserPasskey>
 
         builder.HasOne<User>()
             .WithMany(u => u.Passkeys)
-            .HasForeignKey(x => x.Id)
+            .HasForeignKey(x => x.UserId)
             .IsRequired();
-
-            
     }
 }

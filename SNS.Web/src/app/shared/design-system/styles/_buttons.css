@@ -1,0 +1,271 @@
+﻿/* ============================================================
+   Global Button Design System
+   ============================================================
+   API:
+     <button class="btn btn-primary">Create</button>
+     <button class="btn btn-secondary">Cancel</button>
+     <button class="btn btn-outlined">View</button>
+     <button class="btn btn-ghost">Settings</button>
+     <button class="btn btn-update">Save Changes</button>
+     <button class="btn btn-delete">Delete</button>
+
+   Optional modifiers:
+     .btn-sm    - small size
+     .btn-lg    - large size
+     .btn-icon  - square icon-only button
+     .btn-block - full width
+   ============================================================ */
+
+
+/* -- Base -------------------------------------------------- */
+
+.btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-2);
+    padding: var(--spacing-3) var(--spacing-5);
+    border: 1.5px solid transparent;
+    border-radius: var(--radius-md);
+    font-family: inherit;
+    font-size: var(--text-sm);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--line-height-none);
+    text-decoration: none;
+    white-space: nowrap;
+    user-select: none;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition:
+        background-color var(--transition-base),
+        color var(--transition-base),
+        border-color var(--transition-base),
+        box-shadow var(--transition-base),
+        transform var(--transition-fast),
+        opacity var(--transition-fast);
+}
+
+/* Icons always visible */
+.btn svg,
+.btn lucide-icon {
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: none;
+}
+
+/* Focus */
+.btn:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+/* Disabled */
+.btn:disabled,
+.btn[disabled] {
+    opacity: 0.45;
+    cursor: not-allowed;
+    pointer-events: none;
+    box-shadow: none;
+    transform: none;
+}
+
+/* Active / Pressed */
+.btn:active:not(:disabled) {
+    transform: scale(0.97) translateY(0);
+    box-shadow: none;
+}
+
+
+/* -- Sizes -------------------------------------------------- */
+
+.btn-sm {
+    padding: var(--spacing-2) var(--spacing-3);
+    font-size: var(--text-xs);
+    gap: var(--spacing-1);
+}
+
+.btn-sm svg,
+.btn-sm lucide-icon {
+    width: 14px;
+    height: 14px;
+}
+
+.btn-lg {
+    padding: var(--spacing-4) var(--spacing-6);
+    font-size: var(--text-base);
+}
+
+.btn-lg svg,
+.btn-lg lucide-icon {
+    width: 20px;
+    height: 20px;
+}
+
+/* Square icon-only button */
+.btn-icon {
+    padding: var(--spacing-2);
+    aspect-ratio: 1;
+    gap: 0;
+}
+
+/* Full width */
+.btn-block {
+    width: 100%;
+}
+
+
+/* -- Primary ------------------------------------------------
+   Main call-to-action. Examples: Submit, Save, Create,
+   Continue, Confirm
+   ----------------------------------------------------------- */
+
+.btn-primary {
+    background: var(--primary-color);
+    color: var(--text-inverse);
+    border-color: transparent;
+    box-shadow: var(--shadow-glow-primary);
+}
+
+.btn-primary:hover:not(:disabled) {
+    background: var(--primary-hover);
+    box-shadow: var(--shadow-md);
+}
+
+.btn-primary:active:not(:disabled) {
+    background: var(--primary-hover);
+    transform: scale(0.97) translateY(0);
+    box-shadow: none;
+}
+
+
+/* -- Secondary ----------------------------------------------
+   Supporting actions alongside primary, or standalone
+   with medium prominence. Examples: Cancel, Back
+   ----------------------------------------------------------- */
+
+.btn-secondary {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    border-color: var(--border-color);
+}
+
+.btn-secondary:hover:not(:disabled) {
+    background: var(--bg-hover);
+    border-color: var(--text-secondary);
+}
+
+.btn-secondary:active:not(:disabled) {
+    background: var(--bg-hover);
+    transform: scale(0.97) translateY(0);
+}
+
+
+/* -- Outlined -----------------------------------------------
+   Lower-priority actions. Examples: Copy All, Download,
+   View
+   ----------------------------------------------------------- */
+
+.btn-outlined {
+    background: transparent;
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-outlined:hover:not(:disabled) {
+    background: color-mix(in srgb, var(--primary-color) 8%, transparent);
+    border-color: var(--primary-hover);
+    color: var(--primary-hover);
+}
+
+.btn-outlined:active:not(:disabled) {
+    background: color-mix(in srgb, var(--primary-color) 14%, transparent);
+    transform: scale(0.97) translateY(0);
+}
+
+
+/* -- Ghost --------------------------------------------------
+   Subtle actions in toolbars, headers, or inside components.
+   Examples: Settings, Remove, Upload, icon actions
+   ----------------------------------------------------------- */
+
+.btn-ghost {
+    background: transparent;
+    color: var(--text-secondary);
+    border-color: transparent;
+}
+
+.btn-ghost:hover:not(:disabled) {
+    background: var(--bg-hover);
+    color: var(--text-primary);
+}
+
+.btn-ghost:active:not(:disabled) {
+    background: var(--bg-hover);
+    transform: scale(0.97);
+}
+
+
+/* -- Update -------------------------------------------------
+   Modifying existing data. Examples: Apply, Save Changes
+   ----------------------------------------------------------- */
+
+.btn-update {
+    background: var(--primary-color);
+    color: var(--text-inverse);
+    border-color: transparent;
+    box-shadow: var(--shadow-glow-primary);
+}
+
+.btn-update:hover:not(:disabled) {
+    background: var(--primary-hover);
+    box-shadow: var(--shadow-md);
+}
+
+.btn-update:active:not(:disabled) {
+    background: var(--primary-hover);
+    transform: scale(0.97) translateY(0);
+    box-shadow: none;
+}
+
+
+/* -- Delete -------------------------------------------------
+   Destructive, irreversible actions.
+   Examples: Delete, Remove, Regenerate Codes
+   ----------------------------------------------------------- */
+
+.btn-delete {
+    background: var(--error);
+    color: var(--text-inverse);
+    border-color: transparent;
+}
+
+.btn-delete:hover:not(:disabled) {
+    background: var(--secondary-hover);
+    box-shadow: var(--shadow-base);
+}
+
+.btn-delete:active:not(:disabled) {
+    background: var(--secondary-hover);
+    transform: scale(0.97) translateY(0);
+    box-shadow: none;
+}
+
+
+/* -- RTL ----------------------------------------------------
+   Logical CSS properties (gap, padding) are direction-agnostic.
+   No manual RTL overrides required for button layout.
+   ----------------------------------------------------------- */
+
+
+/* -- Responsive ---------------------------------------------
+   Buttons are consistent across breakpoints.
+   Use .btn-block for full-width or control via parent layout.
+   ----------------------------------------------------------- */
+
+
+[dir="rtl"] .btn {
+    flex-direction: row-reverse;
+}

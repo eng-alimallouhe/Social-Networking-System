@@ -119,7 +119,7 @@ public static class UserStatusCodes
     /// there are active session in the current time 
     /// </summary>
     public static readonly StatusCode InvalidSecurityUse =
-        new(Category, 404);
+        new(Category, 4041);
 
     public static readonly StatusCode FailedLoginAttempt =
         new(Category, 4050);

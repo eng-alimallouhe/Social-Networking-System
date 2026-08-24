@@ -7,12 +7,20 @@ using SNS.Application;
 using SNS.Infrastructure;
 using SNS.Infrastructure.Identity.Notifications.Hubs;
 using System.Text;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services
+    .AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.Converters.Add(
+            new JsonStringEnumConverter());
+    });
+
 builder.Services.AddOpenApi(options =>
 {
     options.AddDocumentTransformer((document, context, cancellationToken) =>
@@ -106,7 +114,7 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey = new SymmetricSecurityKey(encodedKey),
 
         ValidateLifetime = true,
-        ClockSkew = TimeSpan.Zero // تصفير وقت السماح لـطرد التوكن فور انتهائه لحظيًا ⚡
+        ClockSkew = TimeSpan.Zero
     };
 });
 

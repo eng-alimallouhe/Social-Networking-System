@@ -29,7 +29,6 @@ public class Device: Entity, IHardDeletable
 
     public ICollection<SecuritySession> Sessions { get; private set; } = new List<SecuritySession>();
 
-
     private Device()
     {
         Id = SequentialGuid.GenerateSequentialGuid();

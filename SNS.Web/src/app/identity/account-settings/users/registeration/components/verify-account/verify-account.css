@@ -1,0 +1,209 @@
+/* Verify Account â€” mirrors verify-otp.css. All values use design tokens. */
+
+:host {
+    width: 100%;
+}
+
+.login-wrapper {
+    background: var(--glass-bg);
+    position: relative;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    outline: none;
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-xl);
+    width: 95%;
+    margin: 0 auto;
+    max-width: 450px;
+    transition: all var(--transition-slow);
+    animation: formEntry 0.8s ease-out forwards;
+    border: 1px solid var(--glass-border);
+}
+
+.login-form {
+    padding: var(--spacing-8) var(--spacing-6);
+}
+
+@keyframes formEntry {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.login-form h2 {
+    margin-bottom: var(--spacing-6);
+    text-align: center;
+    color: var(--primary-color);
+    font-size: var(--header-2);
+    font-weight: var(--font-weight-semibold);
+}
+
+.user-notice {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-3);
+    margin-bottom: var(--spacing-8);
+    color: var(--text-secondary);
+}
+
+.user-notice .notice-icon {
+    color: var(--accent-color);
+    width: 30px;
+    height: 30px;
+    flex-shrink: 0;
+}
+
+.user-notice p {
+    margin: 0;
+    font-size: var(--text-base);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-1);
+    flex-wrap: wrap;
+    line-height: var(--line-height-normal);
+}
+
+.user-id-text {
+    color: var(--primary-color);
+    font-weight: var(--font-weight-bold);
+    word-break: break-all;
+}
+
+.code-group {
+    margin-bottom: var(--spacing-10);
+    position: relative;
+    text-align: center;
+}
+
+.code-inputs {
+    display: flex;
+    justify-content: center;
+    gap: var(--spacing-4);
+    direction: ltr;
+}
+
+.code-inputs input {
+    width: 45px;
+    height: 55px;
+    text-align: center;
+    font-size: var(--header-2);
+    font-weight: var(--font-weight-medium);
+    color: var(--text-primary);
+    border: none;
+    caret-color: transparent;
+    line-height: 50px;
+    border-bottom: 2px solid var(--border-color);
+    border-radius: 0;
+    padding: 0;
+    background: transparent;
+    transition: var(--transition-base);
+}
+
+.code-inputs input::selection {
+    background-color: transparent !important;
+    color: var(--text-primary) !important;
+}
+
+.code-inputs input:focus {
+    outline: none;
+    border-bottom: 2px solid var(--accent-color);
+    background: var(--bg-hover) !important;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+}
+
+.code-inputs input.ng-valid {
+    border-bottom-color: var(--success);
+}
+
+.code-inputs input::-webkit-outer-spin-button,
+.code-inputs input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.code-group .error-message {
+    position: absolute;
+    bottom: calc(var(--spacing-6) * -1);
+    left: 0;
+    right: 0;
+    text-align: center;
+    color: var(--error);
+    font-size: var(--text-sm);
+    font-weight: var(--font-weight-medium);
+    transition: var(--transition-fast);
+}
+
+.resend-container {
+    margin-top: var(--spacing-4);
+    text-align: center;
+}
+
+.resend-text {
+    margin: 0;
+    font-size: var(--text-sm);
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-1);
+    flex-wrap: wrap;
+}
+
+.cooldown-timer {
+    color: var(--text-muted);
+    font-weight: var(--font-weight-medium);
+}
+
+.resend-link {
+    color: var(--accent-color);
+    cursor: pointer;
+    font-weight: var(--font-weight-semibold);
+    text-decoration: none;
+    transition: var(--transition-fast);
+}
+
+.resend-link:hover {
+    color: var(--accent-hover);
+    text-decoration: underline;
+}
+
+.resend-link.disabled {
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+.form-footer {
+    margin-top: var(--spacing-6);
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-top: 1px solid var(--border-color);
+    padding-top: var(--spacing-4);
+}
+
+.register-link {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-weight: var(--font-weight-medium);
+    font-size: var(--text-sm);
+    transition: var(--transition-fast);
+}
+
+.register-link:hover {
+    color: var(--primary-color);
+}
+/* Spacing for submit button in form context */
+.login-form .btn {
+    margin-top: var(--spacing-4);
+}
+

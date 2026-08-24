@@ -61,4 +61,8 @@ public interface ISessionService
 
     Task<List<SessionRedisModel>> GetActiveSessionsByUserIdAsync(Guid userId, CancellationToken cancellationToken = default);
 
+    Task<Result<string>> RotateRefreshTokenAsync(
+        Guid sessionId,
+        Guid userId,
+        CancellationToken cancellationToken = default);
 }

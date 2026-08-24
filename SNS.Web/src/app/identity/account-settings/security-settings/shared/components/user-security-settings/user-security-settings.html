@@ -1,0 +1,302 @@
+@if (isRootRoute()) {
+@if (securitySettingsResource.value(); as settings) {
+<div class="title-section">
+    <h1>{{ 'Identity.Security_Settings.Security_Settings_Page.Title' | translate }}</h1>
+    <p class="subtitle-text">{{ 'Identity.Security_Settings.Security_Settings_Page.Description' | translate }}</p>
+</div>
+<div class="info-wrapper">
+    <!-- Card 1: Multi-Factor Authentication Section -->
+    <div class="security-card">
+        <div class="card-header-section">
+            <svg lucideShieldCheck class="header-icon"></svg>
+            <h2>{{ 'Identity.Security_Settings.Security_Settings_Page.MFA.Header' | translate }}</h2>
+        </div>
+
+        <div class="card-inner-blocks">
+            <!-- MFA Status -->
+            <div class="settings-block">
+                <div class="block-details">
+                    <span class="block-title">{{ 'Identity.Security_Settings.Security_Settings_Page.MFA.Status' | translate }}</span>
+                    <span class="block-sub">{{ 'Identity.Security_Settings.Security_Settings_Page.MFA.Status_Desc' | translate }}</span>
+                </div>
+                <div class="block-action">
+                    @if (settings.isMfaEnabled) {
+                    <button class="btn btn-delete btn-sm" (click)="onDisableMfaClick()">
+                        {{ 'Identity.Security_Settings.Security_Settings_Page.Actions.Disable' | translate }}
+                    </button>
+                    } @else {
+                    <button class="btn btn-primary btn-sm" (click)="showEnableMfaModal.set(true)">
+                        {{ 'Identity.Security_Settings.Security_Settings_Page.Actions.Enable' | translate }}
+                    </button>
+                    }
+                </div>
+            </div>
+
+            <!-- Current Provider -->
+            <div class="settings-block">
+                <div class="block-details">
+                    <span class="block-title">{{ 'Identity.Security_Settings.Security_Settings_Page.MFA.Provider' | translate }}</span>
+                    <span class="block-sub">{{ 'Identity.Security_Settings.Security_Settings_Page.MFA.Provider_Desc' | translate }}</span>
+                </div>
+                <div class="block-action select-action">
+                    <app-select [ngModel]="selectedMfaProvider()" (ngModelChange)="changeMfaProvider($event)"
+                        [disabled]="isUpdatingProvider()" [options]="providerOptions">
+                    </app-select>
+                </div>
+            </div>
+
+            <!-- Authenticator App -->
+            <div class="settings-block clickable" (click)="navigateToLinkAuthenticator()">
+                <div class="icon-rapper auth-icon">
+                    <svg lucideScanQrCode></svg>
+                </div>
+                <div class="block-details full-width">
+                    <span class="block-title">{{ 'Identity.Security_Settings.Security_Settings_Page.MFA.Authenticator_App' | translate }}</span>
+                    <span class="block-sub">{{ 'Identity.Security_Settings.Security_Settings_Page.MFA.Authenticator_App_Desc' | translate }}</span>
+                </div>
+                <div class="block-chevron">
+                    <svg lucideChevronRight class="chevron-arrow"></svg>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Card 2: Account Access -->
+    <div class="security-card">
+        <div class="card-header-section">
+            <svg lucideKey class="header-icon"></svg>
+            <h2>{{ 'Identity.Security_Settings.Security_Settings_Page.Account_Access.Header' | translate }}</h2>
+        </div>
+
+        <div class="card-inner-rows">
+            <!-- Passkeys -->
+            <div class="settings-row clickable" (click)="navigateToPasskeys()">
+                <div class="row-details">
+                    <span class="row-title">{{ 'Identity.Security_Settings.Security_Settings_Page.Account_Access.Passkeys' | translate }}</span>
+                    <span class="row-sub">{{ 'Identity.Security_Settings.Security_Settings_Page.Account_Access.Passkeys_Linked' | translate:{ count: settings.passkeysCount } }}</span>
+                </div>
+                <div class="row-action">
+                    <svg lucideChevronRight class="chevron-arrow"></svg>
+                </div>
+            </div>
+
+            <!-- Recovery Email -->
+            <div class="settings-row clickable" (click)="navigateToChangeRecoveryEmail()">
+                <div class="row-details">
+                    <span class="row-title">{{ 'Identity.Security_Settings.Security_Settings_Page.Account_Access.Recovery_Email' | translate }}</span>
+                    <span class="row-sub">{{ settings.recoveryEmail ? settings.recoveryEmail : ('Identity.Security_Settings.Security_Settings_Page.Recovery.No_Email' | translate) }}</span>
+                </div>
+                <div class="row-action">
+                    <svg lucidePencil class="edit-icon"></svg>
+                </div>
+            </div>
+
+            <!-- Recovery Codes -->
+            <div class="settings-row clickable" (click)="navigateToRecoveryCodes()">
+                <div class="row-details">
+                    <span class="row-title">{{ 'Identity.Security_Settings.Security_Settings_Page.Account_Access.Recovery_Codes' | translate }}</span>
+                    <span class="row-sub" [class.text-danger]="settings.unusedRecoveryCodesCount <= 2 || settings.usedRecoveryCodesCount > 0">{{ 'Identity.Security_Settings.Security_Settings_Page.Account_Access.Recovery_Codes_Status' | translate:{ used: settings.usedRecoveryCodesCount, remaining: settings.unusedRecoveryCodesCount } }}</span>
+                </div>
+                <div class="row-action">
+                    <svg lucideChevronRight class="chevron-arrow"></svg>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Card 3: Communication Preferences -->
+    <div class="security-card">
+        <div class="card-header-section">
+            <svg lucideMail class="header-icon"></svg>
+            <h2>{{ 'Identity.Security_Settings.Security_Settings_Page.Preferences.Header' | translate }}</h2>
+        </div>
+
+        <div class="card-inner-rows">
+            <div class="settings-row">
+                <div class="row-details">
+                    <span class="row-title">{{ 'Identity.Security_Settings.Security_Settings_Page.Preferences.Default_Method' | translate }}</span>
+                    <span class="row-sub">{{ 'Identity.Security_Settings.Security_Settings_Page.Methods.' + settings.defualtCommunicationMethod | translate }}</span>
+                </div>
+                <div class="row-action">
+                    <button class="btn btn-outline btn-sm" (click)="onChangeCommunicationClick(settings)">
+                        {{ 'Identity.Security_Settings.Security_Settings_Page.Actions.Change' | translate }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Card 4: Status Details -->
+    <div class="security-card status-card">
+        <div class="card-header-section">
+            <svg lucideInfo class="header-icon"></svg>
+            <h2>{{ 'Identity.Security_Settings.Security_Settings_Page.Status_Details.Header' | translate }}</h2>
+        </div>
+
+        <div class="status-grid">
+            <div class="status-block">
+                <span class="status-label">{{ 'Identity.Security_Settings.Security_Settings_Page.Status_Details.Last_Password_Change' | translate }}</span>
+                <span class="status-value">{{ settings.lastPasswordChange | date:'mediumDate' }}</span>
+            </div>
+            
+            <div class="status-block has-action">
+                <div class="status-content">
+                    <span class="status-label">{{ 'Identity.Security_Settings.Security_Settings_Page.Status_Details.Registered_Devices' | translate }}</span>
+                    <span class="status-value">{{ 'Identity.Security_Settings.Security_Settings_Page.Status_Details.Active_Devices' | translate:{ count: settings.totalDevicesCount } }}</span>
+                </div>
+                <svg lucideExternalLink class="action-icon"></svg>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@if (showEnableMfaModal()) {
+<div class="modal-overlay" (click)="showEnableMfaModal.set(false)">
+    <div class="modal-container" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+            <h3>{{ 'Identity.Security_Settings.Security_Settings_Page.MFA.Choose_Provider_Title' | translate }}</h3>
+            <button class="close-btn" (click)="showEnableMfaModal.set(false)">
+                <svg lucideXCircle></svg>
+            </button>
+        </div>
+        <div class="modal-body provider-list">
+            <!-- Email (Always available) -->
+            <button class="provider-option" (click)="enableMfaWithProvider(MfaProvider.Email)">
+                <div class="provider-icon">
+                    <svg lucideMail></svg>
+                </div>
+                <div class="provider-text">
+                    <span class="provider-name">{{ 'Identity.Security_Settings.Security_Settings_Page.Providers.2' | translate }}</span>
+                </div>
+                <div class="provider-action">
+                    <svg lucideChevronRight class="chevron-arrow"></svg>
+                </div>
+            </button>
+            
+            <!-- Authenticator App -->
+            @if (settings.isAuthenticatorAppLinked) {
+            <button class="provider-option" (click)="enableMfaWithProvider(MfaProvider.AuthenticatorApp)">
+                <div class="provider-icon">
+                    <svg lucideScanQrCode></svg>
+                </div>
+                <div class="provider-text">
+                    <span class="provider-name">{{ 'Identity.Security_Settings.Security_Settings_Page.Providers.3' | translate }}</span>
+                </div>
+                <div class="provider-action">
+                    <svg lucideChevronRight class="chevron-arrow"></svg>
+                </div>
+            </button>
+            }
+            
+            <!-- Passkey -->
+            @if (settings.passkeysCount > 0) {
+            <button class="provider-option" (click)="enableMfaWithProvider(MfaProvider.Passkey)">
+                <div class="provider-icon">
+                    <svg lucideKey></svg>
+                </div>
+                <div class="provider-text">
+                    <span class="provider-name">{{ 'Identity.Security_Settings.Security_Settings_Page.Providers.4' | translate }}</span>
+                </div>
+                <div class="provider-action">
+                    <svg lucideChevronRight class="chevron-arrow"></svg>
+                </div>
+            </button>
+            }
+            
+            <!-- Recovery Codes / Email -->
+            @if (settings.unusedRecoveryCodesCount > 0) {
+            <button class="provider-option" (click)="enableMfaWithProvider(MfaProvider.RecoveryEmail)">
+                <div class="provider-icon">
+                    <svg lucideShieldCheck></svg>
+                </div>
+                <div class="provider-text">
+                    <span class="provider-name">{{ 'Identity.Security_Settings.Security_Settings_Page.Providers.1' | translate }}</span>
+                </div>
+                <div class="provider-action">
+                    <svg lucideChevronRight class="chevron-arrow"></svg>
+                </div>
+            </button>
+            }
+        </div>
+    </div>
+</div>
+}
+
+@if (showCommunicationModal()) {
+<div class="modal-overlay" (click)="showCommunicationModal.set(false)">
+    <div class="modal-container" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+            <h3>{{ 'Identity.Security_Settings.Security_Settings_Page.Preferences.Change_Method' | translate }}</h3>
+            <button class="close-btn" (click)="showCommunicationModal.set(false)">
+                <svg lucideXCircle></svg>
+            </button>
+        </div>
+        <div class="modal-body provider-list">
+            <!-- Primary Email -->
+            <button class="provider-option" (click)="changeCommunicationMethod(CommunicationMethod.Email)">
+                <div class="provider-icon">
+                    <svg lucideMail></svg>
+                </div>
+                <div class="provider-text">
+                    <span class="provider-name">{{ 'Identity.Security_Settings.Security_Settings_Page.Methods.0' | translate }}</span>
+                </div>
+                <div class="provider-action">
+                    <svg lucideChevronRight class="chevron-arrow"></svg>
+                </div>
+            </button>
+            
+            <!-- Recovery Email -->
+            <button class="provider-option" (click)="changeCommunicationMethod(CommunicationMethod.RecoveryEmail)">
+                <div class="provider-icon">
+                    <svg lucideShieldCheck></svg>
+                </div>
+                <div class="provider-text">
+                    <span class="provider-name">{{ 'Identity.Security_Settings.Security_Settings_Page.Methods.1' | translate }}</span>
+                </div>
+                <div class="provider-action">
+                    <svg lucideChevronRight class="chevron-arrow"></svg>
+                </div>
+            </button>
+        </div>
+    </div>
+</div>
+}
+
+@if (showRecoveryWarningModal()) {
+<div class="modal-overlay" (click)="showRecoveryWarningModal.set(false)">
+    <div class="modal-container" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+            <h3>{{ 'Identity.Security_Settings.Security_Settings_Page.Preferences.Change_Method' | translate }}</h3>
+            <button class="close-btn" (click)="showRecoveryWarningModal.set(false)">
+                <svg lucideXCircle></svg>
+            </button>
+        </div>
+        <div class="modal-body" style="padding: var(--spacing-4); text-align: center;">
+            <p>{{ 'Identity.Security_Settings.Security_Settings_Page.Preferences.Recovery_Email_Required' | translate }}</p>
+        </div>
+        <div class="modal-footer" style="padding: var(--spacing-4); display: flex; justify-content: flex-end; gap: var(--spacing-3); border-top: 1px solid var(--border-color);">
+            <button class="btn btn-secondary" (click)="showRecoveryWarningModal.set(false)">
+                {{ 'Shared.Actions.Cancel' | translate }}
+            </button>
+            <button class="btn btn-primary" (click)="showRecoveryWarningModal.set(false); navigateToChangeRecoveryEmail()">
+                {{ 'Identity.Security_Settings.Security_Settings_Page.Preferences.Add_Recovery_Email' | translate }}
+            </button>
+        </div>
+    </div>
+</div>
+}
+}
+
+<app-confirm-dialog
+    [(isOpen)]="showConfirmDisable"
+    [action]="ConfirmAction.Disable"
+    [titleKey]="'Identity.Security_Settings.Security_Settings_Page.Dialogs.DisableMfaTitle'"
+    [messageKey]="'Identity.Security_Settings.Security_Settings_Page.Dialogs.DisableMfaMessage'">
+</app-confirm-dialog>
+}
+@else {
+    <div class="child-container">
+        <router-outlet></router-outlet>
+    </div>
+}

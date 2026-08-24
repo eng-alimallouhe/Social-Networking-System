@@ -1518,6 +1518,9 @@ namespace SNS.Infrastructure.Migrations
                     b.Property<bool>("IsUsed")
                         .HasColumnType("bit");
 
+                    b.Property<DateTime?>("UsedAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<Guid>("UserSecuritySettingsId")
                         .HasColumnType("uniqueidentifier");
 
@@ -1534,6 +1537,7 @@ namespace SNS.Infrastructure.Migrations
             modelBuilder.Entity("SNS.Domain.Identity.SecuritySettings.Entities.UserPasskey", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
@@ -1558,6 +1562,8 @@ namespace SNS.Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("UserPassKeys", "Identity");
                 });
@@ -3540,7 +3546,7 @@ namespace SNS.Infrastructure.Migrations
                 {
                     b.HasOne("SNS.Domain.Identity.Users.Entities.User", null)
                         .WithMany("Passkeys")
-                        .HasForeignKey("Id")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

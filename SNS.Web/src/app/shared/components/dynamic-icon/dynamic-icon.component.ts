@@ -21,6 +21,5 @@ export class DynamicIconComponent {
   @Input() height: string = '100%';
 
   constructor() {
-    console.log(this.name);
   }
 }

@@ -5,33 +5,38 @@
         <div class="logo">
             <img src="../../../../assets/icons/github.svg" alt="">
         </div>
-        <h2>SyrianDevs</h2>
+        <h2>{{'App.Site_Name' | translate }}</h2>
     </div>
     <div class="auth-links-wrapper">
+
         <div class="links-menu-button" [class.menu-button-active]="isOptionsMenuOpen()"
-            [class.busy-on-loading]="isLoading()" (click)="toggleOptionsMenu()" role="button" tabindex="0"
-            aria-label="Toggle options menu">
+            (click)="isOptionsMenuOpen.set(!isOptionsMenuOpen())" cdkOverlayOrigin #menuOrigin="cdkOverlayOrigin">
             <svg lucideEllipsis aria-hidden="true"></svg>
         </div>
-        <div class="options" [class.is-options-menu-open]="isOptionsMenuOpen()" [class.busy-on-loading]="isLoading()"
-            role="menu">
-            <a (click)="navigateTo('support')" [class.busy-on-loading]="isLoading()" (click)="onLinkClick($event)"
-                class="option" role="menuitem" tabindex="0">
-                <svg lucideLifeBuoy aria-hidden="true"></svg>
-                <p> Support </p>
-            </a>
-            <a (click)="navigateTo('login-options')" [class.busy-on-loading]="isLoading()" (click)="onLinkClick($event)"
-                class="option" role="menuitem" tabindex="0">
-                <svg lucideFingerprint aria-hidden="true"></svg>
-                <p> Login Options </p>
-            </a>
-        </div>
+
+        <ng-template cdkConnectedOverlay [cdkConnectedOverlayOrigin]="menuOrigin"
+            [cdkConnectedOverlayOpen]="isOptionsMenuOpen()" [cdkConnectedOverlayHasBackdrop]="true"
+            cdkConnectedOverlayBackdropClass="cdk-overlay-transparent-backdrop"
+            [cdkConnectedOverlayPositions]="overlayPositions" (backdropClick)="isOptionsMenuOpen.set(false)"
+            >
+
+            <div class="options" role="menu">
+
+                <a class="option" role="menuitem" (click)="onLinkClick($event)">
+                    <svg lucideLifeBuoy aria-hidden="true"></svg>
+                    <p>Support</p>
+                </a>
+
+                <a class="option" role="menuitem" (click)="onLinkClick($event)">
+                    <svg lucideFingerprint aria-hidden="true"></svg>
+                    <p>Login Options</p>
+                </a>
+
+            </div>
+
+        </ng-template>
+
     </div>
-    @if (isLoading()) {
-    <div class="loading-wrapper">
-        <app-line-loader class="loader" [width]="'100%'"></app-line-loader>
-    </div>
-    }
 </div>
 
 

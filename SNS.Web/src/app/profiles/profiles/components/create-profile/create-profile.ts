@@ -18,9 +18,8 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { CreateProfileRequest } from '../../contracts/create-profile-request.dto';
 import { ProfilesService } from '../../services/profiles.service';
 import { finalize } from 'rxjs';
-import { LoadingOnboardingService } from '../../../../shared/components/layouts/onboarding-layout/loading-onboarding.service';
-import { HttpErrorResponse } from '@angular/common/http';
-import { Result } from '../../../../shared/contracts/result';
+import { AppInput } from '../../../../shared/design-system/components/app-input/app-input';
+import { GlobalLoaderService } from '../../../../shared/Loading/services/global-loader.service';
 
 /** All common software / engineering specializations. Replacing with an API
  *  call later only requires swapping the signal population in ngOnInit. */
@@ -68,7 +67,7 @@ const ALL_SPECIALIZATIONS: string[] = [
 @Component({
   selector: 'app-create-profile',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, TranslatePipe],
+  imports: [CommonModule, ReactiveFormsModule, TranslatePipe, AppInput],
   templateUrl: './create-profile.html',
   styleUrl: './create-profile.css'
 })
@@ -76,7 +75,7 @@ export class CreateProfile {
   private fb = inject(FormBuilder);
   private router = inject(Router);
   private profileService = inject(ProfilesService);
-  private loadingService = inject(LoadingOnboardingService);
+  private loadingService = inject(GlobalLoaderService);
 
   @ViewChild('fileInput') fileInputRef!: ElementRef<HTMLInputElement>;
 
@@ -97,6 +96,14 @@ export class CreateProfile {
       s.toLowerCase().includes(q)
     );
   });
+
+  constructor() {
+    this.profileForm.valueChanges.subscribe(value => {
+      console.log('FORM VALUE:', value);
+      console.log('FORM VALID:', this.profileForm.valid);
+      console.log('FULL NAME STATUS:', this.profileForm.get('fullName')?.status);
+    });
+  }
 
   // ── Form ──────────────────────────────────────────────────────────
   readonly BIO_MAX = 300;

@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SNS.API.DTOs.Profiles;
 using SNS.API.Extensions;
+using SNS.API.Helpers;
+using SNS.Application.Identity.Shared.DTOs.Authentication;
 using SNS.Application.Profiles.Profiles.Commands.CreateProfile;
 using SNS.Application.Profiles.Profiles.Commands.UpdateBasicInformation;
 using SNS.Application.Profiles.Profiles.Commands.UpdateProfilePicture;
@@ -64,11 +66,11 @@ public class ProfilesController : ControllerBase
     [MapToApiVersion("1.0")]
     [HttpPost]
     [Consumes("multipart/form-data")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Result<AuthTokenDto>))]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
-    public async Task<ActionResult<Result>> CreateProfileAsync([FromForm] CreateProfileRequest request)
+    public async Task<ActionResult<Result<AuthTokenDto>>> CreateProfileAsync([FromForm] CreateProfileRequest request)
     {
         UploadedFile? uploadedFile = null;
 
@@ -84,12 +86,26 @@ public class ProfilesController : ControllerBase
                 Length: request.ProfilePicture.Length
             );
         }
-        return (await _mediator.Send(new CreateProfileCommand(
+
+        var result = await _mediator.Send(new CreateProfileCommand(
             FullName: request.FullName,
             Specialization: request.Specialization,
             Bio: request.Bio,
             ProfilePicture: uploadedFile
-        ))).ToActionResult(this);
+        ));
+
+        if (result.Value != null && result.IsSuccess)
+        {
+            Response.Cookies.Append(
+                CookieFactory.RefreshTokenCookieName,
+                result.Value?.RefreshToken ?? string.Empty,
+                CookieFactory.CreateRefreshTokenCookie(true));
+
+            return (Result<AuthTokenDto>.Success(new AuthTokenDto(result.Value!.Token), result.StatusCode)).ToActionResult(this);
+        }
+
+
+        return (Result<AuthTokenDto>.Failure(result.StatusCode)).ToActionResult(this);
     }
 
     /// <summary>

@@ -112,6 +112,7 @@ public sealed class RegisterUserCommandHandler : ICommandHandler<RegisterUserCom
                 email: request.Email,
                 passwordHash: _hashingService.Hash(request.Password)
             );
+
             user.ChangePreferredLanguage(language: _requestInfoService.Language);
 
             userSecuritySettings = UserSecuritySettings.Create(userId: user.Id, recoveryEmail: null);

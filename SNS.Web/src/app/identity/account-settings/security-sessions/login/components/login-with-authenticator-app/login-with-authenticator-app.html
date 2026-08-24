@@ -1,0 +1,32 @@
+<div class="login-wrapper">
+    <form class="login-form" [formGroup]="authenticatorForm" (ngSubmit)="onSubmit()" autocomplete="off">
+        <h2>{{ 'Identity.Security_Sessions.Authenticator.Title' | translate }}</h2>
+
+        <div class="user-notice">
+            <p>
+                <svg class="notice-icon" lucideScanEye></svg>
+                {{ 'Identity.Security_Sessions.Authenticator.Enter_Code_For' | translate }}
+                <strong class="user-id-text">{{ ui }}</strong>
+                {{ 'Identity.Security_Sessions.Authenticator.Using_Authenticator' | translate }}
+            </p>
+        </div>
+
+        <div class="form-group code-group">
+            <app-code-input formControlName="code" [length]="6"></app-code-input>
+            <div *ngIf="authenticatorForm.invalid && (authenticatorForm.touched || authenticatorForm.dirty)"
+                class="error-message">
+                <span>{{ 'Shared.Errors.Invalid_Code' | translate }}</span>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block" id="verifyBtn" [disabled]="authenticatorForm.invalid || isLoading()">
+            <span>{{ 'Identity.Security_Sessions.Authenticator.Verify' | translate }}</span>
+            <svg lucideCheckCircle></svg>
+        </button>
+
+        <div class="form-footer">
+            <a [routerLink]="['/auth/login']" class="register-link">{{
+                'Identity.Security_Sessions.Authenticator.Back_To_Login' | translate }}</a>
+        </div>
+    </form>
+</div>

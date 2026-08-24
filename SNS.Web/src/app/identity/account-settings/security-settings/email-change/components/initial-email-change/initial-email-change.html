@@ -1,0 +1,36 @@
+<div class="change-email-wrapper">
+    <div class="title-section">
+        <h1>{{ 'Identity.Security_Settings.Personal_Info.Change_Email.Title' | translate }}</h1>
+    </div>
+    <form [formGroup]="form" class="change-email-form" autocomplete="off" (ngSubmit)="onSubmit()">
+        <h2>{{ 'Identity.Security_Settings.Personal_Info.Change_Email.Description' | translate }}</h2>
+
+        <div class="form-group">
+            <app-input type="email" id="newEmail" formControlName="email" autocomplete="email"
+                [label]="'Identity.Security_Settings.Personal_Info.Change_Email.New_Email' | translate"
+                [required]="true"
+                [invalid]="!!(form.get('email')?.invalid && (form.get('email')?.touched || form.get('email')?.dirty))">
+            </app-input>
+        </div>
+
+        @if (form.get('email')?.touched && form.get('email')?.hasError('required')) {
+        <div class="validation-message">
+            <span class="error-text">{{ 'Shared.Errors.Email_Required' | translate }}</span>
+        </div>
+        } @else if (form.get('email')?.touched && form.get('email')?.hasError('email')) {
+        <div class="validation-message">
+            <span class="error-text">{{ 'Shared.Errors.Email_Invalid' | translate }}</span>
+        </div>
+        }
+
+        <div class="buttons-group">
+            <button type="button" class="btn btn-secondary" [routerLink]="['/account-settings/personal-information']">
+                {{ 'Identity.Security_Settings.Personal_Info.Change_Email.Back' | translate }}
+            </button>
+            <button type="submit" [disabled]="form.invalid" class="btn btn-primary" id="changeEmailBtn">
+                <span>{{ 'Identity.Security_Settings.Personal_Info.Change_Email.Continue' | translate }}</span>
+                <svg lucideCheckLine></svg>
+            </button>
+        </div>
+    </form>
+</div>

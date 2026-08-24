@@ -19,9 +19,6 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
       const title = translate.instant('Status_Codes.Shared.Error_Title');
-      console.log(req.url);
-      console.log(error);
-
       if (isResult(error.error)) {
 
         const { category, code } = error.error.statusCode;
@@ -29,14 +26,12 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
         const message = translate.instant(
           `Status_Codes.${category}.${code}`
         );
-
-        toast.error(message, title);
+        toast.error(title, message);
       }
       else {
-
         toast.error(
-          translate.instant('Status_Codes.Shared.Unexpected_Error'),
-          title
+          title,
+          translate.instant('Status_Codes.Shared.Unexpected_Error')
         );
       }
 

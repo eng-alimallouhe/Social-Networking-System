@@ -1,5 +1,7 @@
 using SNS.Application.Abstractions.Messaging;
 using SNS.Application.Identity.Shared.Abstractions;
+using SNS.Application.Identity.Shared.DTOs.Authentication;
+using SNS.Application.Identity.Shared.DTOs.Users;
 using SNS.Application.Profiles.Profiles.abstractions;
 using SNS.Application.Shared.Abstractions.Storage;
 using SNS.Domain.Identity.Users.Enums;
@@ -23,7 +25,7 @@ namespace SNS.Application.Profiles.Profiles.Commands.CreateProfile;
 /// 5. Cleans up uploaded storage file if database commit fails.
 /// Side effects include avatar storage upload, profile entity creation, and transaction persistence.
 /// </remarks>
-internal sealed class CreateProfileCommandHandler : ICommandHandler<CreateProfileCommand>
+internal sealed class CreateProfileCommandHandler : ICommandHandler<CreateProfileCommand, AuthTokensDto>
 {
     private readonly ISoftDeletableRepository<Profile> _profileRepo;
     private readonly IProfileCacheService _profileCacheService;
@@ -31,7 +33,7 @@ internal sealed class CreateProfileCommandHandler : ICommandHandler<CreateProfil
     private readonly ICurrentUserService _currentUserService;
     private readonly IFileStorageService _fileStorageService;
     private readonly IUserCacheService _userCacheService;
-
+    private readonly IAuthenticationFlowService _authenticationFlowService;
 
     public CreateProfileCommandHandler(
         ISoftDeletableRepository<Profile> profileRepo,
@@ -39,7 +41,8 @@ internal sealed class CreateProfileCommandHandler : ICommandHandler<CreateProfil
         IUnitOfWork unitOfWork,
         ICurrentUserService currentUserService,
         IFileStorageService fileStorageService,
-        IUserCacheService userCacheService)
+        IUserCacheService userCacheService,
+        IAuthenticationFlowService authenticationFlowService)
     {
         _profileRepo = profileRepo;
         _profileCacheService = profileCacheService;
@@ -47,28 +50,28 @@ internal sealed class CreateProfileCommandHandler : ICommandHandler<CreateProfil
         _currentUserService = currentUserService;
         _fileStorageService = fileStorageService;
         _userCacheService = userCacheService;
+        _authenticationFlowService = authenticationFlowService;
     }
 
-    public async Task<Result> Handle(CreateProfileCommand request, CancellationToken cancellationToken)
+    public async Task<Result<AuthTokensDto>> Handle(CreateProfileCommand request, CancellationToken cancellationToken)
     {
         var userId = _currentUserService.UserId;
-
-
+        var sessionId = _currentUserService.SessionId;
 
         string? profilePictureObjectKey = null;
 
         var fileUploaded = false;
 
-        if (userId == null)
+        if (userId == null || sessionId == null)
         {
-            return Result.Failure(SecurityStatusCodes.AuthenticationRequired);
+            return Result<AuthTokensDto>.Failure(SecurityStatusCodes.AuthenticationRequired);
         }
 
         var user = await _userCacheService.GetUserAsync(userId.Value, cancellationToken);
 
         if (user == null || user.Status != UserStatus.Active)
         {
-            return Result.Failure(SecurityStatusCodes.AuthenticationRequired);
+            return Result<AuthTokensDto>.Failure(SecurityStatusCodes.AuthenticationRequired);
         }
 
 
@@ -76,7 +79,7 @@ internal sealed class CreateProfileCommandHandler : ICommandHandler<CreateProfil
 
         if (oldProfile != null)
         {
-            return Result.Failure(OperationStatusCode.Conflict);
+            return Result<AuthTokensDto>.Failure(OperationStatusCode.Conflict);
         }
 
         await _unitOfWork.BeginTransactionAsync(cancellationToken);
@@ -108,9 +111,26 @@ internal sealed class CreateProfileCommandHandler : ICommandHandler<CreateProfil
 
             _profileRepo.Add(profile);
 
+            var authenticateResult = await _authenticationFlowService.AuthenticateUserAsync(
+                new AuthenticateUserRequest(
+                    UserId: user.UserId,
+                    RoleId: user.RoleId,
+                    RoleType: user.RoleType,
+                    ProfileId: profile.Id,
+                    SessionId: sessionId));
+
+            if (authenticateResult.IsFailure || authenticateResult.Value == null)
+            {
+                await _unitOfWork.RollbackTransactionAsync(cancellationToken);
+                return authenticateResult;
+            }
+
             await _unitOfWork.CompleteAsync(cancellationToken);
             await _unitOfWork.CommitTransactionAsync(cancellationToken);
-            return Result.Success(OperationStatusCode.Success);
+            
+            return Result<AuthTokensDto>.Success(new AuthTokensDto(
+                Token: authenticateResult.Value.Token,
+                RefreshToken: authenticateResult.Value.RefreshToken), OperationStatusCode.Success);
         }
         catch
         {

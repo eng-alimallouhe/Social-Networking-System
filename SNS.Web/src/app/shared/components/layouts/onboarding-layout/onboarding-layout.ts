@@ -1,17 +1,15 @@
 import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { LineLoader } from '../../loaders/line-loader/line-loader';
+import { LineLoader } from '../../../Loading/components/line-loader/line-loader';
 import { LoadingOnboardingService } from './loading-onboarding.service';
+import { GlobalLoaderService } from '../../../Loading/services/global-loader.service';
 
 @Component({
   selector: 'app-onboarding-layout',
   standalone: true,
-  imports: [RouterOutlet, LineLoader],
+  imports: [RouterOutlet],
   templateUrl: './onboarding-layout.html',
   styleUrl: './onboarding-layout.css',
 })
 export class OnboardingLayout {
-  private loadingService = inject(LoadingOnboardingService);
-
-  isLoading = this.loadingService.isLoading;
 }

@@ -1,0 +1,96 @@
+:root {
+    /* ==== Core Brand Colors ==== */
+    --primary-color: #428177;
+    /* Forest - أفتح درجة (اللون الأساسي الجديد) */
+    --secondary-color: #6b1f2a;
+    /* Deep Umber - أفتح درجة (اللون الثانوي) */
+    --accent-color: #988561;
+    /* Golden Wheat - أغمق درجة */
+
+    /* Semantic Colors */
+    --success: #054239;
+    /* Forest - الدرجة الوسطى */
+    --warning: #b9a779;
+    /* Golden Wheat - الدرجة الوسطى */
+    --error: #ca3342;
+    /* Deep Umber - الدرجة الوسطى */
+    --info: #428177;
+    /* Forest - أفتح درجة */
+
+    /* ==== Light Theme (Default) ==== */
+    --bg-main: #ffffff;
+    /* Charcoal - أفتح درجة (أبيض) */
+    --bg-surface: #edebe0;
+    /* Golden Wheat - أفتح درجة (خلفية البطاقات) */
+    --bg-secondary: #f4f5f6;
+    --bg-card: #ffffff;
+    --border-color: #b9a779;
+    /* Golden Wheat - الدرجة الوسطى */
+
+    --text-primary: #161616;
+    /* Charcoal - أغمق درجة */
+    --text-secondary: #3d3a3b;
+    /* Charcoal - الدرجة الوسطى */
+    --text-muted: #988561;
+    /* Golden Wheat - أغمق درجة */
+    --text-inverse: #ffffff;
+
+    /* Interactive States */
+    --primary-hover: #054239;
+    /* Forest - الدرجة الوسطى عند التمرير */
+    --secondary-hover: #4a151e;
+    /* Deep Umber - الدرجة الوسطى عند التمرير */
+    --accent-hover: #b9a779;
+    --bg-hover: #edebe0;
+
+    /* Glassmorphism */
+    --glass-bg: rgba(255, 255, 255, 0.85);
+    --glass-border: rgba(66, 129, 119, 0.3);
+    /* حدود شفافة مائلة للأخضر الأساسي */
+
+    --backdrop-color: rgba(0, 0, 0, 0.5);
+    --backdrop-blur: blur(4px);
+}
+
+
+.dark-mode {
+
+    /* Brand */
+    --primary-color: #428177;
+    --secondary-color: #6b1f2a;
+    --accent-color: #b9a779;
+
+    /* Semantic */
+    --success: #58b89f;
+    --warning: #d2bc84;
+    --error: #c94b63;
+    --info: #5ea8c9;
+
+    /* Backgrounds */
+    --bg-main: #161616;
+    --bg-surface: #1d1d1d;
+    --bg-secondary: #262626;
+    --bg-card: #202020;
+
+    /* Borders */
+    --border-color: #363636;
+
+    /* Text */
+    --text-primary: #f7f7f7;
+    --text-secondary: #cfcfcf;
+    --text-muted: #9a9a9a;
+    --text-inverse: #161616;
+
+    /* States */
+    --primary-hover: #54a08f;
+    --secondary-hover: #84303d;
+    --accent-hover: #d2bc84;
+    --bg-hover: rgba(255, 255, 255, .05);
+
+    /* Glass */
+    --glass-bg: rgba(30, 30, 30, .82);
+    --glass-border: rgba(255, 255, 255, .08);
+
+    --backdrop-color: rgba(187, 187, 187, 0.5);
+    --backdrop-blur: blur(4px);
+}

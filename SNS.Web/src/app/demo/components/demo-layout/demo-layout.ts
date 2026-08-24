@@ -12,23 +12,26 @@ import {
 } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { RouterOutlet, Router } from '@angular/router';
-import { LucideLifeBuoy, LucideFingerprint, LucideEllipsis } from '@lucide/angular';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { forkJoin } from 'rxjs';
-import { LineLoader } from "../../../shared/components/loaders/line-loader/line-loader";
-import { DemoLoadingService } from '../../services/demo-loading.service';
+import { TokenService } from '../../../identity/shared/services/token.service';
+import { GlobalLoaderService } from '../../../shared/Loading/services/global-loader.service';
 
 @Component({
   selector: 'app-demo-layout',
   standalone: true,
-  imports: [RouterOutlet, LineLoader],
+  imports: [
+    RouterOutlet,
+    TranslatePipe
+  ],
   templateUrl: './demo-layout.html',
   styleUrl: './demo-layout.css',
 })
 export class DemoLayout implements OnDestroy {
   private router = inject(Router);
+  private tokenService = inject(TokenService);
   private translateService = inject(TranslateService);
-  private loadingService = inject(DemoLoadingService);
+  private loadingService = inject(GlobalLoaderService);
 
   @ViewChild('particleCanvas') canvasRef!: ElementRef<HTMLCanvasElement>;
 
@@ -37,6 +40,7 @@ export class DemoLayout implements OnDestroy {
   private ctx!: CanvasRenderingContext2D;
   private particles: Particle[] = [];
   private mouse = { x: 0, y: 0, radius: 150 };
+
 
   private animationFrameId?: number;
   private resizeTimeout?: ReturnType<typeof setTimeout>;
@@ -79,6 +83,10 @@ export class DemoLayout implements OnDestroy {
     }
   }
 
+  logout() {
+    this.tokenService.removeToken();
+  }
+
   toggleControls() {
     this.showControls = !this.showControls;
   }
@@ -97,7 +105,6 @@ export class DemoLayout implements OnDestroy {
 
   @HostListener('window:resize')
   onResize() {
-    // Debounce: منع إعادة حساب الـ Canvas مع كل بكسل يتغير أثناء تغيير حجم الشاشة
     if (this.resizeTimeout) {
       clearTimeout(this.resizeTimeout);
     }

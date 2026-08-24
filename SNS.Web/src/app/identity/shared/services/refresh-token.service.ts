@@ -1,19 +1,18 @@
 import { Injectable, inject } from "@angular/core";
 import { tap } from "rxjs";
-import { LoginService } from "../../security-sesstions/login/services/login.service";
 import { TokenService } from "./token.service";
+import { SessionManagementService } from "../../account-settings/security-sessions/session-management/services/session-management.service";
 
 @Injectable({
     providedIn: 'root'
 })
 export class RefreshTokenService {
 
-    private loginService = inject(LoginService);
+    private sessionService = inject(SessionManagementService);
     private tokenService = inject(TokenService);
 
     refresh() {
-        return this.loginService.refreshToken().pipe(
-
+        return this.sessionService.refreshTokens().pipe(
             tap(result => {
                 this.tokenService.setAccessToken(
                     result.value?.token!

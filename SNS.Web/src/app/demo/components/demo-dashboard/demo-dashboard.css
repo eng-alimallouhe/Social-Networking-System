@@ -1,11 +1,11 @@
 .dashboard-container {
-    width: 100%;
-    max-width: 1400px;
+    width: min(1200px, calc(100vw - var(--spacing-8) * 2));
+    flex-shrink: 0;
     margin: 0 auto;
     padding: var(--spacing-8);
-    background: var(--glass-bg);
+    background: var(--bg-main);
     backdrop-filter: blur(var(--glass-blur));
-    border: 1px solid var(--glass-border);
+    border: 1px solid var(--border-color);
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-xl);
     display: flex;
@@ -13,7 +13,7 @@
     gap: var(--spacing-8);
     height: 100%;
     max-height: 85vh;
-    overflow-y: auto;
+    overflow-y: auto;   
 }
 
 .dashboard-header {
@@ -150,7 +150,7 @@
 
 .pages-grid {
     display: grid;
-    grid-template-columns: repeat(1, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: var(--spacing-6);
 }
 
@@ -304,21 +304,15 @@
     background: var(--text-muted);
 }
 
-@media (min-width: 640px) {
+@media (max-width: 640px) {
+    .pages-grid {
+        grid-template-columns: repeat(1, 1fr);
+    }
+}
+
+@media (min-width: 641px) and (max-width: 900px) {
     .pages-grid {
         grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media (min-width: 1024px) {
-    .pages-grid {
-        grid-template-columns: repeat(3, 1fr);
-    }
-}
-
-@media (min-width: 1400px) {
-    .pages-grid {
-        grid-template-columns: repeat(4, 1fr);
     }
 }
 

@@ -1,0 +1,77 @@
+<div class="login-wrapper">
+    <form class="login-form" [formGroup]="registerForm" (ngSubmit)="onSubmit()" autocomplete="off">
+        <h2>{{ 'Identity.Users.Registration.Title' | translate }}</h2>
+
+        <!-- Email -->
+        <div class="form-group">
+            <app-input type="email" id="email" formControlName="email" autocomplete="off"
+                [label]="'Identity.Users.Registration.Email' | translate"
+                [placeholder]="'Identity.Users.Registration.Email_Placeholder' | translate" [required]="true"
+                [invalid]="!!(registerForm.get('email')?.invalid && (registerForm.get('email')?.touched || registerForm.get('email')?.dirty))">
+            </app-input>
+            <div *ngIf="registerForm.get('email')?.invalid && (registerForm.get('email')?.touched || registerForm.get('email')?.dirty)"
+                class="error-message">
+                <span *ngIf="registerForm.get('email')?.hasError('required')">
+                    {{ 'Shared.Errors.Email_Required' | translate }}
+                </span>
+                <span *ngIf="registerForm.get('email')?.hasError('email')">
+                    {{ 'Shared.Errors.Email_Invalid' | translate }}
+                </span>
+            </div>
+        </div>
+
+        <!-- Password -->
+        <div class="form-group">
+            <app-input type="password" id="password" formControlName="password" autocomplete="new-password"
+                [label]="'Identity.Users.Registration.Password' | translate"
+                [placeholder]="'Identity.Users.Registration.Password_Placeholder' | translate" [required]="true"
+                [invalid]="!!(registerForm.get('password')?.invalid && (registerForm.get('password')?.touched || registerForm.get('password')?.dirty))">
+            </app-input>
+            <div *ngIf="registerForm.get('password')?.invalid && (registerForm.get('password')?.touched || registerForm.get('password')?.dirty)"
+                class="error-message">
+                <span *ngIf="registerForm.get('password')?.hasError('required')">
+                    {{ 'Shared.Errors.Password_Required' | translate }}
+                </span>
+                <span *ngIf="registerForm.get('password')?.hasError('minlength')">
+                    {{ 'Shared.Errors.Password_MinLength' | translate }}
+                </span>
+            </div>
+        </div>
+
+        <!-- Confirm Password -->
+        <div class="form-group">
+            <app-input type="password" id="confirmPassword" formControlName="confirmPassword"
+                autocomplete="new-password" [label]="'Identity.Users.Registration.Confirm_Password' | translate"
+                [placeholder]="'Identity.Users.Registration.Confirm_Password_Placeholder' | translate" [required]="true"
+                [invalid]="!!(registerForm.get('confirmPassword')?.touched && (registerForm.get('confirmPassword')?.hasError('required') || registerForm.hasError('passwordMismatch')))">
+            </app-input>
+            <div *ngIf="registerForm.get('confirmPassword')?.touched && (registerForm.get('confirmPassword')?.hasError('required') || registerForm.hasError('passwordMismatch'))"
+                class="error-message">
+                <span *ngIf="registerForm.get('confirmPassword')?.hasError('required')">
+                    {{ 'Shared.Errors.Confirm_Password_Required' | translate }}
+                </span>
+                <span
+                    *ngIf="!registerForm.get('confirmPassword')?.hasError('required') && registerForm.hasError('passwordMismatch')">
+                    {{ 'Shared.Errors.Passwords_Do_Not_Match' | translate }}
+                </span>
+            </div>
+        </div>
+
+        <!-- Submit -->
+        <button type="submit" class="btn btn-primary btn-block" id="registerBtn"
+            [disabled]="registerForm.invalid || isLoading()">
+            <span>{{ 'Identity.Users.Registration.Register' | translate }}</span>
+            <svg lucideUserPlus aria-hidden="true"></svg>
+        </button>
+
+        <!-- Footer -->
+        <div class="form-footer">
+            <div class="register-prompt">
+                <span>{{ 'Identity.Users.Registration.Login_Prompt' | translate }}</span>
+                <a [routerLink]="['/auth/login']" class="register-link">
+                    {{ 'Identity.Users.Registration.Login_Link' | translate }}
+                </a>
+            </div>
+        </div>
+    </form>
+</div>

@@ -9,5 +9,6 @@ namespace SNS.Application.Identity.Users.Registeration.DTOs;
 public sealed record RegisterResponseDto(
     Guid UserId,
     string? Token = null,
-    bool? IsProfileCompleted = null);
+    bool? IsProfileCompleted = null,
+    string? accessToken = null);
 

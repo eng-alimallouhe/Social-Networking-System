@@ -1,3 +1,5 @@
+using SNS.Domain.Identity.Shared.Enums;
+
 namespace SNS.Application.Identity.Users.UsersManagement.Queries.GetUserSecurityDetails;
 
 /// <summary>
@@ -16,6 +18,7 @@ public sealed record UserSecurityDetailsResult(
     bool IsMfaEnabled,
     string MfaProvider,
     bool IsAuthenticatorAppLinked,
+    CommunicationMethod DefualtCommunicationMethod,
     int PasskeysCount,
     DateTime LastPasswordChange,
     int TotalDevicesCount,

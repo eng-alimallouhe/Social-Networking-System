@@ -7,6 +7,5 @@ export interface SuggestedUser {
     followerCount: number;
     followingCount: number;
     avatarUrl?: string;
-    /** Hex color for the avatar placeholder background when avatarUrl is absent */
     avatarColor?: string;
 }

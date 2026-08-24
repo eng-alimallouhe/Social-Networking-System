@@ -8,28 +8,47 @@ import {
   ViewChild,
   effect,
   Inject,
-  inject
+  inject,
+  forwardRef,
+  computed
 } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { RouterOutlet, Router } from '@angular/router';
 import { LucideLifeBuoy, LucideFingerprint, LucideEllipsis } from '@lucide/angular';
-import { LineLoader } from "../../../../../shared/components/loaders/line-loader/line-loader";
-import { LoadingAuthService } from '../../services/loading-auth.service';
+import { ConnectedPosition, OverlayModule } from '@angular/cdk/overlay';
 import { ToastService } from '../../../../notifications/services/toast.service';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { forkJoin } from 'rxjs';
+import { GlobalLoaderService } from '../../../../../shared/Loading/services/global-loader.service';
+import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { Theme, ThemeChanger } from '../../../../../shared/services/theme-changer';
 
 @Component({
   selector: 'app-auth-layout',
-  imports: [RouterOutlet, LucideLifeBuoy, LucideFingerprint, LucideEllipsis, LineLoader],
+  imports: [
+    RouterOutlet,
+    LucideLifeBuoy,
+    LucideFingerprint,
+    LucideEllipsis,
+    OverlayModule,
+    TranslatePipe
+  ],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => AuthLayout),
+      multi: true
+    }
+  ],
   templateUrl: './auth-layout.html',
   styleUrl: './auth-layout.css',
 })
 export class AuthLayout implements OnDestroy {
-  private loadingService = inject(LoadingAuthService);
+  private loaderService = inject(GlobalLoaderService);
   private router = inject(Router);
   private toastService = inject(ToastService);
   private translateService = inject(TranslateService);
+  private themeChanger = inject(ThemeChanger);
 
   @ViewChild('particleCanvas') canvasRef!: ElementRef<HTMLCanvasElement>;
 
@@ -40,12 +59,24 @@ export class AuthLayout implements OnDestroy {
   private animationFrameId?: number;
   private resizeTimeout?: ReturnType<typeof setTimeout>;
 
+  overlayPositions: ConnectedPosition[] = [
+    {
+      originX: 'center',
+      originY: 'bottom',
+      overlayX: 'center',
+      overlayY: 'top',
+      offsetY: 15,
+      offsetX: -125
+    }
+  ];
+
   isOptionsMenuOpen = signal(false);
 
-  isLoading = this.loadingService.isLoading;
+  isLoading = this.loaderService.isLoading;
 
   // استخدام إشارة (Signal) لإدارة الحالة
-  isDarkMode = signal<boolean>(false);
+  isDarkMode = computed(() => this.themeChanger.currentTheme() === Theme.Dark);
+  
   showControls = false;
 
   constructor(@Inject(DOCUMENT) private document: Document) {
@@ -54,15 +85,6 @@ export class AuthLayout implements OnDestroy {
       this.initCanvas();
       this.animate();
     });
-
-    effect(() => {
-      const isDark = this.isDarkMode();
-      if (isDark) {
-        this.document.body.classList.add('dark-mode');
-      } else {
-        this.document.body.classList.remove('dark-mode');
-      }
-    });
   }
 
   toggleOptionsMenu() {
@@ -70,7 +92,6 @@ export class AuthLayout implements OnDestroy {
   }
 
   ngOnDestroy() {
-    // تنظيف الأنيميشن عند تدمير المكون لمنع تسرب الذاكرة
     if (this.animationFrameId) {
       cancelAnimationFrame(this.animationFrameId);
     }
@@ -81,12 +102,6 @@ export class AuthLayout implements OnDestroy {
 
   toggleControls() {
     this.showControls = !this.showControls;
-  }
-
-  toggleTheme() {
-    const newMode = !this.isDarkMode();
-    this.isDarkMode.set(newMode);
-    localStorage.setItem('theme', newMode ? 'dark' : 'light');
   }
 
   @HostListener('window:mousemove', ['$event'])

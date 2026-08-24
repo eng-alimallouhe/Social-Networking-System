@@ -1,7 +1,9 @@
 using Asp.Versioning;
+using CloudinaryDotNet;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using SNS.API.Extensions;
+using SNS.API.Helpers;
 using SNS.Application.Identity.Users.Registeration.Commands.RegisterUser;
 using SNS.Application.Identity.Users.Registeration.Commands.ResendVerifyCode;
 using SNS.Application.Identity.Users.Registeration.Commands.VerifyUser;
@@ -13,7 +15,7 @@ namespace SNS.API.Controllers.Identity.Users;
 /// <summary>
 /// Handles user account registration, verification code dispatch, and email verification completion.
 /// </summary>
-[Route("api/v{version:apiVersion}/[controller]")]
+[Route("api/v{version:apiVersion}/identity/users/[controller]")]
 [ApiVersion("1.0")]
 [ApiController]
 [Produces("application/json")]
@@ -76,8 +78,17 @@ public class RegisterationController : ControllerBase
     [Consumes("application/json")]
     [ProducesResponseType(typeof(RegisterResponseDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<Result<RegisterResponseDto>>> VerifyUserAsync([FromBody] VerifyUserCommand request)
+    public async Task<ActionResult<Result<AuthToken>>> VerifyUserAsync([FromBody] VerifyUserCommand request)
     {
-        return (await _mediator.Send(request)).ToActionResult(this);
+        var result = await _mediator.Send(request);
+        if (result.IsSuccess)
+        {
+            Response.Cookies.Append(
+                CookieFactory.RefreshTokenCookieName,
+                result.Value?.RefreshToken ?? string.Empty,
+                CookieFactory.CreateRefreshTokenCookie(true));
+        }
+
+        return result.ToActionResult(this);
     }
 }

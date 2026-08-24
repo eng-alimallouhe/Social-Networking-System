@@ -32,36 +32,34 @@ public class UnitOfWork : IUnitOfWork
         _transaction = await _context.Database.BeginTransactionAsync(cancellationToken);
     }
 
-    public async Task CommitTransactionAsync(CancellationToken cancellationToken = default)
+    public async Task CommitTransactionAsync(
+        CancellationToken cancellationToken = default)
     {
+        if (_transaction == null)
+            return;
+
         try
         {
-            if (_transaction != null)
-            {
-                await _transaction.CommitAsync(cancellationToken);
-            }
-        }
-        catch
-        {
-            // Safety fallback: ensure rollback happens on commit failure
-            await RollbackTransactionAsync(cancellationToken);
-            throw;
+            await _transaction.CommitAsync(cancellationToken);
         }
         finally
         {
-            if (_transaction != null)
-            {
-                await _transaction.DisposeAsync();
-                _transaction = null;
-            }
+            await _transaction.DisposeAsync();
+            _transaction = null;
         }
     }
 
     public async Task RollbackTransactionAsync(CancellationToken cancellationToken = default)
     {
-        if (_transaction != null)
+        if (_transaction == null)
+            return;
+
+        try
         {
             await _transaction.RollbackAsync(cancellationToken);
+        }
+        finally
+        {
             await _transaction.DisposeAsync();
             _transaction = null;
         }

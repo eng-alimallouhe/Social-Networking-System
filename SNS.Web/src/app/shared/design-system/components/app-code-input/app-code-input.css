@@ -1,0 +1,45 @@
+.code-inputs-container {
+    display: flex;
+    gap: var(--spacing-2, 8px);
+    align-items: center;
+    justify-content: center;
+    direction: ltr; /* Codes are inherently LTR */
+    margin: var(--spacing-4, 16px) 0;
+}
+
+.code-inputs-container.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.code-input {
+    width: 48px;
+    height: 56px;
+    text-align: center;
+    font-size: var(--text-2xl, 24px);
+    font-weight: var(--font-weight-bold, 700);
+    color: var(--text-primary);
+    background: transparent;
+    border: 1.5px solid var(--text-muted);
+    border-radius: var(--radius-sm);
+    transition: var(--transition-base);
+    outline: none;
+    padding: 0;
+}
+
+.code-input:focus {
+    border-color: var(--primary-color);
+    background: var(--bg-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.code-input:disabled {
+    background: var(--bg-secondary);
+    cursor: not-allowed;
+}
+
+/* Invalid state handling for parent forms */
+:host-context(.ng-invalid.ng-touched) .code-input {
+    border-color: var(--error);
+}

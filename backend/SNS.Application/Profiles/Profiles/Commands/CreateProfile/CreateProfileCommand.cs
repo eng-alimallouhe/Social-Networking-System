@@ -1,4 +1,5 @@
 using SNS.Application.Abstractions.Messaging;
+using SNS.Application.Identity.Shared.DTOs.Authentication;
 using SNS.Application.Shared.Contracts.Storage;
 
 namespace SNS.Application.Profiles.Profiles.Commands.CreateProfile;
@@ -15,4 +16,4 @@ public sealed record CreateProfileCommand(
     string? Specialization,
     string? Bio,
     UploadedFile? ProfilePicture
-) : ICommand;
+) : ICommand<AuthTokensDto>;

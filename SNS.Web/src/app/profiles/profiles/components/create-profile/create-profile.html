@@ -7,8 +7,7 @@
             <p class="page-subtitle">{{ 'Identity.Onboarding.Create_Profile.Subtitle' | translate }}</p>
         </header>
 
-        <form class="profile-form" [formGroup]="profileForm" (ngSubmit)="onSubmit()" autocomplete="off"
-            novalidate>
+        <form class="profile-form" [formGroup]="profileForm" (ngSubmit)="onSubmit()" autocomplete="off" novalidate>
 
             <!-- ── Avatar ─────────────────────────────────────────────────── -->
             <section class="avatar-section" aria-label="Profile photo">
@@ -17,9 +16,8 @@
                     <img [src]="imagePreviewUrl()" alt="Your profile photo preview" class="avatar-img" />
                     } @else {
                     <div class="avatar-placeholder" aria-hidden="true">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                            stroke-linejoin="round" aria-hidden="true">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
                             <circle cx="12" cy="7" r="4" />
                         </svg>
@@ -30,48 +28,44 @@
                 <div class="avatar-actions">
                     <button type="button" class="btn-upload" (click)="triggerFileInput()"
                         aria-label="Upload profile photo">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                            stroke-linejoin="round" aria-hidden="true">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
                             <polyline points="17 8 12 3 7 8" />
                             <line x1="12" y1="3" x2="12" y2="15" />
                         </svg>
-                        <span>{{ 'Identity.Onboarding.Create_Profile.Upload_Photo' | translate }}</span>
+                        <span>{{ 'Shared.Actions.Upload_Photo' | translate }}</span>
                     </button>
 
                     @if (imagePreviewUrl()) {
-                    <button type="button" class="btn-remove" (click)="removeImage()"
-                        aria-label="Remove profile photo">
-                        {{ 'Identity.Onboarding.Create_Profile.Remove' | translate }}
+                    <button type="button" class="btn-remove" (click)="removeImage()" aria-label="Remove profile photo">
+                        {{ 'Shared.Actions.Remove' | translate }}
                     </button>
                     }
                 </div>
 
                 <!-- Hidden file input -->
-                <input #fileInput type="file" accept="image/*" class="sr-only"
-                    aria-label="Choose profile photo" (change)="onImageSelected($event)" />
+                <input #fileInput type="file" accept="image/*" class="sr-only" aria-label="Choose profile photo"
+                    (change)="onImageSelected($event)" />
             </section>
 
             <!-- ── Full Name ──────────────────────────────────────────────── -->
             <div class="form-group">
-                <label for="fullName" class="form-label">
-                    {{ 'Identity.Onboarding.Create_Profile.Full_Name' | translate }}
-                    <span class="required-marker" aria-hidden="true">*</span>
-                </label>
-                <div class="input-wrapper">
-                    <input id="fullName" type="text" formControlName="fullName" class="form-input"
-                        [placeholder]="'Identity.Onboarding.Create_Profile.Full_Name_Placeholder' | translate" [maxlength]="NAME_MAX"
-                        aria-required="true"
-                        [attr.aria-invalid]="profileForm.get('fullName')?.invalid && profileForm.get('fullName')?.touched" />
-                </div>
-                @if (profileForm.get('fullName')?.invalid && (profileForm.get('fullName')?.touched || profileForm.get('fullName')?.dirty)) {
+                <app-input id="fullName" type="text" formControlName="fullName"
+                    [label]="'Profiles.Profiles.Full_Name' | translate"
+                    [placeholder]="'Profiles.Profiles.Full_Name_Placeholder' | translate"
+                    [maxlength]="NAME_MAX"
+                    [required]="true"
+                    [invalid]="!!(profileForm.get('fullName')?.invalid && profileForm.get('fullName')?.touched)">
+                </app-input>
+                @if (profileForm.get('fullName')?.invalid && (profileForm.get('fullName')?.touched ||
+                profileForm.get('fullName')?.dirty)) {
                 <div class="error-message" role="alert">
                     @if (profileForm.get('fullName')?.hasError('required')) {
-                    <span>{{ 'Identity.Onboarding.Create_Profile.Errors.Full_Name_Required' | translate }}</span>
+                    <span>{{ 'Profiles.Profiles.Errors.Full_Name_Required' | translate }}</span>
                     }
                     @if (profileForm.get('fullName')?.hasError('maxlength')) {
-                    <span>{{ 'Identity.Onboarding.Create_Profile.Errors.Full_Name_Max_Length' | translate:{max: NAME_MAX} }}</span>
+                    <span>{{ 'Profiles.Profiles.Errors.Full_Name_Max_Length' | translate:{max: NAME_MAX} }}</span>
                     }
                 </div>
                 }
@@ -80,25 +74,23 @@
             <!-- ── Bio ───────────────────────────────────────────────────── -->
             <div class="form-group">
                 <label for="bio" class="form-label">
-                    {{ 'Identity.Onboarding.Create_Profile.Bio' | translate }}
-                    <span class="optional-marker">{{ 'Identity.Onboarding.Create_Profile.Optional' | translate }}</span>
+                    {{ 'Profiles.Profiles.Bio' | translate }}
+                    <span class="optional-marker">{{ 'Shared.Labels.Optional' | translate }}</span>
                 </label>
                 <div class="textarea-wrapper">
                     <textarea id="bio" formControlName="bio" class="form-textarea" rows="3"
-                        [placeholder]="'Identity.Onboarding.Create_Profile.Bio_Placeholder' | translate"
-                        [maxlength]="BIO_MAX"
+                        [placeholder]="'Profiles.Profiles.Bio_Placeholder' | translate" [maxlength]="BIO_MAX"
                         aria-describedby="bio-counter"></textarea>
                 </div>
                 <div class="textarea-footer">
                     <div>
                         @if (profileForm.get('bio')?.invalid && profileForm.get('bio')?.dirty) {
                         <span class="error-message" role="alert">
-                            {{ 'Identity.Onboarding.Create_Profile.Errors.Bio_Max_Length' | translate:{max: BIO_MAX} }}
+                            {{ 'Profiles.Profiles.Errors.Bio_Max_Length' | translate:{max: BIO_MAX} }}
                         </span>
                         }
                     </div>
-                    <span id="bio-counter" class="char-counter"
-                        [class.char-limit-warn]="bioLength > BIO_MAX * 0.85">
+                    <span id="bio-counter" class="char-counter" [class.char-limit-warn]="bioLength > BIO_MAX * 0.85">
                         {{ bioLength }} / {{ BIO_MAX }}
                     </span>
                 </div>
@@ -107,34 +99,32 @@
             <!-- ── Specialization ─────────────────────────────────────────── -->
             <div class="form-group">
                 <label for="specialization-input" class="form-label">
-                    {{ 'Identity.Onboarding.Create_Profile.Specialization' | translate }}
-                    <span class="optional-marker">{{ 'Identity.Onboarding.Create_Profile.Optional' | translate }}</span>
+                    {{ 'Profiles.Profiles.Specialization' | translate }}
+                    <span class="optional-marker">{{ 'Shared.Labels.Optional' | translate }}</span>
                 </label>
 
                 <div class="dropdown-wrapper" [class.dropdown-open]="isDropdownOpen()">
                     <div class="input-wrapper spec-input-wrapper">
-                        <input id="specialization-input" type="text" class="form-input"
-                            [value]="searchQuery()" (input)="onSearchInput($event)"
-                            (focus)="openDropdown()" (blur)="closeDropdown()"
-                            [placeholder]="'Identity.Onboarding.Create_Profile.Specialization_Placeholder' | translate" autocomplete="off"
-                            role="combobox" aria-haspopup="listbox"
-                            [attr.aria-expanded]="isDropdownOpen()"
-                            aria-autocomplete="list"
+                        <input id="specialization-input" type="text" class="form-input" [value]="searchQuery()"
+                            (input)="onSearchInput($event)" (focus)="openDropdown()" (blur)="closeDropdown()"
+                            [placeholder]="'Profiles.Profiles.Specialization_Placeholder' | translate"
+                            autocomplete="off" role="combobox" aria-haspopup="listbox"
+                            [attr.aria-expanded]="isDropdownOpen()" aria-autocomplete="list"
                             aria-controls="specialization-listbox" />
                         @if (selectedSpecialization()) {
                         <button type="button" class="clear-btn" (click)="clearSpecialization()"
                             aria-label="Clear specialization">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
-                                stroke-linejoin="round" aria-hidden="true">
+                                stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+                                aria-hidden="true">
                                 <line x1="18" y1="6" x2="6" y2="18" />
                                 <line x1="6" y1="6" x2="18" y2="18" />
                             </svg>
                         </button>
                         } @else {
-                        <svg class="dropdown-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                            stroke-linejoin="round" aria-hidden="true">
+                        <svg class="dropdown-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            aria-hidden="true">
                             <polyline points="6 9 12 15 18 9" />
                         </svg>
                         }
@@ -145,8 +135,7 @@
                         aria-label="Available specializations">
                         @if (filteredSpecializations().length > 0) {
                         @for (spec of filteredSpecializations(); track spec) {
-                        <li class="dropdown-item" role="option"
-                            [class.selected]="selectedSpecialization() === spec"
+                        <li class="dropdown-item" role="option" [class.selected]="selectedSpecialization() === spec"
                             [attr.aria-selected]="selectedSpecialization() === spec"
                             (mousedown)="selectSpecialization(spec)">
                             {{ spec }}
@@ -154,7 +143,7 @@
                         }
                         } @else {
                         <li class="dropdown-empty" role="option" aria-disabled="true">
-                            {{ 'Identity.Onboarding.Create_Profile.Specialization_Empty' | translate }}
+                            {{ 'Profiles.Profiles.Specialization_Empty' | translate }}
                         </li>
                         }
                     </ul>
@@ -163,12 +152,10 @@
             </div>
 
             <!-- ── Continue ───────────────────────────────────────────────── -->
-            <button type="submit" id="createProfileContinueBtn" class="btn-primary"
-                [disabled]="!isFormValid()">
-                {{ 'Identity.Onboarding.Create_Profile.Continue' | translate }}
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                    stroke-linejoin="round" class="btn-icon" aria-hidden="true">
+            <button type="submit" id="createProfileContinueBtn" class="btn-primary" [disabled]="profileForm.invalid">
+                {{ 'Shared.Actions.Continue' | translate }}
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="btn-icon" aria-hidden="true">
                     <line x1="5" y1="12" x2="19" y2="12" />
                     <polyline points="12 5 19 12 12 19" />
                 </svg>
