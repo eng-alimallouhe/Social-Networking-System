@@ -1,5 +1,8 @@
+using System.Text.Json.Serialization;
+
 namespace SNS.Domain.Identity.Notifications.Enums;
 
+[JsonConverter(typeof(JsonStringEnumConverter))]
 public enum NotificationType
 {
     // --- ContentManagement ---

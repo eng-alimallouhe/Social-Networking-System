@@ -4,7 +4,6 @@ using SNS.Domain.Shared.Abstractions.IDeletable;
 
 namespace SNS.Domain.Discussions.Problems.Relations;
 
-
 public class ProblemTopic : IHardDeletable
 {
     //Primary Key

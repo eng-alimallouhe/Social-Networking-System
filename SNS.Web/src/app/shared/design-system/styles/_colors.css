@@ -49,7 +49,7 @@
     /* حدود شفافة مائلة للأخضر الأساسي */
 
     --backdrop-color: rgba(0, 0, 0, 0.5);
-    --backdrop-blur: blur(4px);
+    --backdrop-blur: blur(6px);
 }
 
 

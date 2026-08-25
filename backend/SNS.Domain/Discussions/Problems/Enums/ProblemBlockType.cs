@@ -1,10 +1,12 @@
-namespace SNS.Domain.Discussions.Problems.Enums
+using System.Text.Json.Serialization;
+
+namespace SNS.Domain.Discussions.Problems.Enums;
+
+[JsonConverter(typeof(JsonStringEnumConverter))]
+public enum ProblemBlockType
 {
-    public enum ProblemBlockType
-    {
-        Text,
-        Code,
-        Image,
-        Video
-    }
+    Text,
+    Code,
+    Image,
+    Video
 }

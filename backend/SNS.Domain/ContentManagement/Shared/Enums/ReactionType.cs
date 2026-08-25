@@ -1,5 +1,8 @@
+using System.Text.Json.Serialization;
+
 namespace SNS.Domain.ContentManagement.Shared.Enums;
 
+[JsonConverter(typeof(JsonStringEnumConverter))]
 public enum ReactionType
 {
     Like = 0,

@@ -134,9 +134,12 @@
         </div>
 
         <div class="status-grid">
-            <div class="status-block">
-                <span class="status-label">{{ 'Identity.Security_Settings.Security_Settings_Page.Status_Details.Last_Password_Change' | translate }}</span>
-                <span class="status-value">{{ settings.lastPasswordChange | date:'mediumDate' }}</span>
+            <div class="status-block has-action clickable" (click)="navigateToChangePassword()">
+                <div class="status-content">
+                    <span class="status-label">{{ 'Identity.Security_Settings.Security_Settings_Page.Status_Details.Last_Password_Change' | translate }}</span>
+                    <span class="status-value">{{ settings.lastPasswordChange | date:'mediumDate' }}</span>
+                </div>
+                <svg lucideExternalLink class="action-icon"></svg>
             </div>
             
             <div class="status-block has-action">

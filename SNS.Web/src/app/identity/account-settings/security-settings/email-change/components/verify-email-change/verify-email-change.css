@@ -1,23 +1,4 @@
-﻿.title-section {
-    width: 100%;
-    max-width: 800px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    justify-content: center;
-    align-items: center;
-    gap: var(--spacing-4);
-    padding: 0 var(--spacing-4) var(--spacing-2) var(--spacing-4);
-}
-
-.title-section h1 {
-    font-size: var(--header-3);
-    font-weight: var(--font-weight-regular);
-    color: var(--text-color);
-}
-
-.verify-email-wrapper {
+﻿.verify-email-wrapper {
     background: var(--glass-bg);
     backdrop-filter: blur(var(--glass-blur));
     border: 1px solid var(--glass-border);

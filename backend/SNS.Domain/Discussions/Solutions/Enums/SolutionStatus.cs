@@ -1,10 +1,12 @@
-namespace SNS.Domain.Discussions.Solutions.Enums
+using System.Text.Json.Serialization;
+
+namespace SNS.Domain.Discussions.Solutions.Enums;
+
+[JsonConverter(typeof(JsonStringEnumConverter))]
+public enum SolutionStatus
 {
-    public enum SolutionStatus
-    {
-        Pending,
-        Accepted,
-        Rejected,
-        BestSolution
-    }
+    Pending,
+    Accepted,
+    Rejected,
+    BestSolution
 }

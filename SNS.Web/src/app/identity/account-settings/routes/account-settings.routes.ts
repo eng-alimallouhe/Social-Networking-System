@@ -62,6 +62,28 @@ export const AccountSettingsRoutes: Routes = [
                     {
                         path: 'passkeys',
                         loadComponent: () => import('../security-settings/mfa-management/components/user-passkeys/user-passkeys').then(m => m.UserPasskeys)
+                    },
+                    {
+                        path: 'change-password',
+                        loadComponent: () => import('../password-managements/components/change-password/change-password').then(m => m.ChangePassword)
+                    }
+                ]
+            },
+            {
+                path: 'archive',
+                loadComponent: () => import('../archive-management/components/archive-management/archive-management.component').then(m => m.ArchiveManagementComponent),
+                children: [
+                    {
+                        path: 'account/:tuid',
+                        loadComponent: () => import('../archive-management/components/account-archive/account-archive.component').then(m => m.AccountArchiveComponent)
+                    },
+                    {
+                        path: 'identity/:tuid',
+                        loadComponent: () => import('../archive-management/components/identity-archive/identity-archive.component').then(m => m.IdentityArchiveComponent)
+                    },
+                    {
+                        path: 'password/:tuid',
+                        loadComponent: () => import('../archive-management/components/password-archive/password-archive.component').then(m => m.PasswordArchiveComponent)
                     }
                 ]
             },

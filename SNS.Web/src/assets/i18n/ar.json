@@ -257,6 +257,18 @@
         "Previous": "السابق",
         "Next": "التالي"
       },
+      "Change_Password": {
+        "Title": "تغيير كلمة المرور",
+        "Description": "قم بتحديث كلمة المرور الخاصة بك للحفاظ على أمان حسابك.",
+        "Current_Password": "كلمة المرور الحالية",
+        "New_Password": "كلمة المرور الجديدة",
+        "Confirm_New_Password": "تأكيد كلمة المرور الجديدة",
+        "Show_Password": "إظهار كلمة المرور",
+        "Passwords_Do_Not_Match": "كلمتا المرور غير متطابقتين.",
+        "Back": "رجوع",
+        "Apply": "تغيير كلمة المرور",
+        "Success_Message": "تم تغيير كلمة المرور الخاصة بك بنجاح."
+      },
       "Security_Settings_Page": {
         "Title": "إعدادات الأمان",
         "Description": "إدارة طرق المصادقة والوصول إلى الحساب.",
@@ -394,6 +406,74 @@
         }
       },
       "Search": {}
+    },
+    "Archive_Management": {
+      "Title": "إدارة الأرشيف",
+      "Account_Archive": {
+        "Title": "أرشيف الحساب",
+        "Description": "عرض الإجراءات التاريخية لحسابك وطلب تصدير البيانات.",
+        "Export_Data_Title": "طلب بيانات الحساب",
+        "Export_Data_Desc": "قم بتنزيل نسخة كاملة من بياناتك الشخصية المخزنة على منصتنا. قد تستغرق هذه العملية ما يصل إلى 48 ساعة. سيتم إرسال رابط تنزيل آمن إلى بريدك الإلكتروني.",
+        "Request_Export": "طلب تصدير",
+        "History_Title": "سجل الحساب",
+        "Table": {
+          "Action": "الإجراء",
+          "Reason": "السبب",
+          "Performed_By": "بواسطة",
+          "Date": "التاريخ"
+        }
+      },
+      "Identity_Archive": {
+        "Title": "سجل الهوية",
+        "Old": "القديم:",
+        "New": "الجديد:"
+      },
+      "Password_Archive": {
+        "Title": "سجل كلمة المرور"
+      },
+      "Shared": {
+        "Show_More": "عرض المزيد",
+        "No_Entries": "لم يتم العثور على سجلات."
+      },
+      "ActionType": {
+        "Login": "تم تسجيل الدخول",
+        "Logout": "تم تسجيل الخروج",
+        "PasswordChanged": "تم تغيير كلمة المرور",
+        "EmailChanged": "تم تغيير عنوان البريد الإلكتروني",
+        "TwoFactorEnabled": "تم تفعيل المصادقة الثنائية",
+        "TwoFactorDisabled": "تم تعطيل المصادقة الثنائية",
+        "SecurityCodeGenerated": "تم إنشاء رمز أمان",
+        "Suspended": "تم تعليق الحساب",
+        "SuspensionLifted": "تم رفع التعليق",
+        "SuspendedDueMaxFailedLoginAttempts": "تم التعليق بسبب تجاوز محاولات تسجيل الدخول",
+        "Banned": "تم حظر الحساب",
+        "BanLifted": "تم رفع الحظر",
+        "AccountCreated": "تم إنشاء الحساب",
+        "AccountActivated": "تم تفعيل الحساب",
+        "AccountDeactivated": "تم إلغاء تفعيل الحساب",
+        "AccountDeleted": "تم حذف الحساب",
+        "RoleChanged": "تم تغيير الدور",
+        "ManualRecoveryRequested": "تم طلب استرداد يدوي",
+        "ManualRecoveryReviewed": "تمت مراجعة طلب الاسترداد"
+      },
+      "ReplacementKey": {
+        "Device": "من جهاز {value}",
+        "IpAddress": "من عنوان IP {value}",
+        "UserName": "المستخدم {value}",
+        "RedirectUrl": "توجيه إلى {value}",
+        "Browser": "ومتصفح {value}",
+        "Code": "الرمز {value}",
+        "LogoUrl": "الشعار {value}",
+        "OccuredDate": "في {value}",
+        "City": "في مدينة {value}",
+        "Country": ", {value}",
+        "NewEmail": "إلى البريد الجديد {value}",
+        "NewRecoveryEmail": "إلى بريد الاسترداد الجديد {value}",
+        "Longitude": "خط الطول {value}",
+        "Latitude": "خط العرض {value}",
+        "OldRole": "من دور {value}",
+        "NewRole": "إلى دور {value}"
+      }
     }
   },
   "Shared": {
@@ -425,6 +505,7 @@
     },
     "Logical_Values": {
       "true": "نعم",
+      "true_Found": "موجود",
       "false_Found": "غير موجود"
     },
     "Loaders": {
@@ -440,6 +521,7 @@
       "Generate": "إنشاء رموز استرداد",
       "Copy_To_Clipboard": "نسخ إلى الحافظة",
       "Download_JSON": "تنزيل JSON",
+      "Change": "تعديل",
       "Done": "تم"
     }
   },

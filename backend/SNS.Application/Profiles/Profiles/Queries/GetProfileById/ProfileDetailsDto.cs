@@ -51,4 +51,3 @@ public sealed record ProfileDetailsDto(
     bool IsViewerOwner,
 
     bool IsBlockingViewer);
-

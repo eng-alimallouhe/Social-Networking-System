@@ -1,6 +1,6 @@
+using SNS.Domain.Discussions.Shared.Enums;
 using SNS.Domain.Shared.Abstractions.IDeletable;
 using SNS.Domain.Shared.Helpers;
-using SNS.Domain.Discussions.Shared.Enums;
 
 namespace SNS.Domain.Discussions.Problems.Relations;
 

@@ -1,9 +1,11 @@
-namespace SNS.Domain.Discussions.Solutions.Enums
+using System.Text.Json.Serialization;
+
+namespace SNS.Domain.Discussions.Solutions.Enums;
+
+[JsonConverter(typeof(JsonStringEnumConverter))]
+public enum SolutionBlockType
 {
-    public enum SolutionBlockType
-    {
-        Text,
-        Code,
-        Media
-    }
+    Text,
+    Code,
+    Media
 }

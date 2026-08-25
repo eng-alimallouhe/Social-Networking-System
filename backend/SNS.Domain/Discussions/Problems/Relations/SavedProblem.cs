@@ -1,7 +1,7 @@
+using SNS.Domain.Discussions.Problems.Entities;
 using SNS.Domain.Shared.Abstractions.IDeletable;
 using SNS.Domain.Shared.Entities;
 using SNS.Domain.Shared.Helpers;
-using SNS.Domain.Discussions.Problems.Entities;
 
 namespace SNS.Domain.Discussions.Problems.Relations;
 

@@ -1,0 +1,346 @@
+@if (isArchiveRootRoute()) {
+@if (archiveResource.value(); as archive) {
+
+<div class="archive-management-container">
+
+    <div class="page-header">
+        <h1 class="page-title">
+            {{ 'Identity.Archive_Management.Title' | translate }}
+        </h1>
+
+        <p class="page-subtitle">
+            {{ 'Identity.Archive_Management.Account_Archive.Description' | translate }}
+        </p>
+    </div>
+
+
+    <!-- Request Export Card -->
+    <div class="card data-export-card">
+        <div class="export-content">
+
+            <div class="export-header">
+                <svg lucideDownload></svg>
+
+                <h2 class="card-title">
+                    {{ 'Identity.Archive_Management.Account_Archive.Export_Data_Title' | translate }}
+                </h2>
+            </div>
+
+            <p class="export-desc">
+                {{ 'Identity.Archive_Management.Account_Archive.Export_Data_Desc' | translate }}
+            </p>
+
+        </div>
+
+        <div class="export-action">
+            <button class="btn btn-primary btn-export" [disabled]="isExporting" (click)="requestExport()">
+
+                <i class="icon-download"></i>
+
+                {{ 'Identity.Archive_Management.Account_Archive.Request_Export' | translate }}
+            </button>
+        </div>
+    </div>
+
+
+    <!-- Account History -->
+    <div class="card history-card">
+
+        <div class="card-header">
+            <div class="header-title">
+
+                <div class="icon-wrapper blue-icon">
+                    <svg lucideHistory></svg>
+                </div>
+
+                <h2 class="card-title">
+                    {{ 'Identity.Archive_Management.Account_Archive.History_Title' | translate }}
+                </h2>
+
+            </div>
+        </div>
+
+
+        <div class="card-body">
+
+            @if (archive.account?.length) {
+
+            <div class="table-responsive">
+
+                <table class="archive-table">
+
+                    <thead>
+                        <tr>
+                            <th>
+                                {{ 'Identity.Archive_Management.Account_Archive.Table.Action' | translate }}
+                            </th>
+
+                            <th>
+                                {{ 'Identity.Archive_Management.Account_Archive.Table.Reason' | translate }}
+                            </th>
+
+                            <th>
+                                {{ 'Identity.Archive_Management.Account_Archive.Table.Performed_By' | translate }}
+                            </th>
+
+                            <th class="text-right">
+                                {{ 'Identity.Archive_Management.Account_Archive.Table.Date' | translate }}
+                            </th>
+                        </tr>
+                    </thead>
+
+
+                    <tbody>
+
+                        @for (item of archive.account; track item.id) {
+
+                        <tr>
+
+                            <td>
+                                <span class="action-badge" [ngClass]="getActionClass(item.type)">
+
+                                    <span class="badge-dot"></span>
+
+                                    {{
+                                    'Identity.Archive_Management.ActionType.' + item.type
+                                    | translate
+                                    }}
+
+                                </span>
+                            </td>
+
+
+                            <td class="reason-cell">
+                                {{ messageBuilder.buildMessage(item.type, item.parameters) }}
+                            </td>
+
+
+                            <td>
+                                {{
+                                item.performedByUserName
+                                ? '@' + item.performedByUserName
+                                : 'System'
+                                }}
+                            </td>
+
+
+                            <td class="date-cell text-right">
+                                {{ item.createdAt | date:'mediumDate' }}
+                            </td>
+
+                        </tr>
+
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            } @else {
+
+            <div class="empty-state">
+                {{ 'Identity.Archive_Management.Shared.No_Entries' | translate }}
+            </div>
+
+            }
+
+        </div>
+
+
+        <div class="card-footer">
+
+            <a [routerLink]="['account', targetUserId]" class="show-more-link">
+                {{ 'Identity.Archive_Management.Shared.Show_More' | translate }}
+                <svg lucideChevronDown></svg>
+            </a>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- Identity History -->
+    <div class="card history-card">
+
+        <div class="card-header">
+
+            <div class="header-title">
+
+                <div class="icon-wrapper blue-icon">
+                    <svg lucideBadgeCheck></svg>
+                </div>
+
+                <h2 class="card-title">
+                    {{ 'Identity.Archive_Management.Identity_Archive.Title' | translate }}
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        <div class="card-body">
+
+            @if (archive.identity?.length) {
+
+            <div class="log-list">
+
+                @for (item of archive.identity; track item.id) {
+
+                <div class="log-item">
+
+                    <div class="log-item-header">
+
+                        <span class="log-type">
+                            {{ item.type | uppercase }} CHANGE
+                        </span>
+
+                        <span class="log-date">
+                            {{ item.createdAt | date:'mediumDate' }}
+                        </span>
+
+                    </div>
+
+
+                    <div class="log-item-body">
+
+                        <div class="log-detail-row">
+
+                            <span class="log-label">
+                                {{ 'Identity.Archive_Management.Identity_Archive.Old' | translate }}
+                            </span>
+
+                            <span class="log-value">
+                                {{ item.oldIdentifier }}
+                            </span>
+
+                        </div>
+
+
+                        <div class="log-detail-row">
+
+                            <span class="log-label">
+                                {{ 'Identity.Archive_Management.Identity_Archive.New' | translate }}
+                            </span>
+
+                            <span class="log-value">
+                                {{ item.newIdentifier }}
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                }
+
+            </div>
+
+            } @else {
+
+            <div class="empty-state">
+                {{ 'Identity.Archive_Management.Shared.No_Entries' | translate }}
+            </div>
+
+            }
+
+        </div>
+
+
+        <div class="card-footer">
+
+            <a [routerLink]="['identity', targetUserId]" class="show-more-link">
+                {{ 'Identity.Archive_Management.Shared.Show_More' | translate }}
+                <svg lucideChevronDown></svg>
+            </a>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- Password History -->
+    <div class="card history-card">
+
+        <div class="card-header">
+
+            <div class="header-title">
+
+                <div class="icon-wrapper red-icon">
+                    <svg lucideKeyRound></svg>
+                </div>
+
+                <h2 class="card-title">
+                    {{ 'Identity.Archive_Management.Password_Archive.Title' | translate }}
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        <div class="card-body">
+
+            @if (archive.password?.length) {
+
+            <div class="password-list">
+
+                @for (item of archive.password; track item.id) {
+
+                <div class="password-item">
+
+                    <div class="password-item-left">
+
+                        <i class="icon-check-circle text-success"></i>
+
+                        <span>
+                            {{ 'Identity.Archive_Management.ActionType.PasswordChanged' | translate }}
+                        </span>
+
+                    </div>
+
+
+                    <div class="password-item-right log-date">
+                        {{ item.changedAt | date:'mediumDate' }}
+                    </div>
+
+                </div>
+
+                }
+
+            </div>
+
+            } @else {
+
+            <div class="empty-state">
+                {{ 'Identity.Archive_Management.Shared.No_Entries' | translate }}
+            </div>
+
+            }
+
+        </div>
+
+
+        <div class="card-footer">
+
+            <a [routerLink]="['password', targetUserId]" class="show-more-link">
+                {{ 'Identity.Archive_Management.Shared.Show_More' | translate }}
+                <svg lucideChevronDown></svg>
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+}
+}
+<div class="archive-childs-container">
+    <router-outlet></router-outlet>
+</div>

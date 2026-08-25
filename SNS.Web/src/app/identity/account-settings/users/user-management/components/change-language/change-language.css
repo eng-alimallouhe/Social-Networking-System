@@ -23,24 +23,6 @@
     }
 }
 
-.header-content {
-    margin-bottom: var(--spacing-4, 16px);
-    text-align: left;
-}
-
-.header-content h1 {
-    font-size: var(--header-3);
-    font-weight: var(--font-weight-bold);
-    color: var(--text-color);
-    margin: 0 0 var(--spacing-2) 0;
-}
-
-.header-content .subtitle {
-    font-size: var(--text-sm);
-    color: var(--text-secondary);
-    margin: 0;
-    font-weight: var(--font-weight-regular);
-}
 
 .change-language-form {
     display: flex;

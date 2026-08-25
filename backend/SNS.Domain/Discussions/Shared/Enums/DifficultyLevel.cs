@@ -1,9 +1,11 @@
-namespace SNS.Domain.Discussions.Shared.Enums
+using System.Text.Json.Serialization;
+
+namespace SNS.Domain.Discussions.Shared.Enums;
+
+[JsonConverter(typeof(JsonStringEnumConverter))]
+public enum DifficultyLevel
 {
-    public enum DifficultyLevel
-    {
-        Easy,
-        Medium,
-        Hard
-    }
+    Easy,
+    Medium,
+    Hard
 }

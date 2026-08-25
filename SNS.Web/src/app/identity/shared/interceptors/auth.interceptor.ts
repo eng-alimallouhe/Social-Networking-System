@@ -13,7 +13,6 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
     const refreshTokenService = inject(RefreshTokenService);
 
     let accessToken = tokenService.getAccessToken();
-    console.log(accessToken);
 
     const deviceId = reqInfoService.getDeviceId();
     const deviceToken = reqInfoService.getDeviceToken();

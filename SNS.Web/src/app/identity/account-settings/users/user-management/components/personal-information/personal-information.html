@@ -10,40 +10,44 @@
         <!-- Left Column: General Information -->
         <div class="info-card">
             <h3 class="card-title">{{ 'Identity.Security_Settings.Personal_Info.General_Information' | translate }}</h3>
-            
+
             <div class="card-content">
                 <!-- Username -->
                 <div class="field-group">
-                    <label class="field-label">{{ 'Identity.Security_Settings.Personal_Info.User_Name' | translate }}</label>
+                    <label class="field-label">{{ 'Identity.Security_Settings.Personal_Info.User_Name' | translate
+                        }}</label>
                     <div class="field-control">
                         <span class="field-value">{{ personalInformation.userName }}</span>
                         <button class="btn-change" (click)="navigateToUsernameChange(personalInformation.userName)">
                             {{ 'Shared.Actions.Change' | translate }}
-                            <svg lucideChevronRight></svg>
+                            <svg lucideChevronRight class="directional-icon"></svg>
                         </button>
                     </div>
                 </div>
 
                 <!-- Email Address -->
                 <div class="field-group">
-                    <label class="field-label">{{ 'Identity.Security_Settings.Personal_Info.Email' | translate }}</label>
+                    <label class="field-label">{{ 'Identity.Security_Settings.Personal_Info.Email' | translate
+                        }}</label>
                     <div class="field-control">
                         <span class="field-value">{{ personalInformation.email }}</span>
                         <button class="btn-change" (click)="navigateToEmailCgange()">
                             {{ 'Shared.Actions.Change' | translate }}
-                            <svg lucideChevronRight></svg>
+                            <svg lucideChevronRight class="directional-icon"></svg>
                         </button>
                     </div>
                 </div>
 
                 <!-- Preferred Language -->
                 <div class="field-group">
-                    <label class="field-label">{{ 'Identity.Security_Settings.Personal_Info.Preferred_Language' | translate }}</label>
+                    <label class="field-label">{{ 'Identity.Security_Settings.Personal_Info.Preferred_Language' |
+                        translate }}</label>
                     <div class="field-control">
-                        <span class="field-value">{{ `Shared.Supported_Languages.${personalInformation.preferredLanguage}` | translate }}</span>
+                        <span class="field-value">{{
+                            `Shared.Supported_Languages.${personalInformation.preferredLanguage}` | translate }}</span>
                         <button class="btn-change" (click)="navigateToLanguageChange()">
                             {{ 'Shared.Actions.Change' | translate }}
-                            <svg lucideChevronRight></svg>
+                            <svg lucideChevronRight class="directional-icon"></svg>
                         </button>
                     </div>
                 </div>
@@ -53,11 +57,12 @@
         <!-- Right Column: Account Overview -->
         <div class="info-card right-card">
             <h3 class="card-title">{{ 'Identity.Security_Settings.Personal_Info.Account_Overview' | translate }}</h3>
-            
+
             <div class="overview-list">
                 <!-- Role -->
                 <div class="overview-item">
-                    <span class="overview-label">{{ 'Identity.Security_Settings.Personal_Info.Role' | translate }}</span>
+                    <span class="overview-label">{{ 'Identity.Security_Settings.Personal_Info.Role' | translate
+                        }}</span>
                     <div class="overview-value">
                         <svg lucideIdCard></svg>
                         <span>{{ `Shared.Role_Type.${personalInformation.roleName.toUpperCase()}` | translate }}</span>
@@ -66,7 +71,8 @@
 
                 <!-- Last Password Change -->
                 <div class="overview-item">
-                    <span class="overview-label">{{ 'Identity.Security_Settings.Personal_Info.Last_Password_Change' | translate }}</span>
+                    <span class="overview-label">{{ 'Identity.Security_Settings.Personal_Info.Last_Password_Change' |
+                        translate }}</span>
                     <div class="overview-value">
                         <svg lucideHistory></svg>
                         <span>{{ personalInformation.lastPasswordChange | localDate }}</span>
@@ -75,7 +81,8 @@
 
                 <!-- Primary Location -->
                 <div class="overview-item">
-                    <span class="overview-label">{{ 'Identity.Security_Settings.Personal_Info.Primary_Location' | translate }}</span>
+                    <span class="overview-label">{{ 'Identity.Security_Settings.Personal_Info.Primary_Location' |
+                        translate }}</span>
                     <div class="overview-value">
                         <svg lucideMapPin></svg>
                         <span>{{ personalInformation.location }}</span>
@@ -84,7 +91,8 @@
 
                 <!-- Last Active Location -->
                 <div class="overview-item">
-                    <span class="overview-label">{{ 'Identity.Security_Settings.Personal_Info.Last_Location' | translate }}</span>
+                    <span class="overview-label">{{ 'Identity.Security_Settings.Personal_Info.Last_Location' | translate
+                        }}</span>
                     <div class="overview-value">
                         <svg lucideCrosshair></svg>
                         <span>{{ personalInformation.lastActiveLocation }}</span>
@@ -93,10 +101,13 @@
 
                 <!-- Data Privacy Status -->
                 <div class="overview-item">
-                    <span class="overview-label">{{ 'Identity.Security_Settings.Personal_Info.Data_Privacy_Status' | translate }}</span>
+                    <span class="overview-label">{{ 'Identity.Security_Settings.Personal_Info.Data_Privacy_Status' |
+                        translate }}</span>
                     <div class="privacy-status-badge">
                         <svg lucideShieldCheck></svg>
-                        <span>{{ `Shared.Logical_Values.${personalInformation.hasActiveDataDownloadRequest.toString()}_Found` | translate }}</span>
+                        <span>{{
+                            `Shared.Logical_Values.${personalInformation.hasActiveDataDownloadRequest.toString()}_Found`
+                            | translate }}</span>
                     </div>
                 </div>
             </div>

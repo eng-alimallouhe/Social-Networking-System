@@ -33,7 +33,7 @@ import { SecuritySettingsStateService } from '../../services/security-settings-s
     FormsModule,
     LucideScanQrCode,
     RouterOutlet
-],
+  ],
   templateUrl: './user-security-settings.html',
   styleUrl: './user-security-settings.css',
 })
@@ -109,8 +109,13 @@ export class UserSecuritySettings implements OnInit {
 
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
-    ).subscribe((event: any) => {
-      this.isRootRoute.set(event.urlAfterRedirects.split('?')[0].split('#')[0] === '/account-settings/security-settings');
+    ).subscribe((event: NavigationEnd) => {
+
+      const url = event.urlAfterRedirects
+        .split('?')[0]
+        .split('#')[0];
+
+      this.isRootRoute.set(url === '/account-settings/security-settings');
     });
   }
 
@@ -190,6 +195,10 @@ export class UserSecuritySettings implements OnInit {
 
   navigateToLinkAuthenticator() {
     this.router.navigate(['/account-settings/security-settings/link-authenticator']);
+  }
+
+  navigateToChangePassword() {
+    this.router.navigate(['/account-settings/security-settings/change-password']);
   }
 
   navigateToChangeRecoveryEmail() {

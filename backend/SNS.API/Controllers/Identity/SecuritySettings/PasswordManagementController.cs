@@ -70,6 +70,7 @@ public class PasswordManagementController : ControllerBase
         return (await _mediator.Send(request)).ToActionResult(this);
     }
 
+
     /// <summary>
     /// Resends the password reset OTP verification code.
     /// </summary>

@@ -7,19 +7,13 @@ using SNS.Application;
 using SNS.Infrastructure;
 using SNS.Infrastructure.Identity.Notifications.Hubs;
 using System.Text;
-using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services
-    .AddControllers()
-    .AddJsonOptions(options =>
-    {
-        options.JsonSerializerOptions.Converters.Add(
-            new JsonStringEnumConverter());
-    });
+    .AddControllers();
 
 builder.Services.AddOpenApi(options =>
 {

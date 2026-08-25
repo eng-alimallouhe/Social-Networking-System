@@ -264,6 +264,18 @@
                 "Previous": "Previous",
                 "Next": "Next"
             },
+            "Change_Password": {
+                "Title": "Change Password",
+                "Description": "Update your password to keep your account secure.",
+                "Current_Password": "Current Password",
+                "New_Password": "New Password",
+                "Confirm_New_Password": "Confirm New Password",
+                "Show_Password": "Show Password",
+                "Passwords_Do_Not_Match": "Passwords do not match.",
+                "Back": "Back",
+                "Apply": "Change Password",
+                "Success_Message": "Your password has been changed successfully."
+            },
             "Security_Settings_Page": {
                 "Title": "Security Settings",
                 "Description": "Manage your authentication methods and account access.",
@@ -406,6 +418,74 @@
                 }
             },
             "Search": {}
+        },
+        "Archive_Management": {
+            "Title": "Archive Management",
+            "Account_Archive": {
+                "Title": "Account Archive",
+                "Description": "View your historical account actions and request data exports.",
+                "Export_Data_Title": "Request Account Data",
+                "Export_Data_Desc": "Download a complete copy of your personal data stored on our platform. This process may take up to 48 hours to compile. A secure download link will be emailed to you.",
+                "Request_Export": "Request Export",
+                "History_Title": "Account History",
+                "Table": {
+                    "Action": "Action",
+                    "Reason": "Reason",
+                    "Performed_By": "Performed By",
+                    "Date": "Date"
+                }
+            },
+            "Identity_Archive": {
+                "Title": "Identity Log",
+                "Old": "Old:",
+                "New": "New:"
+            },
+            "Password_Archive": {
+                "Title": "Password History"
+            },
+            "Shared": {
+                "Show_More": "Show More",
+                "No_Entries": "No entries found."
+            },
+            "ActionType": {
+                "Login": "Logged in",
+                "Logout": "Logged out",
+                "PasswordChanged": "Password changed",
+                "EmailChanged": "Email address changed",
+                "TwoFactorEnabled": "Two-factor authentication enabled",
+                "TwoFactorDisabled": "Two-factor authentication disabled",
+                "SecurityCodeGenerated": "Security code generated",
+                "Suspended": "Account suspended",
+                "SuspensionLifted": "Suspension lifted",
+                "SuspendedDueMaxFailedLoginAttempts": "Suspended due to max failed login attempts",
+                "Banned": "Account banned",
+                "BanLifted": "Ban lifted",
+                "AccountCreated": "Account created",
+                "AccountActivated": "Account activated",
+                "AccountDeactivated": "Account deactivated",
+                "AccountDeleted": "Account deleted",
+                "RoleChanged": "Role changed",
+                "ManualRecoveryRequested": "Manual recovery requested",
+                "ManualRecoveryReviewed": "Manual recovery reviewed"
+            },
+            "ReplacementKey": {
+                "Device": "from device {value}",
+                "IpAddress": "from IP {value}",
+                "UserName": "username {value}",
+                "RedirectUrl": "redirecting to {value}",
+                "Browser": "using {value}",
+                "Code": "code {value}",
+                "LogoUrl": "logo {value}",
+                "OccuredDate": "on {value}",
+                "City": "in {value}",
+                "Country": ", {value}",
+                "NewEmail": "to new email {value}",
+                "NewRecoveryEmail": "to new recovery email {value}",
+                "Longitude": "lon {value}",
+                "Latitude": "lat {value}",
+                "OldRole": "from role {value}",
+                "NewRole": "to role {value}"
+            }
         }
     },
     "Shared": {

@@ -1,8 +1,10 @@
-namespace SNS.Domain.Discussions.Shared.Enums
+using System.Text.Json.Serialization;
+
+namespace SNS.Domain.Discussions.Shared.Enums;
+
+[JsonConverter(typeof(JsonStringEnumConverter))]
+public enum VoteType
 {
-    public enum VoteType
-    {
-        Upvote,
-        Downvote
-    }
+    Upvote,
+    Downvote
 }

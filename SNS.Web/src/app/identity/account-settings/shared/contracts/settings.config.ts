@@ -54,16 +54,6 @@ export const SETTINGS_CONFIG: SettingEntry[] = [
         iconClass: 'security-icon-style'
     },
     {
-        id: 'password-management',
-        titleKey: 'App.Layout.Settings.Password_Management',
-        descriptionKey: 'App.Layout.Settings.Password_Management_Desc',
-        categoryKey: 'App.Layout.Settings.Category.Security',
-        keywords: ['Password', 'Management', 'Change', 'Reset', 'Update'],
-        route: '/account-settings/password-management',
-        icon: LucideKeyRound,
-        iconClass: 'security-icon-style'
-    },
-    {
         id: 'account-archive',
         titleKey: 'App.Layout.Settings.Archive',
         descriptionKey: 'App.Layout.Settings.Archive_Desc',

@@ -1,5 +1,8 @@
-﻿namespace SNS.Domain.Resumes.Enums; 
+﻿using System.Text.Json.Serialization;
 
+namespace SNS.Domain.Resumes.Enums;
+
+[JsonConverter(typeof(JsonStringEnumConverter))]
 public enum Language
 {
     Arabic,

@@ -1,0 +1,134 @@
+<div class="archive-full-page">
+
+    <div class="title-section">
+        <button class="btn btn-icon-text back-btn" (click)="backToParent()">
+            <svg lucideArrowLeft></svg>
+        </button>
+        <h1>
+            {{ 'Identity.Archive_Management.Account_Archive.History_Title' | translate }}
+        </h1>
+    </div>
+
+
+    <div class="card history-card">
+
+        <div class="card-body">
+
+            @if (identityResource.isLoading()) {
+
+            <div class="loading-state">
+
+                <app-circle-loader></app-circle-loader>
+
+            </div>
+
+            }
+
+
+            @if (identityResource.value()) {
+
+            @if (items().length > 0) {
+
+            <div class="log-list">
+
+                @for (item of items(); track item.id) {
+
+                <div class="log-item">
+
+                    <div class="log-item-header">
+
+                        <span class="log-type">
+
+                            {{ item.type | uppercase }} CHANGE
+
+                        </span>
+
+                        <span class="log-date">
+
+                            {{ item.createdAt | date:'mediumDate' }}
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="log-item-body">
+
+                        <div class="log-detail-row">
+
+                            <span class="log-label">
+
+                                {{
+                                'Identity.Archive_Management.Identity_Archive.Old'
+                                | translate
+                                }}
+
+                            </span>
+
+                            <span class="log-value">
+
+                                {{ item.oldIdentifier }}
+
+                            </span>
+
+                        </div>
+
+
+                        <div class="log-detail-row">
+
+                            <span class="log-label">
+
+                                {{
+                                'Identity.Archive_Management.Identity_Archive.New'
+                                | translate
+                                }}
+
+                            </span>
+
+                            <span class="log-value">
+
+                                {{ item.newIdentifier }}
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                }
+
+            </div>
+
+            } @else {
+
+            <div class="empty-state">
+
+                {{
+                'Identity.Archive_Management.Shared.No_Entries'
+                | translate
+                }}
+
+            </div>
+
+            }
+
+            }
+
+        </div>
+
+
+        @if (totalPages() > 1) {
+
+        <div class="card-footer pagination-footer">
+
+            <app-pagination [currentPage]="currentPage()" [totalPages]="totalPages()" (pageChange)="loadPage($event)" />
+
+        </div>
+
+        }
+
+    </div>
+
+</div>

@@ -1,4 +1,4 @@
-syrian-devs.duckdns.org {
+ذsyrian-devs.duckdns.org {
     reverse_proxy frontend-app:80
 }
 

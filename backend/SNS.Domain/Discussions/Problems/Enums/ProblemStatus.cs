@@ -1,9 +1,11 @@
-namespace SNS.Domain.Discussions.Problems.Enums
+using System.Text.Json.Serialization;
+
+namespace SNS.Domain.Discussions.Problems.Enums;
+
+[JsonConverter(typeof(JsonStringEnumConverter))]
+public enum ProblemStatus
 {
-    public enum ProblemStatus
-    {
-        Open,
-        Solved,
-        Closed
-    }
+    Open,
+    Solved,
+    Closed
 }

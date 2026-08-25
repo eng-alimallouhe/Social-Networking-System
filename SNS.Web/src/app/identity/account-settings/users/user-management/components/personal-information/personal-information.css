@@ -9,18 +9,6 @@
     gap: var(--spacing-6);
 }
 
-.title-section h1 {
-    font-size: var(--header-3);
-    font-weight: var(--font-weight-bold);
-    color: var(--text-primary);
-    margin: 0 0 var(--spacing-2);
-}
-
-.subtitle-text {
-    font-size: var(--text-base);
-    color: var(--text-secondary);
-    margin: 0;
-}
 
 /* Grid Layout */
 .content-grid {

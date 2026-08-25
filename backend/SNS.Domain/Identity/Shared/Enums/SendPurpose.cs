@@ -1,5 +1,8 @@
+using System.Text.Json.Serialization;
+
 namespace SNS.Domain.Identity.Shared.Enums;
 
+[JsonConverter(typeof(JsonStringEnumConverter))]
 public enum SendPurpose
 {
     UserDeactivated = 0, // this when the user deactivated you should add this keys: UserName, Device, IpAddress, Browser, OccuredDate

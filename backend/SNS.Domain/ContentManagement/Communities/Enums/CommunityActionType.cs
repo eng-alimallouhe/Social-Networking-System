@@ -1,5 +1,8 @@
-﻿namespace SNS.Domain.ContentManagement.Communities.Enums;
+﻿using System.Text.Json.Serialization;
 
+namespace SNS.Domain.ContentManagement.Communities.Enums;
+
+[JsonConverter(typeof(JsonStringEnumConverter))]
 public enum CommunityActionType
 {
     CommunityCreated = 1,

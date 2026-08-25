@@ -1,0 +1,144 @@
+<div class="archive-full-page">
+    <div class="title-section">
+        <button class="btn btn-icon-text back-btn" (click)="backToParent()">
+            <svg lucideArrowLeft></svg>
+        </button>
+        <h1>
+            {{ 'Identity.Archive_Management.Account_Archive.History_Title' | translate }}
+        </h1>
+    </div>
+
+    <div class="card history-card">
+
+        <div class="card-body">
+
+            @if (accountResource.isLoading()) {
+
+            <div class="loading-state">
+                <app-circle-loader></app-circle-loader>
+            </div>
+
+            }
+
+
+            @if (accountResource.value()) {
+
+            @if (items().length > 0) {
+
+            <div class="table-responsive">
+
+                <table class="archive-table">
+
+                    <thead>
+                        <tr>
+
+                            <th>
+                                {{ 'Identity.Archive_Management.Account_Archive.Table.Action' | translate }}
+                            </th>
+
+                            <th>
+                                {{ 'Identity.Archive_Management.Account_Archive.Table.Reason' | translate }}
+                            </th>
+
+                            <th>
+                                {{ 'Identity.Archive_Management.Account_Archive.Table.Performed_By' | translate }}
+                            </th>
+
+                            <th class="text-right">
+                                {{ 'Identity.Archive_Management.Account_Archive.Table.Date' | translate }}
+                            </th>
+
+                        </tr>
+                    </thead>
+
+
+                    <tbody>
+
+                        @for (item of items(); track item.id) {
+
+                        <tr>
+
+                            <td>
+
+                                <span class="action-badge" [ngClass]="getActionClass(item.type)">
+
+                                    <span class="badge-dot"></span>
+
+                                    {{
+                                    'Identity.Archive_Management.ActionType.' + item.type
+                                    | translate
+                                    }}
+
+                                </span>
+
+                            </td>
+
+
+                            <td class="reason-cell">
+
+                                {{
+                                messageBuilder.buildMessage(
+                                item.type,
+                                item.parameters
+                                )
+                                }}
+
+                            </td>
+
+
+                            <td>
+
+                                {{
+                                item.performedByUserName
+                                ? '@' + item.performedByUserName
+                                : 'System'
+                                }}
+
+                            </td>
+
+
+                            <td class="date-cell text-right">
+
+                                {{ item.createdAt | date:'mediumDate' }}
+
+                            </td>
+
+                        </tr>
+
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            } @else {
+
+            <div class="empty-state">
+
+                {{ 'Identity.Archive_Management.Shared.No_Entries' | translate }}
+
+            </div>
+
+            }
+
+            }
+
+
+        </div>
+
+
+        @if (totalPages() > 1) {
+
+        <div class="card-footer pagination-footer">
+
+            <app-pagination [currentPage]="currentPage()" [totalPages]="totalPages()" (pageChange)="loadPage($event)" />
+
+        </div>
+
+        }
+
+    </div>
+
+</div>

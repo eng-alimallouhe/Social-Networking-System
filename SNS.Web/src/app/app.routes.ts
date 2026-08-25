@@ -5,7 +5,7 @@ import { NotFoundResponse } from './shared/components/responses/not-found-respon
 export const routes: Routes = [
     {
         path: '',
-        redirectTo: 'demo/dashboard',
+        redirectTo: 'demo/role-switcher',
         pathMatch: 'full'
     },
     {

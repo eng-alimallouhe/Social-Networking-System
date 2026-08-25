@@ -1,5 +1,8 @@
+using System.Text.Json.Serialization;
+
 namespace SNS.Domain.Profiles.Profiles.Enums;
 
+[JsonConverter(typeof(JsonStringEnumConverter))]
 public enum ReputationActionType
 {
     AccountCreated = 1,    // +10 points

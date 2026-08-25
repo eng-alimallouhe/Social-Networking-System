@@ -43,7 +43,7 @@ public class ArchiveManagementController : ControllerBase
     [Consumes("application/json")]
     [ProducesResponseType(typeof(Paged<UserArchiveSummaryDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<ActionResult<Result<Paged<UserArchiveSummaryDto>>>> GetUserArchiveAsync([FromBody] GetUserArchiveQuery request)
+    public async Task<ActionResult<Result<Paged<UserArchiveSummaryDto>>>> GetUserArchiveAsync([FromQuery] GetUserArchiveQuery request)
     {
         var result = await _mediator.Send(request);
         return result.ToActionResult(this);
@@ -63,7 +63,7 @@ public class ArchiveManagementController : ControllerBase
     [Consumes("application/json")]
     [ProducesResponseType(typeof(Paged<UserArchiveSummaryDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<ActionResult<Result<Paged<UserArchiveSummaryDto>>>> GetUserIdentityArchiveAsync([FromBody] GetUserIdentityArchiveQuery request)
+    public async Task<ActionResult<Result<Paged<UserIdentityArchiveSummaryDto>>>> GetUserIdentityArchiveAsync([FromQuery] GetUserIdentityArchiveQuery request)
     {
         var result = await _mediator.Send(request);
         return result.ToActionResult(this);
@@ -83,7 +83,7 @@ public class ArchiveManagementController : ControllerBase
     [Consumes("application/json")]
     [ProducesResponseType(typeof(Paged<UserPasswordArchiveSummaryDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<ActionResult<Result<Paged<UserPasswordArchiveSummaryDto>>>> GetUserIdentityArchiveAsync([FromBody] GetUserPasswordArchiveQuery request)
+    public async Task<ActionResult<Result<Paged<UserPasswordArchiveSummaryDto>>>> GetUserIdentityArchiveAsync([FromQuery] GetUserPasswordArchiveQuery request)
     {
         var result = await _mediator.Send(request);
         return result.ToActionResult(this);
@@ -105,9 +105,9 @@ public class ArchiveManagementController : ControllerBase
     [ProducesResponseType(typeof(ExportAccountDataResponseDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<ActionResult<Result<ExportAccountDataResponseDto>>> ExportAccountDataAsync([FromBody] ExportAccountDataCommand request)
+    public async Task<ActionResult<Result<ExportAccountDataResponseDto>>> ExportAccountDataAsync()
     {
-        return (await _mediator.Send(request)).ToActionResult(this);
+        return (await _mediator.Send(new ExportAccountDataCommand())).ToActionResult(this);
     }
 }
 

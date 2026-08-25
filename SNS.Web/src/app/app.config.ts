@@ -13,11 +13,7 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideRouter(
-      routes,
-      withInMemoryScrolling({
-        scrollPositionRestoration: 'top',
-        anchorScrolling: 'enabled'
-      })
+      routes
     ),
     provideHttpClient(withFetch(), withInterceptors([authInterceptor, errorInterceptor])),
     provideTranslateService({
