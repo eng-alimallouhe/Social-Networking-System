@@ -35,9 +35,18 @@ public class ResumeEducation : IHardDeletable
             FacultyName = facultyName,
             Degree = degree,
             FieldOfStudy = fieldOfStudy,
-            StartDate = startDate,
-            EndDate = endDate,
             GPA = gpa
         };
+    }
+
+    public void Update(string universityName, string facultyName, string degree, string fieldOfStudy, DateTime startDate, DateTime? endDate, double? gpa)
+    {
+        UniversityName = universityName;
+        FacultyName = facultyName;
+        Degree = degree;
+        FieldOfStudy = fieldOfStudy;
+        StartDate = startDate;
+        EndDate = endDate;
+        GPA = gpa;
     }
 }

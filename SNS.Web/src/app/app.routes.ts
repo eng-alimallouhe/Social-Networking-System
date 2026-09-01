@@ -1,6 +1,8 @@
 import { Routes } from '@angular/router';
 import { ServerErrorResponse } from './shared/components/responses/server-error-response/server-error-response';
 import { NotFoundResponse } from './shared/components/responses/not-found-response/not-found-response';
+import { Post } from './content-management/posts/components/post/post';
+import { HomeLayout } from './home/components/home-layout/home-layout';
 
 export const routes: Routes = [
     {
@@ -11,6 +13,15 @@ export const routes: Routes = [
     {
         path: '',
         loadChildren: () => import('./identity/routes/identity.routes').then(m => m.IdentityRoutes)
+    },
+    {
+        path: 'post',
+        component: Post
+    },
+    {
+        path: 'home',
+        component: HomeLayout,
+        loadChildren: () => import('./home/routes/home.routes').then(m => m.HomeRoutes)
     },
     {
         path: 'demo',

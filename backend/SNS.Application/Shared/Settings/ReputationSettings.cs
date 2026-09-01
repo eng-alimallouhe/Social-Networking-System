@@ -13,4 +13,6 @@ public class ReputationTier
     public int MaxDailyPosts { get; set; }
     public int MaxDailyComments { get; set; }
     public int MaxAllowedCVs { get; set; }
+    public int MaxDailyProblems { get; set; }
+    public int MaxDailySolutions { get; set; }
 }

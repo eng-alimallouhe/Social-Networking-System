@@ -8,7 +8,7 @@ namespace SNS.Application.Search.Projects.Abstractions;
 
 public interface IProjectSearchService
 {
-    Task<SearchResult<ProjectDocument>> SearchProjectsAsync(ProjectSearchQuery query, CancellationToken cancellationToken = default);
+    Task<SearchResult<ProjectDocument>> SearchProjectsAsync(GetProjectsSearchQuery query, CancellationToken cancellationToken = default);
     Task<SearchResult<ProjectDocument>> GetSuggestedProjectsAsync(SuggestedProjectsQuery query, CancellationToken cancellationToken = default);
     Task<AppResult> UpsertProjectAsync(ProjectDocument project, CancellationToken cancellationToken = default);
     Task<AppResult> DeleteProjectAsync(Guid projectId, CancellationToken cancellationToken = default);

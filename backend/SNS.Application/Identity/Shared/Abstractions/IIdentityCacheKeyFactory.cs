@@ -20,4 +20,6 @@ public interface IIdentityCacheKeyFactory
     string GetUserActivationChanlageKey(Guid userId);
 
     string GetUserAuthenticatorKey(Guid userId);
+
+    string GetRolePermissionsMatrixKey();
 }

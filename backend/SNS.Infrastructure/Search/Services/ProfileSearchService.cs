@@ -20,7 +20,7 @@ public class ProfileSearchService : IProfileSearchService
         _elasticBaseService = elasticBaseService;
     }
 
-    public async Task<SearchResult<ProfileDocument>> SearchProfilesAsync(ProfileSearchQuery query, CancellationToken cancellationToken = default)
+    public async Task<SearchResult<ProfileDocument>> SearchProfilesAsync(GetProfilesSearchQuery query, CancellationToken cancellationToken = default)
     {
         var mustQueries = new List<Query>();
         var filterQueries = new List<Query>();
@@ -62,7 +62,7 @@ public class ProfileSearchService : IProfileSearchService
             )
             .Sort(sort => sort
                 .Score()
-                .Field(f => f.FollowersCount, fs => fs.Order(SortOrder.Desc))
+                .Field(f => f.CreatedAt, fs => fs.Order(SortOrder.Desc))
             ),
             cancellationToken);
     }
@@ -74,67 +74,31 @@ public class ProfileSearchService : IProfileSearchService
         var shouldQueries = new List<Query>();
         var mustNotQueries = new List<Query>();
 
-        // ?? Skills (soft match) - camelCase
         foreach (var skill in request.Skills)
         {
             shouldQueries.Add(new TermQuery { Field = "skills", Value = skill });
         }
 
-        // ?? Universities (soft match) - camelCase
         foreach (var university in request.Universities)
         {
-            shouldQueries.Add(new TermQuery { Field = "universityNames", Value = university });
+            shouldQueries.Add(new TermQuery { Field = "universities", Value = university });
         }
 
-        // ?? Exclusions (blocked / already followed) - camelCase
         foreach (var exclude in request.ExcludedIds)
         {
             mustNotQueries.Add(new TermQuery { Field = "id", Value = exclude.ToString() });
         }
 
-        // ?? FIX: Build a safe List of FunctionScores
-        var scoreFunctions = new List<FunctionScore>
-        {
-            new FunctionScore
-            {
-                FieldValueFactor = new FieldValueFactorScoreFunction
-                {
-                    Field = "followersCount",
-                    Factor = 0.05,
-                    Modifier = FieldValueFactorModifier.Log1p
-                }
-            },
-            new FunctionScore
-            {
-                FieldValueFactor = new FieldValueFactorScoreFunction
-                {
-                    Field = "reputation", // or "reputationScore", ensure this matches your ProfileDocument!
-                    Factor = 0.1,
-                    Modifier = FieldValueFactorModifier.Log1p
-                }
-            }
-        };
-
         return await _elasticBaseService.SearchAsync(IndexName, s => s
             .From((request.Page - 1) * request.PageSize)
             .Size(request.PageSize)
             .Query(q => q
-                .FunctionScore(fs => fs
-                    .Query(qb => qb
-                        .Bool(b => b
-                            .Should(shouldQueries)
-                            .MustNot(mustNotQueries)
-                        )
-                    )
-                    // Pass the list of ranking algorithms!
-                    .Functions(scoreFunctions)
-                    .ScoreMode(FunctionScoreMode.Sum)
-                    .BoostMode(FunctionBoostMode.Sum)
+                .Bool(b => b
+                    .Should(shouldQueries)
+                    .MustNot(mustNotQueries)
                 )
             )
-            .Sort(sort => sort
-                .Score() // FIX: Sort strictly by the algorithmic score
-            ),
+            .Sort(sort => sort.Score()),
             cancellationToken);
     }
 

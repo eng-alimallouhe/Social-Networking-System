@@ -25,7 +25,7 @@ public class ProjectTagConfigurations :
                .IsRequired()
                .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasOne<Tag>()
+        builder.HasOne(pt => pt.Tag)
                .WithMany()
                .HasForeignKey(pt => pt.TagId)
                .IsRequired()

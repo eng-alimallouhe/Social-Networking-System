@@ -51,46 +51,26 @@ public class DocumentOnUserActivatedIntegrationEventHandler : INotificationHandl
     {
         var userId = notification.DomainEvent.UserId;
 
-        var profileDocument = await _dbContext.Profiles
+        var finalProfileDoc = await _dbContext.Profiles
             .AsNoTracking() 
             .Where(p => p.UserId == userId)
-            .Select(p => new
+            .Select(p => new ProfileDocument
             {
-                BaseDoc = new ProfileDocument
-                {
-                    Id = p.Id,
-                    UserId = p.UserId,
-                    FullName = p.FullName,
-                    Bio = p.Bio,
-                    ProfilePictureUrl = p.ProfilePictureObjectKey,
-                    Specialization = p.Specialization,
-                    Universities = p.AcademicRecords.Select(ar => ar.University.Name).ToList(),
-                    Skills = p.ProfileSkills.Where(ps => ps.ProfileId == p.Id).Select(ps => ps.Skill.Name).ToList(),
-                    CreatedAt = p.CreatedAt,
-                    UpdatedAt = p.UpdatedAt,
-                    FollowersCount = p.Followers.Count(),
-                    FollowingsCount = p.Followings.Count(),
-                    BlackList = p.BlackList.Select(bl => bl.BlockedId).ToList(),
-                    Reputation = p.Reputation
-                },
-                FirstAcademic = p.AcademicRecords
-                    .Select(ar => new AcademicRecordDocument
-                    {
-                        UniversityName = ar.University.Name,
-                        FieldOfStudy = ar.FieldOfStudy
-                    }).FirstOrDefault()
+                Id = p.Id,
+                FullName = p.FullName,
+                Bio = p.Bio,
+                Specialization = p.Specialization,
+                Universities = p.AcademicRecords.Select(ar => ar.University.Name).ToList(),
+                Skills = p.ProfileSkills.Where(ps => ps.ProfileId == p.Id).Select(ps => ps.Skill.Name).ToList(),
+                CreatedAt = p.CreatedAt
             })
             .FirstOrDefaultAsync(cancellationToken);
 
-        if (profileDocument == null)
+        if (finalProfileDoc == null)
         {
             _logger.LogWarning("Can't Find Profile for User Indexing: {UserId}", userId);
             return;
         }
-
-        // دمج السجل الأكاديمي المستخلص ذكياً داخل المستند الأساسي
-        var finalProfileDoc = profileDocument.BaseDoc;
-        finalProfileDoc.AcademicRecordDocument = profileDocument.FirstAcademic ?? new AcademicRecordDocument { UniversityName = string.Empty, FieldOfStudy = string.Empty };
 
         // 2️⃣ جلب مستند اليوزر وتثبيت تعديلات نظام الـ Email والتوجيه المحدث
         var userDocument = await _dbContext.Users
@@ -102,13 +82,10 @@ public class DocumentOnUserActivatedIntegrationEventHandler : INotificationHandl
                 UserName = u.UserName,
                 PreferredLanguage = u.PreferredLanguage,
                 Role = u.Role.Type.ToString(),
+                FullName = u.UserProfile.FullName,
                 Email = u.Email,
                 Status = u.Status,
-                IsVerified = u.IsVerified,
-                FailedLoginAttempts = u.FailedLoginAttempts,
                 CreatedAt = u.CreatedAt,
-                LastLogin = u.LastLogIn,
-                IsMfaEnabled = u.UserSecuritySettings.IsMfaEnabled,
                 DefaultCommunicationMethod = u.UserSecuritySettings.DefaultCommunicationMethod
             })
             .FirstOrDefaultAsync(cancellationToken);
@@ -126,13 +103,12 @@ public class DocumentOnUserActivatedIntegrationEventHandler : INotificationHandl
             .Select(p => new PostDocument
             {
                 Id = p.Id,
-                AuthorId = p.AuthorId,
                 Title = p.Title,
                 Content = p.Content,
                 CreatedAt = p.CreatedAt,
                 UpdatedAt = p.UpdatedAt,
-                ReactionsCount = p.Reactions.Count(),
-                CommentsCount = p.Comments.Count()
+                Topics = p.PostTopics.Select(pt => pt.Topic.Name).ToList(),
+                Tags = p.PostTags.Select(pt => pt.Tag.Name).ToList()
             })
             .ToListAsync(cancellationToken);
 
@@ -143,54 +119,33 @@ public class DocumentOnUserActivatedIntegrationEventHandler : INotificationHandl
             .Select(pr => new ProblemDocument
             {
                 Id = pr.Id,
-                AuthorId = pr.AuthorId,
-                AuthorName = finalProfileDoc.FullName,
-                AuthorProfilePictureUrl = finalProfileDoc.ProfilePictureUrl ?? _profileSettings.DefaultProfilePictureUrl,
-                AuthorSpecialization = finalProfileDoc.Specialization ?? _profileSettings.DefaultSpecialization,
                 Title = pr.Title,
                 Status = pr.Status,
-                CommunityId = pr.CommunityId,
-                CommunityLogoUrl = pr.Community != null ? pr.Community.LogoObjectKey : null,
+                Level = pr.Level,
                 CreatedAt = pr.CreatedAt,
                 UpdatedAt = pr.UpdatedAt,
-                SolutionsCount = pr.Solutions.Count()
+                Topics = pr.ProblemTopics.Select(pt => pt.Topic.Name).ToList(),
+                Tags = pr.ProblemTags.Select(pt => pt.Tag.Name).ToList()
             })
             .ToListAsync(cancellationToken);
 
-        // 5️⃣ جلب المشاريع النشطة هندسيًا وترشيد استعلامات الـ Contributors والمقاييس
+        // 5️⃣ جلب المشاريع النشطة هندسيًا
         var projectDocuments = await _dbContext.Projects
             .AsNoTracking()
             .Where(p => p.OwnerId == finalProfileDoc.Id && p.IsActive) // 🛡️ حظر المواد المحذوفة سلفًا
             .Select(pr => new ProjectDocument
             {
                 Id = pr.Id,
-                OwnerId = pr.OwnerId,
                 Title = pr.Title,
                 ShortDescription = pr.ShortDescription,
-                GitHubUrl = pr.GitHubUrl,
-                LiveDemoUrl = pr.LiveDemoUrl,
                 ReadmeContent = pr.ReadmeContent,
                 Type = pr.Type,
                 Status = pr.Status,
                 PublishedAt = pr.PublishedAt,
                 CreatedAt = pr.CreatedAt,
                 UpdatedAt = pr.UpdatedAt,
-                TopThreeSkills = pr.Skills.Take(3).Select(ps => ps.Skill.Name).ToList(),
-                SkillsCount = pr.Skills.Count(),
-                TopThreeContributors = pr.Contributors
-                    .Where(c => c.InvitingStatus == InvitingStatus.Accepted)
-                    .OrderBy(c => c.RespondedAt)
-                    .Take(3)
-                    .Select(c => new ProjectContributorDocument
-                    {
-                        Id = c.Id,
-                        ContributorProfilePictureUrl = c.Contributor.ProfilePictureObjectKey ?? _profileSettings.DefaultProfilePictureUrl,
-                        ContributorFullName = c.Contributor.FullName
-                    }).ToList(),
-                ContributorsCount = pr.Contributors.Count(),
-                Rate = pr.Ratings.Any() ? (decimal)pr.Ratings.Average(r => r.RatingValue) : 0, // استخدام Any لحماية الأداء
-                SavesCount = pr.Saves.Count(),
-                totalRates = pr.Ratings.Count()
+                Skills = pr.Skills.Select(ps => ps.Skill.Name).ToList(),
+                Tags = pr.Tags.Select(pt => pt.Tag.Name).ToList()
             })
             .ToListAsync(cancellationToken);
 

@@ -7,6 +7,9 @@ using SNS.Application.Identity.Users.AdminAcions.Commands.PermanentlyBanUser;
 using SNS.Application.Identity.Users.AdminAcions.Commands.UnbanUser;
 using SNS.Application.Identity.Users.AdminAcions.Queries.GetUserActivityAnalytics;
 using SNS.Application.Identity.Users.AdminAcions.Queries.GetUserDetails;
+using SNS.Domain.Identity.Users.Constants;
+using SNS.Domain.Identity.Users.Entities;
+using SNS.Infrastructure.Identity.Shared.Authorization;
 using SNS.Shared.Results;
 
 namespace SNS.API.Controllers.Identity.Users;
@@ -139,6 +142,7 @@ public class AdminActionsController : ControllerBase
     [HttpGet("user-details")]
     [MapToApiVersion("1.0")]
     [Consumes("application/json")]
+    [HasPermission(Permissions.Users.View)]
     [ProducesResponseType(typeof(UserDetailsDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]

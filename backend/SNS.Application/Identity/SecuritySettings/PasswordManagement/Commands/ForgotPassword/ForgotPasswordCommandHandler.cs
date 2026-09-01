@@ -53,9 +53,6 @@ public sealed class ForgotPasswordCommandHandler : ICommandHandler<ForgotPasswor
 
         var pendingUpdate = await _pendingUpdatesService.CreatePasswordUpdateAsync(createPasswordUpdate, cancellationToken);
 
-#warning another point to delete befor production:
-        var savedUpdate = await _pendingUpdatesService.GetPasswordUpdateAsync(createPasswordUpdate.UserId, cancellationToken);
-
         if (pendingUpdate.IsFailure) return Result<PasswordResetResponse>.Failure(pendingUpdate.StatusCode);
 
         var redirectUrl = _urlGeneratorService.GeneratePasswordResetUrl(user.Id, token);

@@ -4,6 +4,7 @@ using SNS.Domain.Discussions.Problems.Entities;
 using SNS.Domain.Educations.Entities;
 using SNS.Domain.Identity.Users.Constants;
 using SNS.Domain.Identity.Users.Entities;
+using SNS.Domain.Jobs.Entities;
 using SNS.Domain.Profiles.Profiles.Relations;
 using SNS.Domain.Profiles.SocialGraph.Entities;
 using SNS.Domain.Shared.Abstractions.IDeletable;
@@ -91,6 +92,9 @@ public class Profile : Entity, ISoftDeletable
     public ICollection<AcademicRecord> AcademicRecords { get; private set; } 
         = new List<AcademicRecord>();
 
+    public ICollection<CompanyCreateRequest> CompanyCreateRequests { get; private set; } 
+        = new List<CompanyCreateRequest>();
+
     private Profile()
     {
         Id = SequentialGuid.GenerateSequentialGuid();
@@ -170,5 +174,15 @@ public class Profile : Entity, ISoftDeletable
         this.FacebookUrl = facebookUrl;
         this.Website = website;
         this.XUrl = xUrl;
+    }
+
+    /// <summary>
+    /// Safely adjusts the profile's accumulated reputation points.
+    /// </summary>
+    /// <param name="pointsDelta">The points to add (positive) or deduct (negative).</param>
+    public void AdjustReputation(int pointsDelta)
+    {
+        Reputation = Math.Max(0, Reputation + pointsDelta);
+        UpdatedAt = DateTime.UtcNow;
     }
 }

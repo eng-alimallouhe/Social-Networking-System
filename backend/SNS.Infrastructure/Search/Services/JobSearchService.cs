@@ -21,7 +21,7 @@ public class JobSearchService : IJobSearchService
         _elasticBaseService = elasticBaseService;
     }
 
-    public async Task<SearchResult<JobsDocument>> SearchJobsAsync(JobSearchQuery query, CancellationToken cancellationToken = default)
+    public async Task<SearchResult<JobsDocument>> SearchJobsAsync(SNS.Application.Search.Jobs.Queries.GetJobsSearch.GetJobsSearchQuery query, CancellationToken cancellationToken = default)
     {
         var mustQueries = new List<Query>();
         var filterQueries = new List<Query>();

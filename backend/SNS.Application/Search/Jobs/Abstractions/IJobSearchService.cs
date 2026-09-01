@@ -8,7 +8,7 @@ namespace SNS.Application.Search.Jobs.Abstractions;
 
 public interface IJobSearchService
 {
-    Task<SearchResult<JobsDocument>> SearchJobsAsync(JobSearchQuery query, CancellationToken cancellationToken = default);
+    Task<SearchResult<JobsDocument>> SearchJobsAsync(GetJobsSearchQuery query, CancellationToken cancellationToken = default);
     Task<SearchResult<JobsDocument>> GetSuggestedJobsAsync(SuggestedJobsQuery query, CancellationToken cancellationToken = default);
     Task<AppResult> UpsertJobAsync(JobsDocument job, CancellationToken cancellationToken = default);
     Task<AppResult> DeleteJobAsync(Guid jobId, CancellationToken cancellationToken = default);

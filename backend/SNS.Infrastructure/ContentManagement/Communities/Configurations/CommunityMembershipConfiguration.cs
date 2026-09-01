@@ -32,13 +32,13 @@ public class CommunityMembershipConfigurations :
         builder.Property(cm => cm.Role)
             .HasConversion<int>();
 
-        builder.HasOne<Community>()
+        builder.HasOne(cm => cm.Community)
                .WithMany(c => c.Memberships)
                .HasForeignKey(cm => cm.CommunityId)
                .IsRequired()
                .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasOne<Profile>()
+        builder.HasOne(cm => cm.Member)
                .WithMany(p => p.Memberships) 
                .HasForeignKey(cm => cm.MemberId)
                .IsRequired()

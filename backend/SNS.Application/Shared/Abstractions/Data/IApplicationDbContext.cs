@@ -11,6 +11,7 @@ using SNS.Domain.Identity.Notifications.Entities;
 using SNS.Domain.Identity.SecuritySessions.Entities;
 using SNS.Domain.Identity.SecuritySettings.Entities;
 using SNS.Domain.Identity.Users.Entities;
+using SNS.Domain.Identity.Users.Relations;
 using SNS.Domain.Jobs.Entities;
 using SNS.Domain.Jobs.Relations;
 using SNS.Domain.Preferences.Entities;
@@ -47,6 +48,7 @@ public interface IApplicationDbContext
     IQueryable<Company> Companies { get; }
     IQueryable<CompanyAdministrator> CompanyAdministrators { get; }
     IQueryable<SavedJob> SavedJobs { get; }
+    IQueryable<CompanyCreateRequest> CompanyCreateRequests { get; }
 
 
     // 📦 ContentManagement
@@ -55,7 +57,7 @@ public interface IApplicationDbContext
     IQueryable<CommentReaction> CommentReactions { get; }
     IQueryable<PostMedia> PostMedia { get; }
     IQueryable<PostReaction> PostReactions { get; }
-    IQueryable<CommentMedia> CommentMedias { get; }
+    IQueryable<CommentMention> CommentMentions { get; }
     IQueryable<SavedPost> SavedPosts { get; }
 
     
@@ -121,6 +123,8 @@ public interface IApplicationDbContext
     // 📦 Security
     IQueryable<User> Users { get; }
     IQueryable<Role> Roles { get; }
+    IQueryable<Permission> Permissions { get; }
+    IQueryable<RolePermission> RolePermissions { get; }
     IQueryable<Device> Devices { get; }
     IQueryable<SecuritySession> UserSessions { get; }
     IQueryable<UserArchive> UserArchives { get; }
@@ -146,4 +150,13 @@ public interface IApplicationDbContext
     // Bridges
     IQueryable<Follow> Follows { get; }
     IQueryable<Block> Blocks { get; }
+
+    // 📦 Moderation
+    IQueryable<SNS.Domain.Moderation.Entities.ContentReport> ContentReports { get; }
+    IQueryable<SNS.Domain.Moderation.Entities.ReportTicket> ReportTickets { get; }
+
+    // 📦 Support
+    IQueryable<SNS.Domain.Support.Entities.SupportTicket> SupportTickets { get; }
+    IQueryable<SNS.Domain.Support.Entities.TicketMessage> TicketMessages { get; }
+    IQueryable<SNS.Domain.Support.Entities.TicketMessageAttachment> TicketMessageAttachments { get; }
 }

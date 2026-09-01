@@ -1,10 +1,11 @@
 ﻿using SNS.Domain.Moderation.Enums;
+using SNS.Domain.Shared.Abstractions.IDeletable;
 using SNS.Domain.Shared.Entities;
 using SNS.Domain.Shared.Helpers;
 
 namespace SNS.Domain.Moderation.Entities;
 
-public class ContentReport : Entity
+public class ContentReport : Entity, IHardDeletable
 {
     public Guid Id { get; private set; }
     public Guid TicketId { get; private set; }

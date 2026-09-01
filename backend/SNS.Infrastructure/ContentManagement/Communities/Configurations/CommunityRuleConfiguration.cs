@@ -23,7 +23,7 @@ public class CommunityRuleConfigurations :
                .HasMaxLength(500)
                .HasColumnType("nvarchar(500)");
 
-        builder.HasOne<Community>()
+        builder.HasOne(cr => cr.Community)
                .WithMany(c => c.Rules)
                .HasForeignKey(cr => cr.CommunityId)
                .IsRequired()

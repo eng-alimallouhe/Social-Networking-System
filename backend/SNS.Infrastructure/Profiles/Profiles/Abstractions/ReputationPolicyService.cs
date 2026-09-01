@@ -31,4 +31,22 @@ public class ReputationPolicyService : IReputationPolicyService
         var limits = GetUserLimits(userPoints);
         return currentCvCount < limits.MaxAllowedCVs;
     }
+
+    public bool CanCreateComment(int userPoints, int commentsCreatedToday)
+    {
+        var limits = GetUserLimits(userPoints);
+        return commentsCreatedToday < limits.MaxDailyComments;
+    }
+
+    public bool CanCreateProblem(int userPoints, int problemsCreatedToday)
+    {
+        var limits = GetUserLimits(userPoints);
+        return problemsCreatedToday < limits.MaxDailyProblems;
+    }
+
+    public bool CanCreateSolution(int userPoints, int solutionsCreatedToday)
+    {
+        var limits = GetUserLimits(userPoints);
+        return solutionsCreatedToday < limits.MaxDailySolutions;
+    }
 }

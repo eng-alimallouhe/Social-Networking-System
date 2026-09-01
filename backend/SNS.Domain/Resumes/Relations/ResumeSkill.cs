@@ -32,4 +32,10 @@ public class ResumeSkill : IHardDeletable
             Level = level
         };
     }
+
+    public void Update(string skillName, ResumeSkillLevel level)
+    {
+        SkillName = skillName;
+        Level = level;
+    }
 }

@@ -6,6 +6,9 @@ using SNS.Application.Profiles.Profiles;
 using SNS.Application.Shared.Services;
 using SNS.Application.Shared.Settings;
 
+using SNS.Application.Projects;
+using SNS.Application.Resumes;
+
 namespace SNS.Application;
 
 public static class ApplicationDI
@@ -18,7 +21,9 @@ public static class ApplicationDI
             .AddSharedApplicationServicesDI()
             .AddSettingsDI(configuration)
             .AddApplicationSocialGrcontentaph()
-            .AddContentManagementApplicationDI();
+            .AddContentManagementApplicationDI()
+            .AddProjectsApplicationDI()
+            .AddResumesApplicationDI();
 
         services.AddMediatR(cfg =>
         {

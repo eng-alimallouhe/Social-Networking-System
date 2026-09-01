@@ -1,4 +1,4 @@
-using SNS.Application.Search.ContentManagement.Communitites.Queries;
+using SNS.Application.Search.ContentManagement.Communitites.Queries.GetCommunitiesSearch;
 using SNS.Application.Search.Shared.Contracts;
 using SNS.Shared.Results;
 using SNS.Domain.Search.Documents;
@@ -7,7 +7,7 @@ namespace SNS.Application.Search.ContentManagement.Communitites.Abstractions;
 
 public interface ICommunitySearchService
 {
-    Task<SearchResult<CommunityDocument>> SearchCommunitiesAsync(CommunitySearchQuery query, CancellationToken cancellationToken = default);
+    Task<SearchResult<CommunityDocument>> SearchCommunitiesAsync(GetCommunitiesSearchQuery query, CancellationToken cancellationToken = default);
 
     Task<SearchResult<CommunityDocument>> GetSuggestedCommunities( CancellationToken cancellationToken = default);
 

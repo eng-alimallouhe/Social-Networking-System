@@ -1,0 +1,50 @@
+<!-- Backdrop for mobile -->
+<div class="mobile-backdrop" [class.show]="homeState.isSideMenuOpen()" (click)="closeMenu()">
+</div>
+
+<aside class="sidebar-menu" [class.mobile-open]="homeState.isSideMenuOpen()">
+    <div class="sidebar-header">
+        <div class="profile-summary">
+            <div class="avatar-container">
+                <img src="../../../../assets/images/default-avatar.png" alt="Profile Picture" class="avatar-img">
+            </div>
+            <div class="profile-info">
+                <h3 class="profile-name">John Doe</h3>
+                <p class="profile-spec">Software Engineer</p>
+            </div>
+        </div>
+        <!-- زر الإغلاق سيظهر فقط في الموبايل عبر الـ CSS -->
+        <button class="close-btn icon-btn mobile-only" (click)="closeMenu()" aria-label="Close menu">
+            <svg lucideX></svg>
+        </button>
+    </div>
+
+    <div class="sidebar-content">
+        <!-- استبدل قسم الـ links بهذا الكود -->
+        <div class="links">
+            <!-- أضفنا routerLinkActive="active" -->
+            <a routerLink="/profile" routerLinkActive="active" class="link" (click)="closeMenu()">
+                <div class="link-icon">
+                    <svg lucideUser></svg>
+                </div>
+                <p class="link-title">{{ 'App.Layout.Profile' | translate }}</p>
+            </a>
+
+            <a routerLink="/settings" routerLinkActive="active" class="link" (click)="closeMenu()">
+                <div class="link-icon">
+                    <svg lucideSettings></svg>
+                </div>
+                <p class="link-title">{{ 'App.Menu.Account_Settings' | translate }}</p>
+            </a>
+
+            <div class="divider"></div>
+
+            <button class="link logout-link" (click)="closeMenu()">
+                <div class="link-icon">
+                    <svg lucideLogOut></svg>
+                </div>
+                <p class="link-title">{{ 'App.Layout.Logout' | translate }}</p>
+            </button>
+        </div>
+    </div>
+</aside>

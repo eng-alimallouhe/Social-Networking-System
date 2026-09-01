@@ -37,12 +37,23 @@
 .brand-area {
     display: flex;
     align-items: center;
-    gap: var(--spacing-3);
+    gap: var(--spacing-2);
+    text-decoration: none;
+    color: var(--text-primary);
 }
 
-.brand-area .logo {
-    width: 40px;
-    height: 40px;
+.logo {
+    width: var(--spacing-10);
+    height: var(--spacing-10);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
 }
 
 .brand-area h2 {

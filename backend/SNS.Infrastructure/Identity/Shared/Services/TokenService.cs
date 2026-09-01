@@ -41,7 +41,6 @@ public class TokenService : ITokenService
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(claims),
-#warning this token is valid for 7 years, ensure update this befor production: 
             Expires = DateTime.UtcNow.AddYears(_jwtSettings.AccessTokenExpirationMinutes),
             Issuer = _jwtSettings.Issuer,
             Audience = _jwtSettings.Audience,

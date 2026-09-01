@@ -29,4 +29,10 @@ public class ResumeLanguage : IHardDeletable
             Level = level
         };
     }
+
+    public void Update(Language language, LanguageLevel level)
+    {
+        Language = language;
+        Level = level;
+    }
 }

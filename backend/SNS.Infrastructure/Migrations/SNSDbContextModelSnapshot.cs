@@ -62,50 +62,6 @@ namespace SNS.Infrastructure.Migrations
                     b.ToTable("Comments", "ContentManagement");
                 });
 
-            modelBuilder.Entity("SNS.Domain.ContentManagement.Comments.Entities.CommentMedia", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("CommentId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<double?>("Duration")
-                        .HasColumnType("float");
-
-                    b.Property<int?>("Height")
-                        .HasColumnType("int");
-
-                    b.Property<string>("MimeType")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
-
-                    b.Property<int>("Order")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ThumbnailUrl")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Url")
-                        .IsRequired()
-                        .HasMaxLength(512)
-                        .HasColumnType("varchar(512)");
-
-                    b.Property<int?>("Width")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CommentId");
-
-                    b.ToTable("CommentMedias", "ContentManagement");
-                });
-
             modelBuilder.Entity("SNS.Domain.ContentManagement.Comments.Entities.CommentMention", b =>
                 {
                     b.Property<Guid>("ProfileId")
@@ -1612,6 +1568,30 @@ namespace SNS.Infrastructure.Migrations
                     b.ToTable("UsersSecuritySettings", "Identity");
                 });
 
+            modelBuilder.Entity("SNS.Domain.Identity.Users.Entities.Permission", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("Permissions", "Identity");
+                });
+
             modelBuilder.Entity("SNS.Domain.Identity.Users.Entities.Role", b =>
                 {
                     b.Property<Guid>("Id")
@@ -1732,6 +1712,28 @@ namespace SNS.Infrastructure.Migrations
                         });
                 });
 
+            modelBuilder.Entity("SNS.Domain.Identity.Users.Relations.RolePermission", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("PermissionId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PermissionId");
+
+                    b.HasIndex("RoleId", "PermissionId")
+                        .IsUnique();
+
+                    b.ToTable("RolePermissions", "Identity");
+                });
+
             modelBuilder.Entity("SNS.Domain.Jobs.Entities.Company", b =>
                 {
                     b.Property<Guid>("Id")
@@ -1788,6 +1790,61 @@ namespace SNS.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("CompanyAdministrators", "Jobs");
+                });
+
+            modelBuilder.Entity("SNS.Domain.Jobs.Entities.CompanyCreateRequest", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("CreatedCompanyId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Industry")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("LogoObjectKey")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<Guid>("ProfileId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ReviewNote")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<DateTime?>("ReviewedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("ReviewedByProfileId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<string>("WebsiteUrl")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProfileId");
+
+                    b.HasIndex("Status");
+
+                    b.ToTable("CompanyCreateRequests", "Jobs");
                 });
 
             modelBuilder.Entity("SNS.Domain.Jobs.Entities.Job", b =>
@@ -1947,6 +2004,77 @@ namespace SNS.Infrastructure.Migrations
                     b.HasIndex("ProfileId", "SavedAt");
 
                     b.ToTable("SavedJobs", "Jobs");
+                });
+
+            modelBuilder.Entity("SNS.Domain.Moderation.Entities.ContentReport", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("AdditionalDetails")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("ReporterId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("TicketId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("ViolationReason")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReporterId");
+
+                    b.HasIndex("TicketId");
+
+                    b.ToTable("ContentReports", "Moderation");
+                });
+
+            modelBuilder.Entity("SNS.Domain.Moderation.Entities.ReportTicket", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("ModeratorId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ModeratorNotes")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<int>("ReportCount")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("TargetId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("TargetType")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ModeratorId");
+
+                    b.HasIndex("TargetId");
+
+                    b.ToTable("ReportTickets", "Moderation");
                 });
 
             modelBuilder.Entity("SNS.Domain.Preferences.Entities.Skill", b =>
@@ -2650,6 +2778,9 @@ namespace SNS.Infrastructure.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("MediaUrl")
                         .IsRequired()
                         .HasMaxLength(512)
@@ -2955,9 +3086,106 @@ namespace SNS.Infrastructure.Migrations
                     b.ToTable("OutboxMessages", "EventsHolder");
                 });
 
+            modelBuilder.Entity("SNS.Domain.Support.Entities.SupportTicket", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("AssignedAgentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Category")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Priority")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AssignedAgentId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("SupportTickets", "Support");
+                });
+
+            modelBuilder.Entity("SNS.Domain.Support.Entities.TicketMessage", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsFromAgent")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("MessageBody")
+                        .IsRequired()
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
+
+                    b.Property<Guid>("SenderId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("SentAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("TicketId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SenderId");
+
+                    b.HasIndex("TicketId");
+
+                    b.ToTable("TicketMessages", "Support");
+                });
+
+            modelBuilder.Entity("SNS.Domain.Support.Entities.TicketMessageAttachment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ObjectKey")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<Guid>("TicketMessageId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TicketMessageId");
+
+                    b.ToTable("TicketMessageAttachments", "Support");
+                });
+
             modelBuilder.Entity("SNS.Domain.ContentManagement.Comments.Entities.Comment", b =>
                 {
-                    b.HasOne("SNS.Domain.Profiles.Profiles.Entities.Profile", null)
+                    b.HasOne("SNS.Domain.Profiles.Profiles.Entities.Profile", "Author")
                         .WithMany()
                         .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -2974,16 +3202,9 @@ namespace SNS.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("ParentComment");
-                });
+                    b.Navigation("Author");
 
-            modelBuilder.Entity("SNS.Domain.ContentManagement.Comments.Entities.CommentMedia", b =>
-                {
-                    b.HasOne("SNS.Domain.ContentManagement.Comments.Entities.Comment", null)
-                        .WithMany("Medias")
-                        .HasForeignKey("CommentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("ParentComment");
                 });
 
             modelBuilder.Entity("SNS.Domain.ContentManagement.Comments.Entities.CommentMention", b =>
@@ -3068,41 +3289,51 @@ namespace SNS.Infrastructure.Migrations
 
             modelBuilder.Entity("SNS.Domain.ContentManagement.Communities.Entities.CommunityJoinRequest", b =>
                 {
-                    b.HasOne("SNS.Domain.ContentManagement.Communities.Entities.Community", null)
+                    b.HasOne("SNS.Domain.ContentManagement.Communities.Entities.Community", "Community")
                         .WithMany()
                         .HasForeignKey("CommunityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SNS.Domain.Profiles.Profiles.Entities.Profile", null)
+                    b.HasOne("SNS.Domain.Profiles.Profiles.Entities.Profile", "Submitter")
                         .WithMany()
                         .HasForeignKey("SubmitterId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Community");
+
+                    b.Navigation("Submitter");
                 });
 
             modelBuilder.Entity("SNS.Domain.ContentManagement.Communities.Entities.CommunityMembership", b =>
                 {
-                    b.HasOne("SNS.Domain.ContentManagement.Communities.Entities.Community", null)
+                    b.HasOne("SNS.Domain.ContentManagement.Communities.Entities.Community", "Community")
                         .WithMany("Memberships")
                         .HasForeignKey("CommunityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SNS.Domain.Profiles.Profiles.Entities.Profile", null)
+                    b.HasOne("SNS.Domain.Profiles.Profiles.Entities.Profile", "Member")
                         .WithMany("Memberships")
                         .HasForeignKey("MemberId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Community");
+
+                    b.Navigation("Member");
                 });
 
             modelBuilder.Entity("SNS.Domain.ContentManagement.Communities.Entities.CommunityRule", b =>
                 {
-                    b.HasOne("SNS.Domain.ContentManagement.Communities.Entities.Community", null)
+                    b.HasOne("SNS.Domain.ContentManagement.Communities.Entities.Community", "Community")
                         .WithMany("Rules")
                         .HasForeignKey("CommunityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Community");
                 });
 
             modelBuilder.Entity("SNS.Domain.ContentManagement.Communities.Entities.CommunitySettings", b =>
@@ -3571,6 +3802,25 @@ namespace SNS.Infrastructure.Migrations
                     b.Navigation("Role");
                 });
 
+            modelBuilder.Entity("SNS.Domain.Identity.Users.Relations.RolePermission", b =>
+                {
+                    b.HasOne("SNS.Domain.Identity.Users.Entities.Permission", "Permission")
+                        .WithMany("RolePermissions")
+                        .HasForeignKey("PermissionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SNS.Domain.Identity.Users.Entities.Role", "Role")
+                        .WithMany("RolePermissions")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Permission");
+
+                    b.Navigation("Role");
+                });
+
             modelBuilder.Entity("SNS.Domain.Jobs.Entities.CompanyAdministrator", b =>
                 {
                     b.HasOne("SNS.Domain.Jobs.Entities.Company", "Company")
@@ -3586,6 +3836,17 @@ namespace SNS.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Company");
+
+                    b.Navigation("Profile");
+                });
+
+            modelBuilder.Entity("SNS.Domain.Jobs.Entities.CompanyCreateRequest", b =>
+                {
+                    b.HasOne("SNS.Domain.Profiles.Profiles.Entities.Profile", "Profile")
+                        .WithMany("CompanyCreateRequests")
+                        .HasForeignKey("ProfileId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("Profile");
                 });
@@ -3646,6 +3907,25 @@ namespace SNS.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Job");
+                });
+
+            modelBuilder.Entity("SNS.Domain.Moderation.Entities.ContentReport", b =>
+                {
+                    b.HasOne("SNS.Domain.Moderation.Entities.ReportTicket", null)
+                        .WithMany("Reports")
+                        .HasForeignKey("TicketId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("SNS.Domain.Moderation.Entities.ReportTicket", b =>
+                {
+                    b.HasOne("SNS.Domain.Identity.Users.Entities.User", "Moderator")
+                        .WithMany()
+                        .HasForeignKey("ModeratorId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Moderator");
                 });
 
             modelBuilder.Entity("SNS.Domain.Preferences.Entities.Skill", b =>
@@ -3840,11 +4120,13 @@ namespace SNS.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SNS.Domain.Profiles.Profiles.Entities.Profile", null)
+                    b.HasOne("SNS.Domain.Profiles.Profiles.Entities.Profile", "Rater")
                         .WithMany()
                         .HasForeignKey("RaterId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("Rater");
                 });
 
             modelBuilder.Entity("SNS.Domain.Projects.Bridges.ProjectSkill", b =>
@@ -3872,11 +4154,13 @@ namespace SNS.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SNS.Domain.Preferences.Entities.Tag", null)
+                    b.HasOne("SNS.Domain.Preferences.Entities.Tag", "Tag")
                         .WithMany()
                         .HasForeignKey("TagId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Tag");
                 });
 
             modelBuilder.Entity("SNS.Domain.Projects.Bridges.ProjectView", b =>
@@ -4003,10 +4287,26 @@ namespace SNS.Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("SNS.Domain.Support.Entities.TicketMessage", b =>
+                {
+                    b.HasOne("SNS.Domain.Support.Entities.SupportTicket", null)
+                        .WithMany("Messages")
+                        .HasForeignKey("TicketId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("SNS.Domain.Support.Entities.TicketMessageAttachment", b =>
+                {
+                    b.HasOne("SNS.Domain.Support.Entities.TicketMessage", null)
+                        .WithMany("Attachments")
+                        .HasForeignKey("TicketMessageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("SNS.Domain.ContentManagement.Comments.Entities.Comment", b =>
                 {
-                    b.Navigation("Medias");
-
                     b.Navigation("Mentions");
 
                     b.Navigation("Reactions");
@@ -4088,6 +4388,16 @@ namespace SNS.Infrastructure.Migrations
                     b.Navigation("RecoveryCodes");
                 });
 
+            modelBuilder.Entity("SNS.Domain.Identity.Users.Entities.Permission", b =>
+                {
+                    b.Navigation("RolePermissions");
+                });
+
+            modelBuilder.Entity("SNS.Domain.Identity.Users.Entities.Role", b =>
+                {
+                    b.Navigation("RolePermissions");
+                });
+
             modelBuilder.Entity("SNS.Domain.Identity.Users.Entities.User", b =>
                 {
                     b.Navigation("ActionPerformed");
@@ -4130,6 +4440,11 @@ namespace SNS.Infrastructure.Migrations
                     b.Navigation("JobSkills");
                 });
 
+            modelBuilder.Entity("SNS.Domain.Moderation.Entities.ReportTicket", b =>
+                {
+                    b.Navigation("Reports");
+                });
+
             modelBuilder.Entity("SNS.Domain.Preferences.Entities.SkillsCategory", b =>
                 {
                     b.Navigation("Skills");
@@ -4145,6 +4460,8 @@ namespace SNS.Infrastructure.Migrations
                     b.Navigation("AcademicRecords");
 
                     b.Navigation("BlackList");
+
+                    b.Navigation("CompanyCreateRequests");
 
                     b.Navigation("Followers");
 
@@ -4201,6 +4518,16 @@ namespace SNS.Infrastructure.Migrations
                     b.Navigation("Projects");
 
                     b.Navigation("Skills");
+                });
+
+            modelBuilder.Entity("SNS.Domain.Support.Entities.SupportTicket", b =>
+                {
+                    b.Navigation("Messages");
+                });
+
+            modelBuilder.Entity("SNS.Domain.Support.Entities.TicketMessage", b =>
+                {
+                    b.Navigation("Attachments");
                 });
 #pragma warning restore 612, 618
         }

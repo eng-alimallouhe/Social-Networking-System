@@ -22,7 +22,7 @@ public class CommunitySettings : Entity, IHardDeletable
         Id = SequentialGuid.GenerateSequentialGuid();
     }
 
-    public static CommunitySettings Create(Guid communityId, bool allowPostWithoutApproval, bool allowInvitationsByMembers, bool allowComments, bool allowMediaUpload)
+    public static CommunitySettings Create(Guid communityId, bool allowPostWithoutApproval = true, bool allowInvitationsByMembers = true, bool allowComments = true, bool allowMediaUpload = true)
     {
         var entity = new CommunitySettings();
         entity.CommunityId = communityId;
@@ -32,5 +32,12 @@ public class CommunitySettings : Entity, IHardDeletable
         entity.AllowMediaUpload = allowMediaUpload;
         return entity;
     }
-}
 
+    public void Update(bool allowPostWithoutApproval, bool allowInvitationsByMembers, bool allowComments, bool allowMediaUpload)
+    {
+        AllowPostWithoutApproval = allowPostWithoutApproval;
+        AllowInvitationsByMembers = allowInvitationsByMembers;
+        AllowComments = allowComments;
+        AllowMediaUpload = allowMediaUpload;
+    }
+}

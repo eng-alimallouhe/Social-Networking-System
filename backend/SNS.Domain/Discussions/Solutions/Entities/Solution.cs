@@ -52,6 +52,18 @@ public class Solution : Entity, ISoftDeletable
     public void SoftDelete()
     {
         this.IsActive = false;
+        this.UpdatedAt = DateTime.UtcNow;
+    }
+
+    public void ChangeStatus(SolutionStatus status)
+    {
+        this.Status = status;
+        this.UpdatedAt = DateTime.UtcNow;
+    }
+
+    public void Touch()
+    {
+        this.UpdatedAt = DateTime.UtcNow;
     }
 }
 

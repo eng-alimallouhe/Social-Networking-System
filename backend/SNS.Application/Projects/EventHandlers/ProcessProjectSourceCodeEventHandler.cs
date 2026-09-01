@@ -43,10 +43,12 @@ public class ProcessProjectSourceCodeEventHandler : INotificationHandler<DomainE
             using var entryStream = entry.Open();
             string finalKey = $"projects/{domainEvent.ProjectId}/source-code/{entry.FullName}";
 
-            string fileUrl = await _storageService.UploadFileAsync(
+            string fileUrl = finalKey;
+
+            await _storageService.UploadFileAsync(
                 entryStream,
-                finalKey,
                 "application/octet-stream",
+                finalKey,
                 cancellationToken);
 
             double sizeKb = Math.Round((double)entry.Length / 1024, 2);

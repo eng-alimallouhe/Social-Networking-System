@@ -36,4 +36,9 @@ public class PostReaction : Entity, IHardDeletable
         entity.Type = type;
         return entity;
     }
+
+    public void UpdateType(ReactionType newType)
+    {
+        Type = newType;
+    }
 }

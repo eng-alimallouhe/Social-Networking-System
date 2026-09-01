@@ -9,7 +9,7 @@
             "Profile": "Profile",
             "Logout": "Logout",
             "Search": "Search",
-            "Forum": "Q&A",
+            "Forum": "Q\u0026A",
             "Projects": "Projects",
             "Notifications": "Notifications",
             "Settings": {
@@ -20,7 +20,7 @@
                 "Personal_Info_Desc": "Manage your personal details.",
                 "Security_Settings": "Security Settings",
                 "Security_Settings_Desc": "Manage your security settings.",
-                "Sessions": "Sessions & Sign-in",
+                "Sessions": "Sessions \u0026 Sign-in",
                 "Sessions_Desc": "Manage your active sessions.",
                 "Password_Management": "Manage Passwords",
                 "Password_Management_Desc": "Change or reset your password.",
@@ -36,7 +36,8 @@
                     "Security": "Security",
                     "Data": "Data"
                 }
-            }
+            },
+            "Create": "Create"
         },
         "Menu": {
             "Welcome": "Welcome to the Syrian Developers Platform, please select an action",
@@ -47,6 +48,29 @@
             "Logout": "Logout",
             "Login": "Login",
             "Register": "Register"
+        },
+        "Moderation": {
+            "PostReport": {
+                "Title": "Report Post",
+                "Subtitle": "Help us understand why you are reporting this content.",
+                "ReviewMessage": "Your report will be reviewed as soon as possible. If you would like to provide more details, please enter them below.",
+                "Spam": "Spam",
+                "SpamDesc": "Unsolicited promotions, repetitive content, or irrelevant links.",
+                "HateSpeech": "Hate Speech",
+                "HateSpeechDesc": "Targeted attacks, bullying, or abusive behavior towards individuals.",
+                "AdditionalDetails": "Add more details",
+                "OptionalDetailsPlaceholder": "Provide any additional context here...",
+                "Cancel": "Cancel",
+                "Continue": "Next",
+                "Back": "Back",
+                "Submit": "Done",
+                "Harassment": "Harassment",
+                "HarassmentDesc": "Targeted attacks, bullying, or abusive behavior towards individuals.",
+                "Misinformation": "Misinformation",
+                "MisinformationDesc": "False or misleading information that could cause harm.",
+                "Other": "Other",
+                "OtherDesc": "Any other reason not listed above."
+            }
         }
     },
     "Profiles": {
@@ -101,7 +125,7 @@
                 "Forgot_Password": "Forgot password?",
                 "Login": "Sign In",
                 "Divider": "Or continue with",
-                "Register_Prompt": "Don't have an account?",
+                "Register_Prompt": "Don\u0027t have an account?",
                 "Register_Link": "Register now",
                 "Show_Password": "Show password",
                 "Login_Error_Title": "Error while tyring to login",
@@ -116,7 +140,7 @@
             },
             "Passkey": {
                 "Title": "Sign in with Passkey",
-                "Subtitle": "Use your device's built-in authentication to sign in quickly and securely",
+                "Subtitle": "Use your device\u0027s built-in authentication to sign in quickly and securely",
                 "Retry": "Retry",
                 "Waiting_For_Device": "Waiting for your device to respond..."
             },
@@ -154,10 +178,10 @@
                     "Description": "A verification code was sent to",
                     "Verify": "Verify Account",
                     "Back_To_Register": "Back to register",
-                    "Did_Not_Receive": "Didn't receive the code?",
+                    "Did_Not_Receive": "Didn\u0027t receive the code?",
                     "Resend": "Resend code",
                     "Success_Title": "Account Verified",
-                    "Success_Body": "Your account has been verified successfully. Let's set up your profile.",
+                    "Success_Body": "Your account has been verified successfully. Let\u0027s set up your profile.",
                     "Resend_Success_Title": "Code Resent",
                     "Resend_Success_Body": "A new verification code has been sent to your email."
                 }
@@ -179,8 +203,8 @@
                 "Location": "Location",
                 "Last_Location": "Last Active Location",
                 "Has_Active_Download_Request": "Has Active Download Request",
-                "Contact_And_Preferences": "Contact & Preferences",
-                "Security_And_Activity": "Security & Activity",
+                "Contact_And_Preferences": "Contact \u0026 Preferences",
+                "Security_And_Activity": "Security \u0026 Activity",
                 "Change_Username": {
                     "Title": "Change Username",
                     "Subtitle": "Change your username",
@@ -210,14 +234,14 @@
                     "Verify_Title": "Verify Email Change",
                     "Verify_Description": "Enter the 6-digit verification code sent to your new email address.",
                     "Verify": "Verify",
-                    "Did_Not_Receive": "Didn't receive the code?",
+                    "Did_Not_Receive": "Didn\u0027t receive the code?",
                     "Resend": "Resend code",
                     "Back": "Back",
                     "Cancel": "Cancel"
                 }
             },
             "Session_Management": {
-                "Title": "Sessions & Sign-in",
+                "Title": "Sessions \u0026 Sign-in",
                 "Description": "Manage your active sessions and connected devices.",
                 "Active_Sessions": "Active Sessions",
                 "No_Active_Sessions": "No active sessions found.",
@@ -243,7 +267,7 @@
                 "Manufacturer": "Manufacturer",
                 "Operating_System": "Operating System",
                 "First_Seen": "First Seen",
-                "Connection_And_Activity": "Connection & Activity",
+                "Connection_And_Activity": "Connection \u0026 Activity",
                 "Last_Seen": "Last Seen",
                 "Login_Time": "Login Time",
                 "IP_Address": "IP Address",
@@ -392,8 +416,8 @@
                     "Title": "Passkey Management",
                     "Subtitle": "Manage your registered WebAuthn passkeys here.",
                     "Add_Passkey": "Add Passkey",
-                    "No_Passkeys": "You don't have any registered passkeys yet.",
-                    "Register_Passkey": "To register a passkey, click the 'Add Passkey' button and follow the instructions.",
+                    "No_Passkeys": "You don\u0027t have any registered passkeys yet.",
+                    "Register_Passkey": "To register a passkey, click the \u0027Add Passkey\u0027 button and follow the instructions.",
                     "Supported_Devices": "Passkeys work on your phone, tablet, and computer",
                     "Login_Faster": "Login faster and more securely without a password",
                     "Device_Name": "Device Name",
@@ -414,7 +438,7 @@
                     "No_Passkeys_Registered": "No passkeys registered",
                     "Empty_Description": "Passkeys provide a secure, passwordless login experience using device biometrics or security keys.",
                     "Remove_Passkey_Title": "Remove Passkey",
-                    "Remove_Passkey_Message": "Are you sure you want to remove this passkey? You won't be able to use it to log in anymore."
+                    "Remove_Passkey_Message": "Are you sure you want to remove this passkey? You won\u0027t be able to use it to log in anymore."
                 }
             },
             "Search": {}
@@ -554,23 +578,23 @@
             "Confirm": "Confirm"
         },
         "User": {
-            "404": "Sorry, we couldn't find an account associated with this identifier.",
-            "4036": "Sorry, this username is taken by another user",
-            "4091": "Sorry, this identifier is already used in another account",
-            "401": "This login attempt was flagged as high risk. Please verify your identity and try again.",
+            "200": "The requested user account was found successfully.",
             "201": "Your account has been created successfully.",
             "400": "You are not authorized to perform this action.",
-            "200": "The requested user account was found successfully.",
-            "2001": "This username is available.",
-            "4092": "The new password cannot be the same as your current password.",
+            "401": "This login attempt was flagged as high risk. Please verify your identity and try again.",
             "403": "This account has been deactivated.",
+            "404": "Sorry, we couldn\u0027t find an account associated with this identifier.",
             "429": "Your account is temporarily locked due to too many failed login attempts. Please try again later.",
+            "2001": "This username is available.",
             "4031": "This account has been permanently banned due to a violation of our policies.",
             "4032": "This account has been temporarily suspended.",
             "4033": "Your account has not been verified yet. Please verify your email or phone number.",
             "4034": "Your account is verified, but your profile setup is not completed yet. Please complete your profile.",
+            "4036": "Sorry, this username is taken by another user",
             "4050": "The login attempt failed. Please check your credentials and try again.",
-            "4051": "You have reached the maximum number of login attempts. Please try again later."
+            "4051": "You have reached the maximum number of login attempts. Please try again later.",
+            "4091": "Sorry, this identifier is already used in another account",
+            "4092": "The new password cannot be the same as your current password."
         },
         "Operation": {
             "200": "The operation completed successfully.",
@@ -580,9 +604,9 @@
             "404": "The requested resource could not be found.",
             "409": "The operation could not be completed due to a conflict with the current state.",
             "422": "The provided input is invalid.",
-            "4221": "The provided token is invalid.",
             "500": "An unexpected error occurred. Please try again later.",
-            "4091": "The requested information has expired."
+            "4091": "The requested information has expired.",
+            "4221": "The provided token is invalid."
         },
         "Titles": {
             "Success": "Success"
@@ -591,31 +615,31 @@
             "404": "Session not found"
         },
         "Verification": {
-            "201": "The verification code was sent successfully.",
             "200": "The verification code was verified successfully.",
+            "201": "The verification code was sent successfully.",
             "202": "The verification code was resent successfully.",
+            "400": "The verification code you entered is invalid.",
             "404": "There is no active verification code for this operation.",
             "410": "The verification code has expired. Please request a new code.",
-            "400": "The verification code you entered is invalid.",
             "429": "You have reached the maximum number of verification attempts. Please try again later.",
             "4291": "Too many verification requests. Please wait approximately 10 minutes before trying again."
         },
         "Security": {
             "401": "Authentication is required to continue.",
             "403": "You are not authorized to perform this action.",
-            "4041": "Verification failed. Please try again.",
-            "2001": "Two-factor authentication is required to continue.",
-            "2002": "Multi-factor authentication is required to continue.",
-            "4043": "Multi-factor authentication is already enabled.",
-            "4044": "The authentication code you entered is invalid.",
             "406": "This login attempt was identified as a critical security risk.",
             "407": "The requested role could not be found.",
             "409": "You do not have permission to access this resource.",
             "410": "The request was rejected.",
-            "5001": "An error occurred while generating the security token.",
+            "2001": "Two-factor authentication is required to continue.",
+            "2002": "Multi-factor authentication is required to continue.",
+            "4041": "Verification failed. Please try again.",
+            "4043": "Multi-factor authentication is already enabled.",
+            "4044": "The authentication code you entered is invalid.",
             "4091": "No recovery email is linked to your account.",
             "4092": "No authenticator app is linked to your account.",
-            "4093": "No passkey has been added to your account."
+            "4093": "No passkey has been added to your account.",
+            "5001": "An error occurred while generating the security token."
         },
         "Resources": {
             "200": "The requested resource was found successfully.",
@@ -693,5 +717,46 @@
     "Common": {
         "Copy": "Copy",
         "Copied": "Copied!"
+    },
+    "ContentManagement": {
+        "Posts": {
+            "Unknown_Author": "Unknown Author",
+            "Unknown_Community": "Unknown Community",
+            "Comments": "Comments",
+            "Error": "Failed to load post",
+            "NotFound": "Post not found",
+            "Media": "Media",
+            "Loading": "Loading post...",
+            "Pinned": "Pinned",
+            "Share": "Share",
+            "Show_More": "Show more",
+            "Show_Less": "Show less"
+        },
+        "Comments": {
+            "MyComments": "My Comments",
+            "NoCommentsFound": "No comments found",
+            "Loading": "Loading comments...",
+            "Error": "Failed to load comments",
+            "Like": "Like",
+            "Reply": "Reply"
+        }
+    },
+    "Project": {
+        "Status": {
+            "Draft": "Draft",
+            "Ongoing": "Ongoing",
+            "Completed": "Completed",
+            "Published": "Published",
+            "Archived": "Archived"
+        },
+        "Type": {
+            "OpenSource": "Open Source",
+            "ClosedSource": "Closed Source"
+        },
+        "Collaburators": "Collaborators",
+        "Tech_Stack": "Tech Stack",
+        "Github": "GitHub",
+        "View_Live": "Live Demo",
+        "View_Project": "View Project"
     }
 }

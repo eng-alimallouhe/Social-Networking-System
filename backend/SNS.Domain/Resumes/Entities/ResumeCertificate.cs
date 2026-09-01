@@ -30,4 +30,11 @@ public class ResumeCertificate : IHardDeletable
             IssueDate = issueDate
         };
     }
+
+    public void Update(string title, string issuer, DateTime issueDate)
+    {
+        Title = title;
+        Issuer = issuer;
+        IssueDate = issueDate;
+    }
 }

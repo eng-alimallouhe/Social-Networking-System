@@ -1,0 +1,208 @@
+<div class="def">
+    <article class="post-card">
+        <header class="post-header">
+            <div class="post-header-content">
+                <div class="post-avatar">
+                    @if (post().author.profilePictureUrl) {
+                    <img [src]="post().author.profilePictureUrl" alt="Author avatar" class="avatar-img">
+                    } @else {
+                    <div class="avatar-placeholder">
+                        {{ post().author.fullName.charAt(0) }}
+                    </div>
+                    }
+
+                    @if (post().community?.logoUrl) {
+                    <img [src]="post().community!.logoUrl" alt="Community logo" class="community-micro-logo">
+                    }
+                </div>
+
+                <div class="post-meta">
+                    <div class="post-author-row">
+                        <span class="author-name">{{ post().author.fullName }}</span>
+                        <button type="button" class="post-options-btn" aria-label="More options"
+                            cdkOverlayOrigin #actionsOrigin="cdkOverlayOrigin"
+                            (click)="isActionsMenuOpen.set(!isActionsMenuOpen())">
+                            <svg lucideMoreHorizontal></svg>
+                        </button>
+                    </div>
+
+                    <!-- Actions Menu Overlay -->
+                    <ng-template cdkConnectedOverlay [cdkConnectedOverlayOrigin]="actionsOrigin"
+                        [cdkConnectedOverlayOpen]="isActionsMenuOpen()" [cdkConnectedOverlayPositions]="actionsMenuPositions"
+                        [cdkConnectedOverlayPanelClass]="isMobile() ? 'post-actions-panel-mobile' : 'post-actions-panel-desktop'"
+                        [cdkConnectedOverlayHasBackdrop]="true" 
+                        [cdkConnectedOverlayBackdropClass]="isMobile() ? 'bottom-sheet-backdrop' : 'cdk-overlay-transparent-backdrop'"
+                        (backdropClick)="isActionsMenuOpen.set(false)">
+                        <div class="actions-menu-dropdown">
+                            <div class="menu-group">
+                                <button type="button" class="menu-item" (click)="onInterested()">
+                                    <svg lucideSmile></svg>
+                                    <span>Interested</span>
+                                </button>
+                                <button type="button" class="menu-item" (click)="onNotInterested()">
+                                    <svg lucideFrown></svg>
+                                    <span>Not Interested</span>
+                                </button>
+                                <button type="button" class="menu-item" (click)="onReport()">
+                                    <svg lucideFlag></svg>
+                                    <span>Report Post</span>
+                                </button>
+                            </div>
+                            
+                            @if (isOwner()) {
+                                <div class="menu-divider"></div>
+                                <div class="menu-group">
+                                    <button type="button" class="menu-item" disabled>
+                                        <svg lucideEdit2></svg>
+                                        <span>Edit Post</span>
+                                    </button>
+                                    <button type="button" class="menu-item destructive-action" (click)="onDelete()">
+                                        <svg lucideTrash2></svg>
+                                        <span>Delete Post</span>
+                                    </button>
+                                </div>
+                            }
+                        </div>
+                    </ng-template>
+
+                    <div class="post-sub-meta">
+                        @if (post().author.specialization) {
+                        <span class="author-specialization">{{ post().author.specialization }}</span>
+                        <span class="meta-dot">&bull;</span>
+                        }
+                        @if (post().community?.name) {
+                        <span class="community-name">{{ post().community!.name }}</span>
+                        <span class="meta-dot">&bull;</span>
+                        }
+                        <span class="post-time">{{ post().createdAt | localDate }}</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="post-body">
+            <h2 class="post-title">{{ post().title }}</h2>
+            <div class="post-markdown-container">
+                <div class="markdown-content short-content" 
+                     [class.hidden]="isContentExpanded()" 
+                     [innerHTML]="shortHtml()"></div>
+                     
+                <div class="markdown-content full-content" 
+                     [class.visible]="isContentExpanded()">
+                    <div class="full-content-inner" [innerHTML]="fullHtml()"></div>
+                </div>
+            </div>
+
+            @if (shouldShowMoreButton()) {
+                <button type="button" class="show-more-btn" (click)="toggleContent()">
+                    {{ (isContentExpanded() ? 'ContentManagement.Posts.Show_Less' : 'ContentManagement.Posts.Show_More') | translate }}
+                </button>
+            }
+        </div>
+
+        @if (post().media && post().media.length > 0) {
+        <div class="post-media-container">
+            <app-media-player [mediaList]="mediaList" mode="inline"></app-media-player>
+            @if (post().media.length > 1) {
+            <div class="media-overlay-count">+{{ post().media.length - 1 }}</div>
+            }
+        </div>
+        }
+
+        @if (post().tags && post().tags.length > 0) {
+        <div class="post-tags">
+            @for (tag of post().tags; track tag) {
+            <span class="post-tag">{{ tag }}</span>
+            }
+        </div>
+        }
+
+
+        <footer class="post-interactions">
+            <div class="interaction-group main-interactions">
+                <!-- Reaction Button -->
+                <button type="button" class="interaction-btn" [class.active-reaction]="post().currentUserReaction"
+                    aria-label="Like" cdkOverlayOrigin #reactionOrigin="cdkOverlayOrigin" (click)="toggleLike()">
+
+                    @if (post().currentUserReaction === 'Love') {
+                    <svg lucideHeart class="reaction-icon-love fill-current"></svg>
+                    } @else if (post().currentUserReaction === 'Haha') {
+                    <svg lucideSmile class="reaction-icon-haha"></svg>
+                    } @else if (post().currentUserReaction === 'Sad') {
+                    <svg lucideFrown class="reaction-icon-sad"></svg>
+                    } @else if (post().currentUserReaction === 'Angry') {
+                    <svg lucideAngry class="reaction-icon-angry"></svg>
+                    } @else {
+                    <svg lucideThumbsUp [class.fill-current]="post().currentUserReaction === 'Like'"></svg>
+                    }
+
+                    <span [class.active-text]="post().currentUserReaction">{{ post().reactionsCount }}</span>
+                </button>
+
+                <!-- Reaction Picker Overlay -->
+                <ng-template cdkConnectedOverlay [cdkConnectedOverlayOrigin]="reactionOrigin"
+                    [cdkConnectedOverlayOpen]="isReactionPickerOpen()" [cdkConnectedOverlayPositions]="overlayPositions"
+                    [cdkConnectedOverlayHasBackdrop]="true" cdkConnectedOverlayBackdropClass="cdk-overlay-transparent-backdrop"
+                    (backdropClick)="isReactionPickerOpen.set(false)">
+
+                    <div class="reaction-picker-menu">
+                        @for (rt of reactionTypes; track rt.type) {
+                        <button type="button" class="reaction-option"
+                            (click)="applyReaction(rt.type); $event.stopPropagation()" [title]="rt.type">
+
+                            @if (rt.type === 'Like') {
+                            <svg lucideThumbsUp class="picker-icon"></svg>
+                            } @else if (rt.type === 'Love') {
+                            <svg lucideHeart class="picker-icon"></svg>
+                            } @else if (rt.type === 'Haha') {
+                            <svg lucideSmile class="picker-icon"></svg>
+                            } @else if (rt.type === 'Sad') {
+                            <svg lucideFrown class="picker-icon"></svg>
+                            } @else if (rt.type === 'Angry') {
+                            <svg lucideAngry class="picker-icon"></svg>
+                            }
+                        </button>
+                        }
+                    </div>
+                </ng-template>
+                <button type="button" class="interaction-btn" aria-label="Comment">
+                    <svg lucideMessageSquare></svg>
+                    <span>{{ post().commentsCount }}</span>
+                </button>
+                <button type="button" class="interaction-btn" aria-label="Share">
+                    <svg lucideShare2></svg>
+                    <span>Share</span>
+                </button>
+            </div>
+
+            <div class="interaction-group secondary-interactions">
+                <button type="button" class="interaction-btn" aria-label="Save">
+                    <svg lucideBookmark></svg>
+                    <span>{{ post().savesCount }}</span>
+                </button>
+            </div>
+        </footer>
+    </article>
+
+    <app-post-report 
+        [postId]="post().id" 
+        [isOpen]="isReportOpen" 
+        (closed)="isReportOpen.set(false)">
+    </app-post-report>
+
+    <app-want-to-login 
+        [isOpen]="isWantToLoginOpen()" 
+        (isOpenChange)="isWantToLoginOpen.set($event)"
+        (closed)="isWantToLoginOpen.set(false)">
+    </app-want-to-login>
+
+    <app-confirm-dialog
+        [isOpen]="isDeleteConfirmOpen()"
+        (isOpenChange)="isDeleteConfirmOpen.set($event)"
+        [action]="ConfirmAction.Delete"
+        titleKey="Delete Post"
+        messageKey="Are you sure you want to delete this post?"
+        confirmTextKey="Delete"
+        cancelTextKey="Cancel">
+    </app-confirm-dialog>
+</div>

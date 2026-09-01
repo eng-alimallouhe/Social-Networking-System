@@ -11,7 +11,7 @@ public interface IProfileSearchService
 
     Task<Result> DeleteProfile(Guid profileId, CancellationToken cancellationToken = default);
 
-    Task<SearchResult<ProfileDocument>> SearchProfilesAsync(ProfileSearchQuery query, CancellationToken cancellationToken = default);
+    Task<SearchResult<ProfileDocument>> SearchProfilesAsync(GetProfilesSearchQuery query, CancellationToken cancellationToken = default);
 
     Task<SearchResult<ProfileDocument>> GetSuggestedProfilesAsync(SuggestedProfilesRequestDto request, CancellationToken cancellationToken = default);
 

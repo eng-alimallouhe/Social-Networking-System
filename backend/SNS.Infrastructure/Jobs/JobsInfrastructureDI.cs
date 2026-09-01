@@ -17,6 +17,7 @@ public static class JobsInfrastructureDI
         services.AddScoped<IRepository<JobSkill>, JobSkillRepository>();
         services.AddScoped<IRepository<CompanyAdministrator>, CompanyAdministratorRepository>();
         services.AddScoped<IRepository<SavedJob>, SavedJobRepository>();
+        services.AddScoped<IRepository<CompanyCreateRequest>, CompanyCreateRequestRepository>();
 
         return services;
     }

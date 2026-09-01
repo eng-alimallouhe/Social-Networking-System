@@ -2,6 +2,7 @@ using Elastic.Clients.Elasticsearch;
 using Elastic.Clients.Elasticsearch.QueryDsl;
 using SNS.Application.Search.Identity.Users.Abstractions;
 using SNS.Application.Search.Identity.Users.Queries;
+using SNS.Application.Search.Identity.Users.Queries.GetUsersSearch;
 using SNS.Application.Search.Shared.Contracts;
 using SNS.Domain.Identity.Users.Enums;
 using SNS.Domain.Search.Documents;
@@ -21,7 +22,7 @@ public class UserSearchService : IUserSearchService
         _elasticBaseService = elasticBaseService;
     }
 
-    public async Task<SearchResult<UserDocument>> SearchUsersAsync(UserSearchQuery query, CancellationToken cancellationToken = default)
+    public async Task<SearchResult<UserDocument>> SearchUsersAsync(GetUsersSearchQuery query, CancellationToken cancellationToken = default)
     {
         var mustQueries = new List<Query>();
         var filterQueries = new List<Query>();
@@ -115,7 +116,7 @@ public class UserSearchService : IUserSearchService
         {
             UserSearchSortBy.Role => x => x.Role,
             UserSearchSortBy.CreatedAt => x => x.CreatedAt,
-            UserSearchSortBy.LastLogin => x => x.LastLogin,
+            UserSearchSortBy.LastLogin => x => x.CreatedAt,
             UserSearchSortBy.IsBanned => x => x.Status,
 
             _ => x => x.CreatedAt

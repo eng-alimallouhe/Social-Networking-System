@@ -1,0 +1,16 @@
+<div class="home-layout">
+    <app-home-navbar></app-home-navbar>
+
+    <div class="main-container">
+        <!-- القائمة الجانبية موجودة دائماً، والـ CSS يتحكم بسلوكها -->
+        <app-home-side-menu></app-home-side-menu>
+
+        <main class="home-content-area" [class.with-bottom-nav]="isMobile()">
+            <router-outlet></router-outlet>
+        </main>
+    </div>
+
+    @if (isMobile()) {
+    <app-home-bottom-navbar></app-home-bottom-navbar>
+    }
+</div>

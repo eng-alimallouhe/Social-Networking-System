@@ -16,6 +16,9 @@ public class Role : Entity, ISoftDeletable
     // Soft Delete
     public bool IsActive { get; private set; } = true;
 
+    // Navigation
+    public ICollection<SNS.Domain.Identity.Users.Relations.RolePermission> RolePermissions { get; private set; } = new List<SNS.Domain.Identity.Users.Relations.RolePermission>();
+
     private Role()
     {
         Id = SequentialGuid.GenerateSequentialGuid();

@@ -81,7 +81,6 @@ public class Post : Entity, ISoftDeletable
         DetectChanges();
     }
 
-
     private void DetectChanges()
     {
         this.UpdatedAt = DateTime.UtcNow;

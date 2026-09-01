@@ -2,7 +2,7 @@ using Asp.Versioning;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SNS.API.DTOs.Profiles;
+using SNS.API.Contracts.Profiles;
 using SNS.API.Extensions;
 using SNS.API.Helpers;
 using SNS.Application.Identity.Shared.DTOs.Authentication;

@@ -16,9 +16,13 @@
 	
   <ItemGroup>
     <Compile Remove="Controllers\Authentication\**" />
+    <Compile Remove="DTOs\**" />
     <Content Remove="Controllers\Authentication\**" />
+    <Content Remove="DTOs\**" />
     <EmbeddedResource Remove="Controllers\Authentication\**" />
+    <EmbeddedResource Remove="DTOs\**" />
     <None Remove="Controllers\Authentication\**" />
+    <None Remove="DTOs\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -38,5 +42,14 @@
   <ItemGroup>
     <ProjectReference Include="..\SNS.Application\SNS.Application.csproj" />
     <ProjectReference Include="..\SNS.Infrastructure\SNS.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Controllers\Discussions\" />
+    <Folder Include="Controllers\Jobs\" />
+    <Folder Include="Controllers\Search\" />
+    <Folder Include="Controllers\Support\" />
+    <Folder Include="Controllers\Resumes\" />
+    <Folder Include="Controllers\Projects\" />
   </ItemGroup>
 </Project>

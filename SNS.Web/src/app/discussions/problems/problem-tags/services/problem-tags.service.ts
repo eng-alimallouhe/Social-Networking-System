@@ -1,0 +1,35 @@
+import { Injectable, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { environment } from '../../../../../environments/environment';
+import { DISCUSSIONS_API_ROUTES } from '../../../../shared/constants/api-routes/discussions-api.routes';
+import { Result } from '../../../../shared/contracts/result';
+import { AddProblemTagCommand } from '../contracts/add-problem-tag.command';
+import { ProblemTagDto } from '../contracts/problem-tag.dto';
+
+@Injectable({
+    providedIn: 'root',
+})
+export class ProblemTagsService {
+    private http = inject(HttpClient);
+    private baseUrl = environment.apiUrl;
+
+    addProblemTag(problemId: string, command: AddProblemTagCommand): Observable<Result> {
+        return this.http.post<Result>(
+            `${this.baseUrl}${DISCUSSIONS_API_ROUTES.ProblemTags(problemId)}`,
+            command
+        );
+    }
+
+    removeProblemTag(problemId: string, tagId: string): Observable<Result> {
+        return this.http.delete<Result>(
+            `${this.baseUrl}${DISCUSSIONS_API_ROUTES.RemoveProblemTag(problemId, tagId)}`
+        );
+    }
+
+    getProblemTags(problemId: string): Observable<Result<ProblemTagDto[]>> {
+        return this.http.get<Result<ProblemTagDto[]>>(
+            `${this.baseUrl}${DISCUSSIONS_API_ROUTES.ProblemTags(problemId)}`
+        );
+    }
+}

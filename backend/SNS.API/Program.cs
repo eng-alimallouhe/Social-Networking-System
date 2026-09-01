@@ -1,4 +1,4 @@
-﻿using Asp.Versioning;
+using Asp.Versioning;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
@@ -7,6 +7,7 @@ using SNS.Application;
 using SNS.Infrastructure;
 using SNS.Infrastructure.Identity.Notifications.Hubs;
 using System.Text;
+using Microsoft.AspNetCore.HttpOverrides;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -132,7 +133,16 @@ builder.Services.AddCors(options =>
     });
 });
 
+builder.Services.Configure<ForwardedHeadersOptions>(options =>
+{
+    options.ForwardedHeaders =
+        ForwardedHeaders.XForwardedFor |
+        ForwardedHeaders.XForwardedProto;
+});
+
 var app = builder.Build();
+
+app.UseForwardedHeaders();
 
 app.MapOpenApi();
 
@@ -152,6 +162,14 @@ app.UseAuthorization();
 
 app.MapHub<NotificationHub>("/hubs/notifications");
 
+
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<SNS.Infrastructure.Persistence.SNSDbContext>();
+    var permissionService = scope.ServiceProvider.GetService<SNS.Application.Identity.Shared.Abstractions.IPermissionService>();
+    var logger = scope.ServiceProvider.GetService<ILogger<Program>>();
+    await SNS.Infrastructure.Identity.Users.Seeding.PermissionSeeder.SeedPermissionsAndRolesAsync(dbContext, permissionService, logger);
+}
 
 app.MapControllers();
 

@@ -20,7 +20,7 @@ public class ProjectSearchService : IProjectSearchService
         _elasticBaseService = elasticBaseService;
     }
 
-    public async Task<SearchResult<ProjectDocument>> SearchProjectsAsync(ProjectSearchQuery query, CancellationToken cancellationToken = default)
+    public async Task<SearchResult<ProjectDocument>> SearchProjectsAsync(GetProjectsSearchQuery query, CancellationToken cancellationToken = default)
     {
         var mustQueries = new List<Query>();
         var filterQueries = new List<Query>();
@@ -48,21 +48,6 @@ public class ProjectSearchService : IProjectSearchService
             }
         }
 
-        if (query.MinContributors.HasValue || query.MaxContributors.HasValue)
-        {
-            filterQueries.Add(new NumberRangeQuery
-            {
-                Field = "contributorsCount",
-                Gte = query.MinContributors.HasValue ? (double)query.MinContributors.Value : null,
-                Lte = query.MaxContributors.HasValue ? (double)query.MaxContributors.Value : null
-            });
-        }
-
-        if (query.MinRate.HasValue)
-        {
-            filterQueries.Add(new NumberRangeQuery { Field = "rate", Gte = (double)query.MinRate.Value });
-        }
-
         if (query.MinCreatedAt.HasValue || query.MaxCreatedAt.HasValue)
         {
             filterQueries.Add(new DateRangeQuery
@@ -84,7 +69,7 @@ public class ProjectSearchService : IProjectSearchService
             )
             .Sort(sort => sort
                 .Score() 
-                .Field(f => f.Rate, fs => fs.Order(SortOrder.Desc)) 
+                .Field(f => f.CreatedAt, fs => fs.Order(SortOrder.Desc)) 
             ),
             cancellationToken);
     }
@@ -117,27 +102,10 @@ public class ProjectSearchService : IProjectSearchService
             .From((query.Page - 1) * query.PageSize)
             .Size(query.PageSize)
             .Query(q => q
-                .FunctionScore(fs => fs
-                    .Query(qb => qb
-                        .Bool(b => b
-                            .Filter(filterQueries)
-                            .Should(shouldQueries)
-                            .MinimumShouldMatch(1) 
-                        )
-                    )
-                    .Functions(new List<FunctionScore>
-                    {
-                        new FunctionScore
-                        {
-                            FieldValueFactor = new FieldValueFactorScoreFunction
-                            {
-                                Field = "rate",
-                                Factor = 1.5, 
-                                Modifier = FieldValueFactorModifier.Log1p 
-                            }
-                        }
-                    })
-                    .ScoreMode(FunctionScoreMode.Multiply)
+                .Bool(b => b
+                    .Filter(filterQueries)
+                    .Should(shouldQueries)
+                    .MinimumShouldMatch(1) 
                 )
             )
             .Sort(sort => sort.Score()), 
@@ -165,7 +133,7 @@ public class ProjectSearchService : IProjectSearchService
             d => d
             .Query(q => q
                 .Term(t => t
-                    .Field(f => f.OwnerId)
+                    .Field("ownerId")
                     .Value(authorId.ToString())
                 )
             ), cancellationToken);

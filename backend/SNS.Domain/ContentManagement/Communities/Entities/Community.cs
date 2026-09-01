@@ -13,10 +13,10 @@ public class Community : Entity, ISoftDeletable
     // Primary Key
     public Guid Id { get; private set; }
 
-    // Foreign Key: One(Profile) ? Many(Communities)
+    // Foreign Key: One(Profile) to Many(Communities)
     public Guid OwnerId { get; private set; }
 
-    //Unique Name
+    // Unique Name
     public string Name { get; private set; } = string.Empty;
     public string Description { get; private set; } = string.Empty;
     public string RulesText { get; private set; } = string.Empty;
@@ -65,10 +65,30 @@ public class Community : Entity, ISoftDeletable
         return entity;
     }
 
+    public void Update(string name, string description, string rulesText, ModerationPolicy policy, CommunityType type, CommunityStatus status, string? logoObjectKey)
+    {
+        Name = name;
+        Description = description;
+        RulesText = rulesText;
+        Policy = policy;
+        Type = type;
+        Status = status;
+        if (!string.IsNullOrWhiteSpace(logoObjectKey))
+        {
+            LogoObjectKey = logoObjectKey;
+        }
+        UpdateAt = DateTime.UtcNow;
+    }
+
+    public void UpdateLogo(string logoObjectKey)
+    {
+        LogoObjectKey = logoObjectKey;
+        UpdateAt = DateTime.UtcNow;
+    }
+
     public void SoftDelete()
     {
-        this.IsActive = false;
+        IsActive = false;
+        UpdateAt = DateTime.UtcNow;
     }
 }
-
-

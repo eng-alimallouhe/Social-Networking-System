@@ -19,4 +19,7 @@ export const IDENTITY_API_ROUTES = {
     Blocks: 'profiles/social-graph/Blocks',
     Follows: 'profiles/social-graph/Follows',
     
+    //Moderation:
+    Moderation: 'Moderation',
+
 } as const;

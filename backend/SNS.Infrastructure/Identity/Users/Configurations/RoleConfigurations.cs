@@ -4,8 +4,7 @@ using SNS.Domain.Identity.Users.Entities;
 
 namespace SNS.Infrastructure.Identity.Users.Configurations;
 
-public class RoleConfigurations : 
-    IEntityTypeConfiguration<Role>
+public class RoleConfigurations : IEntityTypeConfiguration<Role>
 {
     public void Configure(EntityTypeBuilder<Role> builder)
     {
@@ -14,7 +13,12 @@ public class RoleConfigurations :
         builder.HasKey(r => r.Id);
 
         builder.Property(r => r.Type)
-                .IsRequired()
-                .HasColumnType("int");
+            .IsRequired()
+            .HasColumnType("int");
+
+        builder.HasMany(r => r.RolePermissions)
+            .WithOne(rp => rp.Role)
+            .HasForeignKey(rp => rp.RoleId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

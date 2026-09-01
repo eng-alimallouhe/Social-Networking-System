@@ -1,13 +1,15 @@
 using Asp.Versioning;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using SNS.API.DTOs.Shared;
+using SNS.API.Contracts.Shared;
 using SNS.API.Extensions;
+using SNS.Application.Profiles.Profiles.Contracts;
 using SNS.Application.Profiles.SocialGraph.Commands.FollowProfile;
 using SNS.Application.Profiles.SocialGraph.Commands.MuteProfile;
 using SNS.Application.Profiles.SocialGraph.Commands.UnfollowProfile;
 using SNS.Application.Profiles.SocialGraph.Commands.UnMuteProfile;
 using SNS.Application.Profiles.SocialGraph.Contracts;
+using SNS.Application.Profiles.SocialGraph.Queries.GetFollowSuggestions;
 using SNS.Application.Profiles.SocialGraph.Queries.GetProfileFollowers;
 using SNS.Application.Profiles.SocialGraph.Queries.GetProfileFollowings;
 using SNS.Application.Shared.DTOs;
@@ -17,7 +19,7 @@ using SNS.Shared.Results;
 namespace SNS.API.Controllers.Profiles.SocialGraph;
 
 /// <summary>
-/// Handles social graph interactions including following, unfollowing, muting, and querying followers/followings.
+/// Handles social graph interactions including following, unfollowing, muting, querying followers/followings, and follow suggestions.
 /// </summary>
 [Route("api/v{version:apiVersion}/profiles/social-graph/[controller]")]
 [ApiVersion("1.0")]
@@ -30,6 +32,19 @@ public class FollowsController : ControllerBase
     public FollowsController(IMediator mediator)
     {
         _mediator = mediator;
+    }
+
+    /// <summary>
+    /// Retrieves up to 10 follow suggestions for the authenticated profile based on mutual connections, shared skills, and popularity.
+    /// </summary>
+    /// <response code="200">Returns a list of profile suggestions <see cref="ProfileSummaryDto"/>.</response>
+    /// <response code="401">The user is not authenticated.</response>
+    [HttpGet("follow-suggestions")]
+    [ProducesResponseType(typeof(List<ProfileSummaryDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<ActionResult<Result<List<ProfileSummaryDto>>>> GetFollowSuggestionsAsync()
+    {
+        return (await _mediator.Send(new GetFollowSuggestionsQuery())).ToActionResult(this);
     }
 
     /// <summary>

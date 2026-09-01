@@ -21,9 +21,8 @@ public class Comment : Entity, ISoftDeletable
     // General
     public string Content { get; private set; } = string.Empty;
 
-
-    //Soft Delete
-    public bool IsActive { get; private set; }
+    // Soft Delete
+    public bool IsActive { get; private set; } = true;
 
     // Timestamp
     public DateTime CreatedAt { get; private set; }
@@ -34,14 +33,14 @@ public class Comment : Entity, ISoftDeletable
     public ICollection<Comment> Replies { get; set; } = new List<Comment>();
     public ICollection<CommentReaction> Reactions { get; set; } = new List<CommentReaction>();
     public ICollection<CommentMention> Mentions { get; set; } = new List<CommentMention>();
-    public ICollection<CommentMedia> Medias { get; set; } 
-        = new List<CommentMedia>();
+    public SNS.Domain.Profiles.Profiles.Entities.Profile Author { get; set; } = null!;
 
     private Comment()
     {
         Id = SequentialGuid.GenerateSequentialGuid();
         CreatedAt = DateTime.UtcNow;
         UpdatedAt = DateTime.UtcNow;
+        IsActive = true;
     }
 
     public static Comment Create(Guid authorId, Guid postId, Guid? parentCommentId, string content)
@@ -54,8 +53,15 @@ public class Comment : Entity, ISoftDeletable
         return entity;
     }
 
+    public void UpdateContent(string content)
+    {
+        Content = content;
+        UpdatedAt = DateTime.UtcNow;
+    }
+
     public void SoftDelete()
     {
-        this.IsActive = false;
+        IsActive = false;
+        UpdatedAt = DateTime.UtcNow;
     }
 }

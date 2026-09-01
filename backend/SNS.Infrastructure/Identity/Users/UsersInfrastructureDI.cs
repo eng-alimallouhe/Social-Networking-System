@@ -1,8 +1,13 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 using Quartz;
+using SNS.Application.Identity.Shared.Abstractions;
 using SNS.Domain.Identity.Users.Entities;
+using SNS.Domain.Identity.Users.Relations;
 using SNS.Domain.Shared.Abstractions.Repositories;
 using SNS.Infrastructure.Identity.ArchiveManagement.Jobs;
+using SNS.Infrastructure.Identity.Shared.Authorization;
+using SNS.Infrastructure.Identity.Shared.Services;
 using SNS.Infrastructure.Identity.Users.BackgroundJobs;
 using SNS.Infrastructure.Identity.Users.Repositories;
 
@@ -14,6 +19,13 @@ public static class UsersInfrastructureDI
     {
         services.AddScoped<IRepository<User>, UserRepository>();
         services.AddScoped<ISoftDeletableRepository<Role>, RoleRepository>();
+        services.AddScoped<IRepository<Permission>, PermissionRepository>();
+        services.AddScoped<IRepository<RolePermission>, RolePermissionRepository>();
+
+        // Permission-based authorization infrastructure
+        services.AddScoped<IPermissionService, PermissionService>();
+        services.AddSingleton<IAuthorizationPolicyProvider, PermissionAuthorizationPolicyProvider>();
+        services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
 
         services.AddQuartz(q =>
         {
@@ -35,7 +47,6 @@ public static class UsersInfrastructureDI
                 .WithIdentity("UserHardDeletionJobTrigger", "IdentityGroups")
                 .WithCronSchedule("0 30 3 * * ?"));
         });
-
 
         return services;
     }

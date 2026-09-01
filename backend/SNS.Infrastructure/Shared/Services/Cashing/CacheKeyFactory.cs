@@ -1,8 +1,9 @@
 using SNS.Application.ContentManagement.Communities.Services;
-using SNS.Application.ContentManagement.Posts.Abstractions;
+using SNS.Application.ContentManagement.Posts.Posts.Abstractions;
 using SNS.Application.Identity.Shared.Abstractions;
 using SNS.Application.Profiles.Profiles.abstractions;
 using SNS.Domain.Identity.Users.Enums;
+using SNS.Application.Projects.Abstractions;
 
 namespace SNS.Infrastructure.Shared.Services.Cashing;
 
@@ -10,13 +11,17 @@ public class CacheKeyFactory :
     IIdentityCacheKeyFactory,
     IProfileCacheKeyFactory,
     ICommunityCacheKeyFactory,
-    IPostCacheKeyFactory
+    IPostCacheKeyFactory,
+    IProjectCacheKeyFactory
 {
     public string GetUserKey(Guid userId)
         => $"user:{userId}";
 
     public string GetProfileFeedKey(Guid profileId)
         => $"profile:feed:{profileId.ToString()}";
+
+    public string GetProjectProfileFeedKey(Guid profileId)
+        => $"profile:project-feed:{profileId.ToString()}";
 
     public string GetCelebrityPostKey(Guid publisherId)
         => $"celebrity:posts:{publisherId.ToString()}";
@@ -67,4 +72,7 @@ public class CacheKeyFactory :
 
     public string GetUserAuthenticatorKey(Guid userId)
         => $"user:{userId}:authenticator-setup";
+
+    public string GetRolePermissionsMatrixKey()
+        => "identity:role-permissions:matrix";
 }

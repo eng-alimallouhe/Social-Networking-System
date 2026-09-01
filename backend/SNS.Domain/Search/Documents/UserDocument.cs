@@ -15,10 +15,6 @@ public class UserDocument
     public string Email { get; set; } = string.Empty;
 
     public UserStatus Status { get; set; }
-    public bool IsVerified { get; set; }
-    public int FailedLoginAttempts { get; set; }
-    public bool IsMfaEnabled { get; set; }
     public CommunicationMethod DefaultCommunicationMethod { get; set; }
     public DateTime CreatedAt { get; set; }
-    public DateTime LastLogin { get; set; }
 }

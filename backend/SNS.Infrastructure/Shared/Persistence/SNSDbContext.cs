@@ -16,6 +16,7 @@ using SNS.Domain.Identity.SecuritySessions.Entities;
 using SNS.Domain.Identity.SecuritySettings.Entities;
 using SNS.Domain.Identity.Users.Constants;
 using SNS.Domain.Identity.Users.Entities;
+using SNS.Domain.Identity.Users.Relations;
 using SNS.Domain.Jobs.Entities;
 using SNS.Domain.Jobs.Relations;
 using SNS.Domain.Preferences.Entities;
@@ -66,6 +67,7 @@ public class SNSDbContext : DbContext, IApplicationDbContext
     public DbSet<Company> Companies { get; set; }
     public DbSet<CompanyAdministrator> CompanyAdministrators { get; set; }
     public DbSet<SavedJob> SavedJobs { get; set; }
+    public DbSet<CompanyCreateRequest> CompanyCreateRequests { get; set; }
 
     // 📦 ContentManagement
     public DbSet<Post> Posts { get; set; }
@@ -73,7 +75,7 @@ public class SNSDbContext : DbContext, IApplicationDbContext
     public DbSet<CommentReaction> CommentReactions { get; set; }
     public DbSet<PostMedia> PostMedia { get; set; }
     public DbSet<PostReaction> PostReactions { get; set; }
-    public DbSet<CommentMedia> CommentMedias { get; set; }
+    public DbSet<CommentMention> CommentMentions { get; set; }
     public DbSet<SavedPost> SavedPosts { get; set; }
 
     // Bridges
@@ -137,6 +139,8 @@ public class SNSDbContext : DbContext, IApplicationDbContext
     // 📦 Identity
     public DbSet<User> Users { get; set; }
     public DbSet<Role> Roles { get; set; }
+    public DbSet<Permission> Permissions { get; set; }
+    public DbSet<RolePermission> RolePermissions { get; set; }
     public DbSet<SecuritySession> UserSessions { get; set; }
     public DbSet<UserArchive> UserArchives { get; set; }
     public DbSet<IdentityArchive> IdentityArchives { get; set; }
@@ -164,6 +168,15 @@ public class SNSDbContext : DbContext, IApplicationDbContext
     // 📦 OutboxMessage
     public DbSet<OutboxMessage> OutboxMessages { get; set; }
 
+    // 📦 Moderation
+    public DbSet<SNS.Domain.Moderation.Entities.ContentReport> ContentReports { get; set; }
+    public DbSet<SNS.Domain.Moderation.Entities.ReportTicket> ReportTickets { get; set; }
+
+    // 📦 Support
+    public DbSet<SNS.Domain.Support.Entities.SupportTicket> SupportTickets { get; set; }
+    public DbSet<SNS.Domain.Support.Entities.TicketMessage> TicketMessages { get; set; }
+    public DbSet<SNS.Domain.Support.Entities.TicketMessageAttachment> TicketMessageAttachments { get; set; }
+
     // ====================================================================
     // IApplicationDbContext Implementation (Read-Only)
     // ====================================================================
@@ -188,8 +201,8 @@ public class SNSDbContext : DbContext, IApplicationDbContext
     IQueryable<JobSkill> IApplicationDbContext.JobSkills => JobSkills.AsNoTracking();
     IQueryable<Company> IApplicationDbContext.Companies => Companies.AsNoTracking();
     IQueryable<CompanyAdministrator> IApplicationDbContext.CompanyAdministrators => CompanyAdministrators.AsNoTracking();
-
     IQueryable<SavedJob> IApplicationDbContext.SavedJobs => SavedJobs.AsNoTracking();
+    IQueryable<CompanyCreateRequest> IApplicationDbContext.CompanyCreateRequests => CompanyCreateRequests.AsNoTracking();
 
     // 📦 ContentManagement
     IQueryable<Post> IApplicationDbContext.Posts => Posts.AsNoTracking();
@@ -197,7 +210,7 @@ public class SNSDbContext : DbContext, IApplicationDbContext
     IQueryable<CommentReaction> IApplicationDbContext.CommentReactions => CommentReactions.AsNoTracking();
     IQueryable<PostMedia> IApplicationDbContext.PostMedia => PostMedia.AsNoTracking();
     IQueryable<PostReaction> IApplicationDbContext.PostReactions => PostReactions.AsNoTracking();
-    IQueryable<CommentMedia> IApplicationDbContext.CommentMedias => CommentMedias.AsNoTracking();
+    IQueryable<CommentMention> IApplicationDbContext.CommentMentions => CommentMentions.AsNoTracking();
     IQueryable<SavedPost> IApplicationDbContext.SavedPosts => SavedPosts.AsNoTracking();
 
     // Bridges
@@ -261,6 +274,8 @@ public class SNSDbContext : DbContext, IApplicationDbContext
     // 📦 Security
     IQueryable<User> IApplicationDbContext.Users => Users.AsNoTracking();
     IQueryable<Role> IApplicationDbContext.Roles => Roles.AsNoTracking();
+    IQueryable<Permission> IApplicationDbContext.Permissions => Permissions.AsNoTracking();
+    IQueryable<RolePermission> IApplicationDbContext.RolePermissions => RolePermissions.AsNoTracking();
     IQueryable<SecuritySession> IApplicationDbContext.UserSessions => UserSessions.AsNoTracking();
     IQueryable<UserArchive> IApplicationDbContext.UserArchives => UserArchives.AsNoTracking();
     IQueryable<IdentityArchive> IApplicationDbContext.IdentityArchives => IdentityArchives.AsNoTracking();
@@ -283,6 +298,15 @@ public class SNSDbContext : DbContext, IApplicationDbContext
     IQueryable<ProfileView> IApplicationDbContext.ProfileViews => ProfileViews.AsNoTracking();
     IQueryable<SavedProfile> IApplicationDbContext.SavedProfiles => SavedProfiles.AsNoTracking();
     IQueryable<ProfileTag> IApplicationDbContext.ProfileTags => ProfileTags.AsNoTracking();
+
+    // 📦 Moderation
+    IQueryable<SNS.Domain.Moderation.Entities.ContentReport> IApplicationDbContext.ContentReports => ContentReports.AsNoTracking();
+    IQueryable<SNS.Domain.Moderation.Entities.ReportTicket> IApplicationDbContext.ReportTickets => ReportTickets.AsNoTracking();
+
+    // 📦 Support
+    IQueryable<SNS.Domain.Support.Entities.SupportTicket> IApplicationDbContext.SupportTickets => SupportTickets.AsNoTracking();
+    IQueryable<SNS.Domain.Support.Entities.TicketMessage> IApplicationDbContext.TicketMessages => TicketMessages.AsNoTracking();
+    IQueryable<SNS.Domain.Support.Entities.TicketMessageAttachment> IApplicationDbContext.TicketMessageAttachments => TicketMessageAttachments.AsNoTracking();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

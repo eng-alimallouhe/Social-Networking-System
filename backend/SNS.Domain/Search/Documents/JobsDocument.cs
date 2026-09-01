@@ -15,6 +15,5 @@ public class JobsDocument
     public SalaryType SalaryType { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime? ClosedAt { get; set; }
-    public Guid CompanyId { get; set; }
     public string CompanyName { get; set; } = string.Empty;
 }

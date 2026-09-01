@@ -15,9 +15,7 @@ public class ProjectTag : IHardDeletable
     public Guid TagId { get; private set; }
 
     // Navigation
-
-
-
+    public Tag Tag { get; set; } = null!;
     private ProjectTag()
     {
         Id = SequentialGuid.GenerateSequentialGuid();

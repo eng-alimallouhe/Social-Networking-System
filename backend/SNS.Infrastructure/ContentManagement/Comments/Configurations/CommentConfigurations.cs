@@ -32,7 +32,7 @@ public class CommentConfigurations :
                .OnDelete(DeleteBehavior.Cascade); 
 
 
-        builder.HasOne<Profile>()
+        builder.HasOne(c => c.Author)
                .WithMany()
                .HasForeignKey(c => c.AuthorId)
                .IsRequired()

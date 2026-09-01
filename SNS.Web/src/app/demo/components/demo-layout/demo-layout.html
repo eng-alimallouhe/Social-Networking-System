@@ -1,12 +1,12 @@
 <canvas #particleCanvas class="bg-canvas"></canvas>
 
 <div class="auth-nav">
-    <div class="brand-area">
+    <a routerLink="/" class="brand-area">
         <div class="logo">
-            <img src="../../../../assets/icons/github.svg" alt="">
+            <img src="../../../../assets/icons/github.svg" alt="Logo">
         </div>
-        <h2>{{'App.Site_Name' | translate }}</h2>
-    </div>
+        <h2 class="site-name">{{ 'App.Site_Name' | translate }}</h2>
+    </a>
     <div class="links">
         <div (click)="logout()" class="link">
             Logout

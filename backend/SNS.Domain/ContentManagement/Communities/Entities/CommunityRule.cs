@@ -16,6 +16,9 @@ public class CommunityRule : Entity, IHardDeletable
     public string Description { get; private set; } = string.Empty;
     public int Order { get; private set; }
 
+    // Navigation Property
+    public Community Community { get; set; } = null!;
+
     private CommunityRule()
     {
         Id = SequentialGuid.GenerateSequentialGuid();
@@ -29,5 +32,12 @@ public class CommunityRule : Entity, IHardDeletable
         entity.Description = description;
         entity.Order = order;
         return entity;
+    }
+
+    public void Update(string title, string description, int order)
+    {
+        Title = title;
+        Description = description;
+        Order = order;
     }
 }

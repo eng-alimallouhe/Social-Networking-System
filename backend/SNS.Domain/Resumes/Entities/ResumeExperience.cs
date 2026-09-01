@@ -35,4 +35,13 @@ public class ResumeExperience : IHardDeletable
             EndDate = endDate
         };
     }
+
+    public void Update(string companyName, string position, string description, DateTime startDate, DateTime? endDate)
+    {
+        CompanyName = companyName;
+        Position = position;
+        Description = description;
+        StartDate = startDate;
+        EndDate = endDate;
+    }
 }

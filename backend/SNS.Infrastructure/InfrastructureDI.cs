@@ -12,6 +12,8 @@ using SNS.Infrastructure.Resumes;
 using SNS.Infrastructure.Search;
 using SNS.Infrastructure.Shared;
 using SNS.Infrastructure.Shared.Services.Cashing;
+using SNS.Infrastructure.Moderation;
+using SNS.Infrastructure.Support;
 
 namespace SNS.Infrastructure;
 
@@ -33,7 +35,8 @@ public static class InfrastructureDI
         services.AddResumesInfrastructureDI();
         services.AddSharedInfrastructureDI(configuration);
         services.AddCachingServices(configuration);
-
+        services.AddModerationInfrastructure();
+        services.AddSupportInfrastructure();
 
         return services;
     }

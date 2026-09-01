@@ -1,7 +1,7 @@
 using Elastic.Clients.Elasticsearch;
 using Elastic.Clients.Elasticsearch.QueryDsl;
 using SNS.Application.Search.ContentManagement.Posts.Abstractions;
-using SNS.Application.Search.ContentManagement.Posts.Queries;
+using SNS.Application.Search.ContentManagement.Posts.Queries.GetPostsSearch;
 using SNS.Application.Search.Shared.Contracts;
 using SNS.Domain.Search.Documents;
 using SNS.Infrastructure.Search.Abstractions;
@@ -19,7 +19,7 @@ public class PostSearchService : IPostSearchService
         _elasticBaseService = elasticBaseService;
     }
 
-    public async Task<SearchResult<PostDocument>> SearchAsync(PostSearchQuery query, CancellationToken cancellationToken = default)
+    public async Task<SearchResult<PostDocument>> SearchAsync(GetPostsSearchQuery query, CancellationToken cancellationToken = default)
     {
         var mustQueries = new List<Query>();
         var filterQueries = new List<Query>();
@@ -28,7 +28,7 @@ public class PostSearchService : IPostSearchService
         {
             mustQueries.Add(new MultiMatchQuery
             {
-                Fields = new[] { "userName", "fullName" },
+                Fields = new[] { "title^3.0", "content", "tags", "topics" },
                 Query = query.SearchTerm,
                 Fuzziness = new Fuzziness("AUTO")
             });
@@ -42,6 +42,30 @@ public class PostSearchService : IPostSearchService
                 Gte = query.MinCreatedAt,
                 Lte = query.MaxCreatedAt
             });
+        }
+
+        if (query.Tags != null && query.Tags.Any())
+        {
+            foreach (var tag in query.Tags)
+            {
+                filterQueries.Add(new TermQuery
+                {
+                    Field = "tags",
+                    Value = tag
+                });
+            }
+        }
+
+        if (query.Topics != null && query.Topics.Any())
+        {
+            foreach (var topic in query.Topics)
+            {
+                filterQueries.Add(new TermQuery
+                {
+                    Field = "topics",
+                    Value = topic
+                });
+            }
         }
 
         return await _elasticBaseService.SearchAsync(

@@ -38,4 +38,9 @@ public class ProblemVote : IHardDeletable
             Type = type
         };
     }
+
+    public void ChangeVote(VoteType type)
+    {
+        this.Type = type;
+    }
 }

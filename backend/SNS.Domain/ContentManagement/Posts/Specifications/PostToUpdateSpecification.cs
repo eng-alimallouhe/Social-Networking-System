@@ -1,4 +1,4 @@
-﻿using SNS.Domain.ContentManagement.Posts.Entities;
+using SNS.Domain.ContentManagement.Posts.Entities;
 using SNS.Domain.Shared.Abstractions.Specifications;
 using System.Linq.Expressions;
 
@@ -22,5 +22,6 @@ public class PostToUpdateSpecification
         Includes.Add(nameof(Post.Media));
         Includes.Add(nameof(Post.PostTags));
         Includes.Add("PostTags.Tag");
+        Includes.Add(nameof(Post.Mentions));
     }
 }

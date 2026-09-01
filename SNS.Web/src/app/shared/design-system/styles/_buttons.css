@@ -56,6 +56,23 @@
     pointer-events: none;
 }
 
+.btn:has(svg:only-child) {
+    padding: var(--spacing-1);
+    background-color: transparent;
+    box-shadow: none;
+    color: var(--primary-color);
+}
+
+.btn svg:only-child {
+    width: var(--spacing-8);
+    height: var(--spacing-8);
+}
+
+.btn:has(svg:only-child):hover:not(:disabled) {
+    background-color: transparent;
+    color: var(--primary-hover);
+}
+
 /* Focus */
 .btn:focus-visible {
     outline: 2px solid var(--primary-color);
@@ -74,7 +91,6 @@
 
 /* Active / Pressed */
 .btn:active:not(:disabled) {
-    transform: scale(0.97) translateY(0);
     box-shadow: none;
 }
 
@@ -117,6 +133,11 @@
 }
 
 
+/* Half Column */
+.btn-half-column {
+    width: calc(50% - var(--spacing-2));
+}
+
 /* -- Primary ------------------------------------------------
    Main call-to-action. Examples: Submit, Save, Create,
    Continue, Confirm
@@ -136,7 +157,6 @@
 
 .btn-primary:active:not(:disabled) {
     background: var(--primary-hover);
-    transform: scale(0.97) translateY(0);
     box-shadow: none;
 }
 
@@ -159,7 +179,7 @@
 
 .btn-secondary:active:not(:disabled) {
     background: var(--bg-hover);
-    transform: scale(0.97) translateY(0);
+    transform: scale(0.97);
 }
 
 
@@ -182,7 +202,7 @@
 
 .btn-outlined:active:not(:disabled) {
     background: color-mix(in srgb, var(--primary-color) 14%, transparent);
-    transform: scale(0.97) translateY(0);
+    transform: scale(0.97);
 }
 
 
@@ -226,7 +246,7 @@
 
 .btn-update:active:not(:disabled) {
     background: var(--primary-hover);
-    transform: scale(0.97) translateY(0);
+    transform: scale(0.97);
     box-shadow: none;
 }
 
@@ -249,7 +269,7 @@
 
 .btn-delete:active:not(:disabled) {
     background: var(--secondary-hover);
-    transform: scale(0.97) translateY(0);
+    transform: scale(0.97);
     box-shadow: none;
 }
 

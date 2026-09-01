@@ -1,5 +1,6 @@
 :host {
     display: block;
+    min-height: 100dvh;
     padding-top: calc(var(--navbar-mobile-height) + var(--spacing-2));
 }
 

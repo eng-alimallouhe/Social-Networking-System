@@ -95,7 +95,6 @@ public class ArchiveManagementController : ControllerBase
     /// <remarks>
     /// Requires authentication. Asynchronously compiles all personal data into a downloadable archive.
     /// </remarks>
-    /// <param name="request">The export request parameters.</param>
     /// <response code="200">Returns export status and request confirmation <see cref="ExportAccountDataResponseDto"/>.</response>
     /// <response code="400">Export request cannot be initiated (e.g., active request already pending).</response>
     /// <response code="401">The request is unauthenticated.</response>

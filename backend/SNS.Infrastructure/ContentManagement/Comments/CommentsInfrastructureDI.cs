@@ -12,10 +12,7 @@ public static class CommentsInfrastructureDI
         // Repositories
         services.AddScoped<ISoftDeletableRepository<Comment>, CommentRepository>();
         services.AddScoped<IRepository<CommentReaction>, CommentReactionRepository>();
-        services.AddScoped<IRepository<CommentMedia>, CommentMediaRepository>();
         services.AddScoped<IRepository<CommentMention>, CommentMentionRepository>();
-
-        // Services
 
         return services;
     }

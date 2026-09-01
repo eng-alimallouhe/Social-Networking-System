@@ -1,4 +1,9 @@
-using SNS.Domain.Search.Documents;
+using SNS.Application.ContentManagement.Communities.Communities.Contracts;
+using SNS.Application.ContentManagement.Posts.Posts.Contracts;
+using SNS.Application.Discussions.Problems.Problems.Contracts;
+using SNS.Application.Profiles.Profiles.Contracts;
+using SNS.Application.Projects.Contracts;
+using SNS.Application.Search.Jobs.Contracts;
 
 namespace SNS.Application.Search.Queries.GetGlobalSearch;
 
@@ -8,28 +13,32 @@ namespace SNS.Application.Search.Queries.GetGlobalSearch;
 public sealed record GlobalSearchResultDto
 {
     /// <summary>
-    /// Gets matched user profile documents.
+    /// Gets matched user profile summaries.
     /// </summary>
-    public List<ProfileDocument> Profiles { get; init; } = new();
+    public List<ProfileSummaryDto> Profiles { get; init; } = new();
 
     /// <summary>
-    /// Gets matched project documents.
+    /// Gets matched project overviews.
     /// </summary>
-    public List<ProjectDocument> Projects { get; init; } = new();
+    public List<ProjectOverviewDto> Projects { get; init; } = new();
 
     /// <summary>
-    /// Gets matched community documents.
+    /// Gets matched community summaries.
     /// </summary>
-    public List<CommunityDocument> Communities { get; init; } = new();
+    public List<CommunitySummaryDto> Communities { get; init; } = new();
 
     /// <summary>
-    /// Gets matched job posting documents.
+    /// Gets matched job summaries.
     /// </summary>
-    public List<JobsDocument> Jobs { get; init; } = new();
+    public List<JobSummaryDto> Jobs { get; init; } = new();
 
     /// <summary>
-    /// Gets matched discussion problem documents.
+    /// Gets matched discussion problem summaries.
     /// </summary>
-    public List<ProblemDocument> Problems { get; init; } = new();
+    public List<ProblemSummaryDto> Problems { get; init; } = new();
+
+    /// <summary>
+    /// Gets matched post overviews.
+    /// </summary>
+    public List<PostOverviewDto> Posts { get; init; } = new();
 }
-

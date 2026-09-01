@@ -36,7 +36,7 @@ public class ProjectRatingConfigurations :
                .IsRequired()
                .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasOne<Profile>()
+        builder.HasOne<Profile>(pr => pr.Rater)
                .WithMany()
                .HasForeignKey(pr => pr.RaterId)
                .IsRequired()

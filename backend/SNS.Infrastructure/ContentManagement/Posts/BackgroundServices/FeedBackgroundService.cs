@@ -1,6 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
-using SNS.Application.ContentManagement.Posts.Abstractions;
-using SNS.Application.ContentManagement.Posts.Contracts;
+using Microsoft.EntityFrameworkCore;
+using SNS.Application.ContentManagement.Posts.Posts.Abstractions;
+using SNS.Application.ContentManagement.Posts.Posts.Contracts;
 using SNS.Application.Search.ContentManagement.Posts.Queries;
 using SNS.Application.Shared.Abstractions.Data;
 
@@ -29,8 +29,6 @@ public class FeedBackgroundService : IFeedBackgroundService
         }
 
         try{
-            // 1. جلب معايير المستخدم (الكود الخاص بك تماماً)
-            
             var followedProfiles =
                 feedParams.FollowedProfilesIds.ToHashSet();
 
@@ -52,10 +50,8 @@ public class FeedBackgroundService : IFeedBackgroundService
             var interestedTopics =
                 userTopicsDict.Keys.ToHashSet();
 
-            // 2. جلب البوستات المرشحة بناءً على معايير الفيد (Candidates Generation)
             var rawCandidates = await _dbContext.Posts
                 .Where(p =>
-                    // ألا يكون البوست محذوفاً أو من ضمن المستبعدين (المشاهدة أو المحظورين)
                     !feedParams.ExcludedPostsIds.Contains(p.Id) &&
                     !feedParams.ExcludedProfilesIds.Contains(p.AuthorId) &&
                     (
@@ -68,8 +64,8 @@ public class FeedBackgroundService : IFeedBackgroundService
                                 .Contains(pt.TopicId))
                     )
                 )
-                .OrderByDescending(p => p.CreatedAt) // جلب الأحدث كبداية للفلترة
-                .Take(500) // أخذ عينة كافية للرانك
+                .OrderByDescending(p => p.CreatedAt)
+                .Take(500)
                 .Select(p => new
                 {
                     Id = p.Id,
@@ -85,24 +81,21 @@ public class FeedBackgroundService : IFeedBackgroundService
                         TagId = pt.TagId,
                         Confidence = pt.Confidence ?? 1
                     }),
-                    LikesCount = p.Reactions.Count(),   // تأكد من أسماء علاقات التفاعلات لديك
+                    LikesCount = p.Reactions.Count(),
                     ViewsCount = p.Views.Count()
                 })
                 .ToListAsync();
 
-            // 3. تطبيق خوارزمية الـ Ranking (حساب السكور لكل بوست)
             var now = DateTime.UtcNow;
             var rankedItems = new List<FeedItemModel>();
 
             foreach (var post in rawCandidates)
             {
                 double hoursOld = (now - post.CreatedAt).TotalHours;
-                // معادلة Time Decay لتخفيض سكور البوست القديم وزيادة الحديث
                 double timeScore = 1.0 / (Math.Pow(hoursOld + 2, 1.5));
 
                 double engagementScore = (post.LikesCount * 2.0) + (post.ViewsCount * 0.1);
 
-                // بونص إذا كان من شخص يتابعه المستخدم
                 double followBonus =
                     followedProfiles.Contains(post.AuthorId)
                         ? 30
@@ -137,10 +130,9 @@ public class FeedBackgroundService : IFeedBackgroundService
                 rankedItems.Add(new FeedItemModel(post.Id, finalScore));
             }
 
-            // 4. ترتيب العناصر تنازلياً حسب السكور وحفظها دفعة واحدة في Redis عبر الخدمة التي أنشأتها
             var topSortedFeed = rankedItems
                 .OrderByDescending(x => x.Score)
-                .Take(300) // أخذ أعلى 300 وتخزينهم
+                .Take(300)
                 .ToList();
 
             if (topSortedFeed.Any())

@@ -1,0 +1,45 @@
+<nav class="home-navbar" [class.is-mobile]="isMobile()">
+    <!-- LEFT SIDE -->
+    <div class="nav-left">
+        @if (isMobile()) {
+        <button class="mobile-menu-btn icon-btn" (click)="toggleSideMenu()" aria-label="Open menu">
+            <svg lucideMenu></svg>
+        </button>
+        }
+        <a routerLink="/" class="brand-area">
+            <div class="logo">
+                <img src="../../../../assets/icons/github.svg" alt="Logo">
+            </div>
+            <h2 class="site-name">{{ 'App.Site_Name' | translate }}</h2>
+        </a>
+    </div>
+
+    <!-- CENTER (Desktop only) -->
+    @if (!isMobile()) {
+    <div class="nav-center">
+        <a [routerLink]="['/home/posts']" [routerLinkActiveOptions]="{exact: true}" routerLinkActive="active"
+            class="nav-link">
+            <svg lucideHome></svg>
+        </a>
+        <a routerLink="/home/search" routerLinkActive="active" class="nav-link">
+            <svg lucideSearch></svg>
+        </a>
+        <a routerLink="/home/discussion" routerLinkActive="active" class="nav-link">
+            <svg lucideMessagesSquare></svg>
+        </a>
+        <a routerLink="/home/projects" routerLinkActive="active" class="nav-link">
+            <svg lucideFolderClosed></svg>
+        </a>
+    </div>
+    }
+
+    <!-- RIGHT SIDE -->
+    <div class="nav-right">
+        <button class="btn btn-primary" aria-label="Create Content">
+            <svg lucideSquarePlus></svg>
+        </button>
+        <button class="notify-btn icon-btn" aria-label="Notifications">
+            <svg lucideBell></svg>
+        </button>
+    </div>
+</nav>

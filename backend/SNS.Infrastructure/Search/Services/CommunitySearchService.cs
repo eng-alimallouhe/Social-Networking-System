@@ -52,13 +52,13 @@ public class CommunitySearchService : ICommunitySearchService
                 )
             )
             .Sort(sort => sort
-                .Field(f => f.MembersCount, fs => fs.Order(SortOrder.Desc))
+                .Field(f => f.CreatedAt, fs => fs.Order(SortOrder.Desc))
             ),
             cancellationToken);
     }
 
     public async Task<SearchResult<CommunityDocument>> SearchCommunitiesAsync(
-        CommunitySearchQuery query,
+        SNS.Application.Search.ContentManagement.Communitites.Queries.GetCommunitiesSearch.GetCommunitiesSearchQuery query,
         CancellationToken cancellationToken = default)
     {
         var mustQueries = new List<Query>();
@@ -69,7 +69,7 @@ public class CommunitySearchService : ICommunitySearchService
             mustQueries.Add(new MultiMatchQuery
             {
                 Query = query.SearchTerm,
-                Fields = new[] { "name^3.0", "description^2.0", "topics" },
+                Fields = new[] { "name^3.0", "description^2.0" },
                 Fuzziness = new Fuzziness("AUTO")
             });
         }
@@ -94,7 +94,7 @@ public class CommunitySearchService : ICommunitySearchService
             )
             .Sort(sort => sort
                 .Score()
-                .Field(f => f.MembersCount, fs => fs.Order(SortOrder.Desc))
+                .Field(f => f.CreatedAt, fs => fs.Order(SortOrder.Desc))
             ),
             cancellationToken);
     }

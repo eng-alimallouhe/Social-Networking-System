@@ -21,12 +21,12 @@ public class CommunityJoinRequestConfiguration : IEntityTypeConfiguration<Commun
             x.SubmitterId 
         }).IsUnique();
 
-        builder.HasOne<Community>()
+        builder.HasOne(x => x.Community)
             .WithMany()
             .HasForeignKey(x => x.CommunityId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasOne<Profile>()
+        builder.HasOne(x => x.Submitter)
             .WithMany()
             .HasForeignKey(x => x.SubmitterId)
             .OnDelete(DeleteBehavior.Cascade);

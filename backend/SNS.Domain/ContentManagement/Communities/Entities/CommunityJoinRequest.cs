@@ -1,5 +1,6 @@
 using SNS.Domain.Shared.Abstractions.IDeletable;
 using SNS.Domain.ContentManagement.Communities.Enums;
+using SNS.Domain.Profiles.Profiles.Entities;
 using SNS.Domain.Shared.Entities;
 using SNS.Domain.Shared.Helpers;
 
@@ -10,7 +11,7 @@ public class CommunityJoinRequest : Entity, IHardDeletable
     // Primary Key
     public Guid Id { get; private set; }
 
-    //CommunityId with SubmitterId should be unique to prevent duplicate join requests from the same profile to the same community
+    // CommunityId with SubmitterId should be unique to prevent duplicate join requests from the same profile to the same community
     // Foreign Key: One(Community) ? Many(JoinRequests)
     public Guid CommunityId { get; private set; }
 
@@ -24,6 +25,9 @@ public class CommunityJoinRequest : Entity, IHardDeletable
     public DateTime CreatedAt { get; private set; }
     public DateTime? ReviewedAt { get; private set; }
 
+    // Navigation Properties
+    public Community Community { get; set; } = null!;
+    public Profile Submitter { get; set; } = null!;
 
     private CommunityJoinRequest()
     {
@@ -40,5 +44,16 @@ public class CommunityJoinRequest : Entity, IHardDeletable
         entity.Notes = notes;
         return entity;
     }
-}
 
+    public void Approve()
+    {
+        Status = JoinRequestStatus.Approved;
+        ReviewedAt = DateTime.UtcNow;
+    }
+
+    public void Reject()
+    {
+        Status = JoinRequestStatus.Rejected;
+        ReviewedAt = DateTime.UtcNow;
+    }
+}

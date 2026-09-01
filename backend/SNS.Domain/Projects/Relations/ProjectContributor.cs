@@ -2,10 +2,11 @@ using SNS.Domain.Profiles.Profiles.Entities;
 using SNS.Domain.Projects.Enums;
 using SNS.Domain.Shared.Abstractions.IDeletable;
 using SNS.Domain.Shared.Helpers;
+using SNS.Domain.Shared.Entities;
 
 namespace SNS.Domain.Projects.Bridges;
 
-public class ProjectContributor : IHardDeletable
+public class ProjectContributor : Entity, IHardDeletable
 {
     // Primary Key
     public Guid Id { get; private set; }
@@ -43,5 +44,17 @@ public class ProjectContributor : IHardDeletable
             Role = role,
             InvitationMessage = invitationMessage
         };
+    }
+
+    public void AcceptInvitation()
+    {
+        InvitingStatus = InvitingStatus.Accepted;
+        RespondedAt = DateTime.UtcNow;
+    }
+
+    public void RejectInvitation()
+    {
+        InvitingStatus = InvitingStatus.Rejected;
+        RespondedAt = DateTime.UtcNow;
     }
 }

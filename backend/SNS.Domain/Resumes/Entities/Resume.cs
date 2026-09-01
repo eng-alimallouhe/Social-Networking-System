@@ -61,6 +61,17 @@ public class Resume : ISoftDeletable
         };
     }
 
+    public void Update(string? personalPictureUrl, bool syncProfilePicture, string title, Template template, string summary, SupportedLanguage langauge)
+    {
+        PersonalPictureUrl = personalPictureUrl;
+        SyncProfilePicture = syncProfilePicture;
+        Title = title;
+        Template = template;
+        Summary = summary;
+        Langauge = langauge;
+        UpdatedAt = DateTime.UtcNow;
+    }
+
     public void SoftDelete()
     {
         if (IsActive)

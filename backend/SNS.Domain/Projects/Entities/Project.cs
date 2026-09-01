@@ -4,10 +4,11 @@ using SNS.Domain.Projects.Bridges;
 using SNS.Domain.Projects.Enums;
 using System.Security.Cryptography.X509Certificates;
 
+using SNS.Domain.Shared.Entities;
 
 namespace SNS.Domain.Projects.Entities;
 
-public class Project : ISoftDeletable
+public class Project : Entity, ISoftDeletable
 {
     // Primary Key
     public Guid Id { get; private set; }
@@ -95,6 +96,31 @@ public class Project : ISoftDeletable
     {
         this.SourceCodeTree = jsonTree;
     }
+
+    public void UpdateReadmeContent(string readmeContent)
+    {
+        this.ReadmeContent = readmeContent;
+        this.UpdatedAt = DateTime.UtcNow;
+    }
+
+    public void ChangeStatus(ProjectStatus status)
+    {
+        this.Status = status;
+        this.UpdatedAt = DateTime.UtcNow;
+    }
+
+    public void UpdateBasicInfo(string title, string shortDescription)
+    {
+        this.Title = title;
+        this.ShortDescription = shortDescription;
+        this.UpdatedAt = DateTime.UtcNow;
+    }
+
+    public void UpdateInfo(string title, string shortDescription, string liveDemoUrl)
+    {
+        this.Title = title;
+        this.ShortDescription = shortDescription;
+        this.LiveDemoUrl = liveDemoUrl;
+        this.UpdatedAt = DateTime.UtcNow;
+    }
 }
-
-

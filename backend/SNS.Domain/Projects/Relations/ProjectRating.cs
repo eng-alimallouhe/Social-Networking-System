@@ -1,3 +1,4 @@
+using SNS.Domain.Profiles.Profiles.Entities;
 using SNS.Domain.Shared.Abstractions.IDeletable;
 using SNS.Domain.Shared.Helpers;
 
@@ -20,8 +21,7 @@ public class ProjectRating : IHardDeletable
     public DateTime CreatedAt { get; private set; }
 
     // Navigation
-
-
+    public Profile Rater { get; set; } = null!;
 
     private ProjectRating()
     {
@@ -38,5 +38,11 @@ public class ProjectRating : IHardDeletable
             RatingValue = ratingValue,
             Comment = comment
         };
+    }
+
+    public void Update(int ratingValue, string comment)
+    {
+        RatingValue = ratingValue;
+        Comment = comment;
     }
 }

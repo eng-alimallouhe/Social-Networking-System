@@ -1,0 +1,80 @@
+<div class="project-container">
+    <div class="project-info-container">
+        <div class="project-body">
+            <div class="project-body-section project-header">
+                <div class="title-group">
+                    <h2 class="project-title"> {{ project.title }} </h2>
+                    <p [class]="'project-status-'+ project.status" class="project-status">
+                        {{ ('Project.Status.' + project.status) | translate }}
+                    </p>
+                </div>
+                <p class="project-description"> {{ project.shortDescription }} </p>
+            </div>
+
+            <div class="project-body-section project-metrics">
+                <p [class]="'project-type-'+ project.type" class="project-type">
+                    {{ ('Project.Type.' + project.type) | translate }}
+                </p>
+                <div class="project-collaborators-count">
+                    <svg lucideSave></svg>
+                    <span>{{ project.savesCount }}</span>
+                </div>
+                <div class="project-rate">
+                    <svg lucideStar></svg>
+                    <span>{{ project.averageRating }} <small>({{ project.ratingsCount }})</small></span>
+                </div>
+            </div>
+
+            <div class="project-body-section collaburators-section">
+                <h3 class="collaburators-title">{{'Project.Collaburators' | translate}}</h3>
+                <div class="collaburators-container">
+                    @for (collaburator of project.participants; track $index) {
+                    <div class="collaburator" [title]="">
+                        <img [src]="collaburator.profileImageUrl" [alt]="">
+                    </div>
+                    }
+                    @if (project.participantsCount > 3) {
+                    <div class="more-collaborators">
+                        <span>+{{ project.participantsCount - 3 }}</span>
+                    </div>
+                    }
+                </div>
+            </div>
+
+            <div class="project-body-section tech-stack">
+                <h3 class="tech-stack-title">{{'Project.Tech_Stack' | translate}}</h3>
+                <div class="tech-stack-container">
+                    @for (skill of project.skills; track $index) {
+                    <div class="tech-stack-item">
+                        <span>{{ skill }}</span>
+                    </div>
+                    }
+                    @if (project.skillsCount > 3) {
+                    <div class="more-skills">
+                        <span>+{{ project.skillsCount - 3 }}</span>
+                    </div>
+                    }
+                </div>
+            </div>
+
+            <div class="project-body-section project-actions">
+                @if(project.gitHubUrl){
+                <a [href]="project.gitHubUrl" target="_blank" class="btn btn-outlined btn-half-column">
+                    <svg lucideGitFork></svg>
+                    <span>{{'Project.Github' | translate}}</span>
+                </a>
+                }
+                @if(project.liveDemoUrl){
+                <a [href]="project.liveDemoUrl" target="_blank" class="btn btn-outlined btn-half-column">
+                    <svg lucideGlobe></svg>
+                    <span>{{'Project.View_Live' | translate}}</span>
+                </a>
+                }
+                <a [routerLink]="['/projects', project.id]" class="btn btn-primary btn-block">
+                    <svg lucideExternalLink></svg>
+                    <span>{{'Project.View_Project' | translate}}</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

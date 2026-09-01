@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -35,6 +35,9 @@ internal class Program
 
 
         var dbContext = serviceProvider.GetRequiredService<SNSDbContext>();
+        var permissionService = serviceProvider.GetRequiredService<SNS.Application.Identity.Shared.Abstractions.IPermissionService>();
+        var logger = serviceProvider.GetService<ILogger<Program>>();
+        await SNS.Infrastructure.Identity.Users.Seeding.PermissionSeeder.SeedPermissionsAndRolesAsync(dbContext, permissionService, logger);
 
         Console.WriteLine(
             BCrypt.Net.BCrypt.HashPassword(
@@ -44,27 +47,12 @@ internal class Program
             .Select(p => new PostDocument()
             {
                 Id = p.Id,
-                AuthorId = p.AuthorId,
-                
-                CommunityId = p.Community != null ? p.Id : (Guid?)null,
-                
-
                 Title = p.Title,
                 Content = p.Content,
                 CreatedAt = p.CreatedAt,
                 UpdatedAt = p.UpdatedAt,
-                LastInteractedAt = p.LastInteractedAt,
-
                 Topics = p.PostTopics.Select(t => t.Topic.Name).ToList(),
-
-                Tags = p.PostTags.Select(pt => pt.Tag.Name).ToList(),
-
-                CommentsCount = p.Comments.Count,
-                ReactionsCount = p.Reactions.Count,
-                ViewsCount = p.Views.Count,
-                SavesCount = p.SavedPosts.Count,
-
-                MediaUrls = p.Media.Select(m => m.ObjectKey).ToList()
+                Tags = p.PostTags.Select(pt => pt.Tag.Name).ToList()
             })
             .ToListAsync();
 
@@ -72,25 +60,11 @@ internal class Program
             .Select(p => new ProfileDocument()
             {
                 Id = p.Id,
-                UserId = p.UserId,
                 FullName = p.FullName,
                 Specialization = p.Specialization,
                 Bio = p.Bio,
-                ProfilePictureUrl = p.ProfilePictureObjectKey,
                 Universities = p.AcademicRecords.Select(ar => ar.University.Name).ToList(),
-
-                AcademicRecordDocument = new AcademicRecordDocument()
-                {
-                    UniversityName = p.AcademicRecords.FirstOrDefault() != null ? p.AcademicRecords.FirstOrDefault()!.University.Name : "N/A",
-                    FieldOfStudy = p.AcademicRecords.FirstOrDefault() != null ? p.AcademicRecords.FirstOrDefault()!.FieldOfStudy : "N/A",
-                },
-
                 CreatedAt = p.CreatedAt,
-                UpdatedAt = p.UpdatedAt,
-                FollowersCount = p.Followers.Count,
-                FollowingsCount = p.Followings.Count,
-                Reputation = p.Reputation,
-                BlackList = p.BlackList.Select(b => b.BlockedId).ToList(),
                 Skills = p.ProfileSkills.Select(s => s.Skill.Name).ToList()
             })
             .ToListAsync();
@@ -100,15 +74,9 @@ internal class Program
             {
                 Id = c.Id,
                 Name = c.Name,
-                LogoUrl = c.LogoObjectKey,
                 Description = c.Description,
                 Type = c.Type,
-                CreatedAt = c.CreatedAt,
-                UpdateAt = c.UpdateAt,
-                MembersCount = c.Memberships.Count,
-                OwnerId = c.OwnerId,
-                OwnerName = c.Owner.FullName,
-                OwnerProfilePicture = c.Owner.ProfilePictureObjectKey ?? "N/A"
+                CreatedAt = c.CreatedAt
             })
             .ToListAsync();
 
@@ -127,7 +95,6 @@ internal class Program
                 SalaryType = j.SalaryType,
                 CreatedAt = j.CreatedAt,
                 ClosedAt = j.ClosedAt,
-                CompanyId = j.CompanyId,
                 CompanyName = j.Company.Name,
             })
             .ToListAsync();
@@ -137,19 +104,11 @@ internal class Program
             .Select(p => new ProblemDocument()
             {
                 Id = p.Id,
-                AuthorId = p.AuthorId,
-                AuthorName = p.Author.FullName,
-                AuthorProfilePictureUrl = p.Author.ProfilePictureObjectKey ?? "N/A",
-                AuthorSpecialization = p.Author.Specialization ?? "N/A",
-                CommunityId = p.Community != null ? p.Id : (Guid?)null,
-                CommunityName = p.Community != null ? p.Community.Name : "N/A",
-                CommunityLogoUrl = p.Community != null ? p.Community.LogoObjectKey : "N/A",
                 Title = p.Title,
                 Status = p.Status,
                 Level = p.Level,
-                TopTwoContentBlock = p.ContentBlocks
+                ContentBlocks = p.ContentBlocks
                     .OrderBy(cb => cb.Order)
-                    .Take(2)
                     .Select(cb => new ProblemBlockDocument()
                     {
                         Type = cb.Type,
@@ -160,11 +119,6 @@ internal class Program
                     .ToList(),
                 CreatedAt = p.CreatedAt,
                 UpdatedAt = p.UpdatedAt,
-                IsActive = p.IsActive,
-                UpVotesCount = p.Votes.Count(pv => pv.Type == VoteType.Upvote),
-                DownVotesCount = p.Votes.Count(pv => pv.Type == VoteType.Downvote),
-                SolutionsCount = p.Solutions.Count,
-                ViewsCount = p.Views.Count,
                 Tags = p.ProblemTags.Select(pt => pt.Tag.Name).ToList(),
                 Topics = p.ProblemTopics.Select(pt => pt.Topic.Name).ToList()
             })
@@ -175,34 +129,19 @@ internal class Program
             .Select(p => new ProjectDocument()
             {
                 Id = p.Id,
-
                 Title = p.Title,
                 ShortDescription = p.ShortDescription,
-                GitHubUrl = p.GitHubUrl,
-                LiveDemoUrl = p.LiveDemoUrl,
                 ReadmeContent = p.ReadmeContent,
                 Type = p.Type,
                 Status = p.Status,
                 PublishedAt = p.PublishedAt,
                 CreatedAt = p.CreatedAt,
                 UpdatedAt = p.UpdatedAt,
-                TopThreeSkills = p.Skills
+                Skills = p.Skills
                     .OrderByDescending(s => s.Id)
-                    .Take(3)
                     .Select(s => s.Skill.Name)
                     .ToList(),
-                TopThreeContributors = p.Contributors
-                    .Where(p => p.InvitingStatus == SNS.Domain.Projects.Enums.InvitingStatus.Accepted)
-                    .OrderByDescending(c => c.RespondedAt)
-                    .Take(3)
-                    .Select(c => new ProjectContributorDocument()
-                    {
-                        Id = c.Id,
-                        ContributorFullName = c.Contributor.FullName,
-                        ContributorProfilePictureUrl = c.Contributor.ProfilePictureObjectKey ?? "N/A",
-                    })
-                    .ToList(),
-                OwnerId = p.OwnerId,
+                Tags = p.Tags.Select(t => t.Tag.Name).ToList()
             })
             .ToListAsync();
 
@@ -225,12 +164,8 @@ internal class Program
             FullName = u.UserProfile.FullName,
             Email = u.Email,
             Status = u.Status,
-            IsVerified = u.IsVerified,
-            FailedLoginAttempts = u.FailedLoginAttempts,
-            IsMfaEnabled = u.UserSecuritySettings.IsMfaEnabled,
             DefaultCommunicationMethod = u.UserSecuritySettings.DefaultCommunicationMethod,
-            CreatedAt = u.CreatedAt,
-            LastLogin = u.LastLogIn
+            CreatedAt = u.CreatedAt
         });
 
 

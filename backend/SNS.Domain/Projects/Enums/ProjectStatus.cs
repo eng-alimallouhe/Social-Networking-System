@@ -5,7 +5,7 @@ namespace SNS.Domain.Projects.Enums;
 [JsonConverter(typeof(JsonStringEnumConverter))]
 public enum ProjectStatus
 {
-    Concept,
+    Draft,
     InProgress,
     Completed,
     Archived

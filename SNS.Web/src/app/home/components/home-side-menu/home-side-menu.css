@@ -1,0 +1,287 @@
+/* =========================================
+   1. الأساس: شاشات الموبايل (Mobile-First)
+   ========================================= */
+
+/* القائمة الجانبية في الموبايل */
+.sidebar-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 60dvw;
+    height: 100vh;
+    background-color: var(--bg-card);
+    z-index: 999999;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+
+    /* مخفية لليسار افتراضياً */
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+}
+
+.sidebar-menu.mobile-open {
+    transform: translateX(0) !important;
+}
+
+/* دعم العربية للموبايل */
+:host-context([dir="rtl"]) .sidebar-menu {
+    left: auto;
+    right: 0;
+    transform: translateX(100%);
+    /* مخفية لليمين */
+}
+
+:host-context([dir="rtl"]) .sidebar-menu.mobile-open {
+    transform: translateX(0) !important;
+}
+
+/* زر الإغلاق (يظهر في الموبايل) */
+.mobile-only {
+    display: flex;
+}
+
+/* خلفية التعتيم للموبايل */
+.mobile-backdrop {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: var(--backdrop-color, rgba(0, 0, 0, 0.5));
+    backdrop-filter: blur(var(--backdrop-blur, 4px));
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.mobile-backdrop.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* =========================================
+   2. العناصر الداخلية للقائمة (مشتركة)
+   ========================================= */
+.sidebar-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: var(--spacing-4);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.profile-summary {
+    display: flex;
+    flex-direction: row;
+    gap: var(--spacing-3);
+    align-items: center;
+}
+
+.avatar-container {
+    width: var(--spacing-16);
+    height: var(--spacing-16);
+    border-radius: 50%;
+    overflow: hidden;
+    background-color: var(--bg-surface);
+}
+
+.avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.profile-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.profile-name {
+    font-size: var(--text-base);
+    font-weight: 600;
+    margin: 0;
+    color: var(--text-primary);
+}
+
+.profile-spec {
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+.icon-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: calc(var(--spacing-8) + var(--spacing-1));
+    height: calc(var(--spacing-8) + var(--spacing-1));
+    border-radius: 50%;
+    border: none;
+    background: transparent;
+    color: var(--text-secondary);
+    cursor: pointer;
+}
+
+.icon-btn:hover {
+    background-color: var(--bg-surface-hover);
+    color: var(--text-primary);
+}
+
+.sidebar-content {
+    flex: 1;
+    padding: var(--spacing-4);
+}
+
+/* =========================================
+   3. تنسيق الروابط الأساسي (تصميم الموبايل)
+   ========================================= */
+.link {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-3);
+    padding: var(--spacing-2) var(--spacing-3);
+    margin: var(--spacing-1) 0;
+    text-decoration: none;
+    color: var(--text-primary);
+    border-radius: var(--radius-md, 8px);
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+    background: transparent;
+    width: 100%;
+    max-width: 250px;
+    height: var(--spacing-12);
+    text-align: left;
+    font-family: inherit;
+    font-size: var(--text-base);
+    cursor: pointer;
+    position: relative;
+}
+
+.link-icon {
+    display: flex;
+    align-items: center;
+    color: var(--text-secondary);
+    transition: color 0.2s ease;
+}
+
+.link-title {
+    margin: 0;
+    font-weight: 500;
+}
+
+/* التأثير البسيط للموبايل */
+.link.active,
+.link:hover {
+    background-color: var(--bg-surface-hover, var(--bg-hover, #f3f4f6));
+}
+
+.link.active .link-title,
+.link:hover .link-title,
+.link.active .link-icon,
+.link:hover .link-icon {
+    color: var(--primary-color, #2563eb);
+}
+
+/* زر تسجيل الخروج للموبايل */
+.logout-link {
+    color: var(--danger);
+}
+
+.logout-link .link-icon,
+.logout-link .link-title {
+    color: var(--danger);
+}
+
+.logout-link.active,
+.logout-link:hover {
+    background-color: var(--danger-light, rgba(239, 68, 68, 0.1));
+}
+
+.logout-link.active .link-icon,
+.logout-link:hover .link-icon,
+.logout-link.active .link-title,
+.logout-link:hover .link-title {
+    color: var(--danger);
+}
+
+
+/* =========================================
+   4. الشاشات الكبيرة (992px وأكبر)
+   ========================================= */
+@media (min-width: 992px) {
+
+    /* تثبيت القائمة وضبط أبعادها للديسكتوب */
+    .sidebar-menu {
+        width: var(--sidebar-width, 280px);
+        top: var(--navbar-desktop-height, 64px);
+        height: calc(100vh - var(--navbar-desktop-height, 64px));
+        border-right: 1px solid var(--border-color);
+        z-index: 100;
+
+        /* إلغاء حركة الـ Transform لتكون ظاهرة دائماً */
+        transform: none !important;
+    }
+
+    /* دعم العربية للقائمة الثابتة */
+    :host-context([dir="rtl"]) .sidebar-menu {
+        border-right: none;
+        border-left: 1px solid var(--border-color);
+    }
+
+    /* إخفاء عناصر الموبايل (التعتيم وزر الإغلاق) */
+    .mobile-backdrop,
+    .mobile-only {
+        display: none !important;
+    }
+
+    /* --- التأثيرات الاحترافية للروابط في الديسكتوب --- */
+    .link {
+        border-radius: var(--radius-md, 8px);
+        transition: all 0.3s ease;
+    }
+
+    .link.active,
+    .link:hover {
+        transform: translateX(10px);
+        border-color: var(--border-color);
+        box-shadow: var(--shadow-md, 0 4px 6px -1px rgba(0, 0, 0, 0.1));
+        font-weight: 700;
+    }
+
+    .link.active::before,
+    .link:hover::before {
+        content: '';
+        position: absolute;
+        left: -12px;
+        top: 50%;
+        transform: translateY(-50%);
+        height: 60%;
+        width: 6px;
+        background: var(--primary-color);
+        border-radius: 0 4px 4px 0;
+        box-shadow: 0 0 12px var(--primary-color);
+    }
+
+    .logout-link.active::before,
+    .logout-link:hover::before {
+        background: var(--error);
+        box-shadow: 0 0 12px var(--error);
+    }
+
+    /* دعم الإزاحة في اللغة العربية للديسكتوب */
+    :host-context([dir="rtl"]) .link.active,
+    :host-context([dir="rtl"]) .link:hover {
+        transform: translateX(-10px);
+    }
+
+    :host-context([dir="rtl"]) .link.active::before,
+    :host-context([dir="rtl"]) .link:hover::before {
+        left: unset;
+        right: -12px;
+        border-radius: 4px 0 0 4px;
+    }
+}

@@ -1,7 +1,7 @@
 using Asp.Versioning;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using SNS.API.DTOs.Shared;
+using SNS.API.Contracts.Shared;
 using SNS.API.Extensions;
 using SNS.Application.Profiles.SocialGraph.Commands.BlockProfile;
 using SNS.Application.Profiles.SocialGraph.Commands.UnBlockProfile;

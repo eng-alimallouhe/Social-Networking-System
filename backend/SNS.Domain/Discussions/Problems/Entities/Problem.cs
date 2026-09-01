@@ -80,5 +80,20 @@ public class Problem : Entity, ISoftDeletable
     public void SoftDelete()
     {
         this.IsActive = false;
+        this.UpdatedAt = DateTime.UtcNow;
+    }
+
+    public void Update(string title, DifficultyLevel level, Guid? communityId)
+    {
+        this.Title = title;
+        this.Level = level;
+        this.CommunityId = communityId;
+        this.UpdatedAt = DateTime.UtcNow;
+    }
+
+    public void ChangeStatus(ProblemStatus status)
+    {
+        this.Status = status;
+        this.UpdatedAt = DateTime.UtcNow;
     }
 }

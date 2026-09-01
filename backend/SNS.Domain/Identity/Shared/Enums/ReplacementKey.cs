@@ -20,5 +20,12 @@ public enum ReplacementKey
     Longitude,
     Latitude, 
     OldRole, 
-    NewRole
+    NewRole,
+    RecipientName,
+    ProjectName,
+    ProjectOwnerName,
+    ProjectOwnerProfileImageUrl,
+    InvitationUrl,
+    InvitedUserName,
+    Status
 }
