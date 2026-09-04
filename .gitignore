@@ -62,7 +62,6 @@ secrets.json
 # -------------------------------
 # Ignore npm lock files (if you don't want to version lock)
 # -------------------------------
-package-lock.json
 yarn.lock
 
 # -------------------------------
