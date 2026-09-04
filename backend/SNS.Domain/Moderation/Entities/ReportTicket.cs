@@ -1,4 +1,4 @@
-﻿using SNS.Domain.Identity.Users.Entities;
+using SNS.Domain.Identity.Users.Entities;
 using SNS.Domain.Moderation.Enums;
 using SNS.Domain.Shared.Abstractions.IDeletable;
 using SNS.Domain.Shared.Entities;

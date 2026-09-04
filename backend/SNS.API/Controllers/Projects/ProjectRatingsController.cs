@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using SNS.API.Extensions;
 using SNS.Application.Projects.Commands.Update.RateProject;
 using SNS.Shared.Results;
+using SNS.API.Attributes;
 
 namespace SNS.API.Controllers.Projects;
 
@@ -26,6 +27,7 @@ public class ProjectRatingsController : ControllerBase
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [RequireSession]
     public async Task<ActionResult<Result>> RateProjectAsync(
         [FromRoute] Guid projectId,
         [FromBody] RateProjectCommand command)

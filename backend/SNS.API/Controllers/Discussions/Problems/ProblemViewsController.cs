@@ -9,6 +9,7 @@ using SNS.Application.Discussions.Problems.ProblemViews.Contracts;
 using SNS.Application.Discussions.Problems.ProblemViews.Queries.GetProblemViewers;
 using SNS.Application.Shared.DTOs;
 using SNS.Shared.Results;
+using SNS.API.Attributes;
 
 namespace SNS.API.Controllers.Discussions.Problems;
 
@@ -40,6 +41,7 @@ public class ProblemViewsController : ControllerBase
     [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status404NotFound)]
+    [RequireSession]
     public async Task<ActionResult<Result>> RecordProblemViewAsync(
         [FromRoute] Guid problemId,
         [FromBody] RecordProblemViewCommand request)
@@ -64,6 +66,7 @@ public class ProblemViewsController : ControllerBase
     [ProducesResponseType(typeof(Result), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status403Forbidden)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status404NotFound)]
+    [RequireSession]
     public async Task<ActionResult<Result<Paged<ProblemViewerDto>>>> GetProblemViewersAsync(
         [FromRoute] Guid problemId,
         [FromQuery] int pageSize = 10,

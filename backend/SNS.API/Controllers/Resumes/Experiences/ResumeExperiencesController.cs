@@ -10,6 +10,7 @@ using SNS.Application.Resumes.Experiences.Commands.UpdateResumeExperience;
 using SNS.Application.Resumes.Experiences.Contracts;
 using SNS.Application.Resumes.Experiences.Queries.GetResumeExperiences;
 using SNS.Shared.Results;
+using SNS.API.Attributes;
 
 namespace SNS.API.Controllers.Resumes.Experiences;
 
@@ -61,6 +62,7 @@ public class ResumeExperiencesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [RequireSession]
     public async Task<ActionResult<Result<Guid>>> AddResumeExperienceAsync(
         [FromRoute] Guid resumeId,
         [FromBody] AddResumeExperienceCommand request)
@@ -89,6 +91,7 @@ public class ResumeExperiencesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [RequireSession]
     public async Task<ActionResult<Result>> UpdateResumeExperienceAsync(
         [FromRoute] Guid resumeId,
         [FromRoute] Guid experienceId,
@@ -114,6 +117,7 @@ public class ResumeExperiencesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [RequireSession]
     public async Task<ActionResult<Result>> DeleteResumeExperienceAsync(
         [FromRoute] Guid resumeId,
         [FromRoute] Guid experienceId)

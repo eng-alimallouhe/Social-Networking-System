@@ -11,6 +11,7 @@ using SNS.Application.Discussions.Problems.ProblemVotes.Queries.GetMyProblemVote
 using SNS.Application.Discussions.Problems.ProblemVotes.Queries.GetProblemVoteSummary;
 using SNS.Domain.Discussions.Shared.Enums;
 using SNS.Shared.Results;
+using SNS.API.Attributes;
 
 namespace SNS.API.Controllers.Discussions.Problems;
 
@@ -44,6 +45,7 @@ public class ProblemVotesController : ControllerBase
     [ProducesResponseType(typeof(Result), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status404NotFound)]
+    [RequireSession]
     public async Task<ActionResult<Result>> AddOrChangeProblemVoteAsync(
         [FromRoute] Guid problemId,
         [FromBody] AddOrChangeProblemVoteCommand request)
@@ -63,6 +65,7 @@ public class ProblemVotesController : ControllerBase
     [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status404NotFound)]
+    [RequireSession]
     public async Task<ActionResult<Result>> RemoveProblemVoteAsync([FromRoute] Guid problemId)
     {
         return (await _mediator.Send(new RemoveProblemVoteCommand(problemId))).ToActionResult(this);
@@ -91,6 +94,7 @@ public class ProblemVotesController : ControllerBase
     [Authorize]
     [ProducesResponseType(typeof(Result<VoteType?>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status401Unauthorized)]
+    [RequireSession]
     public async Task<ActionResult<Result<VoteType?>>> GetMyProblemVoteAsync([FromRoute] Guid problemId)
     {
         return (await _mediator.Send(new GetMyProblemVoteQuery(problemId))).ToActionResult(this);

@@ -10,6 +10,7 @@ using SNS.Application.Resumes.Certificates.Commands.UpdateResumeCertificate;
 using SNS.Application.Resumes.Certificates.Contracts;
 using SNS.Application.Resumes.Certificates.Queries.GetResumeCertificates;
 using SNS.Shared.Results;
+using SNS.API.Attributes;
 
 namespace SNS.API.Controllers.Resumes.Certificates;
 
@@ -61,6 +62,7 @@ public class ResumeCertificatesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [RequireSession]
     public async Task<ActionResult<Result<Guid>>> AddResumeCertificateAsync(
         [FromRoute] Guid resumeId,
         [FromBody] AddResumeCertificateCommand request)
@@ -89,6 +91,7 @@ public class ResumeCertificatesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [RequireSession]
     public async Task<ActionResult<Result>> UpdateResumeCertificateAsync(
         [FromRoute] Guid resumeId,
         [FromRoute] Guid certificateId,
@@ -114,6 +117,7 @@ public class ResumeCertificatesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [RequireSession]
     public async Task<ActionResult<Result>> DeleteResumeCertificateAsync(
         [FromRoute] Guid resumeId,
         [FromRoute] Guid certificateId)

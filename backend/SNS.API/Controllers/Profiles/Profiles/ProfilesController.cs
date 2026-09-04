@@ -18,6 +18,7 @@ using SNS.Application.Profiles.Profiles.Queries.GetProfilePictureUrl;
 using SNS.Application.Profiles.Profiles.Queries.GetSocialLinks;
 using SNS.Application.Shared.Contracts.Storage;
 using SNS.Shared.Results;
+using SNS.API.Attributes;
 
 namespace SNS.API.Controllers.Profiles.Profiles;
 
@@ -49,6 +50,7 @@ public class ProfilesController : ControllerBase
     [ProducesResponseType(typeof(ProfileBaseDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [RequireSession]
     public async Task<ActionResult<Result<ProfileBaseDto>>> GetProfileForCurrentUserAsync()
     {
         return (await _mediator.Send(new GetProfileForCurrentUserQuery())).ToActionResult(this);
@@ -70,6 +72,7 @@ public class ProfilesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
+    [RequireSession]
     public async Task<ActionResult<Result<AuthTokenDto>>> CreateProfileAsync([FromForm] CreateProfileRequest request)
     {
         UploadedFile? uploadedFile = null;
@@ -122,6 +125,7 @@ public class ProfilesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [RequireSession]
     public async Task<ActionResult<Result>> UpdateBasicInformationAsync([FromBody] UpdateBasicInformationCommand request)
     {
         return (await _mediator.Send(request)).ToActionResult(this);
@@ -141,6 +145,7 @@ public class ProfilesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [RequireSession]
     public async Task<ActionResult<Result>> UpdateProfilePictureAsync(IFormFile profilePicture)
     {
         return (await _mediator.Send(new UpdateProfilePictureCommand(profilePicture.ToUploadedFile()))).ToActionResult(this);
@@ -160,6 +165,7 @@ public class ProfilesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [RequireSession]
     public async Task<ActionResult<Result>> UpdateSocialLinksAsync([FromBody] UpdateSocialLinksCommand request)
     {
         return (await _mediator.Send(request)).ToActionResult(this);
@@ -175,6 +181,7 @@ public class ProfilesController : ControllerBase
     [HttpGet("basic-information")]
     [ProducesResponseType(typeof(ProfileBaseDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [RequireSession]
     public async Task<ActionResult<Result<ProfileBaseDto>>> GetBasicInformationAsync()
     {
         return (await _mediator.Send(new GetBasicInformationQuery())).ToActionResult(this);
@@ -190,6 +197,7 @@ public class ProfilesController : ControllerBase
     [HttpGet("profile-picture")]
     [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [RequireSession]
     public async Task<ActionResult<Result<string>>> GetProfilePictureAsync()
     {
         return (await _mediator.Send(new GetProfilePictureUrlQuery())).ToActionResult(this);
@@ -205,6 +213,7 @@ public class ProfilesController : ControllerBase
     [HttpGet("social-links")]
     [ProducesResponseType(typeof(SocialLinksDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [RequireSession]
     public async Task<ActionResult<Result<SocialLinksDto>>> GetSocialLinksAsync()
     {
         return (await _mediator.Send(new GetSocialLinksQuery())).ToActionResult(this);
@@ -223,6 +232,7 @@ public class ProfilesController : ControllerBase
     [ProducesResponseType(typeof(ProfileDetailsDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [RequireSession]
     public async Task<ActionResult<Result<ProfileDetailsDto>>> GetProfileAsync(Guid id)
     {
         return (await _mediator.Send(new GetProfileByIdQuery(id))).ToActionResult(this);

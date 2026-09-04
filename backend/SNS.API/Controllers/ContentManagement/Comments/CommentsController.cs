@@ -14,6 +14,7 @@ using SNS.Application.ContentManagement.Comments.Comments.Queries.GetPostComment
 using SNS.Application.ContentManagement.Comments.Comments.Queries.GetUserComments;
 using SNS.Application.Shared.DTOs;
 using SNS.Shared.Results;
+using SNS.API.Attributes;
 
 namespace SNS.API.Controllers.ContentManagement.Comments;
 
@@ -33,6 +34,7 @@ public class CommentsController : ControllerBase
     [HttpPost]
     [Authorize]
     [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
+    [RequireSession]
     public async Task<ActionResult<Result>> CreateCommentAsync([FromBody] CreateCommentCommand request)
     {
         return (await _mediator.Send(request)).ToActionResult(this);
@@ -41,6 +43,7 @@ public class CommentsController : ControllerBase
     [HttpPut("{id:guid}")]
     [Authorize]
     [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
+    [RequireSession]
     public async Task<ActionResult<Result>> UpdateCommentAsync(
         [FromRoute] Guid id,
         [FromBody] UpdateCommentCommand request)
@@ -52,6 +55,7 @@ public class CommentsController : ControllerBase
     [HttpDelete("{id:guid}")]
     [Authorize]
     [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
+    [RequireSession]
     public async Task<ActionResult<Result>> DeleteCommentAsync([FromRoute] Guid id)
     {
         return (await _mediator.Send(new DeleteCommentCommand(id))).ToActionResult(this);
@@ -97,6 +101,7 @@ public class CommentsController : ControllerBase
     [HttpGet("my-comments")]
     [Authorize]
     [ProducesResponseType(typeof(Result<Paged<CommentSummaryDto>>), StatusCodes.Status200OK)]
+    [RequireSession]
     public async Task<ActionResult<Result<Paged<CommentSummaryDto>>>> GetMyCommentsAsync(
         [FromQuery] int page = 1,
         [FromQuery] int pageSize = 10)

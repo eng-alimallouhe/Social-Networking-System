@@ -15,8 +15,12 @@ public class DeviceConfigurations : IEntityTypeConfiguration<Device>
 
         builder.HasIndex(x => x.UserId);
 
-        builder.HasIndex(x => x.DeviceToken)
-            .IsUnique();
+        builder.HasIndex(x => new
+        {
+            x.DeviceToken,
+            x.UserId
+        })
+        .IsUnique();
 
         builder.Property(us => us.DeviceToken)
                .IsRequired()

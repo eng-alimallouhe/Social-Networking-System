@@ -6,6 +6,7 @@ using SNS.API.Extensions;
 using SNS.Application.Profiles.Profiles.Commands.AddSkillToProfile;
 using SNS.Application.Profiles.Profiles.Commands.RemoveSkillFromProfile;
 using SNS.Shared.Results;
+using SNS.API.Attributes;
 
 namespace SNS.API.Controllers.Profiles.Profiles;
 
@@ -41,6 +42,7 @@ public class ProfileSkillController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
+    [RequireSession]
     public async Task<ActionResult<Result>> AddSkillToProfileAsync([FromBody] AddSkillToProfileCommand request)
     {
         return (await _mediator.Send(request)).ToActionResult(this);
@@ -62,6 +64,7 @@ public class ProfileSkillController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [RequireSession]
     public async Task<ActionResult<Result>> RemoveSkillFromProfileAsync([FromBody] RemoveSkillFromProfileCommand request)
     {
         return (await _mediator.Send(request)).ToActionResult(this);

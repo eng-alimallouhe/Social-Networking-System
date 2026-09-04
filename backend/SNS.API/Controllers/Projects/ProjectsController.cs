@@ -19,6 +19,7 @@ using SNS.Application.Projects.Queries.GetProjectSourceCode;
 using SNS.Application.Shared.DTOs;
 using SNS.Domain.Projects.ValueObjects;
 using SNS.Shared.Results;
+using SNS.API.Attributes;
 
 namespace SNS.API.Controllers.Projects;
 
@@ -46,6 +47,7 @@ public class ProjectsController : ControllerBase
     [HttpGet("feed")]
     [ProducesResponseType(typeof(List<ProjectOverviewDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [RequireSession]
     public async Task<ActionResult<Result<List<ProjectOverviewDto>>>> GetProjectFeedAsync(
         [FromQuery] int CurrentPage = 1,
         [FromQuery] int PageSize = 10)
@@ -137,6 +139,7 @@ public class ProjectsController : ControllerBase
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [RequireSession]
     public async Task<ActionResult<Result<Guid>>> CreateProjectAsync([FromBody] CreateProjectCommand command)
     {
         return (await _mediator.Send(command)).ToActionResult(this);
@@ -150,6 +153,7 @@ public class ProjectsController : ControllerBase
     [HttpPut("{projectId:guid}/status")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [RequireSession]
     public async Task<ActionResult<Result>> ChangeProjectStatusAsync(
         [FromRoute] Guid projectId,
         [FromBody] ChangeProjectStatusCommand command)
@@ -166,6 +170,7 @@ public class ProjectsController : ControllerBase
     [HttpPut("{projectId:guid}/basic-info")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [RequireSession]
     public async Task<ActionResult<Result>> UpdateProjectBasicInfoAsync(
         [FromRoute] Guid projectId,
         [FromBody] UpdateProjectBasicInfoCommand command)
@@ -182,6 +187,7 @@ public class ProjectsController : ControllerBase
     [HttpPut("{projectId:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [RequireSession]
     public async Task<ActionResult<Result<Guid>>> UpdateProjectAsync(
         [FromRoute] Guid projectId,
         [FromBody] UpdateProjectCommand command)
@@ -200,6 +206,7 @@ public class ProjectsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [RequireSession]
     public async Task<ActionResult<Result>> UpdateProjectReadmeAsync(
         [FromRoute] Guid projectId,
         [FromBody] UpdateProjectReadmeCommand command)

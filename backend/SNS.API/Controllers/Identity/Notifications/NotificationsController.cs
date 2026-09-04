@@ -9,6 +9,7 @@ using SNS.Application.Identity.Notifications.Commands.UpdateNotificationPreferen
 using SNS.Application.Identity.Notifications.Queries.GetNotifications;
 using SNS.Application.Identity.Notifications.Queries.GetUserNotificationPreferences;
 using SNS.Shared.Results;
+using SNS.API.Attributes;
 
 namespace SNS.API.Controllers.Identity.Notifications;
 
@@ -42,6 +43,7 @@ public class NotificationsController : ControllerBase
     [Consumes("application/json")]
     [ProducesResponseType(typeof(NotificationDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [RequireSession]
     public async Task<ActionResult<Result<NotificationDto>>> GetUserNotificationAsync([FromBody] GetNotificationsQuery request)
     {
         return (await _mediator.Send(request)).ToActionResult(this);
@@ -56,6 +58,7 @@ public class NotificationsController : ControllerBase
     [HttpGet("user-notification-prefrences")]
     [ProducesResponseType(typeof(UserNotificationPreferencesDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [RequireSession]
     public async Task<ActionResult<Result<UserNotificationPreferencesDto>>> GetUserNotificationPrefrencesAsync()
     {
         return (await _mediator.Send(new GetUserNotificationPreferencesQuery())).ToActionResult(this);
@@ -70,6 +73,7 @@ public class NotificationsController : ControllerBase
     [HttpPost("mark-all-notification-as-read")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [RequireSession]
     public async Task<ActionResult<Result>> MarkAllNotificationAsRead() 
     {
         return (await _mediator.Send(new MarkAllNotificationsAsReadCommand())).ToActionResult(this);
@@ -90,6 +94,7 @@ public class NotificationsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [RequireSession]
     public async Task<ActionResult<Result>> MarkAllNotificationAsReadAsync([FromBody] MarkSingleNotificationAsReadCommand request)
     {
         return (await _mediator.Send(request)).ToActionResult(this);
@@ -108,6 +113,7 @@ public class NotificationsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [RequireSession]
     public async Task<ActionResult<Result>> UpdateNotificationPrefrencesAsync([FromBody] UpdateNotificationPreferencesCommand request)
     {
         return (await _mediator.Send(request)).ToActionResult(this);

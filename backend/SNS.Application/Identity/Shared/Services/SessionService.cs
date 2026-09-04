@@ -4,6 +4,7 @@ using SNS.Application.Identity.SecuritySessions.Shared.Abstractions;
 using SNS.Application.Identity.SecuritySessions.Shared.Contracts;
 using SNS.Application.Identity.Shared.Abstractions;
 using SNS.Application.Identity.Shared.DTOs.SecuritySessions;
+using SNS.Domain.Identity.SecuritySessions.Abstractions;
 using SNS.Domain.Identity.SecuritySessions.Entities;
 using SNS.Domain.Identity.SecuritySessions.Specifications;
 using SNS.Domain.Shared.Abstractions.Repositories;
@@ -20,17 +21,20 @@ public class SessionService : ISessionService
     private readonly IIdentityCacheKeyFactory _identityCacheKeyFactory;
     private readonly TimeSpan _sessionCacheDuration = TimeSpan.FromMinutes(40);
     private readonly IGeneratorService _generatorService;
+    private readonly ISessionRepository _sessionRepository;
 
     public SessionService(
         IRepository<SecuritySession> sessionRepo,
         ICacheService cacheService,
         IIdentityCacheKeyFactory identityCacheKeyFactory, 
-        IGeneratorService generatorService)
+        IGeneratorService generatorService,
+        ISessionRepository sessionRepository)
     {
         _sessionRepo = sessionRepo;
         _cacheService = cacheService;
         _identityCacheKeyFactory = identityCacheKeyFactory;
         _generatorService = generatorService;
+        _sessionRepository = sessionRepository;
     }
 
     public async Task<bool> ValidateAndUpdateSessionAsync(
@@ -46,6 +50,7 @@ public class SessionService : ISessionService
         {
             sessionModel.LastSeenAt = DateTime.UtcNow;
             await _cacheService.SetAsync(key, sessionModel, _sessionCacheDuration, cancellationToken);
+            await _sessionRepository.UpdateSessionLastSeenAsync(sessionId, DateTime.UtcNow, cancellationToken);
             return true;
         }
 
@@ -67,6 +72,7 @@ public class SessionService : ISessionService
         };
 
         await _cacheService.SetAsync(key, sessionModel, _sessionCacheDuration, cancellationToken);
+        await _sessionRepository.UpdateSessionLastSeenAsync(sessionId, DateTime.UtcNow, cancellationToken);
 
         return true;
     }

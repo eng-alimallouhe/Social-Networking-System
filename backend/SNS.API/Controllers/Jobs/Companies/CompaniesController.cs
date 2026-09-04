@@ -10,6 +10,7 @@ using SNS.Application.Jobs.Companies.Contracts;
 using SNS.Application.Jobs.Companies.Queries.GetCompanyById;
 using SNS.Application.Jobs.Companies.Queries.GetMyCompanies;
 using SNS.Shared.Results;
+using SNS.API.Attributes;
 
 namespace SNS.API.Controllers.Jobs.Companies;
 
@@ -52,6 +53,7 @@ public class CompaniesController : ControllerBase
     [Authorize]
     [ProducesResponseType(typeof(Result<List<CompanySummaryDto>>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status401Unauthorized)]
+    [RequireSession]
     public async Task<ActionResult<Result<List<CompanySummaryDto>>>> GetMyCompaniesAsync()
     {
         return (await _mediator.Send(new GetMyCompaniesQuery())).ToActionResult(this);
@@ -73,6 +75,7 @@ public class CompaniesController : ControllerBase
     [ProducesResponseType(typeof(Result), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status403Forbidden)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status404NotFound)]
+    [RequireSession]
     public async Task<ActionResult<Result>> UpdateCompanyAsync(
         [FromRoute] Guid companyId,
         [FromBody] UpdateCompanyCommand command)
@@ -95,6 +98,7 @@ public class CompaniesController : ControllerBase
     [ProducesResponseType(typeof(Result), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status403Forbidden)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status404NotFound)]
+    [RequireSession]
     public async Task<ActionResult<Result>> DeleteCompanyAsync([FromRoute] Guid companyId)
     {
         return (await _mediator.Send(new DeleteCompanyCommand(companyId))).ToActionResult(this);

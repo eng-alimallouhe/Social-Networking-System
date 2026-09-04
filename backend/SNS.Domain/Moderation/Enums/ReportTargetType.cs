@@ -7,5 +7,9 @@ public enum ReportTargetType
 {
     Post = 1,
     Comment = 2,
-    UserProfile = 3
+    UserProfile = 3,
+    Rating = 4,
+    Project = 5,
+    Company = 6,
+    Job = 7
 }

@@ -12,6 +12,7 @@ using SNS.Application.Jobs.CompanyAdministrators.Queries.GetCompanyAdministrator
 using SNS.Application.Jobs.CompanyAdministrators.Queries.GetMyCompanyAdministratorRole;
 using SNS.Domain.Jobs.Enums;
 using SNS.Shared.Results;
+using SNS.API.Attributes;
 
 namespace SNS.API.Controllers.Jobs.CompanyAdministrators;
 
@@ -68,6 +69,7 @@ public class CompanyAdministratorsController : ControllerBase
     [Authorize]
     [ProducesResponseType(typeof(Result<CompanyRole?>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status401Unauthorized)]
+    [RequireSession]
     public async Task<ActionResult<Result<CompanyRole?>>> GetMyCompanyAdministratorRoleAsync([FromRoute] Guid companyId)
     {
         return (await _mediator.Send(new GetMyCompanyAdministratorRoleQuery(companyId))).ToActionResult(this);
@@ -90,6 +92,7 @@ public class CompanyAdministratorsController : ControllerBase
     [ProducesResponseType(typeof(Result), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status403Forbidden)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status404NotFound)]
+    [RequireSession]
     public async Task<ActionResult<Result<Guid>>> AddCompanyAdministratorAsync(
         [FromRoute] Guid companyId,
         [FromBody] AddCompanyAdministratorRequest request)
@@ -115,6 +118,7 @@ public class CompanyAdministratorsController : ControllerBase
     [ProducesResponseType(typeof(Result), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status403Forbidden)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status404NotFound)]
+    [RequireSession]
     public async Task<ActionResult<Result>> RemoveCompanyAdministratorAsync(
         [FromRoute] Guid companyId,
         [FromRoute] Guid targetProfileId)
@@ -140,6 +144,7 @@ public class CompanyAdministratorsController : ControllerBase
     [ProducesResponseType(typeof(Result), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status403Forbidden)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status404NotFound)]
+    [RequireSession]
     public async Task<ActionResult<Result>> ChangeCompanyAdministratorRoleAsync(
         [FromRoute] Guid companyId,
         [FromRoute] Guid targetProfileId,

@@ -9,6 +9,7 @@ using SNS.Application.ContentManagement.Communities.Settings.Commands.UpdateComm
 using SNS.Application.ContentManagement.Communities.Settings.Contracts;
 using SNS.Application.ContentManagement.Communities.Settings.Queries.GetCommunitySettings;
 using SNS.Shared.Results;
+using SNS.API.Attributes;
 
 namespace SNS.API.Controllers.ContentManagement.Communities.Settings;
 
@@ -57,6 +58,7 @@ public class CommunitySettingsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [RequireSession]
     public async Task<ActionResult<Result>> UpdateSettingsAsync(
         [FromRoute] Guid communityId,
         [FromBody] UpdateCommunitySettingsRequest request)

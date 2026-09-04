@@ -1,4 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
+using SNS.Domain.Identity.SecuritySessions.Abstractions;
 using SNS.Domain.Identity.SecuritySessions.Entities;
 using SNS.Domain.Shared.Abstractions.Repositories;
 using SNS.Infrastructure.Identity.SecuritySessions.Repositories;
@@ -12,6 +13,7 @@ public static class SecuritySessionInfrastructureDI
         //Repositories
         services.AddScoped<IRepository<Device>, DeviceRepository>();
         services.AddScoped<IRepository<SecuritySession>, SecuritySessionRepository>();
+        services.AddScoped<ISessionRepository, SecuritySessionRepository>();
 
 
         return services;

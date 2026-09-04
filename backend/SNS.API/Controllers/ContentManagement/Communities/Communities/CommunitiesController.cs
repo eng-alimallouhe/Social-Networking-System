@@ -13,6 +13,7 @@ using SNS.Application.ContentManagement.Communities.Communities.Queries.GetCommu
 using SNS.Application.ContentManagement.Communities.Communities.Queries.GetMyCommunities;
 using SNS.Application.Shared.DTOs;
 using SNS.Shared.Results;
+using SNS.API.Attributes;
 
 namespace SNS.API.Controllers.ContentManagement.Communities.Communities;
 
@@ -47,6 +48,7 @@ public class CommunitiesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
+    [RequireSession]
     public async Task<ActionResult<Result>> CreateCommunityAsync([FromForm] CreateCommunityRequest request)
     {
         var command = new CreateCommunityCommand(
@@ -82,6 +84,7 @@ public class CommunitiesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
+    [RequireSession]
     public async Task<ActionResult<Result>> UpdateCommunityAsync(
         [FromRoute] Guid id,
         [FromForm] UpdateCommunityRequest request)
@@ -113,6 +116,7 @@ public class CommunitiesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [RequireSession]
     public async Task<ActionResult<Result>> DeleteCommunityAsync([FromRoute] Guid id)
     {
         return (await _mediator.Send(new DeleteCommunityCommand(id))).ToActionResult(this);
@@ -143,6 +147,7 @@ public class CommunitiesController : ControllerBase
     [Authorize]
     [ProducesResponseType(typeof(Result<Paged<CommunitySummaryDto>>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [RequireSession]
     public async Task<ActionResult<Result<Paged<CommunitySummaryDto>>>> GetMyCommunitiesAsync(
         [FromQuery] int page = 1,
         [FromQuery] int pageSize = 10)

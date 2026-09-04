@@ -9,6 +9,7 @@ using SNS.Application.Resumes.Projects.Commands.RemoveResumeProject;
 using SNS.Application.Resumes.Projects.Contracts;
 using SNS.Application.Resumes.Projects.Queries.GetResumeProjects;
 using SNS.Shared.Results;
+using SNS.API.Attributes;
 
 namespace SNS.API.Controllers.Resumes.Projects;
 
@@ -60,6 +61,7 @@ public class ResumeProjectsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
+    [RequireSession]
     public async Task<ActionResult<Result>> AddResumeProjectAsync(
         [FromRoute] Guid resumeId,
         [FromBody] AddResumeProjectCommand request)
@@ -84,6 +86,7 @@ public class ResumeProjectsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [RequireSession]
     public async Task<ActionResult<Result>> RemoveResumeProjectAsync(
         [FromRoute] Guid resumeId,
         [FromRoute] Guid projectId)

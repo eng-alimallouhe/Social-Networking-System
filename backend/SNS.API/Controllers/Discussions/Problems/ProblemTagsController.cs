@@ -9,6 +9,7 @@ using SNS.Application.Discussions.Problems.ProblemTags.Commands.RemoveProblemTag
 using SNS.Application.Discussions.Problems.ProblemTags.Contracts;
 using SNS.Application.Discussions.Problems.ProblemTags.Queries.GetProblemTags;
 using SNS.Shared.Results;
+using SNS.API.Attributes;
 
 namespace SNS.API.Controllers.Discussions.Problems;
 
@@ -44,6 +45,7 @@ public class ProblemTagsController : ControllerBase
     [ProducesResponseType(typeof(Result), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status403Forbidden)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status404NotFound)]
+    [RequireSession]
     public async Task<ActionResult<Result>> AddProblemTagAsync(
         [FromRoute] Guid problemId,
         [FromBody] AddProblemTagCommand request)
@@ -66,6 +68,7 @@ public class ProblemTagsController : ControllerBase
     [ProducesResponseType(typeof(Result), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status403Forbidden)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status404NotFound)]
+    [RequireSession]
     public async Task<ActionResult<Result>> RemoveProblemTagAsync(
         [FromRoute] Guid problemId,
         [FromRoute] Guid tagId)

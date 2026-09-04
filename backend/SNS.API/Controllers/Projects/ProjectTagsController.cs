@@ -6,6 +6,7 @@ using SNS.API.Extensions;
 using SNS.Application.Projects.Commands.Create.AddProjectTag;
 using SNS.Application.Projects.Commands.Delete.RemoveProjectTag;
 using SNS.Shared.Results;
+using SNS.API.Attributes;
 
 namespace SNS.API.Controllers.Projects;
 
@@ -27,6 +28,7 @@ public class ProjectTagsController : ControllerBase
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [RequireSession]
     public async Task<ActionResult<Result>> AddProjectTagAsync(
         [FromRoute] Guid projectId,
         [FromBody] AddProjectTagCommand command)
@@ -40,6 +42,7 @@ public class ProjectTagsController : ControllerBase
     [HttpDelete("{projectTagId:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [RequireSession]
     public async Task<ActionResult<Result>> RemoveProjectTagAsync(
         [FromRoute] Guid projectId,
         [FromRoute] Guid projectTagId)

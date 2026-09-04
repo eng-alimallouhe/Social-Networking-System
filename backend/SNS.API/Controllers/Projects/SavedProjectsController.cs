@@ -6,6 +6,7 @@ using SNS.API.Extensions;
 using SNS.Application.Projects.Commands.Interaction.SaveProject;
 using SNS.Application.Projects.Commands.Interaction.UnsaveProject;
 using SNS.Shared.Results;
+using SNS.API.Attributes;
 
 namespace SNS.API.Controllers.Projects;
 
@@ -27,6 +28,7 @@ public class SavedProjectsController : ControllerBase
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [RequireSession]
     public async Task<ActionResult<Result>> SaveProjectAsync([FromRoute] Guid projectId)
     {
         return (await _mediator.Send(new SaveProjectCommand(projectId))).ToActionResult(this);
@@ -37,6 +39,7 @@ public class SavedProjectsController : ControllerBase
     [HttpDelete]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [RequireSession]
     public async Task<ActionResult<Result>> UnsaveProjectAsync([FromRoute] Guid projectId)
     {
         return (await _mediator.Send(new UnsaveProjectCommand(projectId))).ToActionResult(this);

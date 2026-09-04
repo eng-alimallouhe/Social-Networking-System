@@ -1,10 +1,11 @@
-﻿using Asp.Versioning;
+using Asp.Versioning;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SNS.API.Extensions;
 using SNS.Application.Identity.Users.UsersManagement.Queries.GetUserSecurityDetails;
 using SNS.Shared.Results;
+using SNS.API.Attributes;
 
 namespace SNS.API.Controllers.Identity.SecuritySettings;
 
@@ -16,6 +17,7 @@ namespace SNS.API.Controllers.Identity.SecuritySettings;
 [Authorize]
 [ApiController]
 [Produces("application/json")]
+[RequireSession]
 public class SecuritySettingsController : ControllerBase
 {
     private readonly IMediator _mediator;

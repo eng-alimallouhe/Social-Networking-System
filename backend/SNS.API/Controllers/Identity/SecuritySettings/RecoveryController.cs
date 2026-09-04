@@ -9,6 +9,7 @@ using SNS.Application.Identity.SecuritySettings.Recovery.Commands.RevokeRecovery
 using SNS.Application.Identity.SecuritySettings.Recovery.Queries.GetUserRecoveryCodes;
 using SNS.Application.Identity.Shared.DTOs.Authentication;
 using SNS.Shared.Results;
+using SNS.API.Attributes;
 
 namespace SNS.API.Controllers.Identity.SecuritySettings;
 
@@ -41,6 +42,7 @@ public class RecoveryController : ControllerBase
     [MapToApiVersion("1.0")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [RequireSession]
     public async Task<ActionResult<Result>> GenerateRecoveryCodesAsync()
     {
         return (await _mediator.Send(new GenerateRecoveryCodesCommand())).ToActionResult(this);
@@ -59,6 +61,7 @@ public class RecoveryController : ControllerBase
     [MapToApiVersion("1.0")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [RequireSession]
     public async Task<ActionResult<Result>> RevokeRecoveyrCodesAsync()
     {
         return (await _mediator.Send(new RevokeRecoveryCodesCommand())).ToActionResult(this);
@@ -102,6 +105,7 @@ public class RecoveryController : ControllerBase
     [ProducesResponseType(typeof(UserRecoveryCodesDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [RequireSession]
     public async Task<ActionResult<Result<UserRecoveryCodesDto?>>> GetUserRecoveryCodesAsync()
     {
         return (await _mediator.Send(new GetUserRecoveryCodesQuery())).ToActionResult(this);

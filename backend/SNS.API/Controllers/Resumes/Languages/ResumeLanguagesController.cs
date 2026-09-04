@@ -10,6 +10,7 @@ using SNS.Application.Resumes.Languages.Commands.UpdateResumeLanguage;
 using SNS.Application.Resumes.Languages.Contracts;
 using SNS.Application.Resumes.Languages.Queries.GetResumeLanguages;
 using SNS.Shared.Results;
+using SNS.API.Attributes;
 
 namespace SNS.API.Controllers.Resumes.Languages;
 
@@ -61,6 +62,7 @@ public class ResumeLanguagesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [RequireSession]
     public async Task<ActionResult<Result<Guid>>> AddResumeLanguageAsync(
         [FromRoute] Guid resumeId,
         [FromBody] AddResumeLanguageCommand request)
@@ -89,6 +91,7 @@ public class ResumeLanguagesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [RequireSession]
     public async Task<ActionResult<Result>> UpdateResumeLanguageAsync(
         [FromRoute] Guid resumeId,
         [FromRoute] Guid languageId,
@@ -114,6 +117,7 @@ public class ResumeLanguagesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [RequireSession]
     public async Task<ActionResult<Result>> DeleteResumeLanguageAsync(
         [FromRoute] Guid resumeId,
         [FromRoute] Guid languageId)

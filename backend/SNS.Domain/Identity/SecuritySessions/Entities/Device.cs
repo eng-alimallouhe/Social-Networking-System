@@ -1,6 +1,5 @@
 using SNS.Domain.Shared.Abstractions.IDeletable;
 using SNS.Domain.Shared.Entities;
-using SNS.Domain.Shared.Enums;
 using SNS.Domain.Shared.Helpers;
 
 namespace SNS.Domain.Identity.SecuritySessions.Entities;

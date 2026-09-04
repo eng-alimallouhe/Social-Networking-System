@@ -6,6 +6,7 @@ using SNS.API.Extensions;
 using SNS.Application.Projects.Commands.Create.AddProjectSkill;
 using SNS.Application.Projects.Commands.Delete.RemoveProjectSkill;
 using SNS.Shared.Results;
+using SNS.API.Attributes;
 
 namespace SNS.API.Controllers.Projects;
 
@@ -27,6 +28,7 @@ public class ProjectSkillsController : ControllerBase
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [RequireSession]
     public async Task<ActionResult<Result>> AddProjectSkillAsync(
         [FromRoute] Guid projectId,
         [FromBody] AddProjectSkillCommand command)
@@ -40,6 +42,7 @@ public class ProjectSkillsController : ControllerBase
     [HttpDelete("{projectSkillId:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [RequireSession]
     public async Task<ActionResult<Result>> RemoveProjectSkillAsync(
         [FromRoute] Guid projectId,
         [FromRoute] Guid projectSkillId)

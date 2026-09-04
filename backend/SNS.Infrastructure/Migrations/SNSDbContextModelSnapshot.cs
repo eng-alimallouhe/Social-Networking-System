@@ -1367,10 +1367,10 @@ namespace SNS.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DeviceToken")
-                        .IsUnique();
-
                     b.HasIndex("UserId");
+
+                    b.HasIndex("DeviceToken", "UserId")
+                        .IsUnique();
 
                     b.ToTable("Devices", "Identity");
                 });

@@ -18,6 +18,7 @@ using SNS.Application.ContentManagement.Communities.Memberships.Queries.GetMyMem
 using SNS.Application.Shared.DTOs;
 using SNS.Domain.ContentManagement.Communities.Enums;
 using SNS.Shared.Results;
+using SNS.API.Attributes;
 
 namespace SNS.API.Controllers.ContentManagement.Communities.Memberships;
 
@@ -52,6 +53,7 @@ public class CommunityMembershipsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
+    [RequireSession]
     public async Task<ActionResult<Result>> JoinCommunityAsync(
         [FromRoute] Guid communityId,
         [FromBody] JoinCommunityRequest? request)
@@ -73,6 +75,7 @@ public class CommunityMembershipsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [RequireSession]
     public async Task<ActionResult<Result>> LeaveCommunityAsync([FromRoute] Guid communityId)
     {
         return (await _mediator.Send(new LeaveCommunityCommand(communityId))).ToActionResult(this);
@@ -115,6 +118,7 @@ public class CommunityMembershipsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [RequireSession]
     public async Task<ActionResult<Result<Paged<MembershipRequestDto>>>> GetMembershipRequestsAsync(
         [FromRoute] Guid communityId,
         [FromQuery] int page = 1,
@@ -138,6 +142,7 @@ public class CommunityMembershipsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [RequireSession]
     public async Task<ActionResult<Result>> ApproveMembershipAsync(
         [FromRoute] Guid communityId,
         [FromRoute] Guid requestId)
@@ -160,6 +165,7 @@ public class CommunityMembershipsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [RequireSession]
     public async Task<ActionResult<Result>> RejectMembershipAsync(
         [FromRoute] Guid communityId,
         [FromRoute] Guid requestId)
@@ -184,6 +190,7 @@ public class CommunityMembershipsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [RequireSession]
     public async Task<ActionResult<Result>> RemoveMemberAsync(
         [FromRoute] Guid communityId,
         [FromRoute] Guid memberProfileId)
@@ -209,6 +216,7 @@ public class CommunityMembershipsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [RequireSession]
     public async Task<ActionResult<Result>> ChangeMemberRoleAsync(
         [FromRoute] Guid communityId,
         [FromRoute] Guid memberProfileId,
@@ -229,6 +237,7 @@ public class CommunityMembershipsController : ControllerBase
     [ProducesResponseType(typeof(Result<UserMembershipStatusDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [RequireSession]
     public async Task<ActionResult<Result<UserMembershipStatusDto>>> GetMyMembershipStatusAsync([FromRoute] Guid communityId)
     {
         return (await _mediator.Send(new GetMyMembershipQuery(communityId))).ToActionResult(this);

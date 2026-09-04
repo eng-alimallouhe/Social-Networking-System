@@ -11,6 +11,7 @@ using SNS.Application.ContentManagement.Communities.Rules.Commands.UpdateCommuni
 using SNS.Application.ContentManagement.Communities.Rules.Contracts;
 using SNS.Application.ContentManagement.Communities.Rules.Queries.GetCommunityRules;
 using SNS.Shared.Results;
+using SNS.API.Attributes;
 
 namespace SNS.API.Controllers.ContentManagement.Communities.Rules;
 
@@ -59,6 +60,7 @@ public class CommunityRulesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [RequireSession]
     public async Task<ActionResult<Result>> CreateRuleAsync(
         [FromRoute] Guid communityId,
         [FromBody] CreateCommunityRuleRequest request)
@@ -88,6 +90,7 @@ public class CommunityRulesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [RequireSession]
     public async Task<ActionResult<Result>> UpdateRuleAsync(
         [FromRoute] Guid communityId,
         [FromRoute] Guid ruleId,
@@ -117,6 +120,7 @@ public class CommunityRulesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [RequireSession]
     public async Task<ActionResult<Result>> DeleteRuleAsync(
         [FromRoute] Guid communityId,
         [FromRoute] Guid ruleId)

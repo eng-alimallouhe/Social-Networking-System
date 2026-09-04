@@ -6,6 +6,7 @@ using SNS.API.Extensions;
 using SNS.Application.Projects.Commands.Create.AddProjectMilestone;
 using SNS.Application.Projects.Commands.Delete.DeleteProjectMilestone;
 using SNS.Shared.Results;
+using SNS.API.Attributes;
 
 namespace SNS.API.Controllers.Projects;
 
@@ -27,6 +28,7 @@ public class ProjectMilestonesController : ControllerBase
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [RequireSession]
     public async Task<ActionResult<Result>> AddProjectMilestoneAsync(
         [FromRoute] Guid projectId,
         [FromBody] AddProjectMilestoneCommand command)
@@ -40,6 +42,7 @@ public class ProjectMilestonesController : ControllerBase
     [HttpDelete("{milestoneId:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [RequireSession]
     public async Task<ActionResult<Result>> DeleteProjectMilestoneAsync(
         [FromRoute] Guid projectId,
         [FromRoute] Guid milestoneId)

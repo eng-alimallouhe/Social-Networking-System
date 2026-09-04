@@ -15,6 +15,7 @@ using SNS.Application.Discussions.Solutions.Solutions.Queries.GetSolutionById;
 using SNS.Application.Discussions.Solutions.Solutions.Queries.GetSolutionsByAuthor;
 using SNS.Application.Shared.DTOs;
 using SNS.Shared.Results;
+using SNS.API.Attributes;
 
 namespace SNS.API.Controllers.Discussions.Solutions;
 
@@ -47,6 +48,7 @@ public class SolutionsController : ControllerBase
     [ProducesResponseType(typeof(Result), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status404NotFound)]
+    [RequireSession]
     public async Task<ActionResult<Result<Guid>>> CreateSolutionAsync([FromBody] CreateSolutionCommand request)
     {
         return (await _mediator.Send(request)).ToActionResult(this);
@@ -76,6 +78,7 @@ public class SolutionsController : ControllerBase
     [Authorize]
     [ProducesResponseType(typeof(Result<Paged<SolutionSummaryDto>>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status401Unauthorized)]
+    [RequireSession]
     public async Task<ActionResult<Result<Paged<SolutionSummaryDto>>>> GetMySolutionsAsync(
         [FromQuery] int pageSize = 10,
         [FromQuery] int currentPage = 1)
@@ -133,6 +136,7 @@ public class SolutionsController : ControllerBase
     [ProducesResponseType(typeof(Result), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status403Forbidden)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status404NotFound)]
+    [RequireSession]
     public async Task<ActionResult<Result>> UpdateSolutionAsync(
         [FromRoute] Guid solutionId,
         [FromBody] UpdateSolutionCommand request)
@@ -153,6 +157,7 @@ public class SolutionsController : ControllerBase
     [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status403Forbidden)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status404NotFound)]
+    [RequireSession]
     public async Task<ActionResult<Result>> DeleteSolutionAsync([FromRoute] Guid solutionId)
     {
         return (await _mediator.Send(new DeleteSolutionCommand(solutionId))).ToActionResult(this);
@@ -171,6 +176,7 @@ public class SolutionsController : ControllerBase
     [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status403Forbidden)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status404NotFound)]
+    [RequireSession]
     public async Task<ActionResult<Result>> ChangeSolutionStatusAsync(
         [FromRoute] Guid solutionId,
         [FromBody] ChangeSolutionStatusCommand request)

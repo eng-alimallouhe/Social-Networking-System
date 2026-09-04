@@ -213,7 +213,7 @@ public class RequestInfoService : IRequestInfoService
                     if (!string.IsNullOrWhiteSpace(tokenStr)) return tokenStr;
                 }
             }
-            return "Unknown";
+            return GenerateDeviceToken();
         }
     }
 
@@ -242,5 +242,11 @@ public class RequestInfoService : IRequestInfoService
             var model = ParsedClientInfo.Device.Model;
             return string.IsNullOrWhiteSpace(model) || model == "Other" ? "Unknown" : model;
         }
+    }
+
+
+    private static string GenerateDeviceToken()
+    {
+        return $"server-{Guid.NewGuid():N}";
     }
 }

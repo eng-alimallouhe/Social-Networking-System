@@ -11,6 +11,7 @@ using SNS.Application.Identity.SecuritySettings.PasswordManagement.Commands.Veri
 using SNS.Application.Identity.SecuritySettings.PasswordManagement.DTOs;
 using SNS.Application.Identity.Shared.DTOs.Authentication;
 using SNS.Shared.Results;
+using SNS.API.Attributes;
 
 namespace SNS.API.Controllers.Identity.SecuritySettings;
 
@@ -47,6 +48,7 @@ public class PasswordManagementController : ControllerBase
     [ProducesResponseType(typeof(AuthTokensDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [RequireSession]
     public async Task<ActionResult<Result<AuthTokensDto>>> ChangePasswordAsync([FromBody] ChangePasswordCommand request)
     {
         return (await _mediator.Send(request)).ToActionResult(this);

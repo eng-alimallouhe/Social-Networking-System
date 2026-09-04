@@ -17,6 +17,7 @@ using SNS.Domain.Identity.Users.Constants;
 using SNS.Domain.Support.Enums;
 using SNS.Infrastructure.Identity.Shared.Authorization;
 using SNS.Shared.Results;
+using SNS.API.Attributes;
 
 namespace SNS.API.Controllers.Support.SupportTickets;
 
@@ -48,6 +49,7 @@ public class SupportTicketsController : ControllerBase
     [ProducesResponseType(typeof(Result<Guid>), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status401Unauthorized)]
+    [RequireSession]
     public async Task<ActionResult<Result<Guid>>> CreateSupportTicketAsync([FromBody] CreateSupportTicketRequestDto request)
     {
         var command = new CreateSupportTicketCommand(
@@ -72,6 +74,7 @@ public class SupportTicketsController : ControllerBase
     [Authorize]
     [ProducesResponseType(typeof(Result<Paged<SupportTicketSummaryDto>>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status401Unauthorized)]
+    [RequireSession]
     public async Task<ActionResult<Result<Paged<SupportTicketSummaryDto>>>> GetMySupportTicketsAsync(
         [FromQuery] int pageSize = 10,
         [FromQuery] int currentPage = 1,
@@ -98,6 +101,7 @@ public class SupportTicketsController : ControllerBase
     [ProducesResponseType(typeof(Result<Paged<SupportTicketSummaryDto>>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status403Forbidden)]
+    [RequireSession]
     public async Task<ActionResult<Result<Paged<SupportTicketSummaryDto>>>> GetSupportTicketsAsync(
         [FromQuery] int pageSize = 10,
         [FromQuery] int currentPage = 1,
@@ -124,6 +128,7 @@ public class SupportTicketsController : ControllerBase
     [ProducesResponseType(typeof(Result), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status403Forbidden)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status404NotFound)]
+    [RequireSession]
     public async Task<ActionResult<Result<SupportTicketDetailsDto>>> GetSupportTicketByIdAsync([FromRoute] Guid id)
     {
         var query = new GetSupportTicketByIdQuery(id);
@@ -147,6 +152,7 @@ public class SupportTicketsController : ControllerBase
     [ProducesResponseType(typeof(Result), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status403Forbidden)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status404NotFound)]
+    [RequireSession]
     public async Task<ActionResult<Result>> AssignSupportTicketAsync(
         [FromRoute] Guid id,
         [FromBody] AssignSupportTicketRequestDto request)
@@ -172,6 +178,7 @@ public class SupportTicketsController : ControllerBase
     [ProducesResponseType(typeof(Result), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status403Forbidden)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status404NotFound)]
+    [RequireSession]
     public async Task<ActionResult<Result>> ChangeSupportTicketPriorityAsync(
         [FromRoute] Guid id,
         [FromBody] ChangeSupportTicketPriorityRequestDto request)
@@ -197,6 +204,7 @@ public class SupportTicketsController : ControllerBase
     [ProducesResponseType(typeof(Result), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status403Forbidden)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status404NotFound)]
+    [RequireSession]
     public async Task<ActionResult<Result>> ChangeSupportTicketStatusAsync(
         [FromRoute] Guid id,
         [FromBody] ChangeSupportTicketStatusRequestDto request)

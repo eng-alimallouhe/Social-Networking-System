@@ -1,8 +1,8 @@
 using Asp.Versioning;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SNS.API.Attributes;
 using SNS.API.Extensions;
 using SNS.Application.Projects.Commands.Create.AddProjectMedia;
 using SNS.Application.Projects.Commands.Delete.DeleteProjectMedia;
@@ -30,6 +30,7 @@ public class ProjectMediaController : ControllerBase
     [Consumes("multipart/form-data")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [RequireSession]
     public async Task<ActionResult<Result>> AddProjectMediaAsync(
         [FromRoute] Guid projectId,
         [FromForm] IFormFile file,
@@ -59,6 +60,7 @@ public class ProjectMediaController : ControllerBase
     [HttpDelete("{mediaId:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [RequireSession]
     public async Task<ActionResult<Result>> DeleteProjectMediaAsync(
         [FromRoute] Guid projectId,
         [FromRoute] Guid mediaId)

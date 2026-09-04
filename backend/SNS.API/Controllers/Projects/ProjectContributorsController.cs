@@ -6,6 +6,7 @@ using SNS.API.Extensions;
 using SNS.Application.Projects.Commands.Create.AddProjectContributor;
 using SNS.Application.Projects.Commands.Update.ChangeContributorRequestStatus;
 using SNS.Shared.Results;
+using SNS.API.Attributes;
 
 namespace SNS.API.Controllers.Projects;
 
@@ -29,6 +30,7 @@ public class ProjectContributorsController : ControllerBase
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [RequireSession]
     public async Task<ActionResult<Result>> AddProjectContributorAsync(
         [FromRoute] Guid projectId,
         [FromBody] AddProjectContributorCommand command)
@@ -42,6 +44,7 @@ public class ProjectContributorsController : ControllerBase
     [HttpPut("status")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [RequireSession]
     public async Task<ActionResult<Result>> ChangeContributorRequestStatusAsync(
         [FromRoute] Guid projectId,
         [FromBody] ChangeContributorStatusRequest request)

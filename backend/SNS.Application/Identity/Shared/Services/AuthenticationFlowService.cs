@@ -1,11 +1,9 @@
-﻿using SNS.Application.Abstractions.Common;
-using SNS.Application.Identity.SecuritySessions.Shared.Abstractions;
+﻿using SNS.Application.Identity.SecuritySessions.Shared.Abstractions;
 using SNS.Application.Identity.SecuritySessions.Shared.Contracts;
 using SNS.Application.Identity.Shared.Abstractions;
 using SNS.Application.Identity.Shared.DTOs.Authentication;
 using SNS.Application.Identity.Shared.DTOs.SecuritySessions;
 using SNS.Application.Identity.Shared.DTOs.Users;
-using SNS.Application.Shared.Abstractions.Data;
 using SNS.Domain.Identity.SecuritySessions.Entities;
 using SNS.Domain.Shared.Abstractions.Repositories;
 using SNS.Shared.Results;

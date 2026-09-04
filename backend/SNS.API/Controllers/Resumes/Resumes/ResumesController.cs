@@ -11,6 +11,7 @@ using SNS.Application.Resumes.Resumes.Contracts;
 using SNS.Application.Resumes.Resumes.Queries.GetMyResumes;
 using SNS.Application.Resumes.Resumes.Queries.GetResumeById;
 using SNS.Shared.Results;
+using SNS.API.Attributes;
 
 namespace SNS.API.Controllers.Resumes.Resumes;
 
@@ -44,6 +45,7 @@ public class ResumesController : ControllerBase
     [ProducesResponseType(typeof(Result<Guid>), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [RequireSession]
     public async Task<ActionResult<Result<Guid>>> CreateResumeAsync([FromBody] CreateResumeCommand request)
     {
         return (await _mediator.Send(request)).ToActionResult(this);
@@ -59,6 +61,7 @@ public class ResumesController : ControllerBase
     [HttpGet("my-resumes")]
     [ProducesResponseType(typeof(Result<List<ResumeSummaryDto>>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [RequireSession]
     public async Task<ActionResult<Result<List<ResumeSummaryDto>>>> GetMyResumesAsync()
     {
         return (await _mediator.Send(new GetMyResumesQuery())).ToActionResult(this);
@@ -98,6 +101,7 @@ public class ResumesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [RequireSession]
     public async Task<ActionResult<Result>> UpdateResumeAsync(
         [FromRoute] Guid id,
         [FromBody] UpdateResumeCommand request)
@@ -121,6 +125,7 @@ public class ResumesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [RequireSession]
     public async Task<ActionResult<Result>> DeleteResumeAsync([FromRoute] Guid id)
     {
         return (await _mediator.Send(new DeleteResumeCommand(id))).ToActionResult(this);

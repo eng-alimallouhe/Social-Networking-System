@@ -16,6 +16,7 @@ using SNS.Application.ContentManagement.Posts.Posts.Queries.GetUserPosts;
 using SNS.Application.ContentManagement.Posts.Posts.Queries.GetUserReactedPosts;
 using SNS.Application.Shared.DTOs;
 using SNS.Shared.Results;
+using SNS.API.Attributes;
 
 namespace SNS.API.Controllers.ContentManagement.Posts;
 
@@ -35,6 +36,7 @@ public class PostsController : ControllerBase
     [HttpPost]
     [Authorize]
     [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
+    [RequireSession]
     public async Task<ActionResult<Result>> CreatePostAsync([FromBody] CreatePostCommand request)
     {
         return (await _mediator.Send(request)).ToActionResult(this);
@@ -67,6 +69,7 @@ public class PostsController : ControllerBase
     [HttpGet("reacted")]
     [Authorize]
     [ProducesResponseType(typeof(Result<Paged<PostOverviewDto>>), StatusCodes.Status200OK)]
+    [RequireSession]
     public async Task<ActionResult<Result<Paged<PostOverviewDto>>>> GetUserReactedPostsAsync([FromQuery] GetUserReactedPostsQuery query)
     {
         return (await _mediator.Send(query)).ToActionResult(this);
@@ -75,6 +78,7 @@ public class PostsController : ControllerBase
     [HttpPut("{id:guid}")]
     [Authorize]
     [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
+    [RequireSession]
     public async Task<ActionResult<Result>> UpdatePostAsync(
         [FromRoute] Guid id,
         [FromBody] UpdatePostCommand request)
@@ -86,6 +90,7 @@ public class PostsController : ControllerBase
     [HttpDelete("{id:guid}")]
     [Authorize]
     [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
+    [RequireSession]
     public async Task<ActionResult<Result>> DeletePostAsync([FromRoute] Guid id)
     {
         return (await _mediator.Send(new DeletePostCommand(id))).ToActionResult(this);
@@ -94,6 +99,7 @@ public class PostsController : ControllerBase
     [HttpPost("{id:guid}/interest/increase")]
     [Authorize]
     [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
+    [RequireSession]
     public async Task<ActionResult<Result>> IncreaseInterestAsync([FromRoute] Guid id)
     {
         return (await _mediator.Send(new IncreasePostInterestCommand(id))).ToActionResult(this);
@@ -102,6 +108,7 @@ public class PostsController : ControllerBase
     [HttpPost("{id:guid}/interest/decrease")]
     [Authorize]
     [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
+    [RequireSession]
     public async Task<ActionResult<Result>> DecreaseInterestAsync([FromRoute] Guid id)
     {
         return (await _mediator.Send(new DecreasePostInterestCommand(id))).ToActionResult(this);

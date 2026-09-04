@@ -1,5 +1,5 @@
 export enum ViolationReason {
-    HateSpeech = "HateSpeech",
+    HateSpeech = "Hate_Speech",
     Harassment = "Harassment",
     Spam = "Spam",
     Misinformation = "Misinformation",

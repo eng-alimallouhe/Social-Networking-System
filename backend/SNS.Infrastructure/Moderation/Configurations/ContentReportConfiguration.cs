@@ -14,6 +14,7 @@ public class ContentReportConfiguration : IEntityTypeConfiguration<ContentReport
 
         builder.HasIndex(c => c.TicketId);
         builder.HasIndex(c => c.ReporterId);
+        builder.HasIndex(c => new { c.TicketId, c.ReporterId }).IsUnique();
 
         builder.Property(c => c.ViolationReason).HasConversion<int>();
 

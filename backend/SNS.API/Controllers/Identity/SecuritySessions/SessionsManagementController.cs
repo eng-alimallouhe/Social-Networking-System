@@ -15,6 +15,7 @@ using SNS.Application.Identity.SecuritySessions.SessionsManagement.Queries.GetUs
 using SNS.Application.Identity.Shared.DTOs.Authentication;
 using SNS.Application.Shared.DTOs;
 using SNS.Shared.Results;
+using SNS.API.Attributes;
 
 namespace SNS.API.Controllers.Identity.SecuritySessions;
 
@@ -50,6 +51,7 @@ public class SessionsManagementController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [RequireSession]
     public async Task<ActionResult<Result>> ForceRevokeUserSessionsAsync([FromBody] ForceRevokeUserSessionsCommand request)
     {
         return (await _mediator.Send(request)).ToActionResult(this);
@@ -64,6 +66,7 @@ public class SessionsManagementController : ControllerBase
     [HttpPost("logout")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [RequireSession]
     public async Task<ActionResult<Result>> LogoutAsync()
     {
         return (await _mediator.Send(new LogoutCommand())).ToActionResult(this);
@@ -82,6 +85,7 @@ public class SessionsManagementController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [RequireSession]
     public async Task<ActionResult<Result>> LogoutFromSessionAsync([FromBody] LogOutFromSessionCommand request)
     {
         return (await _mediator.Send(request)).ToActionResult(this);
@@ -96,6 +100,7 @@ public class SessionsManagementController : ControllerBase
     [HttpPost("logout-from-other-devices")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [RequireSession]
     public async Task<ActionResult<Result>> LogoutFromOtherDevicesAsync()
     {
         return (await _mediator.Send(new LogoutFromOtherDevicesCommand())).ToActionResult(this);
@@ -113,6 +118,7 @@ public class SessionsManagementController : ControllerBase
     [ProducesResponseType(typeof(SessionDetaildDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [RequireSession]
     public async Task<ActionResult<Result<SessionDetaildDto>>> GetSessionDeatilsAsync([FromRoute] Guid sessionId)
     {
         return (await _mediator.Send(new GetSessionDetailsQuery(sessionId))).ToActionResult(this);
@@ -127,6 +133,7 @@ public class SessionsManagementController : ControllerBase
     [HttpGet("user-active-sessions-and-devices")]
     [ProducesResponseType(typeof(UserActiveSessionsAndDevicesResult), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [RequireSession]
     public async Task<ActionResult<Result<UserActiveSessionsAndDevicesResult>>> GetUserActiveSessionsAndDevicesAsync()
     {
         return (await _mediator.Send(new GetUserActiveSessionsAndDevicesQuery())).ToActionResult(this);
@@ -143,6 +150,7 @@ public class SessionsManagementController : ControllerBase
     [Consumes("application/json")]
     [ProducesResponseType(typeof(Paged<SessionSummaryDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [RequireSession]
     public async Task<ActionResult<Result<Paged<SessionSummaryDto>>>> GetUserSessionAsync([FromQuery] GetUserSessionsQuery request)
     {
         return (await _mediator.Send(request)).ToActionResult(this);

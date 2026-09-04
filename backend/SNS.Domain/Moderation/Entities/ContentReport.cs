@@ -1,4 +1,4 @@
-﻿using SNS.Domain.Moderation.Enums;
+using SNS.Domain.Moderation.Enums;
 using SNS.Domain.Shared.Abstractions.IDeletable;
 using SNS.Domain.Shared.Entities;
 using SNS.Domain.Shared.Helpers;
@@ -19,11 +19,16 @@ public class ContentReport : Entity, IHardDeletable
         Id = SequentialGuid.GenerateSequentialGuid();
     } 
 
-    public static ContentReport Create(Guid reporterId, ViolationReason violationReason, string? details)
+    public static ContentReport Create(
+        Guid ticketId,
+        Guid reporterId,
+        ViolationReason violationReason,
+        string? details)
     {
         return new ContentReport
         {
-            Id = Guid.NewGuid(),
+            Id = SequentialGuid.GenerateSequentialGuid(),
+            TicketId = ticketId,
             ReporterId = reporterId,
             ViolationReason = violationReason,
             AdditionalDetails = details,

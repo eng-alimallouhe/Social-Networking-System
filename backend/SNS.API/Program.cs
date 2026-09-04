@@ -1,13 +1,14 @@
 using Asp.Versioning;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
 using Scalar.AspNetCore;
+using SNS.API.Middleware;
 using SNS.Application;
 using SNS.Infrastructure;
 using SNS.Infrastructure.Identity.Notifications.Hubs;
 using System.Text;
-using Microsoft.AspNetCore.HttpOverrides;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -142,6 +143,8 @@ builder.Services.Configure<ForwardedHeadersOptions>(options =>
 
 var app = builder.Build();
 
+app.UseMiddleware<ExceptionHandlingMiddleware>();
+
 app.UseForwardedHeaders();
 
 app.MapOpenApi();
@@ -149,7 +152,6 @@ app.MapOpenApi();
 app.MapScalarApiReference(options =>
 {
     options.Title = "Syrian Developers Network APIs";
-
     options.Theme = ScalarTheme.BluePlanet;
 });
 
@@ -157,18 +159,35 @@ app.UseHttpsRedirection();
 
 app.UseCors("syrianDevs");
 
+app.UseRouting();
+
 app.UseAuthentication();
+
+app.UseMiddleware<SessionAuthenticationMiddleware>();
+
 app.UseAuthorization();
 
 app.MapHub<NotificationHub>("/hubs/notifications");
 
-
 using (var scope = app.Services.CreateScope())
 {
-    var dbContext = scope.ServiceProvider.GetRequiredService<SNS.Infrastructure.Persistence.SNSDbContext>();
-    var permissionService = scope.ServiceProvider.GetService<SNS.Application.Identity.Shared.Abstractions.IPermissionService>();
-    var logger = scope.ServiceProvider.GetService<ILogger<Program>>();
-    await SNS.Infrastructure.Identity.Users.Seeding.PermissionSeeder.SeedPermissionsAndRolesAsync(dbContext, permissionService, logger);
+    var dbContext =
+        scope.ServiceProvider
+            .GetRequiredService<SNS.Infrastructure.Persistence.SNSDbContext>();
+
+    var permissionService =
+        scope.ServiceProvider
+            .GetService<SNS.Application.Identity.Shared.Abstractions.IPermissionService>();
+
+    var logger =
+        scope.ServiceProvider
+            .GetService<ILogger<Program>>();
+
+    await SNS.Infrastructure.Identity.Users.Seeding.PermissionSeeder
+        .SeedPermissionsAndRolesAsync(
+            dbContext,
+            permissionService,
+            logger);
 }
 
 app.MapControllers();

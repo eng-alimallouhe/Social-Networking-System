@@ -14,6 +14,7 @@ using SNS.Application.Jobs.Jobs.Queries.GetJobsByCompany;
 using SNS.Application.Jobs.Jobs.Queries.GetMyCompanyJobs;
 using SNS.Application.Shared.DTOs;
 using SNS.Shared.Results;
+using SNS.API.Attributes;
 
 namespace SNS.API.Controllers.Jobs.Jobs;
 
@@ -47,6 +48,7 @@ public class JobsController : ControllerBase
     [ProducesResponseType(typeof(Result), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status403Forbidden)]
+    [RequireSession]
     public async Task<ActionResult<Result<Guid>>> CreateJobAsync([FromBody] CreateJobCommand command)
     {
         return (await _mediator.Send(command)).ToActionResult(this);
@@ -79,6 +81,7 @@ public class JobsController : ControllerBase
     [Authorize]
     [ProducesResponseType(typeof(Result<Paged<JobSummaryDto>>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status401Unauthorized)]
+    [RequireSession]
     public async Task<ActionResult<Result<Paged<JobSummaryDto>>>> GetMyCompanyJobsAsync(
         [FromQuery] Guid? companyId = null,
         [FromQuery] int pageSize = 10,
@@ -124,6 +127,7 @@ public class JobsController : ControllerBase
     [ProducesResponseType(typeof(Result), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status403Forbidden)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status404NotFound)]
+    [RequireSession]
     public async Task<ActionResult<Result>> UpdateJobAsync(
         [FromRoute] Guid jobId,
         [FromBody] UpdateJobCommand command)
@@ -146,6 +150,7 @@ public class JobsController : ControllerBase
     [ProducesResponseType(typeof(Result), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status403Forbidden)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status404NotFound)]
+    [RequireSession]
     public async Task<ActionResult<Result>> DeleteJobAsync([FromRoute] Guid jobId)
     {
         return (await _mediator.Send(new DeleteJobCommand(jobId))).ToActionResult(this);
@@ -165,6 +170,7 @@ public class JobsController : ControllerBase
     [ProducesResponseType(typeof(Result), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status403Forbidden)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status404NotFound)]
+    [RequireSession]
     public async Task<ActionResult<Result>> CloseJobAsync([FromRoute] Guid jobId)
     {
         return (await _mediator.Send(new CloseJobCommand(jobId))).ToActionResult(this);

@@ -9,6 +9,7 @@ using SNS.Application.Jobs.JobSkills.Commands.RemoveJobSkill;
 using SNS.Application.Jobs.JobSkills.Contracts;
 using SNS.Application.Jobs.JobSkills.Queries.GetJobSkills;
 using SNS.Shared.Results;
+using SNS.API.Attributes;
 
 namespace SNS.API.Controllers.Jobs.JobSkills;
 
@@ -65,6 +66,7 @@ public class JobSkillsController : ControllerBase
     [ProducesResponseType(typeof(Result), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status403Forbidden)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status404NotFound)]
+    [RequireSession]
     public async Task<ActionResult<Result<Guid>>> AddJobSkillAsync(
         [FromRoute] Guid jobId,
         [FromBody] AddJobSkillRequest request)
@@ -88,6 +90,7 @@ public class JobSkillsController : ControllerBase
     [ProducesResponseType(typeof(Result), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status403Forbidden)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status404NotFound)]
+    [RequireSession]
     public async Task<ActionResult<Result>> RemoveJobSkillAsync(
         [FromRoute] Guid jobId,
         [FromRoute] Guid skillId)

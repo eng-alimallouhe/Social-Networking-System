@@ -29,8 +29,11 @@ public static class Permissions
     {
         public const string ContentDelete = "Moderation.Content.Delete";
         public const string ContentHide = "Moderation.Content.Hide";
+        public const string ReportsCreate = "Moderation.Reports.Create";
         public const string ReportsView = "Moderation.Reports.View";
         public const string ReportsProcess = "Moderation.Reports.Process";
+        public const string ReportsResolve = "Moderation.Reports.Resolve";
+        public const string ReportsStatistics = "Moderation.Reports.Statistics";
     }
 
     public static class Roles
@@ -76,8 +79,11 @@ public static class PermissionsCatalog
         // Moderation Permissions
         new(Permissions.Moderation.ContentDelete, "Allows removing reported or violating content."),
         new(Permissions.Moderation.ContentHide, "Allows hiding reported content pending investigation."),
+        new(Permissions.Moderation.ReportsCreate, "Allows submitting reports for violating content or profiles."),
         new(Permissions.Moderation.ReportsView, "Allows viewing user-submitted moderation reports."),
         new(Permissions.Moderation.ReportsProcess, "Allows resolving or taking action on moderation reports."),
+        new(Permissions.Moderation.ReportsResolve, "Allows resolving moderation reports."),
+        new(Permissions.Moderation.ReportsStatistics, "Allows viewing moderation reports statistics."),
 
         // Role & Permission Management
         new(Permissions.Roles.Manage, "Allows creating and managing system roles."),
@@ -101,8 +107,11 @@ public static class PermissionsCatalog
         Permissions.Users.Unban,
         Permissions.Moderation.ContentDelete,
         Permissions.Moderation.ContentHide,
+        Permissions.Moderation.ReportsCreate,
         Permissions.Moderation.ReportsView,
-        Permissions.Moderation.ReportsProcess
+        Permissions.Moderation.ReportsProcess,
+        Permissions.Moderation.ReportsResolve,
+        Permissions.Moderation.ReportsStatistics
     };
 
     public static readonly IReadOnlySet<string> SupportPermissions = new HashSet<string>
@@ -115,7 +124,10 @@ public static class PermissionsCatalog
         Permissions.Support.UsersView
     };
 
-    public static readonly IReadOnlySet<string> UserPermissions = new HashSet<string>();
+    public static readonly IReadOnlySet<string> UserPermissions = new HashSet<string>
+    {
+        Permissions.Moderation.ReportsCreate
+    };
 
     public static readonly IReadOnlySet<string> GuestPermissions = new HashSet<string>();
 }

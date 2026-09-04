@@ -14,6 +14,7 @@ using SNS.Application.Jobs.CompanyCreateRequests.Queries.GetMyCompanyCreateReque
 using SNS.Application.Jobs.CompanyCreateRequests.Queries.GetPendingCompanyCreateRequests;
 using SNS.Application.Shared.DTOs;
 using SNS.Shared.Results;
+using SNS.API.Attributes;
 
 namespace SNS.API.Controllers.Jobs.CompanyCreateRequests;
 
@@ -51,6 +52,7 @@ public class CompanyCreateRequestsController : ControllerBase
     [ProducesResponseType(typeof(Result<Guid>), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status401Unauthorized)]
+    [RequireSession]
     public async Task<ActionResult<Result<Guid>>> CreateCompanyCreateRequestAsync([FromBody] CreateCompanyCreateRequestCommand command)
     {
         return (await _mediator.Send(command)).ToActionResult(this);
@@ -68,6 +70,7 @@ public class CompanyCreateRequestsController : ControllerBase
     [ProducesResponseType(typeof(Result<CompanyCreateRequestDetailsDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status404NotFound)]
+    [RequireSession]
     public async Task<ActionResult<Result<CompanyCreateRequestDetailsDto>>> GetCompanyCreateRequestByIdAsync([FromRoute] Guid requestId)
     {
         return (await _mediator.Send(new GetCompanyCreateRequestByIdQuery(requestId))).ToActionResult(this);
@@ -82,6 +85,7 @@ public class CompanyCreateRequestsController : ControllerBase
     [Authorize]
     [ProducesResponseType(typeof(Result<List<CompanyCreateRequestSummaryDto>>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status401Unauthorized)]
+    [RequireSession]
     public async Task<ActionResult<Result<List<CompanyCreateRequestSummaryDto>>>> GetMyCompanyCreateRequestsAsync()
     {
         return (await _mediator.Send(new GetMyCompanyCreateRequestsQuery())).ToActionResult(this);
@@ -100,6 +104,7 @@ public class CompanyCreateRequestsController : ControllerBase
     [ProducesResponseType(typeof(Result<Paged<CompanyCreateRequestSummaryDto>>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status403Forbidden)]
+    [RequireSession]
     public async Task<ActionResult<Result<Paged<CompanyCreateRequestSummaryDto>>>> GetPendingCompanyCreateRequestsAsync(
         [FromQuery] int pageSize = 10,
         [FromQuery] int currentPage = 1)
@@ -123,6 +128,7 @@ public class CompanyCreateRequestsController : ControllerBase
     [ProducesResponseType(typeof(Result), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status403Forbidden)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status404NotFound)]
+    [RequireSession]
     public async Task<ActionResult<Result>> CancelCompanyCreateRequestAsync([FromRoute] Guid requestId)
     {
         return (await _mediator.Send(new CancelCompanyCreateRequestCommand(requestId))).ToActionResult(this);
@@ -145,6 +151,7 @@ public class CompanyCreateRequestsController : ControllerBase
     [ProducesResponseType(typeof(Result), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status403Forbidden)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status404NotFound)]
+    [RequireSession]
     public async Task<ActionResult<Result<Guid>>> ApproveCompanyCreateRequestAsync(
         [FromRoute] Guid requestId,
         [FromBody] ReviewCompanyCreateRequestRequest? request = null)
@@ -169,6 +176,7 @@ public class CompanyCreateRequestsController : ControllerBase
     [ProducesResponseType(typeof(Result), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status403Forbidden)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status404NotFound)]
+    [RequireSession]
     public async Task<ActionResult<Result>> RejectCompanyCreateRequestAsync(
         [FromRoute] Guid requestId,
         [FromBody] ReviewCompanyCreateRequestRequest? request = null)

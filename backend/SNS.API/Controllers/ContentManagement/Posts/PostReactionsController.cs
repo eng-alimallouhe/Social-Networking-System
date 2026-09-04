@@ -11,6 +11,7 @@ using SNS.Application.ContentManagement.Posts.PostReactions.Contracts;
 using SNS.Application.ContentManagement.Posts.PostReactions.Queries.GetPostReactions;
 using SNS.Application.Shared.DTOs;
 using SNS.Shared.Results;
+using SNS.API.Attributes;
 
 namespace SNS.API.Controllers.ContentManagement.Posts;
 
@@ -40,6 +41,7 @@ public class PostReactionsController : ControllerBase
     [HttpPost]
     [Authorize]
     [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
+    [RequireSession]
     public async Task<ActionResult<Result>> AddOrChangeReactionAsync(
         [FromRoute] Guid postId,
         [FromBody] ReactionRequest request)
@@ -50,6 +52,7 @@ public class PostReactionsController : ControllerBase
     [HttpDelete]
     [Authorize]
     [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
+    [RequireSession]
     public async Task<ActionResult<Result>> RemoveReactionAsync([FromRoute] Guid postId)
     {
         return (await _mediator.Send(new RemovePostReactionCommand(postId))).ToActionResult(this);

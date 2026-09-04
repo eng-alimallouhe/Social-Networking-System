@@ -10,6 +10,7 @@ using SNS.Application.Identity.ArchiveManagement.Qureies.GetUserIdentityArchive;
 using SNS.Application.Identity.ArchiveManagement.Qureies.GetUserPasswordArchive;
 using SNS.Application.Shared.DTOs;
 using SNS.Shared.Results;
+using SNS.API.Attributes;
 
 namespace SNS.API.Controllers.Identity.ArchiveManagement;
 
@@ -43,6 +44,7 @@ public class ArchiveManagementController : ControllerBase
     [Consumes("application/json")]
     [ProducesResponseType(typeof(Paged<UserArchiveSummaryDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [RequireSession]
     public async Task<ActionResult<Result<Paged<UserArchiveSummaryDto>>>> GetUserArchiveAsync([FromQuery] GetUserArchiveQuery request)
     {
         var result = await _mediator.Send(request);
@@ -63,6 +65,7 @@ public class ArchiveManagementController : ControllerBase
     [Consumes("application/json")]
     [ProducesResponseType(typeof(Paged<UserArchiveSummaryDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [RequireSession]
     public async Task<ActionResult<Result<Paged<UserIdentityArchiveSummaryDto>>>> GetUserIdentityArchiveAsync([FromQuery] GetUserIdentityArchiveQuery request)
     {
         var result = await _mediator.Send(request);
@@ -83,6 +86,7 @@ public class ArchiveManagementController : ControllerBase
     [Consumes("application/json")]
     [ProducesResponseType(typeof(Paged<UserPasswordArchiveSummaryDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [RequireSession]
     public async Task<ActionResult<Result<Paged<UserPasswordArchiveSummaryDto>>>> GetUserIdentityArchiveAsync([FromQuery] GetUserPasswordArchiveQuery request)
     {
         var result = await _mediator.Send(request);
@@ -104,6 +108,7 @@ public class ArchiveManagementController : ControllerBase
     [ProducesResponseType(typeof(ExportAccountDataResponseDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [RequireSession]
     public async Task<ActionResult<Result<ExportAccountDataResponseDto>>> ExportAccountDataAsync()
     {
         return (await _mediator.Send(new ExportAccountDataCommand())).ToActionResult(this);

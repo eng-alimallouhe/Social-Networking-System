@@ -11,6 +11,7 @@ using SNS.Application.ContentManagement.Comments.CommentReactions.Contracts;
 using SNS.Application.ContentManagement.Comments.CommentReactions.Queries.GetCommentReactions;
 using SNS.Application.Shared.DTOs;
 using SNS.Shared.Results;
+using SNS.API.Attributes;
 
 namespace SNS.API.Controllers.ContentManagement.CommentReactions;
 
@@ -40,6 +41,7 @@ public class CommentReactionsController : ControllerBase
     [HttpPost]
     [Authorize]
     [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
+    [RequireSession]
     public async Task<ActionResult<Result>> AddOrChangeReactionAsync(
         [FromRoute] Guid commentId,
         [FromBody] ReactionRequest request)
@@ -50,6 +52,7 @@ public class CommentReactionsController : ControllerBase
     [HttpDelete]
     [Authorize]
     [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
+    [RequireSession]
     public async Task<ActionResult<Result>> RemoveReactionAsync([FromRoute] Guid commentId)
     {
         return (await _mediator.Send(new RemoveCommentReactionCommand(commentId))).ToActionResult(this);

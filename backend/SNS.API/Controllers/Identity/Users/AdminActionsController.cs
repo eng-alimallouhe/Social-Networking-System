@@ -11,6 +11,7 @@ using SNS.Domain.Identity.Users.Constants;
 using SNS.Domain.Identity.Users.Entities;
 using SNS.Infrastructure.Identity.Shared.Authorization;
 using SNS.Shared.Results;
+using SNS.API.Attributes;
 
 namespace SNS.API.Controllers.Identity.Users;
 
@@ -147,6 +148,7 @@ public class AdminActionsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [RequireSession]
     public async Task<ActionResult<Result<UserDetailsDto>>> GetUserDetailsAsync([FromBody] GetUserDetailsQuery request)
     {
         return (await _mediator.Send(request)).ToActionResult(this);

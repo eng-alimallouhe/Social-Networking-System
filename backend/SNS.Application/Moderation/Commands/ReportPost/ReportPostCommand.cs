@@ -13,11 +13,11 @@ namespace SNS.Application.Moderation.Commands.ReportPost;
 
 public sealed record ReportPostCommand(
     Guid PostId,
-    ViolationReason Reason,
-    string? Details
-) : ICommand;
+    ViolationReason ViolationReason,
+    string? AdditionalDetails
+) : ICommand<Guid>;
 
-internal sealed class ReportPostCommandHandler : ICommandHandler<ReportPostCommand>
+internal sealed class ReportPostCommandHandler : ICommandHandler<ReportPostCommand, Guid>
 {
     private readonly IApplicationDbContext _dbContext;
     private readonly IRepository<ReportTicket> _ticketRepo;
@@ -36,18 +36,18 @@ internal sealed class ReportPostCommandHandler : ICommandHandler<ReportPostComma
         _currentUserService = currentUserService;
     }
 
-    public async Task<Result> Handle(ReportPostCommand request, CancellationToken cancellationToken)
+    public async Task<Result<Guid>> Handle(ReportPostCommand request, CancellationToken cancellationToken)
     {
-        var profileId = _currentUserService.ProfileId;
-        if (!profileId.HasValue)
+        var currentUserId = _currentUserService.UserId;
+        if (!currentUserId.HasValue)
         {
-            return Result.Failure(SecurityStatusCodes.AuthenticationRequired);
+            return Result<Guid>.Failure(SecurityStatusCodes.AuthenticationRequired);
         }
 
         var postExists = await _dbContext.Posts.AnyAsync(p => p.Id == request.PostId && p.IsActive, cancellationToken);
         if (!postExists)
         {
-            return Result.Failure(ResourceStatusCode.NotFound);
+            return Result<Guid>.Failure(ResourceStatusCode.NotFound);
         }
 
         var ticket = await _ticketRepo.GetSingleByExpressionAsync(
@@ -61,14 +61,21 @@ internal sealed class ReportPostCommandHandler : ICommandHandler<ReportPostComma
         }
         else
         {
-            // Add report to existing ticket
+            var alreadyReported = await _dbContext.ContentReports.AnyAsync(
+                r => r.TicketId == ticket.Id && r.ReporterId == currentUserId.Value,
+                cancellationToken);
+
+            if (alreadyReported)
+            {
+                return Result<Guid>.Failure(OperationStatusCode.Conflict);
+            }
         }
 
-        var report = ContentReport.Create(profileId.Value, request.Reason, request.Details);
+        var report = ContentReport.Create(ticket.Id, currentUserId.Value, request.ViolationReason, request.AdditionalDetails);
         ticket.AddReport(report);
 
         await _unitOfWork.CompleteAsync(cancellationToken);
 
-        return Result.Success(OperationStatusCode.Success);
+        return Result<Guid>.Success(ticket.Id, OperationStatusCode.Success);
     }
 }

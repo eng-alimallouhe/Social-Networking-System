@@ -110,7 +110,10 @@ export class PostReport {
 
     this.isSubmitting.set(true);
 
-    this.moderationService.reportPost(this.postId, reason, this.additionalDetails()).subscribe({
+    this.moderationService.reportPost(this.postId, {
+      violationReason: reason,
+      additionalDetails: this.additionalDetails() || null
+    }).subscribe({
       next: () => {
         this.isSubmitting.set(false);
         this.currentStep.set(3);

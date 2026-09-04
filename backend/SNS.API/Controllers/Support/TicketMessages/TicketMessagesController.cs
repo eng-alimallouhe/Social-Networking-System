@@ -8,6 +8,7 @@ using SNS.Application.Support.TicketMessages.Commands.ReplyToSupportTicket;
 using SNS.Application.Support.TicketMessages.Contracts;
 using SNS.Application.Support.TicketMessages.Queries.GetTicketMessages;
 using SNS.Shared.Results;
+using SNS.API.Attributes;
 
 namespace SNS.API.Controllers.Support.TicketMessages;
 
@@ -44,6 +45,7 @@ public class TicketMessagesController : ControllerBase
     [ProducesResponseType(typeof(Result), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status403Forbidden)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status404NotFound)]
+    [RequireSession]
     public async Task<ActionResult<Result>> ReplyToTicketAsync(
         [FromRoute] Guid ticketId,
         [FromBody] ReplyToSupportTicketRequestDto request)
@@ -70,6 +72,7 @@ public class TicketMessagesController : ControllerBase
     [ProducesResponseType(typeof(Result), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status403Forbidden)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status404NotFound)]
+    [RequireSession]
     public async Task<ActionResult<Result<IReadOnlyList<TicketMessageDto>>>> GetTicketMessagesAsync([FromRoute] Guid ticketId)
     {
         var query = new GetTicketMessagesQuery(ticketId);

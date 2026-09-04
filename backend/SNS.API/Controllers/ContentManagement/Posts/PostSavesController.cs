@@ -10,6 +10,7 @@ using SNS.Application.ContentManagement.Posts.PostSaves.Commands.UnsavePost;
 using SNS.Application.ContentManagement.Posts.PostSaves.Queries.GetSavedPosts;
 using SNS.Application.Shared.DTOs;
 using SNS.Shared.Results;
+using SNS.API.Attributes;
 
 namespace SNS.API.Controllers.ContentManagement.Posts;
 
@@ -29,6 +30,7 @@ public class PostSavesController : ControllerBase
     [HttpGet("saved")]
     [Authorize]
     [ProducesResponseType(typeof(Result<Paged<PostOverviewDto>>), StatusCodes.Status200OK)]
+    [RequireSession]
     public async Task<ActionResult<Result<Paged<PostOverviewDto>>>> GetSavedPostsAsync([FromQuery] GetSavedPostsQuery query)
     {
         return (await _mediator.Send(query)).ToActionResult(this);
@@ -37,6 +39,7 @@ public class PostSavesController : ControllerBase
     [HttpPost("{postId:guid}/save")]
     [Authorize]
     [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
+    [RequireSession]
     public async Task<ActionResult<Result>> SavePostAsync([FromRoute] Guid postId)
     {
         return (await _mediator.Send(new SavePostCommand(postId))).ToActionResult(this);
@@ -45,6 +48,7 @@ public class PostSavesController : ControllerBase
     [HttpDelete("{postId:guid}/save")]
     [Authorize]
     [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
+    [RequireSession]
     public async Task<ActionResult<Result>> UnsavePostAsync([FromRoute] Guid postId)
     {
         return (await _mediator.Send(new UnsavePostCommand(postId))).ToActionResult(this);

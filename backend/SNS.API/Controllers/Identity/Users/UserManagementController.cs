@@ -14,6 +14,7 @@ using SNS.Application.Identity.Users.UsersManagement.Queries.checkUsernameAvaila
 using SNS.Application.Identity.Users.UsersManagement.Queries.GetUserInformation;
 using SNS.Application.Identity.Users.UsersManagement.Queries.GetUserSecurityDetails;
 using SNS.Shared.Results;
+using SNS.API.Attributes;
 
 namespace SNS.API.Controllers.Identity.Users;
 
@@ -47,6 +48,7 @@ public class UserManagementController : ControllerBase
     [Consumes("application/json")]
     [ProducesResponseType(typeof(BeginUserDeactivationResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [RequireSession]
     public async Task<ActionResult<Result<BeginUserDeactivationResponse>>> BeginUserDeactivationAsync([FromBody] BeginUserDeactivationCommand request)
     {
         return (await _mediator.Send(request)).ToActionResult(this);
@@ -65,6 +67,7 @@ public class UserManagementController : ControllerBase
     [ProducesResponseType(typeof(AuthTokensDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [RequireSession]
     public async Task<ActionResult<AuthTokensDto>> CancelUserDeactivationAsync([FromBody] CancelUserDeactivationRequestCommand request)
     {
         return (await _mediator.Send(request)).ToActionResult(this);
@@ -83,6 +86,7 @@ public class UserManagementController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [RequireSession]
     public async Task<ActionResult<Result>> CompleteUserDeactivationAsync([FromBody] CompleteUserDeactivationCommand request)
     {
         return (await _mediator.Send(request)).ToActionResult(this);
@@ -103,6 +107,7 @@ public class UserManagementController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
+    [RequireSession]
     public async Task<ActionResult> UpdateUserNameAsync([FromBody] ChangeUserNameCommand request)
     {
         return (await _mediator.Send(request)).ToActionResult(this);
@@ -121,6 +126,7 @@ public class UserManagementController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [RequireSession]
     public async Task<ActionResult> UpdateUserPreferredLangaugeAsync([FromBody] ChangeUserPreferredLanguageCommand request)
     {
         return (await _mediator.Send(request)).ToActionResult(this);
@@ -135,6 +141,7 @@ public class UserManagementController : ControllerBase
     [HttpGet("user-information")]
     [ProducesResponseType(typeof(UserInformationResult), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [RequireSession]
     public async Task<ActionResult<Result<UserInformationResult?>>> GetUserInformationAsync()
     {
         return (await _mediator.Send(new GetUserInformationQuery())).ToActionResult(this);
@@ -149,6 +156,7 @@ public class UserManagementController : ControllerBase
     [HttpGet("user-security-details")]
     [ProducesResponseType(typeof(UserSecurityDetailsResult), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [RequireSession]
     public async Task<ActionResult<Result<UserSecurityDetailsResult?>>> GetUserSecurityDetailsAsync()
     {
         return (await _mediator.Send(new GetUserSecurityDetailsQuery())).ToActionResult(this);
@@ -164,6 +172,7 @@ public class UserManagementController : ControllerBase
     [HttpGet("user-account")]
     [ProducesResponseType(typeof(UserAccount), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [RequireSession]
     public async Task<ActionResult<Result<UserAccount>>> GetUserAccountAsync()
     {
         return (await _mediator.Send(new GetUserAccountQuery())).ToActionResult(this);
@@ -182,6 +191,7 @@ public class UserManagementController : ControllerBase
     [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [RequireSession]
     public async Task<ActionResult<Result<bool>>> CheckUsernameAvailabilityAsync([FromQuery] string username)
     {
         return (await _mediator.Send(new CheckUsernameAvailabiltyQuery(username))).ToActionResult(this);

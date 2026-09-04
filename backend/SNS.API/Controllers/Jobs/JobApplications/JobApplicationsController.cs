@@ -14,6 +14,7 @@ using SNS.Application.Jobs.JobApplications.Queries.GetMyJobApplications;
 using SNS.Application.Shared.DTOs;
 using SNS.Domain.QA.Enums;
 using SNS.Shared.Results;
+using SNS.API.Attributes;
 
 namespace SNS.API.Controllers.Jobs.JobApplications;
 
@@ -51,6 +52,7 @@ public class JobApplicationsController : ControllerBase
     [ProducesResponseType(typeof(Result<Guid>), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status401Unauthorized)]
+    [RequireSession]
     public async Task<ActionResult<Result<Guid>>> CreateJobApplicationAsync([FromBody] CreateJobApplicationCommand command)
     {
         return (await _mediator.Send(command)).ToActionResult(this);
@@ -70,6 +72,7 @@ public class JobApplicationsController : ControllerBase
     [ProducesResponseType(typeof(Result), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status403Forbidden)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status404NotFound)]
+    [RequireSession]
     public async Task<ActionResult<Result<JobApplicationDetailsDto>>> GetJobApplicationByIdAsync([FromRoute] Guid applicationId)
     {
         return (await _mediator.Send(new GetJobApplicationByIdQuery(applicationId))).ToActionResult(this);
@@ -87,6 +90,7 @@ public class JobApplicationsController : ControllerBase
     [Authorize]
     [ProducesResponseType(typeof(Result<Paged<JobApplicationSummaryDto>>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status401Unauthorized)]
+    [RequireSession]
     public async Task<ActionResult<Result<Paged<JobApplicationSummaryDto>>>> GetMyJobApplicationsAsync(
         [FromQuery] ApplicationStatus? status = null,
         [FromQuery] int pageSize = 10,
@@ -111,6 +115,7 @@ public class JobApplicationsController : ControllerBase
     [ProducesResponseType(typeof(Result<Paged<JobApplicationSummaryDto>>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status403Forbidden)]
+    [RequireSession]
     public async Task<ActionResult<Result<Paged<JobApplicationSummaryDto>>>> GetJobApplicationsAsync(
         [FromRoute] Guid jobId,
         [FromQuery] Guid? companyId = null,
@@ -135,6 +140,7 @@ public class JobApplicationsController : ControllerBase
     [ProducesResponseType(typeof(Result), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status403Forbidden)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status404NotFound)]
+    [RequireSession]
     public async Task<ActionResult<Result>> WithdrawJobApplicationAsync([FromRoute] Guid applicationId)
     {
         return (await _mediator.Send(new WithdrawJobApplicationCommand(applicationId))).ToActionResult(this);
@@ -157,6 +163,7 @@ public class JobApplicationsController : ControllerBase
     [ProducesResponseType(typeof(Result), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status403Forbidden)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status404NotFound)]
+    [RequireSession]
     public async Task<ActionResult<Result>> UpdateJobApplicationStatusAsync(
         [FromRoute] Guid applicationId,
         [FromBody] UpdateJobApplicationStatusRequest request)

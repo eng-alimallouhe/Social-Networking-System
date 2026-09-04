@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using SNS.API.Extensions;
 using SNS.Application.Projects.Commands.Interaction.RecordProjectView;
 using SNS.Shared.Results;
+using SNS.API.Attributes;
 
 namespace SNS.API.Controllers.Projects;
 
@@ -26,6 +27,7 @@ public class ProjectViewsController : ControllerBase
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [RequireSession]
     public async Task<ActionResult<Result>> RecordProjectViewAsync([FromRoute] Guid projectId)
     {
         return (await _mediator.Send(new RecordProjectViewCommand(projectId))).ToActionResult(this);

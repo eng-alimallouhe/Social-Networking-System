@@ -10,6 +10,7 @@ using SNS.Application.Resumes.Educations.Commands.UpdateResumeEducation;
 using SNS.Application.Resumes.Educations.Contracts;
 using SNS.Application.Resumes.Educations.Queries.GetResumeEducations;
 using SNS.Shared.Results;
+using SNS.API.Attributes;
 
 namespace SNS.API.Controllers.Resumes.Educations;
 
@@ -61,6 +62,7 @@ public class ResumeEducationsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [RequireSession]
     public async Task<ActionResult<Result<Guid>>> AddResumeEducationAsync(
         [FromRoute] Guid resumeId,
         [FromBody] AddResumeEducationCommand request)
@@ -89,6 +91,7 @@ public class ResumeEducationsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [RequireSession]
     public async Task<ActionResult<Result>> UpdateResumeEducationAsync(
         [FromRoute] Guid resumeId,
         [FromRoute] Guid educationId,
@@ -114,6 +117,7 @@ public class ResumeEducationsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [RequireSession]
     public async Task<ActionResult<Result>> DeleteResumeEducationAsync(
         [FromRoute] Guid resumeId,
         [FromRoute] Guid educationId)

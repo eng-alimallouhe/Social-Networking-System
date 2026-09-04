@@ -10,6 +10,7 @@ using SNS.Application.Resumes.Skills.Commands.UpdateResumeSkill;
 using SNS.Application.Resumes.Skills.Contracts;
 using SNS.Application.Resumes.Skills.Queries.GetResumeSkills;
 using SNS.Shared.Results;
+using SNS.API.Attributes;
 
 namespace SNS.API.Controllers.Resumes.Skills;
 
@@ -63,6 +64,7 @@ public class ResumeSkillsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
+    [RequireSession]
     public async Task<ActionResult<Result<Guid>>> AddResumeSkillAsync(
         [FromRoute] Guid resumeId,
         [FromBody] AddResumeSkillCommand request)
@@ -93,6 +95,7 @@ public class ResumeSkillsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
+    [RequireSession]
     public async Task<ActionResult<Result>> UpdateResumeSkillAsync(
         [FromRoute] Guid resumeId,
         [FromRoute] Guid skillId,
@@ -118,6 +121,7 @@ public class ResumeSkillsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [RequireSession]
     public async Task<ActionResult<Result>> DeleteResumeSkillAsync(
         [FromRoute] Guid resumeId,
         [FromRoute] Guid skillId)
