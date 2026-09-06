@@ -10,7 +10,7 @@ import {
     UserPasswordArchiveSummaryDto
 } from '../../contracts/archive-management.models';
 import { rxResource, toSignal } from '@angular/core/rxjs-interop';
-import { TokenService } from '../../../../shared/services/token.service';
+import { AuthenticationService } from '../../../../shared/services/authentication.service';
 import { filter, finalize, forkJoin, map, of, tap } from 'rxjs';
 import { GlobalLoaderService } from '../../../../../shared/Loading/services/global-loader.service';
 import { LucideDownload, LucideHistory, LucideBadgeCheck, LucideKeyRound, LucideChevronDown } from "@lucide/angular";
@@ -26,12 +26,12 @@ export class ArchiveManagementComponent implements OnInit {
     private archiveService = inject(ArchiveManagementService);
     public messageBuilder = inject(ArchiveMessageBuilderService);
     public translate = inject(TranslateService);
-    private tokenService = inject(TokenService);
+    private authenticationService = inject(AuthenticationService);
     private route = inject(ActivatedRoute);
     private loaderService = inject(GlobalLoaderService);
     private router = inject(Router);
 
-    targetUserId = this.tokenService.getUserId();
+    targetUserId = this.authenticationService.getUserId();
 
     readonly isArchiveRootRoute = toSignal(
         this.router.events.pipe(

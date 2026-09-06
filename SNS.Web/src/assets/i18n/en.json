@@ -69,7 +69,33 @@
                 "Misinformation": "Misinformation",
                 "MisinformationDesc": "False or misleading information that could cause harm.",
                 "Other": "Other",
-                "OtherDesc": "Any other reason not listed above."
+                "OtherDesc": "Any other reason not listed above.",
+                "ReportReceived": "Report Received",
+                "SuccessMessage": "Thank you for letting us know. Your report helps keep our community safe."
+            },
+            "CommentReport": {
+                "Title": "Report Comment",
+                "Subtitle": "Help us understand why you are reporting this comment."
+            },
+            "UserProfileReport": {
+                "Title": "Report User Profile",
+                "Subtitle": "Help us understand why you are reporting this profile."
+            },
+            "RatingReport": {
+                "Title": "Report Rating",
+                "Subtitle": "Help us understand why you are reporting this rating."
+            },
+            "ProjectReport": {
+                "Title": "Report Project",
+                "Subtitle": "Help us understand why you are reporting this project."
+            },
+            "CompanyReport": {
+                "Title": "Report Company",
+                "Subtitle": "Help us understand why you are reporting this company."
+            },
+            "JobReport": {
+                "Title": "Report Job",
+                "Subtitle": "Help us understand why you are reporting this job."
             }
         }
     },
@@ -575,7 +601,8 @@
         "Shared": {
             "Error_Title": "Error",
             "Success_Title": "Success",
-            "Confirm": "Confirm"
+            "Confirm": "Confirm",
+            "Unexpected_Error": "An unexpected error occurred. Please try again later."
         },
         "User": {
             "200": "The requested user account was found successfully.",
@@ -652,6 +679,8 @@
         "System_Busy_Body": "We are currently processing your request. Please hold for a moment."
     },
     "Demo": {
+        "Logout": "Logout",
+        "Login": "Try Role Switcher",
         "Dashboard": {
             "Title": "Demo Dashboard",
             "Subtitle": "Access all available demo features and pages in one place.",
@@ -716,7 +745,8 @@
     },
     "Common": {
         "Copy": "Copy",
-        "Copied": "Copied!"
+        "Copied": "Copied!",
+        "Back": "Back"
     },
     "ContentManagement": {
         "Posts": {
@@ -730,7 +760,26 @@
             "Pinned": "Pinned",
             "Share": "Share",
             "Show_More": "Show more",
-            "Show_Less": "Show less"
+            "Show_Less": "Show less",
+            "PreviousMedia": "Previous media",
+            "NextMedia": "Next media",
+            "ClosePreview": "Close preview",
+            "PlayVideo": "Play video",
+            "ViewMedia": "View media",
+            "End_Of_Feed": "You've reached the end of the feed",
+            "Load_More_Error": "Failed to load more posts",
+            "Feed_Error_Title": "Failed to load feed",
+            "Feed_Error_Description": "Something went wrong while fetching your posts. Please try again.",
+            "Empty_Feed_Title": "No posts yet",
+            "Empty_Feed_Description": "When posts are published, they will show up here.",
+            "Retry": "Retry",
+            "Post_Details": "Post Details",
+            "Back": "Back",
+            "Interested": "Interested",
+            "Not_Interested": "Not Interested",
+            "Report_Post": "Report Post",
+            "Not_Interested_Feedback": "Similar posts will be suggested less frequently in the future.",
+            "Undo": "Undo"
         },
         "Comments": {
             "MyComments": "My Comments",
@@ -738,7 +787,17 @@
             "Loading": "Loading comments...",
             "Error": "Failed to load comments",
             "Like": "Like",
-            "Reply": "Reply"
+            "Reply": "Reply",
+            "Delete": "Delete Comment",
+            "Report": "Report Comment",
+            "Options": "Comment options",
+            "Replying_To": "Replying to",
+            "Cancel_Reply": "Cancel reply",
+            "Anonymous": "User",
+            "Write_Comment_Placeholder": "Write a comment...",
+            "Submit": "Comment",
+            "Empty_Title": "No comments yet",
+            "Empty_Description": "Be the first to join the conversation!"
         }
     },
     "Project": {
@@ -751,12 +810,230 @@
         },
         "Type": {
             "OpenSource": "Open Source",
-            "ClosedSource": "Closed Source"
+            "ClosedSource": "Closed Source",
+            "Commercial": "Commercial",
+            "Personal": "Personal",
+            "Academic": "Academic"
         },
         "Collaburators": "Collaborators",
+        "Collaborators": "Collaborators",
+        "No_Collaborators": "No collaborators listed.",
+        "Back_To_Projects": "Back to Projects",
+        "Update_Project": "Update Project",
+        "Add_Collaborator": "Add Collaborator",
+        "Share": "Share",
+        "Reviews": "reviews",
+        "Review": "Reviews",
+        "Project_Info": "Project Info",
+        "Created": "Created",
+        "No_Skills": "No specific technologies specified.",
         "Tech_Stack": "Tech Stack",
         "Github": "GitHub",
         "View_Live": "Live Demo",
-        "View_Project": "View Project"
+        "View_Project": "View Project",
+        "Overview": "Project Overview",
+        "Readme": "README.md",
+        "No_Readme": "No README available for this project.",
+        "Save": "Save project",
+        "Saved": "Saved",
+        "Saves": "saves",
+        "Views": "views",
+        "Tabs": {
+            "Readme": "README",
+            "Media": "Media",
+            "Milestones": "Milestones",
+            "Source_Code": "Source Code",
+            "Reviews": "Reviews"
+        },
+        "Media_Empty_Title": "No Media Available",
+        "Media_Empty_Desc": "There are no screenshots or media uploaded for this project yet.",
+        "Milestones_Empty_Title": "No Milestones Recorded",
+        "Milestones_Empty_Desc": "This project currently has no recorded development milestones.",
+        "Source_Code_Empty_Title": "No Source Code Uploaded",
+        "Source_Code_Empty_Desc": "Source code files have not been uploaded directly to the platform.",
+        "Reviews_Empty_Title": "No Reviews Yet",
+        "Reviews_Empty_Desc": "Be the first to share your thoughts and review this project.",
+        "View_On_Github": "View Repository on GitHub",
+        "File": "File",
+        "Directory": "Directory",
+        "Error_Title": "Failed to load project",
+        "Error_Desc": "We were unable to load the project details. Please try again.",
+        "Retry": "Retry"
+    },
+    "Problem": {
+        "Level": {
+            "Easy": "Easy",
+            "Medium": "Medium",
+            "Hard": "Hard"
+        },
+        "Status": {
+            "Open": "Open",
+            "Solved": "Solved",
+            "Closed": "Closed"
+        },
+        "Upvotes": "Upvotes",
+        "Solutions": "Solutions",
+        "View_Problem": "View Problem",
+        "Video_Attachment": "Video attachment",
+        "Save": "Save problem",
+        "Share": "Share problem",
+        "Error_Title": "Failed to load problem",
+        "Error_Desc": "We were unable to load the problem details. Please try again.",
+        "Retry": "Retry",
+        "Views": "views"
+    },
+    "Job": {
+        "Type": {
+            "FullTime": "Full-Time",
+            "PartTime": "Part-Time",
+            "Contract": "Contract",
+            "Internship": "Internship",
+            "Remote": "Remote",
+            "Hybrid": "Hybrid"
+        },
+        "SalaryType": {
+            "Monthly": "month",
+            "Yearly": "year",
+            "Hourly": "hour",
+            "Negotiable": "Negotiable"
+        },
+        "Status": {
+            "Active": "Active",
+            "Closed": "Closed"
+        },
+        "Remote": "Remote",
+        "Posted": "Posted",
+        "Closed_On": "Closed on",
+        "Accepting_Candidates": "Accepting candidates",
+        "Applications_Closed": "Applications Closed",
+        "Applications": "applications",
+        "No_Job_Description": "No description provided for this role.",
+        "View_Details": "View Details",
+        "Apply_Now": "Apply Now",
+        "Overview": "Job Overview",
+        "Key_Responsibilities": "Key Responsibilities",
+        "Required_Skills": "Required Skills",
+        "Compensation": "Compensation",
+        "Applied": "Applied",
+        "Bookmark": "Bookmark job",
+        "Share": "Share job",
+        "Error_Title": "Failed to load job",
+        "Error_Desc": "We were unable to load the job details. Please try again.",
+        "Retry": "Retry"
+    },
+    "Community": {
+        "Type": {
+            "Public": "Public",
+            "Private": "Private",
+            "Restricted": "Restricted"
+        },
+        "Formed": "Formed",
+        "Members": "Members",
+        "Approval_Required": "Approval Required",
+        "View_Hub": "View Hub",
+        "Join_Hub": "Join Hub",
+        "Member": "Member",
+        "About": "About Community",
+        "Rules": "Community Rules & Policy",
+        "Leader": "Community Leader",
+        "Share": "Share community",
+        "Posts": "posts",
+        "Error_Title": "Failed to load community",
+        "Error_Desc": "We were unable to load the community details. Please try again.",
+        "Retry": "Retry"
+    },
+    "Profile": {
+        "Follow": "Follow",
+        "Following": "Following",
+        "Followers": "Followers",
+        "Following_Count": "Following",
+        "Joined": "Joined",
+        "No_Bio": "No bio provided yet.",
+        "More": "more",
+        "View_Profile": "View Profile",
+        "About": "About",
+        "Skills_Stack": "Skills & Stack",
+        "Academic_Records": "Academic Records",
+        "Verified_Education": "Verified Education",
+        "Posts_Tab": "Posts",
+        "Problems_Tab": "Problems & Solved",
+        "Resumes_Tab": "Resumes / CV",
+        "Available_Advisory": "Available for Advisory & Consulting",
+        "Top_Contributor": "Top 1% CyberOps Contributor",
+        "Social": "SOCIAL",
+        "Publications": "Publications",
+        "Share": "Share profile",
+        "Copy_Link": "Copy link",
+        "Load_Error_Title": "Failed to load profile",
+        "Load_Error_Desc": "We were unable to load this profile's details. Please check your connection and try again.",
+        "Retry": "Retry",
+        "Posts_Error": "Could not load posts for this profile.",
+        "Problems_Error": "Could not load problems for this profile.",
+        "No_Posts_Title": "No posts published yet",
+        "No_Posts_Desc": "This profile hasn't posted anything yet.",
+        "No_Problems_Title": "No problems published",
+        "No_Problems_Desc": "This profile hasn't published any discussion problems yet.",
+        "No_Resumes_Title": "No resumes available",
+        "No_Resumes_Desc": "There are no public resumes or CVs available for this profile."
+    },
+    "Search": {
+        "Intro_Title": "Find What You're Looking For",
+        "Intro_Subtitle": "Search across people, posts, projects, communities, jobs, and problem discussions across the platform.",
+        "Choose_Date": "Choose your date",
+        "Select_Time": "Time",
+        "Clear": "Clear",
+        "Today": "Today",
+        "Placeholder": "Type here your search...",
+        "Search_Button": "Search",
+        "Filters": "Filters",
+        "Close_Filters": "Close filters",
+        "Recent_Searches": "Recent Searches",
+        "Trending_Topics": "Trending Topics",
+        "Suggested_For_You": "Suggested for You",
+        "See_All": "See all",
+        "No_Results_Title": "No results found",
+        "No_Results_Desc": "We couldn't find anything matching your search. Try different keywords or adjust your filters.",
+        "Error_Title": "Search failed",
+        "Error_Desc": "An error occurred while fetching search results. Please try again.",
+        "Categories": {
+            "People": "People",
+            "Posts": "Posts",
+            "Projects": "Projects",
+            "Communities": "Communities",
+            "Jobs": "Jobs",
+            "Problems": "Problems"
+        },
+        "Filter_Labels": {
+            "Tags": "Tags",
+            "Tags_Placeholder": "e.g. angular, dotnet",
+            "Topics": "Topics",
+            "Topics_Placeholder": "e.g. web, mobile",
+            "Date_From": "From Date",
+            "Date_To": "To Date",
+            "Skills": "Required Skills",
+            "Skills_Placeholder": "e.g. React, TypeScript",
+            "Status": "Status",
+            "All_Statuses": "All Statuses",
+            "Draft": "Draft",
+            "Ongoing": "Ongoing",
+            "Completed": "Completed",
+            "Published": "Published",
+            "Archived": "Archived",
+            "Min_Contributors": "Min Contributors",
+            "Max_Contributors": "Max Contributors",
+            "Min_Rate": "Min Rate",
+            "Type": "Type",
+            "All_Types": "All Types",
+            "Salary_Type": "Salary Type",
+            "All_Salary_Types": "All Salary Types",
+            "Min_Salary": "Min Salary",
+            "Max_Salary": "Max Salary",
+            "Level": "Difficulty Level",
+            "All_Levels": "All Levels",
+            "All_Note": "Select a specific category tab to apply specialized filters.",
+            "Select_Category_Prompt": "Please select a category above to apply filters.",
+            "Apply_Filters": "Apply Filters",
+            "Reset_Filters": "Reset Filters"
+        }
     }
 }

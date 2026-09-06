@@ -6,7 +6,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { loginWithAuthenticatorRequest } from '../../contracts/login-with-authenticator-request.dto';
 import { LoginService } from '../../services/login.service';
 import { finalize } from 'rxjs';
-import { TokenService } from '../../../../../shared/services/token.service';
+import { AuthenticationService } from '../../../../../shared/services/authentication.service';
 import { RequestInformationService } from '../../../../../shared/services/request-information.service';
 import { LucideScanEye, LucideCircleCheckBig } from "@lucide/angular";
 import { GlobalLoaderService } from '../../../../../../shared/Loading/services/global-loader.service';
@@ -29,7 +29,7 @@ import { AppCodeInput } from '../../../../../../shared/design-system/components/
 export class LoginWithAuthenticatorApp implements OnInit {
   private loginService = inject(LoginService);
   private loadingService = inject(GlobalLoaderService);
-  private tokenService = inject(TokenService);
+  private authenticationService = inject(AuthenticationService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private fb = inject(FormBuilder);
@@ -74,7 +74,7 @@ export class LoginWithAuthenticatorApp implements OnInit {
         })
       ).subscribe({
         next: (response) => {
-          this.tokenService.setToken(response.value?.accessToken!);
+          this.authenticationService.setAccessToken(response.value?.accessToken!);
           this.requestInformationService.setDeviceId(response.value?.deviceId!);
           this.router.navigate(['/']);
         },

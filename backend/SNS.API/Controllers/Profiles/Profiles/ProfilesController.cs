@@ -228,7 +228,7 @@ public class ProfilesController : ControllerBase
     /// <response code="404">The target profile was not found.</response>
     [Authorize]
     [MapToApiVersion("1.0")]
-    [HttpGet(":id{guid}")]
+    [HttpGet("{id:guid}")]
     [ProducesResponseType(typeof(ProfileDetailsDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

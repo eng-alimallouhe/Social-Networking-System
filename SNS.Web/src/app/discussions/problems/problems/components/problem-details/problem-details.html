@@ -1,0 +1,151 @@
+<div class="problem-details-page">
+    <!-- Top Bar with Back Button -->
+    <div class="details-top-bar">
+        <button type="button" class="btn-back" (click)="goBack()" [attr.aria-label]="'Common.Back' | translate">
+            <svg lucideArrowLeft></svg>
+            <span class="back-text">{{ 'Common.Back' | translate }}</span>
+        </button>
+    </div>
+
+    <!-- Loading Skeleton -->
+    @if (isLoading()) {
+        <div class="details-loading" aria-busy="true">
+            <app-skeleton-loader [type]="SkeletonType.Post"></app-skeleton-loader>
+            <app-skeleton-loader [type]="SkeletonType.Post"></app-skeleton-loader>
+        </div>
+    }
+
+    <!-- Error State -->
+    @if (!isLoading() && (hasError() || !problem())) {
+        <div class="details-error" role="alert">
+            <svg lucideAlertCircle class="error-icon"></svg>
+            <h3 class="error-title">{{ 'Problem.Error_Title' | translate }}</h3>
+            <p class="error-desc">{{ 'Problem.Error_Desc' | translate }}</p>
+            <button type="button" class="btn btn-primary" (click)="loadProblem()">
+                <svg lucideRefreshCw class="btn-icon"></svg>
+                <span>{{ 'Problem.Retry' | translate }}</span>
+            </button>
+        </div>
+    }
+
+    <!-- Main Problem Details Content -->
+    @if (!isLoading() && problem(); as p) {
+        <article class="problem-details-card">
+            <!-- Header: Author, Metadata & Action Buttons -->
+            <header class="problem-header">
+                <div class="author-block">
+                    <img 
+                        [src]="p.author.profilePictureUrl || defaultAvatar" 
+                        [alt]="p.author.fullName" 
+                        class="author-avatar"
+                        (error)="onAvatarError($event)" />
+                    <div class="author-meta">
+                        <span class="author-name">{{ p.author.fullName }}</span>
+                        <div class="post-date-row">
+                            <svg lucideCalendar class="date-icon"></svg>
+                            <span>{{ p.createdAt | date:'mediumDate' }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="header-badges-actions">
+                    <span class="badge badge-level" [attr.data-level]="p.level">
+                        {{ ('Problem.Level.' + p.level) | translate }}
+                    </span>
+                    <span class="badge badge-status" [attr.data-status]="p.status">
+                        {{ ('Problem.Status.' + p.status) | translate }}
+                    </span>
+
+                    <button 
+                        type="button" 
+                        class="btn-icon-action" 
+                        [class.active]="isSaved()"
+                        (click)="toggleSave()"
+                        [attr.aria-label]="'Problem.Save' | translate">
+                        <svg lucideBookmark class="action-icon"></svg>
+                    </button>
+
+                    <button 
+                        type="button" 
+                        class="btn-icon-action" 
+                        (click)="share()"
+                        [attr.aria-label]="'Problem.Share' | translate">
+                        <svg lucideShare2 class="action-icon"></svg>
+                    </button>
+                </div>
+            </header>
+
+            <h1 class="problem-main-title">{{ p.title }}</h1>
+
+            <!-- Metrics Bar -->
+            <div class="problem-metrics-bar">
+                <div class="metric-item">
+                    <svg lucideThumbsUp class="metric-icon"></svg>
+                    <span><strong>{{ p.upvotesCount | number }}</strong> {{ 'Problem.Upvotes' | translate }}</span>
+                </div>
+                <div class="metric-divider"></div>
+                <div class="metric-item">
+                    <svg lucideCheckCircle2 class="metric-icon"></svg>
+                    <span><strong>{{ p.solutionsCount | number }}</strong> {{ 'Problem.Solutions' | translate }}</span>
+                </div>
+                <div class="metric-divider"></div>
+                <div class="metric-item">
+                    <svg lucideEye class="metric-icon"></svg>
+                    <span><strong>{{ p.viewsCount | number }}</strong> {{ 'Problem.Views' | translate }}</span>
+                </div>
+            </div>
+
+            <!-- Content Blocks Body -->
+            <div class="problem-content-blocks">
+                @for (block of renderedBlocks(); track block.id) {
+                    <!-- Text Block (Markdown Rendered) -->
+                    @if (block.type === ProblemBlockType.Text && block.renderedHtml) {
+                        <div class="content-block text-block" [innerHTML]="block.renderedHtml"></div>
+                    }
+
+                    <!-- Code Block -->
+                    @if (block.type === ProblemBlockType.Code) {
+                        <div class="content-block code-block-wrapper">
+                            <div class="code-block-header">
+                                <svg lucideFileCode class="code-icon"></svg>
+                                <span class="code-lang-tag">{{ block.extraInfo || 'Code' }}</span>
+                            </div>
+                            <pre class="code-pre"><code>{{ block.rawContent }}</code></pre>
+                        </div>
+                    }
+
+                    <!-- Image Block -->
+                    @if (block.type === ProblemBlockType.Image && block.rawContent) {
+                        <div class="content-block image-block">
+                            <img [src]="block.rawContent" alt="Problem diagram" class="block-image" />
+                        </div>
+                    }
+
+                    <!-- Video Block -->
+                    @if (block.type === ProblemBlockType.Video && block.rawContent) {
+                        <div class="content-block video-block">
+                            <div class="video-placeholder">
+                                <svg lucideVideo class="video-icon"></svg>
+                                <span>{{ 'Problem.Video_Attachment' | translate }}</span>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+
+            <!-- Tags & Topics Footer -->
+            @if (p.tags.length > 0 || p.topics.length > 0) {
+                <footer class="problem-footer">
+                    <div class="tags-group">
+                        @for (tag of p.tags; track tag) {
+                            <span class="tag-pill">#{{ tag }}</span>
+                        }
+                        @for (topic of p.topics; track topic) {
+                            <span class="topic-pill">{{ topic }}</span>
+                        }
+                    </div>
+                </footer>
+            }
+        </article>
+    }
+</div>

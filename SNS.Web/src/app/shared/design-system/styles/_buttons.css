@@ -56,14 +56,14 @@
     pointer-events: none;
 }
 
-.btn:has(svg:only-child) {
+.btn.btn-icon {
     padding: var(--spacing-1);
     background-color: transparent;
     box-shadow: none;
     color: var(--primary-color);
 }
 
-.btn svg:only-child {
+.btn.btn-icon svg {
     width: var(--spacing-8);
     height: var(--spacing-8);
 }

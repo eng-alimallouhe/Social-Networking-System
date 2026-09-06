@@ -13,9 +13,7 @@ public static class CookieFactory
 
             IsEssential = true,
 
-            Expires = rememberMe
-                ? DateTimeOffset.UtcNow.AddDays(7)
-                : DateTimeOffset.UtcNow.AddHours(8)
+            Expires = DateTimeOffset.UtcNow.AddDays(7)
         };
     }
 }

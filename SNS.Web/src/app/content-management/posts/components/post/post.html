@@ -28,7 +28,7 @@
 
                     <!-- Actions Menu Overlay -->
                     <ng-template cdkConnectedOverlay [cdkConnectedOverlayOrigin]="actionsOrigin"
-                        [cdkConnectedOverlayOpen]="isActionsMenuOpen()" [cdkConnectedOverlayPositions]="actionsMenuPositions"
+                        [cdkConnectedOverlayOpen]="isActionsMenuOpen()" [cdkConnectedOverlayPositions]="actionsMenuPositions()"
                         [cdkConnectedOverlayPanelClass]="isMobile() ? 'post-actions-panel-mobile' : 'post-actions-panel-desktop'"
                         [cdkConnectedOverlayHasBackdrop]="true" 
                         [cdkConnectedOverlayBackdropClass]="isMobile() ? 'bottom-sheet-backdrop' : 'cdk-overlay-transparent-backdrop'"
@@ -37,15 +37,15 @@
                             <div class="menu-group">
                                 <button type="button" class="menu-item" (click)="onInterested()">
                                     <svg lucideSmile></svg>
-                                    <span>Interested</span>
+                                    <span>{{ 'ContentManagement.Posts.Interested' | translate }}</span>
                                 </button>
                                 <button type="button" class="menu-item" (click)="onNotInterested()">
                                     <svg lucideFrown></svg>
-                                    <span>Not Interested</span>
+                                    <span>{{ 'ContentManagement.Posts.Not_Interested' | translate }}</span>
                                 </button>
                                 <button type="button" class="menu-item" (click)="onReport()">
                                     <svg lucideFlag></svg>
-                                    <span>Report Post</span>
+                                    <span>{{ 'ContentManagement.Posts.Report_Post' | translate }}</span>
                                 </button>
                             </div>
                             
@@ -102,10 +102,7 @@
 
         @if (post().media && post().media.length > 0) {
         <div class="post-media-container">
-            <app-media-player [mediaList]="mediaList" mode="inline"></app-media-player>
-            @if (post().media.length > 1) {
-            <div class="media-overlay-count">+{{ post().media.length - 1 }}</div>
-            }
+            <app-media-player [mediaList]="mediaList"></app-media-player>
         </div>
         }
 
@@ -141,7 +138,7 @@
 
                 <!-- Reaction Picker Overlay -->
                 <ng-template cdkConnectedOverlay [cdkConnectedOverlayOrigin]="reactionOrigin"
-                    [cdkConnectedOverlayOpen]="isReactionPickerOpen()" [cdkConnectedOverlayPositions]="overlayPositions"
+                    [cdkConnectedOverlayOpen]="isReactionPickerOpen()" [cdkConnectedOverlayPositions]="overlayPositions()"
                     [cdkConnectedOverlayHasBackdrop]="true" cdkConnectedOverlayBackdropClass="cdk-overlay-transparent-backdrop"
                     (backdropClick)="isReactionPickerOpen.set(false)">
 
@@ -165,7 +162,7 @@
                         }
                     </div>
                 </ng-template>
-                <button type="button" class="interaction-btn" aria-label="Comment">
+                <button type="button" class="interaction-btn" aria-label="Comment" (click)="onCommentClick()">
                     <svg lucideMessageSquare></svg>
                     <span>{{ post().commentsCount }}</span>
                 </button>

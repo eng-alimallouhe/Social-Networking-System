@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../../environments/environment.development';
 import { PROJECTS_API_ROUTES } from '../../shared/constants/api-routes/projects-api.routes';
 import { Result } from '../../shared/contracts/result';
 import { AddProjectMilestoneCommand } from '../contracts/project-milestone.contracts';

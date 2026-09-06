@@ -1,0 +1,433 @@
+<div class="project-details-page">
+    <!-- Top Bar with Back Button -->
+    <div class="title-section">
+        <button class="btn btn-icon-text back-btn" (click)="goBack()"
+            [attr.aria-label]="'Common.Back' | translate">
+            <svg lucideArrowLeft class="directional-icon"></svg>
+        </button>
+        <h1>{{ 'Common.Back' | translate }}</h1>
+    </div>
+
+    <!-- Loading Skeleton -->
+    @if (isLoading()) {
+    <div class="details-loading" aria-busy="true">
+        <app-skeleton-loader [type]="SkeletonType.Post"></app-skeleton-loader>
+        <app-skeleton-loader [type]="SkeletonType.Post"></app-skeleton-loader>
+    </div>
+    }
+
+    <!-- Error State -->
+    @if (!isLoading() && (hasError() || !project())) {
+    <div class="details-error" role="alert">
+        <svg lucideAlertCircle class="error-icon"></svg>
+        <h3 class="error-title">{{ 'Project.Error_Title' | translate }}</h3>
+        <p class="error-desc">{{ 'Project.Error_Desc' | translate }}</p>
+        <button type="button" class="btn btn-primary" (click)="loadProject()">
+            <svg lucideRefreshCw class="btn-icon"></svg>
+            <span>{{ 'Project.Retry' | translate }}</span>
+        </button>
+    </div>
+    }
+
+    <!-- Main Project Details Container -->
+    @if (!isLoading() && project(); as p) {
+    <div class="project-header-section">
+        <div class="header-main-row">
+            <div class="title-and-badges">
+                <h1 class="project-title">{{ p.title }}</h1>
+                <div class="badges-row">
+                    <span class="badge badge-type">{{ ('Project.Type.' + p.type) | translate }}</span>
+                    <span class="badge badge-status">{{ ('Project.Status.' + p.status) | translate }}</span>
+                </div>
+            </div>
+
+            <!-- Action Buttons: Shown for OWNER ONLY -->
+            @if (isOwner()) {
+            <div class="owner-actions-group">
+                <button type="button" class="btn btn-update" (click)="onUpdateProject()">
+                    <svg lucidePencil></svg>
+                    <span>{{ 'Project.Update_Project' | translate }}</span>
+                </button>
+
+                <button type="button" class="btn btn-secondary" (click)="onAddCollaborator()">
+                    <svg lucideUserPlus></svg>
+                    <span>{{ 'Project.Add_Collaborator' | translate }}</span>
+                </button>
+
+                <button type="button" class="btn btn-secondary" (click)="share()"
+                    [attr.aria-label]="'Project.Share' | translate">
+                    <svg lucideShare2></svg>
+                    <span>{{ 'Project.Share' | translate }}</span>
+                </button>
+
+                @if (p.gitHubUrl) {
+                <a [href]="p.gitHubUrl" target="_blank" rel="noopener noreferrer" class="btn btn-icon btn-outlined btn-sm"
+                    aria-label="GitHub">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path
+                            d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4">
+                        </path>
+                        <path d="M9 18c-4.51 2-5-2-7-2"></path>
+                    </svg>
+                </a>
+                }
+
+                @if (p.liveDemoUrl) {
+                <a [href]="p.liveDemoUrl" target="_blank" rel="noopener noreferrer" class="btn btn-icon btn-outlined"
+                    aria-label="Live Demo">
+                    <svg lucideExternalLink class="action-icon"></svg>
+                </a>
+                }
+
+                <button type="button" class="btn btn-icon btn-outlined" (click)="share()" aria-label="Website">
+                    <svg lucideGlobe class="action-icon"></svg>
+                </button>
+
+                <button type="button" class="btn btn-icon btn-outlined" aria-label="Settings">
+                    <svg lucideSettings class="action-icon"></svg>
+                </button>
+            </div>
+            }
+        </div>
+
+        <!-- Short Description -->
+        <p class="project-subtitle">{{ p.shortDescription }}</p>
+
+        <!-- Star Rating & Review Count -->
+        <div class="rating-reviews-row">
+            <div class="stars-group">
+                @for (star of [1, 2, 3, 4, 5]; track star) {
+                <svg class="star-icon" viewBox="0 0 24 24" fill="currentColor">
+                    <polygon
+                        points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
+                    </polygon>
+                </svg>
+                }
+            </div>
+            <span class="rating-score">{{ averageRating() }}</span>
+            <span class="reviews-count">({{ totalReviewsCount() }} {{ 'Project.Reviews' | translate }})</span>
+        </div>
+
+        <!-- Tags Row without '#' matching Photo 2 -->
+        @if (p.tags && p.tags.length > 0) {
+        <div class="header-tags-row">
+            @for (tag of p.tags; track tag.tagId) {
+            <span class="tag-chip">{{ tag.tagName }}</span>
+            }
+        </div>
+        }
+    </div>
+
+    <!-- Full-Width Divider Line Below Header -->
+    <div class="header-divider-line"></div>
+
+    <!-- Project Body Content -->
+    <div class="project-body-content">
+        <!-- Row 1: Project Main Image (Own Row) -->
+        <div class="project-image-row">
+            <div class="showcase-image-box">
+                @if (p.mainImageUrl && !hasImageError()) {
+                <img [src]="p.mainImageUrl" [alt]="p.title" class="showcase-image" (error)="onImageError()" />
+                } @else {
+                <div class="showcase-gradient-banner">
+                    <div class="banner-glass-pill">
+                        <svg class="banner-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect width="20" height="14" x="2" y="3" rx="2"></rect>
+                            <line x1="8" x2="16" y1="21" y2="21"></line>
+                            <line x1="12" x2="12" y1="17" y2="21"></line>
+                        </svg>
+                        <span class="banner-project-title">{{ p.title }}</span>
+                    </div>
+                </div>
+                }
+            </div>
+        </div>
+
+        <!-- Row 2: Project Info & Collaborators Cards (In the Same Row) -->
+        <div class="project-info-collaborators-row">
+            <!-- Card 1: Project Info -->
+            <div class="sidebar-card project-info-card">
+                <div class="sidebar-card-header">
+                    <svg class="header-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="16 18 22 12 16 6"></polyline>
+                        <polyline points="8 6 2 12 8 18"></polyline>
+                    </svg>
+                    <h3 class="sidebar-card-title">{{ 'Project.Project_Info' | translate }}</h3>
+                </div>
+
+                <div class="sidebar-card-body">
+                    <!-- Created Date Section -->
+                    <div class="sidebar-info-block">
+                        <span class="info-label">{{ 'Project.Created' | translate }}</span>
+                        <div class="info-value-row">
+                            <svg lucideCalendar class="info-icon"></svg>
+                            <span class="info-text">{{ p.createdAt | date:'longDate' }}</span>
+                        </div>
+                    </div>
+
+                    <div class="sidebar-divider"></div>
+
+                    <!-- Tech Stack Section -->
+                    <div class="sidebar-info-block">
+                        <span class="info-label">{{ 'Project.Tech_Stack' | translate }}</span>
+                        <div class="tech-stack-chips">
+                            @for (skill of p.skills; track skill.skillId) {
+                            <span class="tech-chip">{{ skill.skillName }}</span>
+                            }
+                            @if (!p.skills || p.skills.length === 0) {
+                            <span class="text-muted text-sm">{{ 'Project.No_Skills' | translate }}</span>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 2: Collaborators -->
+            <div class="sidebar-card collaborators-card">
+                <div class="sidebar-card-header">
+                    <svg lucideUsers class="header-icon-svg"></svg>
+                    <h3 class="sidebar-card-title">
+                        {{ 'Project.Collaborators' | translate }} ({{ collaborators().length }})
+                    </h3>
+                </div>
+
+                <div class="sidebar-card-body">
+                    <div class="collaborators-list">
+                        @for (c of collaborators(); track c.profileId) {
+                        <div class="collaborator-item">
+                            <img [src]="c.profileImageUrl || defaultAvatar" [alt]="c.displayName"
+                                class="collaborator-avatar" (error)="onAvatarError($event)" />
+                            <div class="collaborator-info">
+                                <h4 class="collaborator-name">{{ c.displayName }}</h4>
+                                <p class="collaborator-role">{{ c.specialization || c.role }}</p>
+                            </div>
+                        </div>
+                        }
+                        @if (collaborators().length === 0) {
+                        <p class="text-muted text-sm empty-collab-text">{{ 'Project.No_Collaborators' | translate }}</p>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Row 3: Tabs Container (Full Width of Parent, No Other Elements in Same Row) -->
+        <div class="project-tabs-row">
+            <div class="tabs-card">
+                <div class="tabs-nav-bar">
+                    <!-- Tab 1: README -->
+                    <button type="button" class="tab-btn" [class.active]="activeTab() === 'readme'"
+                        (click)="setActiveTab('readme')">
+                        <svg lucideBookOpen class="tab-icon"></svg>
+                        <span>{{ 'Project.Tabs.Readme' | translate }}</span>
+                    </button>
+
+                    <!-- Tab 2: Media (Updated from Screenshots) -->
+                    <button type="button" class="tab-btn" [class.active]="activeTab() === 'media'"
+                        (click)="setActiveTab('media')">
+                        <svg lucideImage class="tab-icon"></svg>
+                        <span>{{ 'Project.Tabs.Media' | translate }}</span>
+                        @if (media().length > 0) {
+                        <span class="tab-count-badge">{{ media().length }}</span>
+                        }
+                    </button>
+
+                    <!-- Tab 3: Milestones -->
+                    <button type="button" class="tab-btn" [class.active]="activeTab() === 'milestones'"
+                        (click)="setActiveTab('milestones')">
+                        <svg lucideFlag class="tab-icon"></svg>
+                        <span>{{ 'Project.Tabs.Milestones' | translate }}</span>
+                        @if (milestones().length > 0) {
+                        <span class="tab-count-badge">{{ milestones().length }}</span>
+                        }
+                    </button>
+
+                    <!-- Tab 4: Source Code -->
+                    <button type="button" class="tab-btn" [class.active]="activeTab() === 'source-code'"
+                        (click)="setActiveTab('source-code')">
+                        <svg lucideCode class="tab-icon"></svg>
+                        <span>{{ 'Project.Tabs.Source_Code' | translate }}</span>
+                    </button>
+
+                    <!-- Tab 5: Reviews -->
+                    <button type="button" class="tab-btn" [class.active]="activeTab() === 'reviews'"
+                        (click)="setActiveTab('reviews')">
+                        <svg lucideMessageSquare class="tab-icon"></svg>
+                        <span>{{ 'Project.Tabs.Reviews' | translate }}</span>
+                        @if (ratings().length > 0) {
+                        <span class="tab-count-badge">{{ ratings().length }}</span>
+                        }
+                    </button>
+                </div>
+
+                <!-- Tab Panes Content Area -->
+                <div class="tabs-body">
+                    <!-- Pane 1: README -->
+                    @if (activeTab() === 'readme') {
+                    <div class="tab-pane readme-pane">
+                        @if (renderedReadme()) {
+                        <div class="markdown-body" [innerHTML]="renderedReadme()"></div>
+                        } @else {
+                        <div class="empty-state">
+                            <svg lucideBookOpen class="empty-icon"></svg>
+                            <p class="empty-text">{{ 'Project.No_Readme' | translate }}</p>
+                        </div>
+                        }
+                    </div>
+                    }
+
+                    <!-- Pane 2: Media -->
+                    @if (activeTab() === 'media') {
+                    <div class="tab-pane media-pane">
+                        @if (isLoadingMedia()) {
+                        <div class="pane-skeletons" aria-busy="true">
+                            <app-skeleton-loader [type]="SkeletonType.Post"></app-skeleton-loader>
+                        </div>
+                        } @else if (media().length > 0) {
+                        <div class="media-gallery-grid">
+                            @for (item of media(); track item.mediaId) {
+                            <div class="media-card">
+                                <img [src]="item.mediaUrl" [alt]="p.title + ' media'" class="media-thumb"
+                                    (error)="onMediaError($event)" />
+                            </div>
+                            }
+                        </div>
+                        } @else {
+                        <div class="empty-state">
+                            <svg lucideImage class="empty-icon"></svg>
+                            <h4 class="empty-title">{{ 'Project.Media_Empty_Title' | translate }}</h4>
+                            <p class="empty-text">{{ 'Project.Media_Empty_Desc' | translate }}</p>
+                        </div>
+                        }
+                    </div>
+                    }
+
+                    <!-- Pane 3: Milestones -->
+                    @if (activeTab() === 'milestones') {
+                    <div class="tab-pane milestones-pane">
+                        @if (isLoadingMilestones()) {
+                        <div class="pane-skeletons" aria-busy="true">
+                            <app-skeleton-loader [type]="SkeletonType.Post"></app-skeleton-loader>
+                        </div>
+                        } @else if (milestones().length > 0) {
+                        <div class="milestones-timeline">
+                            @for (m of milestones(); track m.milestoneId) {
+                            <div class="milestone-card">
+                                <div class="milestone-bullet">
+                                    <svg lucideCheckCircle2 class="bullet-icon"></svg>
+                                </div>
+                                <div class="milestone-details">
+                                    <h4 class="milestone-title">{{ m.title }}</h4>
+                                    <p class="milestone-desc">{{ m.description }}</p>
+                                    <span class="milestone-date">{{ m.createdAt | date:'mediumDate' }}</span>
+                                </div>
+                            </div>
+                            }
+                        </div>
+                        } @else {
+                        <div class="empty-state">
+                            <svg lucideFlag class="empty-icon"></svg>
+                            <h4 class="empty-title">{{ 'Project.Milestones_Empty_Title' | translate }}</h4>
+                            <p class="empty-text">{{ 'Project.Milestones_Empty_Desc' | translate }}</p>
+                        </div>
+                        }
+                    </div>
+                    }
+
+                    <!-- Pane 4: Source Code -->
+                    @if (activeTab() === 'source-code') {
+                    <div class="tab-pane source-code-pane">
+                        @if (isLoadingSourceCode()) {
+                        <div class="pane-skeletons" aria-busy="true">
+                            <app-skeleton-loader [type]="SkeletonType.Post"></app-skeleton-loader>
+                        </div>
+                        } @else if (sourceCode().length > 0) {
+                        <div class="source-tree-box">
+                            @for (node of sourceCode(); track node.name) {
+                            <div class="tree-row">
+                                @if (node.children && node.children.length > 0) {
+                                <svg lucideFolder class="tree-icon folder-icon"></svg>
+                                } @else {
+                                <svg lucideFileText class="tree-icon file-icon"></svg>
+                                }
+                                <span class="node-name">{{ node.name }}</span>
+                                @if (node.sizeKB) {
+                                <span class="node-size">{{ node.sizeKB }} KB</span>
+                                }
+                            </div>
+                            }
+                        </div>
+                        } @else {
+                        <div class="empty-state">
+                            <svg lucideCode class="empty-icon"></svg>
+                            <h4 class="empty-title">{{ 'Project.Source_Code_Empty_Title' | translate }}</h4>
+                            <p class="empty-text">{{ 'Project.Source_Code_Empty_Desc' | translate }}</p>
+                            @if (p.gitHubUrl) {
+                            <a [href]="p.gitHubUrl" target="_blank" rel="noopener noreferrer"
+                                class="btn btn-action-secondary repo-link-btn">
+                                <svg class="social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path
+                                        d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4">
+                                    </path>
+                                    <path d="M9 18c-4.51 2-5-2-7-2"></path>
+                                </svg>
+                                <span>{{ 'Project.View_On_Github' | translate }}</span>
+                            </a>
+                            }
+                        </div>
+                        }
+                    </div>
+                    }
+
+                    <!-- Pane 5: Reviews -->
+                    @if (activeTab() === 'reviews') {
+                    <div class="tab-pane reviews-pane">
+                        @if (isLoadingReviews()) {
+                        <div class="pane-skeletons" aria-busy="true">
+                            <app-skeleton-loader [type]="SkeletonType.Post"></app-skeleton-loader>
+                        </div>
+                        } @else if (ratings().length > 0) {
+                        <div class="reviews-list">
+                            @for (r of ratings(); track r.ratingId) {
+                            <div class="review-card">
+                                <div class="review-author-row">
+                                    <img [src]="r.profileImageUrl || defaultAvatar" [alt]="r.displayName"
+                                        class="reviewer-avatar" (error)="onAvatarError($event)" />
+                                    <div class="reviewer-info">
+                                        <h5 class="reviewer-name">{{ r.displayName }}</h5>
+                                        <span class="review-date">{{ r.createdAt | date:'mediumDate' }}</span>
+                                    </div>
+                                    <div class="review-stars">
+                                        @for (star of [1, 2, 3, 4, 5]; track star) {
+                                        <svg class="star-icon star-sm" [class.filled]="star <= r.ratingValue"
+                                            viewBox="0 0 24 24" fill="currentColor">
+                                            <polygon
+                                                points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
+                                            </polygon>
+                                        </svg>
+                                        }
+                                    </div>
+                                </div>
+                                @if (r.comment) {
+                                <p class="review-comment">{{ r.comment }}</p>
+                                }
+                            </div>
+                            }
+                        </div>
+                        } @else {
+                        <div class="empty-state">
+                            <svg lucideMessageSquare class="empty-icon"></svg>
+                            <h4 class="empty-title">{{ 'Project.Reviews_Empty_Title' | translate }}</h4>
+                            <p class="empty-text">{{ 'Project.Reviews_Empty_Desc' | translate }}</p>
+                        </div>
+                        }
+                    </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    }
+</div>

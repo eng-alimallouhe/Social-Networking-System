@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../../../../environments/environment';
+import { environment } from '../../../../environments/environment.development';
 import { RESUMES_API_ROUTES } from '../../../shared/constants/api-routes/resumes-api.routes';
 import { Result } from '../../../shared/contracts/result';
 import { ResumeProjectDto } from '../contracts/resume-project.dto';

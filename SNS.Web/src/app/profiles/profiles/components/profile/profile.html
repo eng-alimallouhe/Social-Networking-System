@@ -1,1 +1,88 @@
-<p>profile works!</p>
+<div class="profile-card">
+    <!-- Header: Avatar, Info, Actions -->
+    <div class="card-header">
+        <div class="avatar-container">
+            <img 
+                [src]="profile().profilePictureUrl || defaultAvatar" 
+                [alt]="profile().fullName" 
+                class="avatar-img"
+                (error)="onAvatarError($event)" />
+            <span class="online-indicator" aria-label="Online"></span>
+        </div>
+
+        <div class="user-info">
+            <div class="name-row">
+                <span class="full-name">{{ profile().fullName }}</span>
+                <svg lucideBadgeCheck class="verified-badge" aria-label="Verified"></svg>
+            </div>
+
+            @if (profile().specialization) {
+                <p class="specialization">{{ profile().specialization }}</p>
+            }
+
+            <div class="meta-row">
+                <svg lucideCalendar class="meta-icon"></svg>
+                <span class="meta-text">{{ 'Profile.Joined' | translate }} {{ profile().createdAt | date:'MMMM yyyy' }}</span>
+            </div>
+        </div>
+
+        <div class="header-actions">
+            <button
+                type="button"
+                class="btn-follow"
+                [class.btn-following]="isFollowing()"
+                (click)="toggleFollow()">
+                @if (isFollowing()) {
+                    <svg lucideUserCheck class="action-icon"></svg>
+                    <span>{{ 'Profile.Following' | translate }}</span>
+                } @else {
+                    <svg lucideUserPlus class="action-icon"></svg>
+                    <span>{{ 'Profile.Follow' | translate }}</span>
+                }
+            </button>
+            <button type="button" class="btn-more" aria-label="More options">
+                <svg lucideMoreVertical class="more-icon"></svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- Bio & Skills (Only displayed if bio or skills exist) -->
+    @if (profile().bio || visibleSkills().length > 0) {
+        <div class="card-body">
+            @if (profile().bio) {
+                <p class="bio-text">{{ profile().bio }}</p>
+            }
+
+            <!-- Skills Tags -->
+            @if (visibleSkills().length > 0) {
+                <div class="skills-wrap">
+                    @for (skill of visibleSkills(); track skill) {
+                        <span class="skill-pill">{{ skill }}</span>
+                    }
+                    @if (extraSkillsCount() > 0) {
+                        <span class="skill-pill skill-pill-more">+{{ extraSkillsCount() }} {{ 'Profile.More' | translate }}</span>
+                    }
+                </div>
+            }
+        </div>
+    }
+
+    <!-- Footer: Followers / Following stats & View Profile Link -->
+    <div class="card-footer">
+        <div class="stats-group">
+            <span class="stat-item">
+                <strong class="stat-number">{{ profile().followersCount | number }}</strong>
+                <span class="stat-label">{{ 'Profile.Followers' | translate }}</span>
+            </span>
+            <span class="stat-item">
+                <strong class="stat-number">{{ profile().followingCount | number }}</strong>
+                <span class="stat-label">{{ 'Profile.Following_Count' | translate }}</span>
+            </span>
+        </div>
+
+        <a [routerLink]="['/profiles', profile().id]" class="view-profile-link" (click)="onProfileClick($event)">
+            <span>{{ 'Profile.View_Profile' | translate }}</span>
+            <svg lucideArrowRight class="link-arrow"></svg>
+        </a>
+    </div>
+</div>

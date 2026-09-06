@@ -19,9 +19,9 @@ export class HomeLayout {
   private breakpointObserver = inject(BreakpointObserver);
 
   isMobile = toSignal(
-      this.breakpointObserver.observe('(max-width: 990px)').pipe(
-          map(result => result.matches)
-      ), 
-      { initialValue: false }
+    this.breakpointObserver.observe('(max-width: 990px)').pipe(
+      map(result => result.matches)
+    ),
+    { initialValue: false }
   );
 }

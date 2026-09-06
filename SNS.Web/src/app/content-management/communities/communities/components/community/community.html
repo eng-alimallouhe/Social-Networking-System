@@ -1,0 +1,83 @@
+<div class="community-card">
+    <!-- Top Banner Image & Badges -->
+    <div class="card-banner">
+        <div class="banner-gradient"></div>
+        <div class="banner-badges">
+            <span class="type-pill" [class.type-public]="isPublic()" [class.type-private]="!isPublic()">
+                @if (isPublic()) {
+                    <svg lucideGlobe class="badge-icon"></svg>
+                } @else {
+                    <svg lucideLock class="badge-icon"></svg>
+                }
+                <span>{{ ('Community.Type.' + community().type) | translate }}</span>
+            </span>
+
+            <button type="button" class="btn-banner-more" aria-label="More options">
+                <svg lucideMoreVertical class="more-icon"></svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- Overlapping Logo & Active Indicator -->
+    <div class="logo-wrapper">
+        <div class="logo-container">
+            @if (community().logoUrl) {
+                <img [src]="community().logoUrl" [alt]="community().name" class="community-logo-img" />
+            } @else {
+                <div class="community-logo-fallback">{{ initials() }}</div>
+            }
+            <span class="active-dot" aria-label="Active"></span>
+        </div>
+    </div>
+
+    <!-- Content Area -->
+    <div class="card-content">
+        <div class="title-row">
+            <span class="community-name">{{ community().name }}</span>
+            <svg lucideBadgeCheck class="verified-badge" aria-label="Verified"></svg>
+        </div>
+
+        <div class="formed-row">
+            <svg lucideCalendar class="formed-icon"></svg>
+            <span class="formed-text">{{ 'Community.Formed' | translate }} {{ community().createdAt | date:'MMMM yyyy' }}</span>
+        </div>
+
+        <p class="community-description">{{ community().description }}</p>
+
+        <div class="members-row">
+            <div class="members-count">
+                <svg lucideUsers class="users-icon"></svg>
+                <span><strong>{{ community().membersCount | number }}</strong> {{ 'Community.Members' | translate }}</span>
+            </div>
+
+            @if (!isPublic()) {
+                <div class="approval-badge">
+                    <svg lucideShield class="shield-icon"></svg>
+                    <span>{{ 'Community.Approval_Required' | translate }}</span>
+                </div>
+            }
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="card-footer">
+        <a [routerLink]="['/communities', community().id]" class="view-hub-link" (click)="onCommunityClick($event)">
+            <span>{{ 'Community.View_Hub' | translate }}</span>
+            <svg lucideArrowRight class="link-arrow"></svg>
+        </a>
+
+        <button
+            type="button"
+            class="btn-join"
+            [class.btn-joined]="isMember()"
+            (click)="toggleMembership()">
+            @if (isMember()) {
+                <svg lucideCheck class="join-icon"></svg>
+                <span>{{ 'Community.Member' | translate }}</span>
+            } @else {
+                <svg lucideUserPlus class="join-icon"></svg>
+                <span>{{ 'Community.Join_Hub' | translate }}</span>
+            }
+        </button>
+    </div>
+</div>

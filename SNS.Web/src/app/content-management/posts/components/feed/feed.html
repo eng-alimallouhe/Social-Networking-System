@@ -1,0 +1,92 @@
+@if (isFeedRootRoute()) {
+    <div class="feed-container">
+        <!-- Accumulated Posts List -->
+        <div class="feed-posts-list">
+            @for (post of loadedPosts(); track post.id) {
+                @if (dismissedPostIds().has(post.id)) {
+                    <div class="feed-dismissed-feedback" role="status" aria-live="polite">
+                        <div class="feedback-content">
+                            <svg lucideInfo class="feedback-icon"></svg>
+                            <span class="feedback-text">{{ 'ContentManagement.Posts.Not_Interested_Feedback' | translate }}</span>
+                        </div>
+                        <button type="button" class="feedback-undo-btn" (click)="undoNotInterested(post.id)">
+                            {{ 'ContentManagement.Posts.Undo' | translate }}
+                        </button>
+                    </div>
+                } @else {
+                    <app-post [post]="post" (deleted)="onPostDeleted($event)" (notInterested)="onPostNotInterested($event)" (commentsClick)="onPostCommentsClick($event)"></app-post>
+                }
+            }
+        </div>
+
+        <!-- Initial Loading Skeletons -->
+        @if (isInitialLoading()) {
+            <div class="feed-skeletons" aria-label="Loading posts" aria-busy="true">
+                <app-skeleton-loader [type]="SkeletonType.Post"></app-skeleton-loader>
+                <app-skeleton-loader [type]="SkeletonType.Post"></app-skeleton-loader>
+                <app-skeleton-loader [type]="SkeletonType.Post"></app-skeleton-loader>
+            </div>
+        }
+
+        <!-- Next Page Loading Skeleton (Appended Below Existing Posts) -->
+        @if (isLoadingNextPage()) {
+            <div class="feed-skeletons feed-skeletons-more" aria-label="Loading more posts" aria-busy="true">
+                <app-skeleton-loader [type]="SkeletonType.Post"></app-skeleton-loader>
+            </div>
+        }
+
+        <!-- Infinite Scroll Sentinel -->
+        @if (hasNextPage() && !isInitialLoading() && !hasError()) {
+            <div #sentinel class="feed-sentinel" aria-hidden="true"></div>
+        }
+
+        <!-- Error on Next Page (Existing Posts Remain Visible) -->
+        @if (isNextPageError()) {
+            <div class="feed-error-banner" role="alert">
+                <svg lucideAlertCircle class="banner-icon"></svg>
+                <span class="banner-text">{{ 'ContentManagement.Posts.Load_More_Error' | translate }}</span>
+                <button type="button" class="feed-retry-btn" (click)="retry()">
+                    <svg lucideRefreshCw class="btn-icon"></svg>
+                    <span>{{ 'ContentManagement.Posts.Retry' | translate }}</span>
+                </button>
+            </div>
+        }
+
+        <!-- Initial Error State (When Initial Load Fails) -->
+        @if (isInitialError()) {
+            <div class="feed-error-state" role="alert">
+                <div class="error-icon-wrapper">
+                    <svg lucideAlertCircle class="error-icon"></svg>
+                </div>
+                <h3 class="error-title">{{ 'ContentManagement.Posts.Feed_Error_Title' | translate }}</h3>
+                <p class="error-description">{{ 'ContentManagement.Posts.Feed_Error_Description' | translate }}</p>
+                <button type="button" class="feed-retry-btn feed-retry-btn-lg" (click)="retry()">
+                    <svg lucideRefreshCw class="btn-icon"></svg>
+                    <span>{{ 'ContentManagement.Posts.Retry' | translate }}</span>
+                </button>
+            </div>
+        }
+
+        <!-- Empty Feed State -->
+        @if (isEmptyFeed()) {
+            <div class="feed-empty-state">
+                <div class="empty-icon-wrapper">
+                    <svg lucideMessageSquare class="empty-icon"></svg>
+                </div>
+                <h3 class="empty-title">{{ 'ContentManagement.Posts.Empty_Feed_Title' | translate }}</h3>
+                <p class="empty-description">{{ 'ContentManagement.Posts.Empty_Feed_Description' | translate }}</p>
+            </div>
+        }
+
+        <!-- End of Feed State -->
+        @if (isEndOfFeed()) {
+            <div class="feed-end-message">
+                <span class="end-dot"></span>
+                <p class="end-text">{{ 'ContentManagement.Posts.End_Of_Feed' | translate }}</p>
+                <span class="end-dot"></span>
+            </div>
+        }
+    </div>
+}
+
+<router-outlet />

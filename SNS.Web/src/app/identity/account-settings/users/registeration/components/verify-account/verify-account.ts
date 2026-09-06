@@ -14,7 +14,7 @@ import { AuthFlowService } from '../../../../../shared/services/auth-flow.servic
 import { GeneratorService } from '../../../../../../shared/services/generator.service';
 import { AppCodeInput } from '../../../../../../shared/design-system/components/app-code-input/app-code-input';
 import { GlobalLoaderService } from '../../../../../../shared/Loading/services/global-loader.service';
-import { TokenService } from '../../../../../shared/services/token.service';
+import { AuthenticationService } from '../../../../../shared/services/authentication.service';
 import { AuthTokenDto } from '../../../../../shared/contracts/auth-token.dto';
 
 @Component({
@@ -40,7 +40,7 @@ export class VerifyAccount implements OnInit, OnDestroy {
     private generatorService = inject(GeneratorService);
     private translateService = inject(TranslateService);
     private route = inject(ActivatedRoute);
-    private tokenService = inject(TokenService);
+    private authenticationService = inject(AuthenticationService);
     private router = inject(Router);
     private fb = inject(FormBuilder);
 
@@ -117,7 +117,7 @@ export class VerifyAccount implements OnInit, OnDestroy {
                     this.authFlowService.clear();
 
                     if (response.value !== null) {
-                        this.tokenService.setAccessToken(response.value.token);
+                        this.authenticationService.setAccessToken(response.value.token);
                     }
 
                     this.router.navigate(['/onboarding/create-profile']);

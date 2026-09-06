@@ -146,32 +146,35 @@ internal class Program
             .ToListAsync();
 
         var userSO = await dbContext.Users
-            .Include(u => u.UserProfile)
-            .Include(u => u.UserSecuritySettings)
-            .Include(u => u.Role)
-            .ToListAsync();
+    .AsNoTracking()
+    .Include(u => u.UserProfile)
+    .Include(u => u.UserSecuritySettings)
+    .Include(u => u.Role)
+    .Where(u =>
+        u.UserProfile != null &&
+        u.UserSecuritySettings != null &&
+        u.Role != null)
+    .ToListAsync();
 
-        Console.WriteLine(userSO.Count());
-        Console.WriteLine(userSO.Select(u => u.UserProfile).Count());
-        Console.WriteLine(userSO.Select(u => u.UserSecuritySettings).Count());
+        Console.WriteLine($"Users found: {userSO.Count}");
 
         var usersF = userSO.Select(u => new UserDocument()
         {
             Id = u.Id,
             UserName = u.UserName,
             PreferredLanguage = u.PreferredLanguage,
-            Role = u.Role.Type.ToString(),
-            FullName = u.UserProfile.FullName,
+            Role = u.Role!.Type.ToString(),
+            FullName = u.UserProfile!.FullName,
             Email = u.Email,
             Status = u.Status,
-            DefaultCommunicationMethod = u.UserSecuritySettings.DefaultCommunicationMethod,
+            DefaultCommunicationMethod =
+                u.UserSecuritySettings!.DefaultCommunicationMethod,
             CreatedAt = u.CreatedAt
-        });
-
+        }).ToList();
 
         foreach (var item in usersF)
         {
-            Console.WriteLine(item.ToString());
+            Console.WriteLine(item.FullName?.ToString() ?? "No Name");
         }
 
         //var users = await dbContext

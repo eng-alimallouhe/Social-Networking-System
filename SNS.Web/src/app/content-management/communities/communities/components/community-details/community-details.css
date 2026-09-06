@@ -1,0 +1,422 @@
+/* ==========================================================================
+   Community Details Component Styles
+   Adheres to SNS Design System Tokens
+   ========================================================================== */
+
+.community-details-page {
+    width: 100%;
+    max-width: 880px;
+    margin: 0 auto;
+    padding: var(--spacing-4, 16px) var(--spacing-4, 16px) var(--spacing-12, 48px);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-4, 16px);
+    animation: fadeIn 0.25s ease-out;
+}
+
+.details-top-bar {
+    display: flex;
+    align-items: center;
+}
+
+.btn-back {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-2, 8px);
+    padding: 6px 12px;
+    background: transparent;
+    border: none;
+    color: var(--text-primary);
+    font-size: var(--font-size-sm, 14px);
+    font-weight: 500;
+    cursor: pointer;
+    border-radius: var(--radius-md, 8px);
+    transition: all 0.2s ease;
+}
+
+.btn-back:hover {
+    background-color: var(--bg-hover, rgba(0, 0, 0, 0.05));
+    color: var(--primary-color);
+}
+
+.back-icon {
+    width: 18px;
+    height: 18px;
+}
+
+:host-context([dir="rtl"]) .back-icon,
+[dir="rtl"] .back-icon {
+    transform: scaleX(-1);
+}
+
+.details-loading {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-4, 16px);
+}
+
+.details-error {
+    background: var(--bg-card);
+    border: 1px solid var(--error, #ca3342);
+    border-radius: var(--radius-lg, 12px);
+    padding: var(--spacing-8, 32px);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-3, 12px);
+}
+
+.details-error .error-icon {
+    width: 48px;
+    height: 48px;
+    color: var(--error, #ca3342);
+}
+
+.community-details-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg, 14px);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    flex-direction: column;
+}
+
+/* Banner */
+.community-banner {
+    position: relative;
+    height: 150px;
+    background: linear-gradient(145deg, #2d4c42 0%, #3a5c53 50%, #446d62 100%);
+    padding: 16px 20px;
+}
+
+.banner-gradient {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.3) 100%);
+}
+
+.banner-badges {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.type-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    border-radius: var(--radius-full, 9999px);
+    font-size: 12px;
+    font-weight: 600;
+    backdrop-filter: blur(4px);
+}
+
+.type-public {
+    background: #059669;
+    color: #ffffff;
+}
+
+.type-private {
+    background: #dc2626;
+    color: #ffffff;
+}
+
+.badge-icon {
+    width: 14px;
+    height: 14px;
+}
+
+.btn-icon-banner {
+    width: 34px;
+    height: 34px;
+    border-radius: var(--radius-full, 50%);
+    background: rgba(0, 0, 0, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.btn-icon-banner:hover {
+    background: rgba(0, 0, 0, 0.6);
+}
+
+.banner-action-icon {
+    width: 16px;
+    height: 16px;
+}
+
+/* Header Content Bar */
+.community-header-bar {
+    position: relative;
+    padding: 0 24px 20px 24px;
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+.community-avatar-wrapper {
+    margin-top: -44px;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 5;
+}
+
+.logo-box {
+    width: 86px;
+    height: 86px;
+    border-radius: 14px;
+    background: #eef3eb;
+    border: 3.5px solid var(--bg-card, #ffffff);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.community-logo-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.community-logo-fallback {
+    font-size: 24px;
+    font-weight: 700;
+    color: #2d5045;
+    letter-spacing: -0.5px;
+}
+
+.active-dot {
+    position: absolute;
+    bottom: 4px;
+    right: 4px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #10b981;
+    border: 2px solid var(--bg-card, #ffffff);
+}
+
+:host-context([dir="rtl"]) .active-dot,
+[dir="rtl"] .active-dot {
+    right: auto;
+    left: 4px;
+}
+
+.community-info-group {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-top: 12px;
+}
+
+.title-and-join-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.community-name {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+    line-height: 1.25;
+}
+
+.btn-join-hub {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 18px;
+    background: #35534a;
+    color: #ffffff;
+    border: 1px solid #35534a;
+    border-radius: var(--radius-md, 8px);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-join-hub:hover {
+    background: #28413a;
+    border-color: #28413a;
+}
+
+.btn-joined {
+    background: transparent;
+    border-color: var(--border-color);
+    color: var(--text-primary);
+}
+
+.btn-joined:hover {
+    background: var(--bg-hover);
+    color: var(--error);
+    border-color: var(--error);
+}
+
+.btn-icon {
+    width: 15px;
+    height: 15px;
+}
+
+.community-meta-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    flex-wrap: wrap;
+}
+
+.meta-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.meta-icon {
+    width: 14px;
+    height: 14px;
+    color: var(--text-muted);
+}
+
+.meta-dot {
+    color: var(--border-color);
+}
+
+/* Sections */
+.details-section {
+    padding: 20px 24px;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.section-header-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.section-icon {
+    width: 18px;
+    height: 18px;
+    color: #35534a;
+}
+
+.section-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.section-desc-text {
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+.rules-content-box {
+    padding: 16px 20px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md, 10px);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.rule-line {
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+/* Owner Card */
+.owner-card {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-3, 12px);
+    padding: 10px 16px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md, 10px);
+    width: fit-content;
+    min-width: 200px;
+}
+
+.owner-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid var(--border-color);
+}
+
+.owner-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.owner-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.owner-spec {
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 600px) {
+    .community-header-bar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 0 16px 16px 16px;
+    }
+
+    .community-info-group {
+        width: 100%;
+        padding-top: 0;
+    }
+
+    .title-and-join-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .btn-join-hub {
+        width: 100%;
+        justify-content: center;
+    }
+}

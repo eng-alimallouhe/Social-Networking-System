@@ -1,0 +1,251 @@
+<div class="filters-container">
+    <div class="filters-header">
+        <h3 class="filters-title">{{ 'Search.Filters' | translate }}</h3>
+    </div>
+
+    <div class="filters-body">
+        <!-- Posts Filters -->
+        @if (category() === 'Posts') {
+            <div class="filter-group">
+                <app-input
+                    [label]="'Search.Filter_Labels.Tags' | translate"
+                    [placeholder]="'Search.Filter_Labels.Tags_Placeholder' | translate"
+                    [ngModel]="tagsInput()"
+                    (ngModelChange)="tagsInput.set($event)">
+                </app-input>
+            </div>
+
+            <div class="filter-group">
+                <app-input
+                    [label]="'Search.Filter_Labels.Topics' | translate"
+                    [placeholder]="'Search.Filter_Labels.Topics_Placeholder' | translate"
+                    [ngModel]="topicsInput()"
+                    (ngModelChange)="topicsInput.set($event)">
+                </app-input>
+            </div>
+
+            <div class="filter-group-row">
+                <div class="filter-group">
+                    <app-date-time-picker
+                        [label]="'Search.Filter_Labels.Date_From' | translate"
+                        [ngModel]="postDateFrom()"
+                        (ngModelChange)="postDateFrom.set($event)">
+                    </app-date-time-picker>
+                </div>
+                <div class="filter-group">
+                    <app-date-time-picker
+                        [label]="'Search.Filter_Labels.Date_To' | translate"
+                        [ngModel]="postDateTo()"
+                        (ngModelChange)="postDateTo.set($event)">
+                    </app-date-time-picker>
+                </div>
+            </div>
+        }
+
+        <!-- People / Profiles Filters -->
+        @if (category() === 'People') {
+            <div class="filter-group">
+                <app-input
+                    [label]="'Search.Filter_Labels.Skills' | translate"
+                    [placeholder]="'Search.Filter_Labels.Skills_Placeholder' | translate"
+                    [ngModel]="profileSkillsInput()"
+                    (ngModelChange)="profileSkillsInput.set($event)">
+                </app-input>
+            </div>
+        }
+
+        <!-- Projects Filters -->
+        @if (category() === 'Projects') {
+            <div class="filter-group">
+                <app-select
+                    [label]="'Search.Filter_Labels.Status' | translate"
+                    [placeholder]="'Search.Filter_Labels.All_Statuses' | translate"
+                    [options]="projectStatusOptions()"
+                    [ngModel]="projectStatus()"
+                    (ngModelChange)="projectStatus.set($event)">
+                </app-select>
+            </div>
+
+            <div class="filter-group">
+                <app-input
+                    [label]="'Search.Filter_Labels.Skills' | translate"
+                    [placeholder]="'Search.Filter_Labels.Skills_Placeholder' | translate"
+                    [ngModel]="projectSkillsInput()"
+                    (ngModelChange)="projectSkillsInput.set($event)">
+                </app-input>
+            </div>
+
+            <div class="filter-group-row">
+                <div class="filter-group">
+                    <app-input
+                        type="number"
+                        [label]="'Search.Filter_Labels.Min_Contributors' | translate"
+                        [ngModel]="projectMinContributors()"
+                        (ngModelChange)="projectMinContributors.set($event)">
+                    </app-input>
+                </div>
+                <div class="filter-group">
+                    <app-input
+                        type="number"
+                        [label]="'Search.Filter_Labels.Max_Contributors' | translate"
+                        [ngModel]="projectMaxContributors()"
+                        (ngModelChange)="projectMaxContributors.set($event)">
+                    </app-input>
+                </div>
+            </div>
+
+            <div class="filter-group">
+                <app-input
+                    type="number"
+                    [label]="'Search.Filter_Labels.Min_Rate' | translate"
+                    [ngModel]="projectMinRate()"
+                    (ngModelChange)="projectMinRate.set($event)">
+                </app-input>
+            </div>
+
+            <div class="filter-group-row">
+                <div class="filter-group">
+                    <app-date-time-picker
+                        [label]="'Search.Filter_Labels.Date_From' | translate"
+                        [ngModel]="projectDateFrom()"
+                        (ngModelChange)="projectDateFrom.set($event)">
+                    </app-date-time-picker>
+                </div>
+                <div class="filter-group">
+                    <app-date-time-picker
+                        [label]="'Search.Filter_Labels.Date_To' | translate"
+                        [ngModel]="projectDateTo()"
+                        (ngModelChange)="projectDateTo.set($event)">
+                    </app-date-time-picker>
+                </div>
+            </div>
+        }
+
+        <!-- Communities Filters -->
+        @if (category() === 'Communities') {
+            <div class="filter-group">
+                <app-select
+                    [label]="'Search.Filter_Labels.Type' | translate"
+                    [placeholder]="'Search.Filter_Labels.All_Types' | translate"
+                    [options]="communityTypeOptions()"
+                    [ngModel]="communityType()"
+                    (ngModelChange)="communityType.set($event)">
+                </app-select>
+            </div>
+        }
+
+        <!-- Jobs Filters -->
+        @if (category() === 'Jobs') {
+            <div class="filter-group">
+                <app-select
+                    [label]="'Search.Filter_Labels.Type' | translate"
+                    [placeholder]="'Search.Filter_Labels.All_Types' | translate"
+                    [options]="jobTypeOptions()"
+                    [ngModel]="jobType()"
+                    (ngModelChange)="jobType.set($event)">
+                </app-select>
+            </div>
+
+            <div class="filter-group">
+                <app-select
+                    [label]="'Search.Filter_Labels.Salary_Type' | translate"
+                    [placeholder]="'Search.Filter_Labels.All_Salary_Types' | translate"
+                    [options]="jobSalaryTypeOptions()"
+                    [ngModel]="jobSalaryType()"
+                    (ngModelChange)="jobSalaryType.set($event)">
+                </app-select>
+            </div>
+
+            <div class="filter-group-row">
+                <div class="filter-group">
+                    <app-input
+                        type="number"
+                        [label]="'Search.Filter_Labels.Min_Salary' | translate"
+                        [ngModel]="jobMinSalary()"
+                        (ngModelChange)="jobMinSalary.set($event)">
+                    </app-input>
+                </div>
+                <div class="filter-group">
+                    <app-input
+                        type="number"
+                        [label]="'Search.Filter_Labels.Max_Salary' | translate"
+                        [ngModel]="jobMaxSalary()"
+                        (ngModelChange)="jobMaxSalary.set($event)">
+                    </app-input>
+                </div>
+            </div>
+
+            <div class="filter-group-row">
+                <div class="filter-group">
+                    <app-date-time-picker
+                        [label]="'Search.Filter_Labels.Date_From' | translate"
+                        [ngModel]="jobDateFrom()"
+                        (ngModelChange)="jobDateFrom.set($event)">
+                    </app-date-time-picker>
+                </div>
+                <div class="filter-group">
+                    <app-date-time-picker
+                        [label]="'Search.Filter_Labels.Date_To' | translate"
+                        [ngModel]="jobDateTo()"
+                        (ngModelChange)="jobDateTo.set($event)">
+                    </app-date-time-picker>
+                </div>
+            </div>
+        }
+
+        <!-- Problems Filters -->
+        @if (category() === 'Problems') {
+            <div class="filter-group">
+                <app-select
+                    [label]="'Search.Filter_Labels.Level' | translate"
+                    [placeholder]="'Search.Filter_Labels.All_Levels' | translate"
+                    [options]="problemLevelOptions()"
+                    [ngModel]="problemLevel()"
+                    (ngModelChange)="problemLevel.set($event)">
+                </app-select>
+            </div>
+
+            <div class="filter-group">
+                <app-select
+                    [label]="'Search.Filter_Labels.Status' | translate"
+                    [placeholder]="'Search.Filter_Labels.All_Statuses' | translate"
+                    [options]="problemStatusOptions()"
+                    [ngModel]="problemStatus()"
+                    (ngModelChange)="problemStatus.set($event)">
+                </app-select>
+            </div>
+
+            <div class="filter-group-row">
+                <div class="filter-group">
+                    <app-date-time-picker
+                        [label]="'Search.Filter_Labels.Date_From' | translate"
+                        [ngModel]="problemDateFrom()"
+                        (ngModelChange)="problemDateFrom.set($event)">
+                    </app-date-time-picker>
+                </div>
+                <div class="filter-group">
+                    <app-date-time-picker
+                        [label]="'Search.Filter_Labels.Date_To' | translate"
+                        [ngModel]="problemDateTo()"
+                        (ngModelChange)="problemDateTo.set($event)">
+                    </app-date-time-picker>
+                </div>
+            </div>
+        }
+
+        <!-- No category selected prompt -->
+        @if (!category()) {
+            <p class="all-note">{{ 'Search.Filter_Labels.Select_Category_Prompt' | translate }}</p>
+        }
+    </div>
+
+    <!-- Actions -->
+    <div class="filters-actions">
+        <button type="button" class="btn-reset" (click)="reset()">
+            {{ 'Search.Filter_Labels.Reset_Filters' | translate }}
+        </button>
+        <button type="button" class="btn-apply" (click)="apply()">
+            {{ 'Search.Filter_Labels.Apply_Filters' | translate }}
+        </button>
+    </div>
+</div>

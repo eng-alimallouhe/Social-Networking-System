@@ -24,6 +24,7 @@ using SNS.Application.Shared.Abstractions.Data;
 using SNS.Application.Shared.Abstractions.Messaging;
 using SNS.Application.Shared.Abstractions.Storage;
 using SNS.Domain.ContentManagement.Shared.Enums;
+using SNS.Domain.Discussions.Problems.Enums;
 using SNS.Domain.Discussions.Shared.Enums;
 using SNS.Domain.Projects.Enums;
 using SNS.Shared.Results;
@@ -198,23 +199,60 @@ public class GetGlobalSearchQueryHandler
 
         // 5. Problems
         var problemIds = problemsTask.Result.Hits.Select(h => h.Document.Id).ToList();
-        var problems = await _dbContext.Problems
+        var rawProblems = await _dbContext.Problems
+            .AsNoTracking()
             .Where(p => problemIds.Contains(p.Id))
-            .Select(p => new ProblemSummaryDto(
+            .Select(p => new
+            {
                 p.Id,
                 p.Title,
                 p.Status,
                 p.Level,
                 p.AuthorId,
-                p.Author.FullName,
-                p.Author.ProfilePictureObjectKey,
-                p.Votes.Count(v => v.Type == VoteType.Upvote),
-                p.Solutions.Count(),
-                p.ProblemTags.Select(pt => pt.Tag.Name).ToList(),
-                p.ProblemTopics.Select(pt => pt.Topic.Name).ToList(),
-                p.CreatedAt
-            ))
+                AuthorFullName = p.Author.FullName,
+                AuthorProfilePictureObjectKey = p.Author.ProfilePictureObjectKey,
+                UpvotesCount = p.Votes.Count(v => v.Type == VoteType.Upvote),
+                SolutionsCount = p.Solutions.Count(s => s.IsActive),
+                Tags = p.ProblemTags.Select(pt => pt.Tag.Name).ToList(),
+                Topics = p.ProblemTopics.Select(pt => pt.Topic.Name).ToList(),
+                p.CreatedAt,
+                ContentBlocks = p.ContentBlocks
+                    .OrderBy(cb => cb.Order)
+                    .Select(cb => new
+                    {
+                        cb.Id,
+                        cb.Type,
+                        cb.Content,
+                        cb.ExtraInfo,
+                        cb.Order
+                    })
+                    .ToList()
+            })
             .ToListAsync(cancellationToken);
+
+        var problems = rawProblems.Select(p => new ProblemSummaryDto(
+            p.Id,
+            p.Title,
+            p.Status,
+            p.Level,
+            p.AuthorId,
+            p.AuthorFullName,
+            p.AuthorProfilePictureObjectKey != null ? _fileStorageService.GetFilePublicUrl(p.AuthorProfilePictureObjectKey) : null,
+            p.UpvotesCount,
+            p.SolutionsCount,
+            p.Tags,
+            p.Topics,
+            p.CreatedAt,
+            p.ContentBlocks.Select(cb => new ProblemContentBlockDto(
+                cb.Id,
+                cb.Type,
+                (cb.Type == ProblemBlockType.Image || cb.Type == ProblemBlockType.Video) && !string.IsNullOrWhiteSpace(cb.Content)
+                    ? _fileStorageService.GetFilePublicUrl(cb.Content)
+                    : cb.Content,
+                cb.ExtraInfo,
+                cb.Order
+            )).ToList()
+        )).ToList();
         var orderedProblems = problemIds.Select(id => problems.FirstOrDefault(p => p.Id == id)).Where(p => p != null).Select(p => p!).ToList();
 
         // 6. Posts

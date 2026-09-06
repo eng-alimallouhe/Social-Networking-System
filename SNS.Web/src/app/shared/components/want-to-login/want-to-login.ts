@@ -8,7 +8,7 @@ import { PageService } from '../../services/page.service';
 @Component({
   selector: 'app-want-to-login',
   standalone: true,
-  imports: [CommonModule, TranslatePipe, LucideX, LucideLogIn],
+  imports: [CommonModule, LucideX],
   templateUrl: './want-to-login.html',
   styleUrls: ['./want-to-login.css']
 })

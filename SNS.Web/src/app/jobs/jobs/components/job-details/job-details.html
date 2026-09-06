@@ -1,0 +1,150 @@
+<div class="job-details-page">
+    <!-- Top Bar with Back Button -->
+    <div class="details-top-bar">
+        <button type="button" class="btn-back" (click)="goBack()" [attr.aria-label]="'Common.Back' | translate">
+            <svg lucideArrowLeft></svg>
+            <span class="back-text">{{ 'Common.Back' | translate }}</span>
+        </button>
+    </div>
+
+    <!-- Loading Skeleton -->
+    @if (isLoading()) {
+    <div class="details-loading" aria-busy="true">
+        <app-skeleton-loader [type]="SkeletonType.Post"></app-skeleton-loader>
+        <app-skeleton-loader [type]="SkeletonType.Post"></app-skeleton-loader>
+    </div>
+    }
+
+    <!-- Error State -->
+    @if (!isLoading() && (hasError() || !job())) {
+    <div class="details-error" role="alert">
+        <svg lucideAlertCircle class="error-icon"></svg>
+        <h3 class="error-title">{{ 'Job.Error_Title' | translate }}</h3>
+        <p class="error-desc">{{ 'Job.Error_Desc' | translate }}</p>
+        <button type="button" class="btn btn-primary" (click)="loadJob()">
+            <svg lucideRefreshCw class="btn-icon"></svg>
+            <span>{{ 'Job.Retry' | translate }}</span>
+        </button>
+    </div>
+    }
+
+    <!-- Main Job Details Card -->
+    @if (!isLoading() && job(); as j) {
+    <article class="job-details-card">
+        <!-- Header: Company Logo, Title, Status & Actions -->
+        <header class="job-header">
+            <div class="company-logo-box">
+                @if (j.company.logoUrl) {
+                <img [src]="j.company.logoUrl" [alt]="j.company.name" class="company-logo"
+                    (error)="onLogoError($event)" />
+                } @else {
+                <span class="company-initials">{{ initials() }}</span>
+                }
+            </div>
+
+            <div class="job-header-main">
+                <div class="title-status-line">
+                    <h1 class="job-title">{{ j.title }}</h1>
+                    <span class="status-pill" [class.status-active]="isActive()" [class.status-closed]="!isActive()">
+                        {{ (isActive() ? 'Job.Status.Active' : 'Job.Status.Closed') | translate }}
+                    </span>
+                </div>
+
+                <div class="company-meta-line">
+                    <span class="company-name">{{ j.company.name }}</span>
+                    <span class="meta-dot">•</span>
+                    <div class="meta-item">
+                        <svg lucideMapPin class="meta-icon"></svg>
+                        <span>{{ j.location }}</span>
+                    </div>
+                    <span class="meta-dot">•</span>
+                    <span class="type-badge">{{ ('Job.Type.' + j.type) | translate }}</span>
+                </div>
+            </div>
+
+            <div class="header-action-group">
+                <button type="button" class="btn-icon-action" [class.active]="isBookmarked()" (click)="toggleBookmark()"
+                    [attr.aria-label]="'Job.Bookmark' | translate">
+                    <svg lucideBookmark class="action-icon"></svg>
+                </button>
+
+                <button type="button" class="btn-icon-action" (click)="share()"
+                    [attr.aria-label]="'Job.Share' | translate">
+                    <svg lucideShare2 class="action-icon"></svg>
+                </button>
+
+                <button type="button" class="btn btn-primary btn-apply" [disabled]="!isActive() || isApplied()"
+                    (click)="apply()">
+                    @if (isApplied()) {
+                    <svg lucideCheckCircle></svg>
+                    <span>{{ 'Job.Applied' | translate }}</span>
+                    } @else {
+                    <svg lucideSend></svg>
+                    <span>{{ 'Job.Apply_Now' | translate }}</span>
+                    }
+                </button>
+            </div>
+        </header>
+
+        <!-- Salary & Highlight Strip -->
+        <section class="salary-highlight-bar">
+            <div class="highlight-stat">
+                <svg lucideBanknote class="stat-icon"></svg>
+                <div class="stat-content">
+                    <span class="stat-label">{{ 'Job.Compensation' | translate }}</span>
+                    <strong class="stat-value">
+                        {{ j.minSalary | number }} - {{ j.maxSalary | number }} {{ j.currencyCode }} / {{
+                        ('Job.SalaryType.' + j.salaryType) | translate }}
+                    </strong>
+                </div>
+            </div>
+
+            <div class="stat-divider"></div>
+
+            <div class="highlight-stat">
+                <svg lucideClock class="stat-icon"></svg>
+                <div class="stat-content">
+                    <span class="stat-label">{{ 'Job.Posted' | translate }}</span>
+                    <strong class="stat-value">{{ j.createdAt | date:'mediumDate' }}</strong>
+                </div>
+            </div>
+        </section>
+
+        <!-- Description Body -->
+        <section class="job-section">
+            <div class="section-title-wrap">
+                <svg lucideBriefcase class="section-icon"></svg>
+                <h2 class="section-heading">{{ 'Job.Overview' | translate }}</h2>
+            </div>
+            <p class="job-desc-text">{{ j.description }}</p>
+        </section>
+
+        <!-- Key Responsibilities -->
+        @if (responsibilitiesList().length > 0) {
+        <section class="job-section">
+            <div class="section-title-wrap">
+                <svg lucideFileText class="section-icon"></svg>
+                <h2 class="section-heading">{{ 'Job.Key_Responsibilities' | translate }}</h2>
+            </div>
+            <ul class="responsibilities-list">
+                @for (item of responsibilitiesList(); track $index) {
+                <li class="responsibility-item">{{ item }}</li>
+                }
+            </ul>
+        </section>
+        }
+
+        <!-- Required Skills -->
+        @if (j.skills && j.skills.length > 0) {
+        <section class="job-section">
+            <h2 class="section-heading">{{ 'Job.Required_Skills' | translate }}</h2>
+            <div class="skills-wrap">
+                @for (skill of j.skills; track skill.id) {
+                <span class="skill-pill">{{ skill.skillName }}</span>
+                }
+            </div>
+        </section>
+        }
+    </article>
+    }
+</div>

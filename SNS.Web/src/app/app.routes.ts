@@ -20,7 +20,6 @@ export const routes: Routes = [
     },
     {
         path: 'home',
-        component: HomeLayout,
         loadChildren: () => import('./home/routes/home.routes').then(m => m.HomeRoutes)
     },
     {

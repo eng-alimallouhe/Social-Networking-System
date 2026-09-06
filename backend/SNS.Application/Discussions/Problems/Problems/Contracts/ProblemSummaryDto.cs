@@ -18,6 +18,7 @@ namespace SNS.Application.Discussions.Problems.Problems.Contracts;
 /// <param name="Tags">The list of associated tag names.</param>
 /// <param name="Topics">The list of associated topic names.</param>
 /// <param name="CreatedAt">The timestamp when the problem was created.</param>
+/// <param name="ContentBlocks">The ordered list of structured content blocks representing the problem content.</param>
 public sealed record ProblemSummaryDto(
     Guid Id,
     string Title,
@@ -30,5 +31,6 @@ public sealed record ProblemSummaryDto(
     int SolutionsCount,
     List<string> Tags,
     List<string> Topics,
-    DateTime CreatedAt
+    DateTime CreatedAt,
+    List<ProblemContentBlockDto> ContentBlocks
 );

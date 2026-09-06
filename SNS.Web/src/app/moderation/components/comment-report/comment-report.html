@@ -1,0 +1,95 @@
+@if (isOpen()) {
+<div class="modal-backdrop" (click)="onClose()">
+    <div class="modal-card" (click)="$event.stopPropagation()">
+        
+        <button class="btn-close" (click)="onClose()" aria-label="Close">
+            <svg lucideX></svg>
+        </button>
+
+        @if (currentStep() === 1) {
+            <div class="modal-header">
+                <h3>{{ 'App.Moderation.CommentReport.Title' | translate }}</h3>
+                <p class="modal-subtitle">{{ 'App.Moderation.CommentReport.Subtitle' | translate }}</p>
+            </div>
+            
+            <div class="modal-body reason-list">
+                @for (reason of reasons; track reason.value) {
+                    <div class="reason-card" 
+                         [class.selected]="selectedReason() === reason.value"
+                         (click)="selectReason(reason.value)">
+                        <div class="reason-icon-wrapper">
+                            @if (reason.icon === 'ban') {
+                                <svg lucideBan></svg>
+                            } @else if (reason.icon === 'alert-triangle') {
+                                <svg lucideOctagonAlert></svg>
+                            }
+                        </div>
+                        <div class="reason-content">
+                            <h4>{{ reason.titleKey | translate }}</h4>
+                            <p>{{ reason.descKey | translate }}</p>
+                        </div>
+                    </div>
+                }
+            </div>
+            
+            <div class="modal-footer footer-actions-right">
+                <button type="button" class="btn btn-secondary" (click)="onClose()">
+                    {{ 'App.Moderation.PostReport.Cancel' | translate }}
+                </button>
+                <button type="button" class="btn btn-primary" 
+                        [disabled]="!selectedReason()" 
+                        (click)="onContinue()">
+                    {{ 'App.Moderation.PostReport.Continue' | translate }}
+                </button>
+            </div>
+        }
+
+        @if (currentStep() === 2) {
+            <div class="modal-header">
+                <h3>{{ 'App.Moderation.CommentReport.Title' | translate }}</h3>
+                <p class="modal-subtitle">{{ 'App.Moderation.PostReport.ReviewMessage' | translate }}</p>
+            </div>
+            
+            <div class="modal-body">
+                <app-input
+                    [label]="'App.Moderation.PostReport.AdditionalDetails' | translate"
+                    [placeholder]="'App.Moderation.PostReport.OptionalDetailsPlaceholder' | translate"
+                    [(ngModel)]="additionalDetails">
+                </app-input>
+            </div>
+            
+            <div class="modal-footer footer-actions-between">
+                <button type="button" class="btn btn-secondary" (click)="onBack()">
+                    {{ 'App.Moderation.PostReport.Back' | translate }}
+                </button>
+                <button type="button" class="btn btn-primary" 
+                        [disabled]="isSubmitting()"
+                        (click)="onSubmit()">
+                    @if (isSubmitting()) {
+                        <span class="spinner"></span>
+                    } @else {
+                        {{ 'App.Moderation.PostReport.Submit' | translate }}
+                    }
+                </button>
+            </div>
+        }
+        
+        @if (currentStep() === 3) {
+            <div class="modal-header center-header">
+                <div class="success-icon-wrapper">
+                    <svg lucideBadgeCheck></svg>
+                </div>
+                <h3>{{ 'App.Moderation.PostReport.ReportReceived' | translate }}</h3>
+                <p class="modal-subtitle">{{ 'App.Moderation.PostReport.SuccessMessage' | translate }}</p>
+            </div>
+            
+            <div class="modal-footer footer-actions-right">
+                <button type="button" class="btn btn-primary" (click)="onDone()">
+                    {{ 'App.Moderation.PostReport.Submit' | translate }}
+                </button>
+            </div>
+        }
+        
+    </div>
+</div>
+}

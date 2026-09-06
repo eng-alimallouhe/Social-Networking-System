@@ -1,0 +1,85 @@
+<div class="problem-card">
+    <div class="card-header">
+        <div class="author-info">
+            <div class="author-avatar">
+                <img 
+                    [src]="problem().authorProfilePictureUrl || defaultAvatar" 
+                    [alt]="problem().authorName" 
+                    class="avatar-img"
+                    (error)="onAvatarError($event)" />
+            </div>
+            <div class="author-meta">
+                <span class="author-name">{{ problem().authorName }}</span>
+                <span class="created-date">
+                    <svg lucideCalendar class="calendar-icon"></svg>
+                    <span>{{ problem().createdAt | date:'mediumDate' }}</span>
+                </span>
+            </div>
+        </div>
+
+        <div class="badges-row">
+            <span class="badge badge-level" [attr.data-level]="problem().level">
+                {{ ('Problem.Level.' + problem().level) | translate }}
+            </span>
+            <span class="badge badge-status" [attr.data-status]="problem().status">
+                {{ ('Problem.Status.' + problem().status) | translate }}
+            </span>
+        </div>
+    </div>
+
+    <div class="card-body">
+        <h3 class="problem-title">{{ problem().title }}</h3>
+
+        @if (previewBlocks().length > 0) {
+            <div class="problem-preview-container">
+                @for (block of previewBlocks(); track block.id) {
+                    @if (block.type === ProblemBlockType.Text && block.renderedHtml) {
+                        <div class="markdown-preview-content" [innerHTML]="block.renderedHtml"></div>
+                    } @else if (block.type === ProblemBlockType.Code) {
+                        <div class="preview-code-box">
+                            @if (block.extraInfo) {
+                                <span class="code-lang-tag">{{ block.extraInfo }}</span>
+                            }
+                            <pre class="preview-code-block"><code>{{ block.rawContent }}</code></pre>
+                        </div>
+                    } @else if (block.type === ProblemBlockType.Image && block.rawContent) {
+                        <div class="preview-media-thumb">
+                            <img [src]="block.rawContent" alt="Problem illustration" class="preview-thumb-img" />
+                        </div>
+                    } @else if (block.type === ProblemBlockType.Video && block.rawContent) {
+                        <div class="preview-media-badge">
+                            <svg lucideVideo class="media-badge-icon"></svg>
+                            <span>{{ 'Problem.Video_Attachment' | translate }}</span>
+                        </div>
+                    }
+                }
+            </div>
+        }
+
+        @if (problem().tags.length > 0) {
+            <div class="tags-wrap">
+                @for (tag of problem().tags; track tag) {
+                    <span class="tag-pill">#{{ tag }}</span>
+                }
+            </div>
+        }
+    </div>
+
+    <div class="card-footer">
+        <div class="metrics-row">
+            <span class="metric-item">
+                <svg lucideThumbsUp class="metric-icon"></svg>
+                <span><strong>{{ problem().upvotesCount | number }}</strong> {{ 'Problem.Upvotes' | translate }}</span>
+            </span>
+            <span class="metric-item">
+                <svg lucideCheckCircle2 class="metric-icon"></svg>
+                <span><strong>{{ problem().solutionsCount | number }}</strong> {{ 'Problem.Solutions' | translate }}</span>
+            </span>
+        </div>
+
+        <a [routerLink]="['/discussions/problems', problem().id]" class="view-problem-link" (click)="onProblemClick($event)">
+            <span>{{ 'Problem.View_Problem' | translate }}</span>
+            <svg lucideArrowRight class="link-arrow"></svg>
+        </a>
+    </div>
+</div>

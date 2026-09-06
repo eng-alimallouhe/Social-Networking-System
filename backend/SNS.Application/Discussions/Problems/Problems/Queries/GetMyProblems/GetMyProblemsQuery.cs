@@ -5,6 +5,7 @@ using SNS.Application.Shared.Abstractions.Data;
 using SNS.Application.Shared.Abstractions.Messaging;
 using SNS.Application.Shared.Abstractions.Storage;
 using SNS.Application.Shared.DTOs;
+using SNS.Domain.Discussions.Problems.Enums;
 using SNS.Domain.Discussions.Shared.Enums;
 using SNS.Shared.Results;
 using SNS.Shared.StatusCodes;
@@ -80,7 +81,18 @@ internal sealed class GetMyProblemsQueryHandler : IQueryHandler<GetMyProblemsQue
                 SolutionsCount = p.Solutions.Count(s => s.IsActive),
                 Tags = p.ProblemTags.Select(pt => pt.Tag.Name).ToList(),
                 Topics = p.ProblemTopics.Select(pt => pt.Topic.Name).ToList(),
-                p.CreatedAt
+                p.CreatedAt,
+                ContentBlocks = p.ContentBlocks
+                    .OrderBy(cb => cb.Order)
+                    .Select(cb => new
+                    {
+                        cb.Id,
+                        cb.Type,
+                        cb.Content,
+                        cb.ExtraInfo,
+                        cb.Order
+                    })
+                    .ToList()
             })
             .ToListAsync(cancellationToken);
 
@@ -98,7 +110,16 @@ internal sealed class GetMyProblemsQueryHandler : IQueryHandler<GetMyProblemsQue
             SolutionsCount: p.SolutionsCount,
             Tags: p.Tags,
             Topics: p.Topics,
-            CreatedAt: p.CreatedAt
+            CreatedAt: p.CreatedAt,
+            ContentBlocks: p.ContentBlocks.Select(cb => new ProblemContentBlockDto(
+                Id: cb.Id,
+                Type: cb.Type,
+                Content: (cb.Type == ProblemBlockType.Image || cb.Type == ProblemBlockType.Video) && !string.IsNullOrWhiteSpace(cb.Content)
+                    ? _fileStorageService.GetFilePublicUrl(cb.Content)
+                    : cb.Content,
+                ExtraInfo: cb.ExtraInfo,
+                Order: cb.Order
+            )).ToList()
         )).ToList();
 
         return Result<Paged<ProblemSummaryDto>>.Success(new Paged<ProblemSummaryDto>(

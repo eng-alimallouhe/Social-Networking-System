@@ -1,5 +1,8 @@
-import { Component, Input, Output, EventEmitter, signal, ViewChild, ElementRef, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, signal, ViewChild, ElementRef, OnInit, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { LucideX, LucideChevronRight, LucideChevronLeft, LucidePlay } from '@lucide/angular';
+import { TranslatePipe } from '@ngx-translate/core';
+
 export enum MediaType {
     Image = 'Image',
     Video = 'Video'
@@ -10,14 +13,11 @@ export interface PostMediaDto {
     url: string;
     type: MediaType;
 }
-import { LucideX, LucideChevronRight, LucideChevronLeft, LucidePlay } from '@lucide/angular';
-
-export type MediaPlayerMode = 'inline' | 'modal';
 
 @Component({
     selector: 'app-media-player',
     standalone: true,
-    imports: [CommonModule, LucideX, LucideChevronRight, LucideChevronLeft, LucidePlay],
+    imports: [CommonModule, LucideX, LucideChevronRight, LucideChevronLeft, LucidePlay, TranslatePipe],
     templateUrl: './media-player.html',
     styleUrls: ['./media-player.css']
 })
@@ -25,32 +25,26 @@ export class MediaPlayer implements OnInit {
     /** List of media items to display, sorted by their order field */
     @Input({ required: true }) mediaList: PostMediaDto[] = [];
 
-    /** Starting index (used mainly for modal mode) */
+    /** Starting index */
     @Input() initialIndex: number = 0;
 
-    /**
-     * Display mode:
-     * - 'inline': renders directly inside the post card, compact, supports navigation
-     * - 'modal': full-screen overlay with close button (original behavior)
-     */
-    @Input() mode: MediaPlayerMode = 'modal';
-
-    /** Emitted when the modal close button is clicked (modal mode only) */
+    /** Emitted when the preview is closed */
     @Output() close = new EventEmitter<void>();
 
-    @ViewChild('videoElement') videoElement!: ElementRef<HTMLVideoElement>;
+    @ViewChild('videoElement') videoElement?: ElementRef<HTMLVideoElement>;
 
     readonly MediaType = MediaType;
 
     currentIndex = signal<number>(0);
     isPlaying = signal<boolean>(false);
+    isPreviewOpen = signal<boolean>(false);
 
     /** Sorted media list, respecting the order field */
     get sortedMedia(): PostMediaDto[] {
         return [...this.mediaList].sort((a, b) => a.order - b.order);
     }
 
-    get currentMedia(): PostMediaDto {
+    get currentMedia(): PostMediaDto | undefined {
         return this.sortedMedia[this.currentIndex()];
     }
 
@@ -58,16 +52,34 @@ export class MediaPlayer implements OnInit {
         return this.sortedMedia.length > 1;
     }
 
-    get isInline(): boolean {
-        return this.mode === 'inline';
-    }
-
     ngOnInit(): void {
         this.currentIndex.set(this.initialIndex);
     }
 
-    closeModal(): void {
+    @HostListener('window:keydown.escape')
+    onEscape(): void {
+        if (this.isPreviewOpen()) {
+            this.closePreview();
+        }
+    }
+
+    openPreview(index: number = 0): void {
+        this.pauseCurrentVideo();
+        const safeIndex = Math.max(0, Math.min(index, this.sortedMedia.length - 1));
+        this.currentIndex.set(safeIndex);
+        this.isPlaying.set(false);
+        this.isPreviewOpen.set(true);
+    }
+
+    closePreview(): void {
+        this.pauseCurrentVideo();
+        this.isPlaying.set(false);
+        this.isPreviewOpen.set(false);
         this.close.emit();
+    }
+
+    closeModal(): void {
+        this.closePreview();
     }
 
     private pauseCurrentVideo(): void {
@@ -94,9 +106,11 @@ export class MediaPlayer implements OnInit {
     }
 
     selectMedia(index: number): void {
-        this.pauseCurrentVideo();
-        this.currentIndex.set(index);
-        this.isPlaying.set(false);
+        if (index >= 0 && index < this.sortedMedia.length) {
+            this.pauseCurrentVideo();
+            this.currentIndex.set(index);
+            this.isPlaying.set(false);
+        }
     }
 
     toggleVideoPlayback(): void {

@@ -11,7 +11,7 @@ import { LoginService } from '../../services/login.service';
 import { ToastService } from '../../../../../notifications/services/toast.service';
 import { AuthFlowService } from '../../../../../shared/services/auth-flow.service';
 import { TranslatePipe } from '@ngx-translate/core';
-import { TokenService } from '../../../../../shared/services/token.service';
+import { AuthenticationService } from '../../../../../shared/services/authentication.service';
 import { RequestInformationService } from '../../../../../shared/services/request-information.service';
 import { LucideLogIn } from '@lucide/angular';
 import { GlobalLoaderService } from '../../../../../../shared/Loading/services/global-loader.service';
@@ -39,7 +39,7 @@ export class LoginWithPassword implements OnInit {
   private authFlowService = inject(AuthFlowService);
   private router = inject(Router);
   private loadingService = inject(GlobalLoaderService);
-  private tokenService = inject(TokenService);
+  private authenticationService = inject(AuthenticationService);
   private requestInformationService = inject(RequestInformationService);
 
   showPassword = signal(false);
@@ -93,7 +93,7 @@ export class LoginWithPassword implements OnInit {
               }
             }
             else {
-              this.tokenService.setAccessToken(response.value?.accessToken!);
+              this.authenticationService.setAccessToken(response.value?.accessToken!);
               this.requestInformationService.setDeviceId(response.value?.deviceId!);
               this.router.navigate(['/']);
             }

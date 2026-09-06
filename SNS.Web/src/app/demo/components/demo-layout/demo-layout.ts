@@ -8,14 +8,16 @@ import {
   ViewChild,
   effect,
   Inject,
-  inject
+  inject,
+  NgZone
 } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { RouterOutlet, Router } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { forkJoin } from 'rxjs';
-import { TokenService } from '../../../identity/shared/services/token.service';
+import { finalize, forkJoin } from 'rxjs';
 import { GlobalLoaderService } from '../../../shared/Loading/services/global-loader.service';
+import { SessionManagementService } from '../../../identity/account-settings/security-sessions/session-management/services/session-management.service';
+import { AuthenticationService } from '../../../identity/shared/services/authentication.service';
 
 @Component({
   selector: 'app-demo-layout',
@@ -29,9 +31,11 @@ import { GlobalLoaderService } from '../../../shared/Loading/services/global-loa
 })
 export class DemoLayout implements OnDestroy {
   private router = inject(Router);
-  private tokenService = inject(TokenService);
+  private authenticationService = inject(AuthenticationService);
   private translateService = inject(TranslateService);
   private loadingService = inject(GlobalLoaderService);
+  private sessionManagementService = inject(SessionManagementService);
+  private ngZone = inject(NgZone);
 
   @ViewChild('particleCanvas') canvasRef!: ElementRef<HTMLCanvasElement>;
 
@@ -39,24 +43,39 @@ export class DemoLayout implements OnDestroy {
 
   private ctx!: CanvasRenderingContext2D;
   private particles: Particle[] = [];
-  private mouse = { x: 0, y: 0, radius: 150 };
-
+  private mouse = { x: -1000, y: -1000, radius: 150 };
 
   private animationFrameId?: number;
   private resizeTimeout?: ReturnType<typeof setTimeout>;
+  private mouseMoveCleanup?: () => void;
 
   isOptionsMenuOpen = signal(false);
 
   currentUrl = signal<string | null>(null);
-
+  isAuthenticated = this.authenticationService.isAuthenticated;
   isDarkMode = signal<boolean>(false);
   showControls = false;
 
   constructor(@Inject(DOCUMENT) private document: Document) {
     afterNextRender(() => {
       const savedTheme = localStorage.getItem('theme');
-      this.initCanvas();
-      this.animate();
+      if (savedTheme === 'dark') {
+        this.isDarkMode.set(true);
+      }
+
+      // تشغيل الكانفاس، الأنيميشن، وتتبع الماوس خارج نطاق Zone.js بالكامل
+      this.ngZone.runOutsideAngular(() => {
+        this.initCanvas();
+        this.animate();
+
+        const onMove = (event: MouseEvent) => {
+          this.mouse.x = event.clientX;
+          this.mouse.y = event.clientY;
+        };
+
+        window.addEventListener('mousemove', onMove, { passive: true });
+        this.mouseMoveCleanup = () => window.removeEventListener('mousemove', onMove);
+      });
     });
 
     effect(() => {
@@ -74,7 +93,11 @@ export class DemoLayout implements OnDestroy {
   }
 
   ngOnDestroy() {
-    // تنظيف الأنيميشن عند تدمير المكون لمنع تسرب الذاكرة
+    // إلغاء مستمع حركة الماوس
+    if (this.mouseMoveCleanup) {
+      this.mouseMoveCleanup();
+    }
+    // تنظيف الأنيميشن لمنع تسرب الذاكرة
     if (this.animationFrameId) {
       cancelAnimationFrame(this.animationFrameId);
     }
@@ -84,7 +107,12 @@ export class DemoLayout implements OnDestroy {
   }
 
   logout() {
-    this.tokenService.removeToken();
+    this.loadingService.show();
+    this.sessionManagementService.logout()
+      .pipe(finalize(() => {
+        this.loadingService.hide();
+      }))
+      .subscribe();
   }
 
   toggleControls() {
@@ -97,40 +125,35 @@ export class DemoLayout implements OnDestroy {
     localStorage.setItem('theme', newMode ? 'dark' : 'light');
   }
 
-  @HostListener('window:mousemove', ['$event'])
-  onMouseMove(event: MouseEvent) {
-    this.mouse.x = event.clientX;
-    this.mouse.y = event.clientY;
-  }
-
   @HostListener('window:resize')
   onResize() {
     if (this.resizeTimeout) {
       clearTimeout(this.resizeTimeout);
     }
     this.resizeTimeout = setTimeout(() => {
-      this.initCanvas();
+      this.ngZone.runOutsideAngular(() => {
+        this.initCanvas();
+      });
     }, 200);
   }
-
 
   navigateTo(to: string) {
     if (this.isLoading()) {
       forkJoin({
         message: this.translateService.get(`Loader.System_Busy_Body`),
         title: this.translateService.get(`Loader.System_Busy_Title`)
-      }).subscribe(translations => {
-
-      });
-
+      }).subscribe();
       return;
     }
     if (to === 'login-options') {
       this.router.navigate(['/auth/login-options']);
-    }
-    else if (to === 'support') {
+    } else if (to === 'support') {
       this.router.navigate(['/support']);
     }
+  }
+
+  goToRoleSwitcher() {
+    this.router.navigate(['/demo/role-switcher']);
   }
 
   private initCanvas() {
@@ -160,6 +183,7 @@ export class DemoLayout implements OnDestroy {
     }
     this.connect(isDark);
 
+    // سيعمل الآن بسلاسة خارج Zone.js دون إطلاق Change Detection
     this.animationFrameId = requestAnimationFrame(() => this.animate());
   }
 
@@ -171,12 +195,12 @@ export class DemoLayout implements OnDestroy {
     this.ctx.lineWidth = 1;
 
     for (let a = 0; a < this.particles.length; a++) {
-      for (let b = a + 1; b < this.particles.length; b++) { // تحسين الحلقة التكرارية: البدء من a + 1
+      for (let b = a + 1; b < this.particles.length; b++) {
         const dx = this.particles[a].x - this.particles[b].x;
         const dy = this.particles[a].y - this.particles[b].y;
-        const distance = dx * dx + dy * dy; // استخدام مربع المسافة لتجنب عملية الجذر التربيعي المكلفة رياضياً
+        const distance = dx * dx + dy * dy;
 
-        if (distance < 14400) { // 120 * 120 = 14400
+        if (distance < 14400) {
           this.ctx.beginPath();
           this.ctx.moveTo(this.particles[a].x, this.particles[a].y);
           this.ctx.lineTo(this.particles[b].x, this.particles[b].y);
@@ -186,25 +210,17 @@ export class DemoLayout implements OnDestroy {
     }
   }
 
-  // Inside AuthLayout class
   isClicked = signal(false);
 
-  // Use this on your links
   onLinkClick(event: Event) {
     if (this.isLoading()) {
-      event.preventDefault(); // Stop navigation while busy
+      event.preventDefault();
       this.isClicked.set(true);
 
-      // Auto-hide after 2 seconds
       setTimeout(() => {
         this.isClicked.set(false);
       }, 2000);
     }
-  }
-
-  private showAccessDeniedAlert() {
-    this.isClicked.set(true);
-    setTimeout(() => this.isClicked.set(false), 2000);
   }
 }
 
@@ -234,10 +250,10 @@ class Particle {
 
     const dx = mouse.x - this.x;
     const dy = mouse.y - this.y;
-    const distance = dx * dx + dy * dy; // تحسين الأداء بتجنب Math.sqrt
+    const distance = dx * dx + dy * dy;
 
     if (distance < mouse.radius * mouse.radius) {
-      const force = 2; // سرعة الهروب من مؤشر الماوس
+      const force = 2;
       if (mouse.x < this.x && this.x < this.canvas.width - this.size * 10) this.x += force;
       if (mouse.x > this.x && this.x > this.size * 10) this.x -= force;
       if (mouse.y < this.y && this.y < this.canvas.height - this.size * 10) this.y += force;
@@ -248,7 +264,6 @@ class Particle {
   draw(isDark: boolean) {
     this.ctx.fillStyle = isDark ? 'rgba(122, 186, 214, 0.7)' : 'rgba(47, 102, 133, 0.4)';
     this.ctx.beginPath();
-    // تصحيح رسم الدائرة: Math.PI * 2 وليس Math.PI * 1
     this.ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
     this.ctx.fill();
   }

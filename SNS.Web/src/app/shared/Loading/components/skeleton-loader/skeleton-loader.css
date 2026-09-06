@@ -63,3 +63,118 @@
     color: var(--text-muted);
     font-size: var(--text-sm);
 }
+
+/* Post Skeleton */
+.post-skeleton {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-3);
+    width: 100%;
+    max-width: 550px;
+    margin: 0 auto;
+    padding: var(--spacing-4);
+    background-color: var(--bg-main);
+    border-radius: var(--radius-lg);
+    box-sizing: border-box;
+}
+
+.post-skeleton-header {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-3);
+    width: 100%;
+}
+
+.post-skeleton-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-2);
+    width: 100%;
+}
+
+.post-skeleton-media {
+    width: 100%;
+    height: 180px;
+    border-radius: var(--radius-md);
+}
+
+.post-skeleton-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-3);
+    padding-top: var(--spacing-2);
+}
+
+.skeleton-line--meta { width: 35%; }
+.skeleton-line--title { width: 75%; height: 18px; }
+.skeleton-line--text { width: 95%; }
+.skeleton-line--text-short { width: 60%; }
+
+.skeleton-pill {
+    width: 60px;
+    height: 30px;
+    border-radius: var(--radius-full);
+}
+
+/* Comment Skeleton */
+.comment-skeleton {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-3);
+    width: 100%;
+    padding: var(--spacing-4);
+    background-color: var(--bg-main);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    box-sizing: border-box;
+}
+
+.comment-skeleton-header {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-3);
+    width: 100%;
+}
+
+.skeleton-avatar--sm {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+}
+
+.skeleton-line--comment-name { width: 35%; height: 14px; }
+.skeleton-line--comment-role { width: 25%; height: 12px; }
+
+.skeleton-dot {
+    width: 20px;
+    height: 8px;
+    border-radius: var(--radius-full);
+    margin-inline-start: auto;
+}
+
+.comment-skeleton-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-2);
+    width: 100%;
+}
+
+.comment-skeleton-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-3);
+    width: 100%;
+    margin-top: var(--spacing-1);
+}
+
+.skeleton-pill--sm {
+    width: 50px;
+    height: 22px;
+    border-radius: var(--radius-full);
+}
+
+.skeleton-line--time {
+    width: 45px;
+    height: 12px;
+    margin-inline-start: auto;
+}

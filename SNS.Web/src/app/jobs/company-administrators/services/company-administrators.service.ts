@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../../../../environments/environment';
+import { environment } from '../../../../environments/environment.development';
 import { JOBS_API_ROUTES } from '../../../shared/constants/api-routes/jobs-api.routes';
 import { Result } from '../../../shared/contracts/result';
 import { CompanyRole } from '../../enums/company-role.enum';

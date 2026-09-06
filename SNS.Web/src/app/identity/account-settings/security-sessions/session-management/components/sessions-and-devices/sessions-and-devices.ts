@@ -4,7 +4,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { LucideLogOut, LucideLaptop, LucideSmartphone, LucideTablet, LucideMapPin, LucideWifi, LucideShieldCheck, LucideClock, LucideHistory, LucideCalendar, LucideTrash2, LucideSettings, LucideInfo } from '@lucide/angular';
 import { Router } from '@angular/router';
 import { SessionManagementService } from '../../services/session-management.service';
-import { TokenService } from '../../../../../shared/services/token.service';
+import { AuthenticationService } from '../../../../../shared/services/authentication.service';
 import { GlobalLoaderService } from '../../../../../../shared/Loading/services/global-loader.service';
 import { ConfirmStateService } from '../../../../../../shared/design-system/services/confirm-state.service';
 import { ConfirmAction } from '../../../../../../shared/design-system/services/confirm-action.enum';
@@ -25,7 +25,7 @@ import { tap } from 'rxjs';
 })
 export class SessionsAndDevicesComponent {
     private sessionService = inject(SessionManagementService);
-    private tokenService = inject(TokenService);
+    private authenticationService = inject(AuthenticationService);
     private globalLoader = inject(GlobalLoaderService);
     private confirmState = inject(ConfirmStateService);
     private router = inject(Router);
@@ -87,7 +87,7 @@ export class SessionsAndDevicesComponent {
     }
 
     isCurrentSession(session: ActiveSessionDto): boolean {
-        const currentSessionId = this.tokenService.getClaim('sid');
+        const currentSessionId = this.authenticationService.getClaim('sid');
         return currentSessionId !== null && currentSessionId === session.sessionId;
     }
 
@@ -157,7 +157,7 @@ export class SessionsAndDevicesComponent {
     }
 
     viewAllSessions(): void {
-        const userId = this.tokenService.getUserId();
+        const userId = this.authenticationService.getUserId();
         this.router.navigate(['/account-settings/sessions/all-sessions'], { queryParams: { userId } });
     }
 

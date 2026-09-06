@@ -6,7 +6,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { tap } from 'rxjs';
 import { SessionManagementService } from '../../services/session-management.service';
-import { TokenService } from '../../../../../shared/services/token.service';
 import { GlobalLoaderService } from '../../../../../../shared/Loading/services/global-loader.service';
 import { SessionDetailsDto } from '../../contracts/session-details.dto';
 import { LocalDatePipe } from '../../../../../../shared/pipes/local-date.pipe';
@@ -23,7 +22,6 @@ export class SessionDetailsComponent {
     private route = inject(ActivatedRoute);
     private router = inject(Router);
     private sessionService = inject(SessionManagementService);
-    private tokenService = inject(TokenService);
     private globalLoader = inject(GlobalLoaderService);
     private translateService = inject(TranslateService);
 

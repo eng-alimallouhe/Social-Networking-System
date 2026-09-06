@@ -25,12 +25,13 @@
                 </div>
             </div>
 
+            @if (project.participants && project.participants.length > 0) {
             <div class="project-body-section collaburators-section">
                 <h3 class="collaburators-title">{{'Project.Collaburators' | translate}}</h3>
                 <div class="collaburators-container">
                     @for (collaburator of project.participants; track $index) {
                     <div class="collaburator" [title]="">
-                        <img [src]="collaburator.profileImageUrl" [alt]="">
+                        <img [src]="collaburator.profileImageUrl || defaultAvatar" (error)="onAvatarError($event)" [alt]="">
                     </div>
                     }
                     @if (project.participantsCount > 3) {
@@ -40,13 +41,15 @@
                     }
                 </div>
             </div>
+            }
 
+            @if (project.skills && project.skills.length > 0) {
             <div class="project-body-section tech-stack">
                 <h3 class="tech-stack-title">{{'Project.Tech_Stack' | translate}}</h3>
                 <div class="tech-stack-container">
                     @for (skill of project.skills; track $index) {
                     <div class="tech-stack-item">
-                        <span>{{ skill }}</span>
+                        <span>{{ getSkillName(skill) }}</span>
                     </div>
                     }
                     @if (project.skillsCount > 3) {
@@ -56,6 +59,7 @@
                     }
                 </div>
             </div>
+            }
 
             <div class="project-body-section project-actions">
                 @if(project.gitHubUrl){
@@ -70,7 +74,7 @@
                     <span>{{'Project.View_Live' | translate}}</span>
                 </a>
                 }
-                <a [routerLink]="['/projects', project.id]" class="btn btn-primary btn-block">
+                <a [routerLink]="['/projects', project.id]" class="btn btn-primary btn-block" (click)="onProjectClick($event)">
                     <svg lucideExternalLink></svg>
                     <span>{{'Project.View_Project' | translate}}</span>
                 </a>

@@ -4,7 +4,7 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { finalize, forkJoin } from 'rxjs';
 import { ToastService } from '../../../../../notifications/services/toast.service';
 import { RequestInformationService } from '../../../../../shared/services/request-information.service';
-import { TokenService } from '../../../../../shared/services/token.service';
+import { AuthenticationService } from '../../../../../shared/services/authentication.service';
 import { LoginService } from '../../services/login.service';
 import { LucideFingerprintPattern } from "@lucide/angular";
 import { GlobalLoaderService } from '../../../../../../shared/Loading/services/global-loader.service';
@@ -19,7 +19,7 @@ export class LoginWithPasskey {
   private loginService = inject(LoginService);
   private toastService = inject(ToastService);
   private route = inject(ActivatedRoute);
-  private tokenService = inject(TokenService);
+  private authenticationService = inject(AuthenticationService);
   private requestInformationService = inject(RequestInformationService);
   private router = inject(Router);
   private loadingService = inject(GlobalLoaderService);
@@ -85,7 +85,7 @@ export class LoginWithPasskey {
               }))
               .subscribe({
                 next: (response) => {
-                  this.tokenService.setToken(response.value?.accessToken!);
+                  this.authenticationService.setAccessToken(response.value?.accessToken!);
                   this.requestInformationService.setDeviceId(response.value?.deviceId!);
                   this.router.navigate(['/']);
                 }

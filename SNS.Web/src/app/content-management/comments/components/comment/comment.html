@@ -1,0 +1,103 @@
+<div class="comment-card" [attr.dir]="isRtl() ? 'rtl' : 'ltr'">
+    <!-- Top Header: Author Info & Options Menu -->
+    <div class="comment-header">
+        <div class="comment-author-info">
+            <img class="comment-avatar" [src]="activeComment().author.profilePictureUrl || defaultAvatar"
+                [alt]="activeComment().author.fullName || 'User'" loading="lazy" />
+
+            <div class="author-details">
+                <h4 class="author-name">{{ activeComment().author.fullName || 'Anonymous' }}</h4>
+                <p class="author-role">{{ activeComment().author.specialization || '' }}</p>
+            </div>
+        </div>
+
+        <!-- More Options Menu Button -->
+        <div class="comment-actions-menu">
+            <button type="button" class="more-btn" [attr.aria-label]="'ContentManagement.Comments.Options' | translate"
+                cdkOverlayOrigin #menuOrigin="cdkOverlayOrigin"
+                (click)="isActionsMenuOpen.set(!isActionsMenuOpen())">
+                <svg lucideMoreHorizontal class="more-icon"></svg>
+            </button>
+
+            <!-- Actions Dropdown Overlay -->
+            <ng-template cdkConnectedOverlay
+                [cdkConnectedOverlayOrigin]="menuOrigin"
+                [cdkConnectedOverlayOpen]="isActionsMenuOpen()"
+                [cdkConnectedOverlayHasBackdrop]="true"
+                cdkConnectedOverlayBackdropClass="cdk-overlay-transparent-backdrop"
+                (backdropClick)="isActionsMenuOpen.set(false)">
+                <div class="actions-menu-dropdown">
+                    @if (isOwner()) {
+                    <button type="button" class="menu-item delete-item" (click)="openDeleteConfirm()">
+                        <svg lucideTrash2 class="item-icon"></svg>
+                        <span>{{ 'ContentManagement.Comments.Delete' | translate }}</span>
+                    </button>
+                    } @else {
+                    <button type="button" class="menu-item" (click)="openReport()">
+                        <svg lucideFlag class="item-icon"></svg>
+                        <span>{{ 'ContentManagement.Comments.Report' | translate }}</span>
+                    </button>
+                    }
+                </div>
+            </ng-template>
+        </div>
+    </div>
+
+    <!-- Comment Body: Content Text -->
+    <div class="comment-body">
+        <p class="comment-text">{{ activeComment().content }}</p>
+    </div>
+
+    <!-- Bottom Actions Row: Like, Reply & Timestamp (Strictly Matching Reference Image) -->
+    <div class="comment-footer">
+        <div class="comment-interactions">
+            <!-- Like Action Button -->
+            <button type="button" class="interaction-btn"
+                [class.active-like]="activeComment().currentUserReaction === ReactionType.Like"
+                (click)="toggleLike()">
+                <svg lucideThumbsUp class="btn-icon" [class.fill-current]="activeComment().currentUserReaction === ReactionType.Like"></svg>
+                <span class="btn-label">{{ 'ContentManagement.Comments.Like' | translate }}</span>
+                @if (activeComment().reactionsCount > 0) {
+                <span class="count-badge">{{ activeComment().reactionsCount }}</span>
+                }
+            </button>
+
+            <!-- Reply Action Button -->
+            <button type="button" class="interaction-btn" (click)="onReply()">
+                <svg lucideCornerUpLeft class="btn-icon directional-icon"></svg>
+                <span class="btn-label">{{ 'ContentManagement.Comments.Reply' | translate }}</span>
+                @if (activeComment().repliesCount > 0) {
+                <span class="count-badge">{{ activeComment().repliesCount }}</span>
+                }
+            </button>
+        </div>
+
+        <!-- Timestamp on the far end side -->
+        <span class="comment-time">{{ activeComment().createdAt | localDate }}</span>
+    </div>
+</div>
+
+<!-- Delete Confirmation Dialog -->
+<app-confirm-dialog
+    [isOpen]="isDeleteConfirmOpen()"
+    (isOpenChange)="isDeleteConfirmOpen.set($event)"
+    [action]="ConfirmAction.Delete"
+    titleKey="Delete Comment"
+    messageKey="Are you sure you want to delete this comment?"
+    confirmTextKey="Delete"
+    cancelTextKey="Cancel">
+</app-confirm-dialog>
+
+<!-- Authentication Required Modal -->  
+<app-want-to-login
+    [isOpen]="isWantToLoginOpen()"
+    (isOpenChange)="isWantToLoginOpen.set($event)"
+    (closed)="isWantToLoginOpen.set(false)">
+</app-want-to-login>
+
+<!-- Moderation Report Modal -->
+<app-comment-report
+    [commentId]="activeComment().id"
+    [isOpen]="isReportOpen"
+    (closed)="isReportOpen.set(false)">
+</app-comment-report>

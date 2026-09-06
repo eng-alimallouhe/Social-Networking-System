@@ -1,0 +1,137 @@
+<div class="post-details-container" [attr.dir]="isRtl() ? 'rtl' : 'ltr'">
+    <!-- Top Bar Navigation -->
+    <div class="title-section">
+        <button class="btn btn-icon-text back-btn" (click)="goBack()" [attr.aria-label]="'ContentManagement.Posts.Back' | translate">
+            <svg lucideArrowLeft class="directional-icon"></svg>
+        </button>
+        <h1>{{ 'ContentManagement.Posts.Post_Details' | translate }}</h1>
+    </div>
+
+    <!-- Post Loading Skeleton -->
+    @if (isPostLoading()) {
+    <section class="post-section" [attr.aria-label]="'ContentManagement.Posts.Loading' | translate" aria-busy="true">
+        <app-skeleton-loader [type]="SkeletonType.Post"></app-skeleton-loader>
+    </section>
+    }
+
+    <!-- Post Error State -->
+    @else if (postError()) {
+    <div class="error-card" role="alert">
+        <svg lucideAlertCircle class="error-icon"></svg>
+        <p class="error-message">{{ 'ContentManagement.Posts.Error' | translate }}</p>
+        <button type="button" class="retry-btn" (click)="loadPost()">
+            <svg lucideRefreshCw class="retry-icon"></svg>
+            <span>{{ 'ContentManagement.Posts.Retry' | translate }}</span>
+        </button>
+    </div>
+    }
+
+    <!-- Post Content Card -->
+    @else if (mappedPost(); as currentPost) {
+    <section class="post-section">
+        <app-post [post]="currentPost" (deleted)="onPostDeleted()"></app-post>
+    </section>
+
+    <!-- Comments Section -->
+    <section class="comments-section">
+        <div class="comments-header">
+            <div class="comments-heading-wrap">
+                <svg lucideMessageSquare class="comments-icon"></svg>
+                <h3 class="comments-title">
+                    {{ 'ContentManagement.Posts.Comments' | translate }}
+                    @if (totalCommentsCount() > 0) {
+                    <span class="comments-count-pill">{{ totalCommentsCount() }}</span>
+                    }
+                </h3>
+            </div>
+        </div>
+
+        <!-- Comment Composer Card -->
+        <div class="comment-composer-card">
+            @if (replyingTo(); as rep) {
+            <div class="reply-indicator">
+                <span class="reply-text">
+                    {{ 'ContentManagement.Comments.Replying_To' | translate }}: <strong>{{ rep.author.fullName || ('ContentManagement.Comments.Anonymous' | translate) }}</strong>
+                </span>
+                <button type="button" class="cancel-reply-btn" (click)="cancelReply()"
+                    [attr.aria-label]="'ContentManagement.Comments.Cancel_Reply' | translate">&times;</button>
+            </div>
+            }
+
+            <div class="composer-body">
+                <textarea class="comment-textarea" [placeholder]="'ContentManagement.Comments.Write_Comment_Placeholder' | translate"
+                    [(ngModel)]="newCommentText" rows="3" [disabled]="isSubmittingComment()"
+                    (keydown.enter)="onEnterKey($event)">
+                </textarea>
+                <div class="composer-actions">
+                    <button type="button" class="submit-comment-btn"
+                        [disabled]="!newCommentText().trim() || isSubmittingComment()" (click)="submitComment()">
+                        @if (isSubmittingComment()) {
+                        <span class="spinner"></span>
+                        } @else {
+                        <svg lucideSend class="send-icon directional-icon"></svg>
+                        }
+                        <span>{{ 'ContentManagement.Comments.Submit' | translate }}</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Initial Comments Loading Skeleton -->
+        @if (isCommentsLoading()) {
+        <div class="comments-list" [attr.aria-label]="'ContentManagement.Comments.Loading' | translate" aria-busy="true">
+            <app-skeleton-loader [type]="SkeletonType.Comment"></app-skeleton-loader>
+            <app-skeleton-loader [type]="SkeletonType.Comment"></app-skeleton-loader>
+        </div>
+        }
+
+        <!-- Comments Error State -->
+        @else if (commentsError()) {
+        <div class="error-card small" role="alert">
+            <p class="error-message">{{ 'ContentManagement.Comments.Error' | translate }}</p>
+            <button type="button" class="retry-btn" (click)="loadInitialComments()">
+                <svg lucideRefreshCw class="retry-icon"></svg>
+                <span>{{ 'ContentManagement.Posts.Retry' | translate }}</span>
+            </button>
+        </div>
+        }
+
+        <!-- Comments List -->
+        @else if (comments().length > 0) {
+        <div class="comments-list">
+            @for (commentItem of comments(); track commentItem.id) {
+            <app-comment [comment]="commentItem" (reply)="onReplyToComment($event)"
+                (deleted)="onCommentDeleted($event)">
+            </app-comment>
+            }
+        </div>
+
+        <!-- More Comments Loading Skeleton -->
+        @if (isLoadingMoreComments()) {
+        <div class="more-comments-loading" [attr.aria-label]="'ContentManagement.Comments.Loading' | translate" aria-busy="true">
+            <app-skeleton-loader [type]="SkeletonType.Comment"></app-skeleton-loader>
+        </div>
+        }
+
+        <!-- Infinite Scroll Sentinel -->
+        @if (hasMoreComments()) {
+        <div #commentsSentinel class="comments-sentinel" aria-hidden="true"></div>
+        }
+        }
+
+        <!-- Empty Comments State -->
+        @else {
+        <div class="empty-comments-state">
+            <svg lucideMessageSquare class="empty-icon"></svg>
+            <h4 class="empty-title">{{ 'ContentManagement.Comments.Empty_Title' | translate }}</h4>
+            <p class="empty-subtitle">{{ 'ContentManagement.Comments.Empty_Description' | translate }}</p>
+        </div>
+        }
+    </section>
+    }
+</div>
+
+<!-- Want to Login Modal -->
+<app-want-to-login [isOpen]="isWantToLoginOpen()" (isOpenChange)="isWantToLoginOpen.set($event)"
+    (closed)="isWantToLoginOpen.set(false)">
+</app-want-to-login>

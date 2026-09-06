@@ -1,148 +1,242 @@
 using Microsoft.EntityFrameworkCore;
+using SNS.Application.ContentManagement.Communities.Communities.Contracts;
+using SNS.Application.ContentManagement.Posts.PostMentions.Contracts;
 using SNS.Application.ContentManagement.Posts.Posts.Abstractions;
 using SNS.Application.ContentManagement.Posts.Posts.Contracts;
+using SNS.Application.Profiles.Profiles.Contracts;
 using SNS.Application.Search.ContentManagement.Posts.Queries;
 using SNS.Application.Shared.Abstractions.Data;
+using SNS.Application.Shared.Abstractions.Storage;
+using SNS.Domain.ContentManagement.Shared.Enums;
 
-namespace SNS.Infrastructure.ContentManagement.Posts.BackgroundServices;
+namespace SNS.Application.ContentManagement.Posts.Posts.Services;
 
-public class FeedBackgroundService : IFeedBackgroundService
+internal sealed class FeedFallbackService : IFeedFallbackService
 {
     private readonly IApplicationDbContext _dbContext;
-    private readonly IPostCacheService _postCacheService;
+    private readonly IFileStorageService _fileStorageService;
 
-    public FeedBackgroundService(
+    public FeedFallbackService(
         IApplicationDbContext dbContext,
-        IPostCacheService postCacheService)
+        IFileStorageService fileStorageService)
     {
         _dbContext = dbContext;
-        _postCacheService = postCacheService;
+        _fileStorageService = fileStorageService;
     }
 
-    public async Task ComputeAndCacheUserFeedAsync(Guid profileId, FeedRequestParameter feedParams)
+    public async Task<List<PostOverviewDto>> GetFallbackFeedAsync(
+        FeedRequestParameter parameter,
+        int pageSize = 10,
+        CancellationToken cancellationToken = default)
     {
-        bool acquired = await _postCacheService.TryLockFeedBuildingAsync(profileId);
+        var topicIds = parameter.Topics
+            .Select(x => x.TopicId)
+            .ToList();
 
-        if (!acquired)
-        {
-            return;
-        }
+        var excludedPostIds = parameter.ExcludedPostsIds
+            .ToHashSet();
 
-        try{
-            var followedProfiles =
-                feedParams.FollowedProfilesIds.ToHashSet();
+        var excludedProfileIds = parameter.ExcludedProfilesIds
+            .ToHashSet();
 
-            var excludedPosts =
-                feedParams.ExcludedPostsIds.ToHashSet();
-
-            var excludedProfiles =
-                feedParams.ExcludedProfilesIds.ToHashSet();
-
-            var communities =
-                feedParams.CommunitiesIds.ToHashSet();
-
-            var userTopicsDict =
-                feedParams.Topics.ToDictionary(x => x.TopicId, x => x.Score);
-
-            var userTagsDict =
-                feedParams.Tags.ToDictionary(x => x.TagId, x => x.Score);
-
-            var interestedTopics =
-                userTopicsDict.Keys.ToHashSet();
-
-            var rawCandidates = await _dbContext.Posts
-                .Where(p =>
-                    !feedParams.ExcludedPostsIds.Contains(p.Id) &&
-                    !feedParams.ExcludedProfilesIds.Contains(p.AuthorId) &&
+        var rawPosts = await _dbContext.Posts
+            .AsNoTracking()
+            .Where(p =>
+                !excludedPostIds.Contains(p.Id) &&
+                !excludedProfileIds.Contains(p.AuthorId) &&
+                p.CreatedAt >= parameter.StartDate &&
+                (
+                    parameter.FollowedProfilesIds.Contains(p.AuthorId) ||
                     (
-                        feedParams.FollowedProfilesIds.Contains(p.AuthorId) ||
-                        (p.CommunityId.HasValue &&
-                         feedParams.CommunitiesIds.Contains(p.CommunityId.Value)) ||
-                        p.PostTopics.Any(pt =>
-                            feedParams.Topics
-                                .Select(t => t.TopicId)
-                                .Contains(pt.TopicId))
-                    )
-                )
-                .OrderByDescending(p => p.CreatedAt)
-                .Take(500)
-                .Select(p => new
-                {
-                    Id = p.Id,
-                    CreatedAt = p.CreatedAt,
-                    AuthorId = p.AuthorId,
-                    Topics = p.PostTopics.Select(pt => new
-                    {
-                        TopicId = pt.TopicId,
-                        Confidence = pt.Confidence ?? 1
-                    }),
-                    Tags = p.PostTags.Select(pt => new
-                    {
-                        TagId = pt.TagId,
-                        Confidence = pt.Confidence ?? 1
-                    }),
-                    LikesCount = p.Reactions.Count(),
-                    ViewsCount = p.Views.Count()
-                })
-                .ToListAsync();
-
-            var now = DateTime.UtcNow;
-            var rankedItems = new List<FeedItemModel>();
-
-            foreach (var post in rawCandidates)
+                        p.CommunityId.HasValue &&
+                        parameter.CommunitiesIds.Contains(
+                            p.CommunityId.Value)
+                    ) ||
+                    p.PostTopics.Any(pt =>
+                        topicIds.Contains(pt.TopicId))
+                ))
+            .OrderByDescending(p => p.CreatedAt)
+            .Take(pageSize)
+            .Select(p => new
             {
-                double hoursOld = (now - post.CreatedAt).TotalHours;
-                double timeScore = 1.0 / (Math.Pow(hoursOld + 2, 1.5));
+                p.Id,
 
-                double engagementScore = (post.LikesCount * 2.0) + (post.ViewsCount * 0.1);
+                AuthorId = p.Author.Id,
+                AuthorFullName = p.Author.FullName,
+                AuthorSpecialization = p.Author.Specialization,
+                AuthorProfilePictureKey =
+                    p.Author.ProfilePictureObjectKey,
 
-                double followBonus =
-                    followedProfiles.Contains(post.AuthorId)
-                        ? 30
-                        : 0;
+                p.CommunityId,
 
-                double topicInterestBonus = 0;
-                foreach (var postTopic in post.Topics)
-                {
-                    if (userTopicsDict.TryGetValue(postTopic.TopicId, out double userTopicScore))
+                CommunityType = p.Community != null
+                    ? p.Community.Type
+                    : (SNS.Domain.ContentManagement.Communities.Enums.CommunityType?)null,
+
+                CommunityName = p.Community != null
+                    ? p.Community.Name
+                    : null,
+
+                CommunityLogoKey = p.Community != null
+                    ? p.Community.LogoObjectKey
+                    : null,
+
+                p.Title,
+                p.Content,
+                p.CreatedAt,
+                p.UpdatedAt,
+                p.LastInteractedAt,
+
+                Media = p.Media
+                    .OrderBy(m => m.Order)
+                    .Select(m => new
                     {
-                        topicInterestBonus += userTopicScore * postTopic.Confidence * 10.0;
-                    }
-                }
+                        m.ObjectKey,
+                        m.Order,
+                        m.Type
+                    })
+                    .ToList(),
 
-                double tagInterestBonus = 0;
+                Tags = p.PostTags
+                    .Select(pt => pt.Tag.Name)
+                    .ToList(),
 
-                foreach (var postTag in post.Tags)
-                {
-                    if (userTagsDict.TryGetValue(
-                        postTag.TagId,
-                        out double userTagScore))
+                CommentsCount = p.Comments
+                    .Count(c => c.IsActive),
+
+                ReactionsCount = p.Reactions.Count(),
+
+                ViewsCount = p.Views.Count(),
+
+                SavesCount = p.SavedPosts.Count(),
+
+                CurrentUserReaction = p.Reactions
+                    .Where(r =>
+                        r.ReactorId == parameter.ProfileId)
+                    .Select(r => (ReactionType?)r.Type)
+                    .FirstOrDefault(),
+
+                Mentions = p.Mentions
+                    .Where(m => m.Profile.IsActive)
+                    .Select(m => new
                     {
-                        tagInterestBonus +=
-                            userTagScore *
-                            postTag.Confidence *
-                            10;
-                    }
-                }
+                        m.ProfileId,
+                        DisplayName = m.Profile.FullName,
+                        ProfilePictureKey =
+                            m.Profile.ProfilePictureObjectKey
+                    })
+                    .ToList()
+            })
+            .ToListAsync(cancellationToken);
 
-                double finalScore = (engagementScore * timeScore) + followBonus + tagInterestBonus + topicInterestBonus;
+        /*
+         * Resolve all storage keys in parallel.
+         */
+        var distinctKeys = rawPosts
+            .Select(p => p.AuthorProfilePictureKey)
+            .Concat(rawPosts.Select(p => p.CommunityLogoKey))
+            .Concat(rawPosts.SelectMany(p =>
+                p.Media.Select(m => m.ObjectKey)))
+            .Concat(rawPosts.SelectMany(p =>
+                p.Mentions.Select(m => m.ProfilePictureKey)))
+            .Where(k => !string.IsNullOrWhiteSpace(k))
+            .Distinct()
+            .ToList();
 
-                rankedItems.Add(new FeedItemModel(post.Id, finalScore));
-            }
-
-            var topSortedFeed = rankedItems
-                .OrderByDescending(x => x.Score)
-                .Take(300)
-                .ToList();
-
-            if (topSortedFeed.Any())
-            {
-                await _postCacheService.SetProfileFeedAsync(profileId, topSortedFeed, cancellationToken: default);
-            }
-        }
-        finally
+        var urlTasks = distinctKeys.Select(async key => new
         {
-            await _postCacheService.UnlockFeedBuildingAsync(profileId);
-        }
+            Key = key!,
+            Url = await _fileStorageService.GetTemporaryUrlAsync(
+                key!,
+                TimeSpan.FromHours(1))
+        });
+
+        var resolvedUrls = await Task.WhenAll(urlTasks);
+
+        var urlMap = resolvedUrls.ToDictionary(
+            x => x.Key,
+            x => x.Url);
+
+        /*
+         * Map immediately.
+         */
+        return rawPosts
+            .Select(p => new PostOverviewDto(
+                Id: p.Id,
+
+                Author: new ProfileSnapshotDto(
+                    p.AuthorId,
+                    p.AuthorFullName,
+                    p.AuthorSpecialization,
+                    p.AuthorProfilePictureKey != null &&
+                    urlMap.TryGetValue(
+                        p.AuthorProfilePictureKey,
+                        out var authorPicUrl)
+                        ? authorPicUrl
+                        : null
+                ),
+
+                Community:
+                    p.CommunityId.HasValue &&
+                    p.CommunityType.HasValue &&
+                    p.CommunityName != null
+
+                        ? new CommunitySnapshotDto(
+                            p.CommunityId.Value,
+                            p.CommunityName,
+                            p.CommunityType.Value,
+                            p.CommunityLogoKey != null &&
+                            urlMap.TryGetValue(
+                                p.CommunityLogoKey,
+                                out var communityLogoUrl)
+                                ? communityLogoUrl
+                                : null
+                        )
+
+                        : null,
+
+                Title: p.Title,
+                Content: p.Content,
+                CreatedAt: p.CreatedAt,
+                UpdatedAt: p.UpdatedAt,
+                LastInteractedAt: p.LastInteractedAt,
+
+                Media: p.Media
+                    .Select(m => new PostMediaDto(
+                        Url: urlMap.TryGetValue(
+                            m.ObjectKey,
+                            out var mediaUrl)
+                            ? mediaUrl
+                            : m.ObjectKey,
+
+                        Order: m.Order,
+                        Type: m.Type
+                    ))
+                    .ToList(),
+
+                Tags: p.Tags,
+
+                CommentsCount: p.CommentsCount,
+                ReactionsCount: p.ReactionsCount,
+                ViewsCount: p.ViewsCount,
+                SavesCount: p.SavesCount,
+
+                CurrentUserReaction:
+                    p.CurrentUserReaction,
+
+                Mentions: p.Mentions
+                    .Select(m => new PostMentionDto(
+                        m.ProfileId,
+                        m.DisplayName,
+                        m.ProfilePictureKey != null &&
+                        urlMap.TryGetValue(
+                            m.ProfilePictureKey,
+                            out var mentionPicUrl)
+                            ? mentionPicUrl
+                            : null
+                    ))
+                    .ToList()
+            ))
+            .ToList();
     }
 }

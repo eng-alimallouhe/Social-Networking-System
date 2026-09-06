@@ -1,6 +1,15 @@
+:host {
+    display: block;
+    width: 100%;
+    max-width: 680px;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
 .project-container {
-    width: 400px;
-    min-height: 440px;
+    width: 100%;
+    max-width: 680px;
+    min-height: auto;
     background-color: var(--bg-card);
     display: flex;
     flex-direction: row;
@@ -10,6 +19,7 @@
     transition: var(--transition-base);
     box-shadow: var(--shadow-sm);
     position: relative;
+    box-sizing: border-box;
 }
 
 .project-container:hover {
@@ -235,7 +245,7 @@
     flex-wrap: wrap;
     justify-content: space-between;
     gap: var(--spacing-2);
-    margin-top: auto;
+    margin-top: var(--spacing-3);
     width: 100%;
 }
 

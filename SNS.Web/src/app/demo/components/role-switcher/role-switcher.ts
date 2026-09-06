@@ -9,7 +9,6 @@ import { GlobalLoaderService } from '../../../shared/Loading/services/global-loa
 import { LoginWithPasswordRequest } from '../../../identity/account-settings/security-sessions/login/contracts/login-with-password-request.dto';
 import { AuthenticationService } from '../../../identity/shared/services/authentication.service';
 import { RequestInformationService } from '../../../identity/shared/services/request-information.service';
-import { TokenService } from '../../../identity/shared/services/token.service';
 
 interface DemoRole {
     id: string;
@@ -29,7 +28,6 @@ export class RoleSwitcher {
     private loginService = inject(LoginService);
     private loadingService = inject(GlobalLoaderService);
     private router = inject(Router);
-    private tokenService = inject(TokenService);
     private requestInfoService = inject(RequestInformationService);
     private authenticationService = inject(AuthenticationService);
 
@@ -39,6 +37,7 @@ export class RoleSwitcher {
         const roleId = this.currentRole()?.toLowerCase();
         return this.roles.find(r => r.id === roleId);
     });
+    
     public guestIcon = LucideUser;
 
     private readonly SHARED_PASSWORD = 'alimallohi0947041713A';
@@ -70,7 +69,7 @@ export class RoleSwitcher {
             .subscribe({
                 next: (response) => {
                     if (response.value?.accessToken) {
-                        this.tokenService.setToken(response.value.accessToken);
+                        this.authenticationService.setAccessToken(response.value.accessToken);
                         this.requestInfoService.setDeviceId(response.value.deviceId!);
                         this.router.navigate(['/demo/dashboard']);
                     }

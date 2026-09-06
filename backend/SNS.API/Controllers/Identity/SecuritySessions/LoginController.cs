@@ -55,6 +55,7 @@ public class LoginController : ControllerBase
 
         if (result.IsSuccess)
         {
+            Console.WriteLine(result.Value?.RefreshToken ?? "No Refresh Token");
             Response.Cookies.Append(
                 CookieFactory.RefreshTokenCookieName, 
                 result.Value?.RefreshToken ?? string.Empty,

@@ -1,5 +1,6 @@
-import { Component, input, signal, inject, effect, computed } from '@angular/core';
+import { Component, input, output, signal, inject, effect, computed } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { Router, ActivatedRoute } from '@angular/router';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { map } from 'rxjs';
 import { CommonModule } from '@angular/common';
@@ -30,10 +31,11 @@ import { PostReport } from '../../../../moderation/components/post-report/post-r
 import { WantToLogin } from '../../../../shared/components/want-to-login/want-to-login';
 import { AppConfirmDialog } from '../../../../shared/design-system/components/app-confirm-dialog/app-confirm-dialog';
 import { PostsService } from '../../services/posts.service';
-import { TokenService } from '../../../../identity/shared/services/token.service';
 import { AuthenticationService } from '../../../../identity/shared/services/authentication.service';
 import { ConfirmAction } from '../../../../shared/design-system/services/confirm-action.enum';
 import { ConfirmStateService } from '../../../../shared/design-system/services/confirm-state.service';
+import { LanguageService } from '../../../../shared/services/language.service';
+import { SupportedLanguage } from '../../../../shared/contracts/supported-language.enum';
 
 
 @Component({
@@ -65,9 +67,7 @@ import { ConfirmStateService } from '../../../../shared/design-system/services/c
     styleUrls: ['./post.css']
 })
 export class Post {
-    // post = input.required<PostModelDto>();
-
-    post = signal<PostModelDto>({
+    post = input<PostModelDto>({
         id: "",
         author: {
             id: "",
@@ -96,6 +96,10 @@ export class Post {
         mentions: []
     });
 
+    deleted = output<string>();
+    commentsClick = output<string>();
+    notInterested = output<string>();
+
     isReportOpen = signal<boolean>(false);
     isActionsMenuOpen = signal<boolean>(false);
     isWantToLoginOpen = signal<boolean>(false);
@@ -103,18 +107,37 @@ export class Post {
 
     private reactionService = inject(PostReactionService);
     private postsService = inject(PostsService);
-    private tokenService = inject(TokenService);
     private authService = inject(AuthenticationService);
     private confirmStateService = inject(ConfirmStateService);
     private breakpointObserver = inject(BreakpointObserver);
     private markdownService = inject(MarkdownService);
+    private languageService = inject(LanguageService);
+    private router = inject(Router);
+    private route = inject(ActivatedRoute);
+
+    onCommentClick(): void {
+        this.commentsClick.emit(this.post().id);
+        const currentUrl = this.router.url.split('?')[0].split('#')[0];
+        if (currentUrl.startsWith('/home')) {
+            this.router.navigate(['/home/post', this.post().id]);
+        } else if (currentUrl.startsWith('/feed')) {
+            this.router.navigate(['/feed/post', this.post().id]);
+        } else {
+            this.router.navigate(['post', this.post().id], { relativeTo: this.route });
+        }
+    }
 
     isMobile = toSignal(
-        this.breakpointObserver.observe('(max-width: 990px)').pipe(
+        this.breakpointObserver.observe('(max-width: 780px)').pipe(
             map(result => result.matches)
         ),
         { initialValue: false }
     );
+
+    isRtl = computed(() => {
+        return this.languageService.currentLanguage() === SupportedLanguage.Arabic ||
+            (typeof document !== 'undefined' && document.documentElement.dir === 'rtl');
+    });
 
     isOwner = computed(() => this.currentProfileId === this.post().author.id);
 
@@ -151,7 +174,7 @@ export class Post {
     }
 
     get currentProfileId(): string | null {
-        return this.tokenService.getClaim('ProfileId') || this.tokenService.getUserId();
+        return this.authService.getClaim('ProfileId') || this.authService.getUserId();
     }
 
     get mediaList(): PostMediaDto[] {
@@ -160,23 +183,97 @@ export class Post {
 
     isReactionPickerOpen = signal(false);
 
-    overlayPositions: ConnectionPositionPair[] = [
-        new ConnectionPositionPair(
-            { originX: 'start', originY: 'top' },
-            { overlayX: 'start', overlayY: 'bottom' },
-            0,
-            -8 // offset to push it slightly above the button
-        )
-    ];
+    overlayPositions = computed<ConnectionPositionPair[]>(() => {
+        if (this.isRtl()) {
+            return [
+                new ConnectionPositionPair(
+                    { originX: 'end', originY: 'top' },
+                    { overlayX: 'end', overlayY: 'bottom' },
+                    0,
+                    -8
+                ),
+                new ConnectionPositionPair(
+                    { originX: 'end', originY: 'bottom' },
+                    { overlayX: 'end', overlayY: 'top' },
+                    0,
+                    8
+                ),
+                new ConnectionPositionPair(
+                    { originX: 'start', originY: 'top' },
+                    { overlayX: 'start', overlayY: 'bottom' },
+                    0,
+                    -8
+                )
+            ];
+        }
 
-    actionsMenuPositions: ConnectionPositionPair[] = [
-        new ConnectionPositionPair(
-            { originX: 'end', originY: 'bottom' },
-            { overlayX: 'end', overlayY: 'top' },
-            0,
-            4
-        )
-    ];
+        return [
+            new ConnectionPositionPair(
+                { originX: 'start', originY: 'top' },
+                { overlayX: 'start', overlayY: 'bottom' },
+                0,
+                -8
+            ),
+            new ConnectionPositionPair(
+                { originX: 'start', originY: 'bottom' },
+                { overlayX: 'start', overlayY: 'top' },
+                0,
+                8
+            ),
+            new ConnectionPositionPair(
+                { originX: 'end', originY: 'top' },
+                { overlayX: 'end', overlayY: 'bottom' },
+                0,
+                -8
+            )
+        ];
+    });
+
+    actionsMenuPositions = computed<ConnectionPositionPair[]>(() => {
+        if (this.isRtl()) {
+            return [
+                new ConnectionPositionPair(
+                    { originX: 'start', originY: 'bottom' },
+                    { overlayX: 'start', overlayY: 'top' },
+                    0,
+                    4
+                ),
+                new ConnectionPositionPair(
+                    { originX: 'start', originY: 'top' },
+                    { overlayX: 'start', overlayY: 'bottom' },
+                    0,
+                    -4
+                ),
+                new ConnectionPositionPair(
+                    { originX: 'end', originY: 'bottom' },
+                    { overlayX: 'end', overlayY: 'top' },
+                    0,
+                    4
+                )
+            ];
+        }
+
+        return [
+            new ConnectionPositionPair(
+                { originX: 'end', originY: 'bottom' },
+                { overlayX: 'end', overlayY: 'top' },
+                0,
+                4
+            ),
+            new ConnectionPositionPair(
+                { originX: 'end', originY: 'top' },
+                { overlayX: 'end', overlayY: 'bottom' },
+                0,
+                -4
+            ),
+            new ConnectionPositionPair(
+                { originX: 'start', originY: 'bottom' },
+                { overlayX: 'start', overlayY: 'top' },
+                0,
+                4
+            )
+        ];
+    });
 
     reactionTypes = [
         { type: ReactionType.Like, icon: 'thumbs-up' },
@@ -263,6 +360,7 @@ export class Post {
 
     onNotInterested() {
         this.isActionsMenuOpen.set(false);
+        this.notInterested.emit(this.post().id);
         this.checkAuthAndExecute(() => {
             this.postsService.decreaseInterest(this.post().id).subscribe();
         });
@@ -282,6 +380,11 @@ export class Post {
 
     confirmDelete() {
         this.isDeleteConfirmOpen.set(false);
-        this.postsService.deletePost(this.post().id).subscribe();
+        const postId = this.post().id;
+        this.postsService.deletePost(postId).subscribe({
+            next: () => {
+                this.deleted.emit(postId);
+            }
+        });
     }
 }

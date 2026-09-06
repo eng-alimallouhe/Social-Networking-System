@@ -6,7 +6,7 @@ import { ArchiveManagementService } from '../../services/archive-management.serv
 import { ArchiveMessageBuilderService } from '../../services/archive-message-builder.service';
 import { UserArchiveSummaryDto } from '../../contracts/archive-management.models';
 import { rxResource, toSignal } from '@angular/core/rxjs-interop';
-import { TokenService } from '../../../../shared/services/token.service';
+import { AuthenticationService } from '../../../../shared/services/authentication.service';
 import { GlobalLoaderService } from '../../../../../shared/Loading/services/global-loader.service';
 import { finalize, map } from 'rxjs';
 import { CircleLoader } from "../../../../../shared/Loading/components/circle-loader/circle-loader";
@@ -33,7 +33,7 @@ export class AccountArchiveComponent {
     public messageBuilder = inject(ArchiveMessageBuilderService);
     public translate = inject(TranslateService);
     private route = inject(ActivatedRoute);
-    private tokenService = inject(TokenService);
+    private authenticationService = inject(AuthenticationService);
     private location = inject(Location);
 
     public currentPage = signal(1);
@@ -50,8 +50,8 @@ export class AccountArchiveComponent {
         if (queryId)
             return queryId;
 
-        return this.tokenService.getUserId()
-            || this.tokenService.getClaim(
+        return this.authenticationService.getUserId()
+            || this.authenticationService.getClaim(
                 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'
             )
             || '';

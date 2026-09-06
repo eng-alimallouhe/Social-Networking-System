@@ -16,17 +16,50 @@
     </div>
     }
 
-    <!-- Post Skeleton (TODO) -->
+    <!-- Post Skeleton -->
     @if (type() === SkeletonType.Post) {
-    <div class="skeleton-placeholder">
-        <span>Post — Not implemented yet</span>
+    <div class="post-skeleton">
+        <div class="post-skeleton-header">
+            <div class="skeleton-avatar skeleton-pulse"></div>
+            <div class="skeleton-info">
+                <div class="skeleton-line skeleton-line--name skeleton-pulse"></div>
+                <div class="skeleton-line skeleton-line--meta skeleton-pulse"></div>
+            </div>
+        </div>
+        <div class="post-skeleton-body">
+            <div class="skeleton-line skeleton-line--title skeleton-pulse"></div>
+            <div class="skeleton-line skeleton-line--text skeleton-pulse"></div>
+            <div class="skeleton-line skeleton-line--text-short skeleton-pulse"></div>
+        </div>
+        <div class="post-skeleton-media skeleton-pulse"></div>
+        <div class="post-skeleton-actions">
+            <div class="skeleton-pill skeleton-pulse"></div>
+            <div class="skeleton-pill skeleton-pulse"></div>
+            <div class="skeleton-pill skeleton-pulse"></div>
+        </div>
     </div>
     }
 
-    <!-- Comment Skeleton (TODO) -->
+    <!-- Comment Skeleton -->
     @if (type() === SkeletonType.Comment) {
-    <div class="skeleton-placeholder">
-        <span>Comment — Not implemented yet</span>
+    <div class="comment-skeleton">
+        <div class="comment-skeleton-header">
+            <div class="skeleton-avatar skeleton-avatar--sm skeleton-pulse"></div>
+            <div class="skeleton-info">
+                <div class="skeleton-line skeleton-line--comment-name skeleton-pulse"></div>
+                <div class="skeleton-line skeleton-line--comment-role skeleton-pulse"></div>
+            </div>
+            <div class="skeleton-dot skeleton-pulse"></div>
+        </div>
+        <div class="comment-skeleton-body">
+            <div class="skeleton-line skeleton-line--text skeleton-pulse"></div>
+            <div class="skeleton-line skeleton-line--text-short skeleton-pulse"></div>
+        </div>
+        <div class="comment-skeleton-actions">
+            <div class="skeleton-pill skeleton-pill--sm skeleton-pulse"></div>
+            <div class="skeleton-pill skeleton-pill--sm skeleton-pulse"></div>
+            <div class="skeleton-line skeleton-line--time skeleton-pulse"></div>
+        </div>
     </div>
     }
 </div>

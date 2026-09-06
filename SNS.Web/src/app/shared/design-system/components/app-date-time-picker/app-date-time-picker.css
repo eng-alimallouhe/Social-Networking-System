@@ -1,0 +1,375 @@
+:host {
+    display: block;
+    width: 100%;
+    min-width: 0;
+}
+
+.date-picker-container {
+    position: relative;
+    width: 100%;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-2, 8px);
+    box-sizing: border-box;
+}
+
+.date-picker-label {
+    display: block;
+    font-size: var(--text-sm, 14px);
+    font-weight: var(--font-weight-medium, 500);
+    color: var(--text-secondary, #334155);
+}
+
+/* Trigger Button (SNS Design System tokens with reference structure) */
+.date-picker-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 48px;
+    padding: 0 var(--spacing-4, 16px);
+    background-color: var(--bg-card, #ffffff);
+    color: var(--text-primary, #161616);
+    border: 1.5px solid var(--border-color, #b9a779);
+    border-radius: var(--radius-sm, 8px);
+    font-size: var(--text-sm, 14px);
+    font-weight: var(--font-weight-medium, 500);
+    cursor: pointer;
+    box-shadow: var(--shadow-xs, 0 1px 2px rgba(0, 0, 0, 0.04));
+    transition: background-color var(--transition-base, 0.15s ease),
+                border-color var(--transition-base, 0.15s ease),
+                box-shadow var(--transition-base, 0.15s ease);
+    outline: none;
+    box-sizing: border-box;
+}
+
+.date-picker-trigger:hover:not(:disabled) {
+    border-color: var(--primary-color, #428177);
+    background-color: var(--bg-hover, #edebe0);
+}
+
+.date-picker-trigger:focus-visible {
+    border-color: var(--primary-color, #428177);
+    outline: 2px solid var(--primary-color, #428177);
+    outline-offset: 1px;
+}
+
+.date-picker-trigger:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background-color: var(--bg-secondary, #f4f5f6);
+}
+
+.trigger-calendar-icon {
+    width: 18px;
+    height: 18px;
+    color: var(--primary-color, #428177);
+    flex-shrink: 0;
+}
+
+.trigger-text {
+    flex: 1;
+    text-align: left;
+    padding: 0 var(--spacing-3, 12px);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+:host-context([dir="rtl"]) .trigger-text {
+    text-align: right;
+}
+
+.trigger-text.is-placeholder {
+    color: var(--text-muted, #988561);
+}
+
+.trigger-chevron-icon {
+    width: 18px;
+    height: 18px;
+    color: var(--text-muted, #988561);
+    flex-shrink: 0;
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.date-picker-container.open .trigger-chevron-icon {
+    transform: rotate(180deg);
+    color: var(--primary-color, #428177);
+}
+
+/* Popover Calendar Card (Matches Reference Structure with SNS tokens) */
+.calendar-popover {
+    position: relative;
+    width: 320px;
+    max-width: calc(100vw - 32px);
+    background: var(--bg-card, #ffffff);
+    border: 1px solid var(--border-color, #b9a779);
+    border-radius: var(--radius-xl, 16px);
+    box-shadow: var(--shadow-xl, 0 20px 25px -5px rgba(0, 0, 0, 0.1));
+    overflow: hidden;
+    margin-top: 8px;
+    animation: popoverFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 10000;
+    box-sizing: border-box;
+}
+
+@keyframes popoverFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-8px) scale(0.97);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Top Pointer Arrow */
+.popover-arrow {
+    position: absolute;
+    top: -6px;
+    left: 28px;
+    width: 14px;
+    height: 14px;
+    background-color: var(--primary-color, #428177);
+    transform: rotate(45deg);
+    border-radius: 2px;
+}
+
+:host-context([dir="rtl"]) .popover-arrow {
+    left: auto;
+    right: 28px;
+}
+
+/* Calendar Header (SNS Primary Brand Banner) */
+.calendar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--primary-color, #428177);
+    color: var(--text-inverse, #ffffff);
+    padding: var(--spacing-3, 12px) var(--spacing-4, 16px);
+}
+
+.header-title {
+    font-size: var(--text-base, 16px);
+    font-weight: var(--font-weight-bold, 700);
+    letter-spacing: -0.01em;
+}
+
+.header-nav-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    background: rgba(255, 255, 255, 0.15);
+    border: none;
+    border-radius: var(--radius-full, 9999px);
+    color: var(--text-inverse, #ffffff);
+    cursor: pointer;
+    transition: background-color 0.15s ease, transform 0.1s ease;
+}
+
+.header-nav-btn:hover {
+    background: rgba(255, 255, 255, 0.28);
+}
+
+.header-nav-btn:active {
+    transform: scale(0.92);
+}
+
+.nav-icon {
+    width: 16px;
+    height: 16px;
+}
+
+/* Calendar Body */
+.calendar-body {
+    padding: var(--spacing-3, 12px) var(--spacing-4, 16px);
+    background-color: var(--bg-card, #ffffff);
+}
+
+/* Weekday Row (Bold Uppercase with SNS Primary Color) */
+.weekdays-row {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+    margin-bottom: var(--spacing-2, 8px);
+}
+
+.weekday-col {
+    font-size: 11px;
+    font-weight: var(--font-weight-bold, 700);
+    color: var(--primary-color, #428177);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 4px 0;
+}
+
+/* Days Grid */
+.days-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+}
+
+.day-cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 36px;
+    background: transparent;
+    border: 2px solid transparent;
+    border-radius: var(--radius-sm, 6px);
+    font-size: 13.5px;
+    font-weight: var(--font-weight-medium, 500);
+    color: var(--text-primary, #161616);
+    cursor: pointer;
+    transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.day-cell:hover:not(:disabled):not(.selected) {
+    background-color: var(--bg-hover, #edebe0);
+}
+
+/* Other month days */
+.day-cell.other-month {
+    color: var(--text-muted, #988561);
+    opacity: 0.45;
+}
+
+/* Today indicator */
+.day-cell.today:not(.selected) {
+    color: var(--primary-color, #428177);
+    font-weight: var(--font-weight-bold, 700);
+}
+
+/* Selected day (Reference: rounded border outline in primary color) */
+.day-cell.selected {
+    border-color: var(--primary-color, #428177);
+    color: var(--primary-color, #428177);
+    font-weight: var(--font-weight-bold, 700);
+    background-color: var(--bg-hover, #edebe0);
+}
+
+.day-cell:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+/* Time Picker Section */
+.time-picker-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: var(--spacing-2, 8px);
+    padding-top: var(--spacing-2, 8px);
+    border-top: 1px solid var(--border-color, #b9a779);
+}
+
+.time-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: var(--font-weight-semibold, 600);
+    color: var(--text-secondary, #3d3a3b);
+}
+
+.time-icon {
+    width: 14px;
+    height: 14px;
+    color: var(--primary-color, #428177);
+}
+
+.time-inputs-row {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.time-input {
+    width: 36px;
+    height: 28px;
+    text-align: center;
+    background: var(--bg-hover, #edebe0);
+    border: 1px solid var(--border-color, #b9a779);
+    border-radius: var(--radius-sm, 6px);
+    font-size: 12px;
+    font-weight: var(--font-weight-semibold, 600);
+    color: var(--text-primary, #161616);
+    outline: none;
+    box-sizing: border-box;
+}
+
+.time-input:focus {
+    border-color: var(--primary-color, #428177);
+}
+
+.time-sep {
+    font-weight: var(--font-weight-bold, 700);
+    color: var(--text-muted, #988561);
+}
+
+.ampm-toggle {
+    height: 28px;
+    padding: 0 var(--spacing-2, 8px);
+    background: var(--bg-surface, #edebe0);
+    border: 1px solid var(--border-color, #b9a779);
+    border-radius: var(--radius-sm, 6px);
+    font-size: 11px;
+    font-weight: var(--font-weight-bold, 700);
+    color: var(--primary-color, #428177);
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+}
+
+.ampm-toggle:hover {
+    background-color: var(--border-color, #b9a779);
+    color: var(--text-primary, #161616);
+}
+
+/* Footer Actions */
+.calendar-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--spacing-2, 8px) var(--spacing-4, 16px) var(--spacing-3, 12px) var(--spacing-4, 16px);
+    border-top: 1px solid var(--border-color, #b9a779);
+    background-color: var(--bg-card, #ffffff);
+}
+
+.btn-footer-action {
+    background: transparent;
+    border: none;
+    font-size: 12px;
+    font-weight: var(--font-weight-semibold, 600);
+    cursor: pointer;
+    padding: 4px var(--spacing-2, 8px);
+    border-radius: var(--radius-sm, 6px);
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.btn-clear {
+    color: var(--error, #ca3342);
+}
+
+.btn-clear:hover {
+    background-color: var(--bg-hover, #edebe0);
+}
+
+.btn-today {
+    color: var(--primary-color, #428177);
+}
+
+.btn-today:hover {
+    background-color: var(--bg-hover, #edebe0);
+}
+
+/* Invalid state */
+.date-picker-container.invalid .date-picker-trigger {
+    border-color: var(--error, #ca3342);
+    box-shadow: 0 0 0 2px rgba(202, 51, 66, 0.15);
+}

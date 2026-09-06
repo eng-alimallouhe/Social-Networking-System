@@ -1,13 +1,13 @@
 import { CanActivateChildFn, Router } from "@angular/router";
-import { TokenService } from "../../identity/shared/services/token.service";
+import { AuthenticationService } from "../../identity/shared/services/authentication.service";
 import { inject } from "@angular/core";
 
 export const guestGuard: CanActivateChildFn = () => {
 
-  const tokenService = inject(TokenService);
+  const authenticationService = inject(AuthenticationService);
   const router = inject(Router);
 
-  if (!!tokenService.getAccessToken()) {
+  if (!!authenticationService.getAccessToken()) {
     return router.createUrlTree(['/']);
   }
 

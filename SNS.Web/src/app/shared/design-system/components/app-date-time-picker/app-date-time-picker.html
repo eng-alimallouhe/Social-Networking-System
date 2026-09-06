@@ -1,0 +1,111 @@
+<div class="date-picker-container" [class.disabled]="disabled()" [class.invalid]="invalid" [class.open]="isOpen()">
+    @if (label) {
+        <label class="date-picker-label">{{ label }}</label>
+    }
+
+    <!-- Trigger Button (Matches Image 2) -->
+    <button
+        type="button"
+        class="date-picker-trigger"
+        cdkOverlayOrigin
+        #trigger="cdkOverlayOrigin"
+        (click)="toggleOpen()"
+        [disabled]="disabled()"
+        [attr.aria-expanded]="isOpen()">
+        <svg lucideCalendar class="trigger-calendar-icon"></svg>
+        <span class="trigger-text" [class.is-placeholder]="!selectedDate()">
+            {{ selectedDate() ? displayValue : (placeholder | translate) }}
+        </span>
+        <svg lucideChevronDown class="trigger-chevron-icon"></svg>
+    </button>
+
+    <!-- Popover Calendar Overlay (Matches Image 2) -->
+    <ng-template
+        cdkConnectedOverlay
+        [cdkConnectedOverlayOrigin]="trigger"
+        [cdkConnectedOverlayOpen]="isOpen()"
+        [cdkConnectedOverlayHasBackdrop]="true"
+        cdkConnectedOverlayBackdropClass="cdk-overlay-transparent-backdrop"
+        (backdropClick)="close()"
+        (detach)="close()">
+        <div class="calendar-popover" (click)="$event.stopPropagation()">
+            <div class="popover-arrow"></div>
+
+            <!-- Month/Year Header (Vibrant Blue Banner) -->
+            <div class="calendar-header">
+                <button type="button" class="header-nav-btn" (click)="prevMonth()" aria-label="Previous month">
+                    <svg lucideChevronLeft class="nav-icon"></svg>
+                </button>
+                <div class="header-title">{{ viewMonthTitle() }}</div>
+                <button type="button" class="header-nav-btn" (click)="nextMonth()" aria-label="Next month">
+                    <svg lucideChevronRight class="nav-icon"></svg>
+                </button>
+            </div>
+
+            <div class="calendar-body">
+                <!-- Weekday Names (SU, MO, TU, WE, TH, FR, SA in bold blue) -->
+                <div class="weekdays-row">
+                    @for (day of weekDays; track day) {
+                        <div class="weekday-label">{{ day }}</div>
+                    }
+                </div>
+
+                <!-- Days Grid -->
+                <div class="days-grid">
+                    @for (day of calendarDays(); track day.date.toISOString()) {
+                        <button
+                            type="button"
+                            class="day-cell"
+                            [class.other-month]="!day.isCurrentMonth"
+                            [class.today]="day.isToday"
+                            [class.selected]="day.isSelected"
+                            [disabled]="day.isDisabled"
+                            (click)="selectDay(day)">
+                            {{ day.dayNumber }}
+                        </button>
+                    }
+                </div>
+
+                <!-- Time Section (When includeTime is true) -->
+                @if (includeTime) {
+                    <div class="time-picker-section">
+                        <div class="time-label">
+                            <svg lucideClock class="time-icon"></svg>
+                            <span>{{ 'Search.Select_Time' | translate }}</span>
+                        </div>
+                        <div class="time-inputs-row">
+                            <input
+                                type="number"
+                                min="1"
+                                max="12"
+                                class="time-input"
+                                [ngModel]="hour()"
+                                (ngModelChange)="hour.set($event); onTimeChange()" />
+                            <span class="time-sep">:</span>
+                            <input
+                                type="number"
+                                min="0"
+                                max="59"
+                                class="time-input"
+                                [ngModel]="minute()"
+                                (ngModelChange)="minute.set($event); onTimeChange()" />
+                            <button type="button" class="ampm-toggle" (click)="toggleAmPm()">
+                                {{ isPm() ? 'PM' : 'AM' }}
+                            </button>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <!-- Footer Actions -->
+            <div class="calendar-footer">
+                <button type="button" class="btn-footer-action btn-clear" (click)="clear()">
+                    {{ 'Search.Clear' | translate }}
+                </button>
+                <button type="button" class="btn-footer-action btn-today" (click)="setToday()">
+                    {{ 'Search.Today' | translate }}
+                </button>
+            </div>
+        </div>
+    </ng-template>
+</div>

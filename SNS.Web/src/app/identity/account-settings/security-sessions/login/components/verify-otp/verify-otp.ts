@@ -6,7 +6,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { finalize, Subscription } from 'rxjs';
 import { AuthFlowService } from '../../../../../shared/services/auth-flow.service';
 import { LoginService } from '../../services/login.service';
-import { TokenService } from '../../../../../shared/services/token.service';
+import { AuthenticationService } from '../../../../../shared/services/authentication.service';
 import { ToastService } from '../../../../../notifications/services/toast.service';
 import { RequestInformationService } from '../../../../../shared/services/request-information.service';
 import { ValidateTwoFactorRequest } from '../../contracts/validate-two-factor-reqest.dto';
@@ -28,7 +28,7 @@ import { OtpChallengeDto } from '../../contracts/otp-challenge.dto';
 })
 export class VerifyOtp implements OnInit, OnDestroy {
   private loginService = inject(LoginService);
-  private tokenService = inject(TokenService);
+  private authenticationService = inject(AuthenticationService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private fb = inject(FormBuilder);
@@ -97,7 +97,7 @@ export class VerifyOtp implements OnInit, OnDestroy {
       .pipe(finalize(() => this.loadingService.hide()))
       .subscribe({
         next: (response) => {
-          this.tokenService.setToken(response.value?.accessToken!);
+          this.authenticationService.setAccessToken(response.value?.accessToken!);
           this.requestInfoService.setDeviceId(response.value?.deviceId!);
           this.router.navigate(['/']);
         }

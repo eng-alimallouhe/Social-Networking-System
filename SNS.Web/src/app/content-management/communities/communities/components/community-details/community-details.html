@@ -1,0 +1,142 @@
+<div class="community-details-page">
+    <!-- Top Bar with Back Button -->
+    <div class="details-top-bar">
+        <button type="button" class="btn-back" (click)="goBack()" [attr.aria-label]="'Common.Back' | translate">
+            <svg lucideArrowLeft></svg>
+            <span class="back-text">{{ 'Common.Back' | translate }}</span>
+        </button>
+    </div>
+
+    <!-- Loading Skeleton -->
+    @if (isLoading()) {
+    <div class="details-loading" aria-busy="true">
+        <app-skeleton-loader [type]="SkeletonType.Post"></app-skeleton-loader>
+        <app-skeleton-loader [type]="SkeletonType.Post"></app-skeleton-loader>
+    </div>
+    }
+
+    <!-- Error State -->
+    @if (!isLoading() && (hasError() || !community())) {
+    <div class="details-error" role="alert">
+        <svg lucideAlertCircle class="error-icon"></svg>
+        <h3 class="error-title">{{ 'Community.Error_Title' | translate }}</h3>
+        <p class="error-desc">{{ 'Community.Error_Desc' | translate }}</p>
+        <button type="button" class="btn btn-primary" (click)="loadCommunity()">
+            <svg lucideRefreshCw class="btn-icon"></svg>
+            <span>{{ 'Community.Retry' | translate }}</span>
+        </button>
+    </div>
+    }
+
+    <!-- Main Community Details Card -->
+    @if (!isLoading() && community(); as c) {
+    <article class="community-details-card">
+        <!-- Banner Header -->
+        <div class="community-banner">
+            <div class="banner-gradient"></div>
+            <div class="banner-badges">
+                <span class="type-pill" [class.type-public]="isPublic()" [class.type-private]="!isPublic()">
+                    @if (isPublic()) {
+                    <svg lucideGlobe class="badge-icon"></svg>
+                    } @else {
+                    <svg lucideLock class="badge-icon"></svg>
+                    }
+                    <span>{{ ('Community.Type.' + c.type) | translate }}</span>
+                </span>
+
+                <button type="button" class="btn-icon-banner" (click)="share()"
+                    [attr.aria-label]="'Community.Share' | translate">
+                    <svg lucideShare2 class="banner-action-icon"></svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Overlapping Logo & Main Info Bar -->
+        <div class="community-header-bar">
+            <div class="community-avatar-wrapper">
+                <div class="logo-box">
+                    @if (c.logoUrl) {
+                    <img [src]="c.logoUrl" [alt]="c.name" class="community-logo-img" />
+                    } @else {
+                    <div class="community-logo-fallback">{{ initials() }}</div>
+                    }
+                    <span class="active-dot" aria-label="Active"></span>
+                </div>
+            </div>
+
+            <div class="community-info-group">
+                <div class="title-and-join-row">
+                    <h1 class="community-name">{{ c.name }}</h1>
+
+                    <button type="button" class="btn btn-join-hub" [class.btn-joined]="isMember()"
+                        (click)="toggleMembership()">
+                        @if (isMember()) {
+                        <svg lucideCheck></svg>
+                        <span>{{ 'Community.Member' | translate }}</span>
+                        } @else {
+                        <svg lucideUserPlus></svg>
+                        <span>{{ 'Community.Join_Hub' | translate }}</span>
+                        }
+                    </button>
+                </div>
+
+                <div class="community-meta-row">
+                    <div class="meta-item">
+                        <svg lucideCalendar class="meta-icon"></svg>
+                        <span>{{ 'Community.Formed' | translate }} {{ c.createdAt | date:'MMMM yyyy' }}</span>
+                    </div>
+                    <span class="meta-dot">•</span>
+                    <div class="meta-item">
+                        <svg lucideUsers class="meta-icon"></svg>
+                        <span><strong>{{ c.membersCount | number }}</strong> {{ 'Community.Members' | translate
+                            }}</span>
+                    </div>
+                    <span class="meta-dot">•</span>
+                    <div class="meta-item">
+                        <svg lucideMessageSquare class="meta-icon"></svg>
+                        <span><strong>{{ c.postsCount | number }}</strong> {{ 'Community.Posts' | translate }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Description Section -->
+        <section class="details-section">
+            <h2 class="section-title">{{ 'Community.About' | translate }}</h2>
+            <p class="section-desc-text">{{ formattedDescription() }}</p>
+        </section>
+
+        <!-- Rules Section -->
+        @if (formattedRules().length > 0) {
+        <section class="details-section rules-section">
+            <div class="section-header-wrap">
+                <svg lucideScrollText class="section-icon"></svg>
+                <h2 class="section-title">{{ 'Community.Rules' | translate }}</h2>
+            </div>
+            <div class="rules-content-box">
+                @for (rule of formattedRules(); track $index) {
+                <p class="rule-line">{{ rule }}</p>
+                }
+            </div>
+        </section>
+        }
+
+        <!-- Community Owner / Leader -->
+        @if (c.owner) {
+        <section class="details-section owner-section">
+            <h2 class="section-title">{{ 'Community.Leader' | translate }}</h2>
+            <div class="owner-card">
+                <img [src]="c.owner.profilePictureUrl || defaultAvatar" [alt]="c.owner.fullName" class="owner-avatar"
+                    (error)="onOwnerAvatarError($event)" />
+                <div class="owner-info">
+                    <strong class="owner-name">{{ c.owner.fullName }}</strong>
+                    @if (c.owner.specialization) {
+                    <span class="owner-spec">{{ c.owner.specialization }}</span>
+                    }
+                </div>
+            </div>
+        </section>
+        }
+    </article>
+    }
+</div>

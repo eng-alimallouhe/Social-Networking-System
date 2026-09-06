@@ -1,0 +1,109 @@
+<div class="job-card">
+    <!-- Header: Logo, Title & Status, Location, Type, Actions -->
+    <div class="card-header">
+        <div class="company-logo-box">
+            @if (job().companyLogoUrl) {
+                <img [src]="job().companyLogoUrl" [alt]="job().companyName" class="company-logo-img" (error)="onLogoError($event)" />
+            } @else {
+                <span class="company-initials">{{ initials() }}</span>
+            }
+        </div>
+
+        <div class="header-main">
+            <div class="title-status-row">
+                <h3 class="job-title">{{ job().title }}</h3>
+                <span class="status-pill" [class.status-active]="isActive()" [class.status-closed]="!isActive()">
+                    {{ (isActive() ? 'Job.Status.Active' : 'Job.Status.Closed') | translate }}
+                </span>
+            </div>
+
+            <div class="company-location-row">
+                <span class="company-name">{{ job().companyName }}</span>
+                <span class="dot-separator">•</span>
+                <div class="location-wrap">
+                    <svg lucideMapPin class="meta-icon"></svg>
+                    <span>{{ job().location }}</span>
+                </div>
+                <span class="dot-separator">•</span>
+                <span class="type-badge">{{ ('Job.Type.' + job().type) | translate }}</span>
+            </div>
+        </div>
+
+        <div class="header-actions">
+            <button
+                type="button"
+                class="btn btn-ghost btn-icon btn-sm btn-action"
+                [class.bookmarked]="isBookmarked()"
+                (click)="toggleBookmark()"
+                aria-label="Bookmark job">
+                <svg lucideBookmark class="action-icon"></svg>
+            </button>
+            <button type="button" class="btn btn-ghost btn-icon btn-sm btn-action" aria-label="More options">
+                <svg lucideMoreVertical class="action-icon"></svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- Description -->
+    @if (job().description) {
+        <p class="job-description">{{ job().description }}</p>
+    } @else {
+        <p class="job-description job-desc-empty">{{ 'Job.No_Job_Description' | translate }}</p>
+    }
+
+    <!-- Highlight Metrics Box (Salary | Applications | Date) -->
+    <div class="highlight-info-bar">
+        <div class="highlight-item">
+            <svg lucideBanknote class="highlight-icon"></svg>
+            <span class="highlight-text salary-text">
+                {{ job().minSalary | number }} - {{ job().maxSalary | number }} {{ job().currencyCode }} / {{ ('Job.SalaryType.' + job().salaryType) | translate }}
+            </span>
+        </div>
+
+        @if (job().applicationsCount !== undefined && job().applicationsCount !== null) {
+            <div class="item-divider"></div>
+            <div class="highlight-item">
+                <svg lucideUsers class="highlight-icon"></svg>
+                <span class="highlight-text">{{ job().applicationsCount | number }} {{ 'Job.Applications' | translate }}</span>
+            </div>
+        }
+
+        <div class="item-divider"></div>
+        <div class="highlight-item">
+            <svg lucideClock class="highlight-icon"></svg>
+            @if (isActive()) {
+                <span class="highlight-text">{{ 'Job.Posted' | translate }} {{ job().createdAt | date:'mediumDate' }}</span>
+            } @else {
+                <span class="highlight-text date-closed">{{ 'Job.Closed_On' | translate }} {{ job().closedAt | date:'mediumDate' }}</span>
+            }
+        </div>
+    </div>
+
+    <!-- Skills Tags Row -->
+    @if (visibleSkills().length > 0) {
+        <div class="skills-wrap">
+            @for (skill of visibleSkills(); track skill) {
+                <span class="skill-pill">{{ skill }}</span>
+            }
+            @if (extraSkillsCount() > 0) {
+                <span class="skill-pill skill-pill-more">+{{ extraSkillsCount() }} {{ 'Profile.More' | translate }}</span>
+            }
+        </div>
+    }
+
+    <!-- Footer: Status on left, View Details (Design System button) on right -->
+    <div class="card-footer">
+        <div class="footer-status">
+            <span class="status-dot" [class.dot-active]="isActive()" [class.dot-closed]="!isActive()"></span>
+            <span class="status-text">
+                {{ (isActive() ? 'Job.Accepting_Candidates' : 'Job.Applications_Closed') | translate }}
+            </span>
+        </div>
+
+        <div class="footer-actions">
+            <a [routerLink]="['/jobs', job().id]" class="btn btn-ghost btn-sm btn-details-link" (click)="onJobClick($event)">
+                <span>{{ 'Job.View_Details' | translate }}</span>
+            </a>
+        </div>
+    </div>
+</div>

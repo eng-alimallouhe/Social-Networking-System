@@ -7,11 +7,19 @@
         </div>
         <h2 class="site-name">{{ 'App.Site_Name' | translate }}</h2>
     </a>
+    @if(isAuthenticated()){
     <div class="links">
         <div (click)="logout()" class="link">
-            Logout
+            {{'Demo.Logout' | translate}}
         </div>
     </div>
+    } @else {
+    <div class="links">
+        <div (click)="goToRoleSwitcher()" class="link">
+            {{'Demo.Login' | translate}}
+        </div>
+    </div>
+    }
 </div>
 
 <div class="identity-wrapper">

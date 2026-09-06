@@ -21,27 +21,30 @@ public static class SearchDI
     {
         services.AddSingleton(sp =>
         {
+            var elasticSearchUrl =
+                configuration["ElasticSearch:Url"]
+                ?? throw new InvalidOperationException(
+                    "ElasticSearch:Url is not configured.");
+
             var settings = new ElasticsearchClientSettings(
-                new Uri("http://localhost:9200")
+                new Uri(elasticSearchUrl)
             );
 
             return new ElasticsearchClient(settings);
         });
 
-        services.AddScoped(typeof(IElasticDocumentService<>), typeof(ElasticDocumentService<>));
+        services.AddScoped(
+            typeof(IElasticDocumentService<>),
+            typeof(ElasticDocumentService<>));
 
         services.AddScoped<IUserSearchService, UserSearchService>();
-        
         services.AddScoped<IProjectSearchService, ProjectSearchService>();
-        
         services.AddScoped<IProfileSearchService, ProfileSearchService>();
-        
         services.AddScoped<IJobSearchService, JobSearchService>();
         services.AddScoped<IProblemSearchService, ProblemSearchService>();
-        
         services.AddScoped<ICommunitySearchService, CommunitySearchService>();
         services.AddScoped<IPostSearchService, PostSearchService>();
 
         return services;
-    } 
+    }
 }

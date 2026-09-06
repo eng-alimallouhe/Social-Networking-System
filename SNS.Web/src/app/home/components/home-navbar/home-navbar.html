@@ -17,7 +17,7 @@
     <!-- CENTER (Desktop only) -->
     @if (!isMobile()) {
     <div class="nav-center">
-        <a [routerLink]="['/home/posts']" [routerLinkActiveOptions]="{exact: true}" routerLinkActive="active"
+        <a [routerLink]="['/home']" [routerLinkActiveOptions]="{exact: true}" routerLinkActive="active"
             class="nav-link">
             <svg lucideHome></svg>
         </a>
@@ -35,7 +35,7 @@
 
     <!-- RIGHT SIDE -->
     <div class="nav-right">
-        <button class="btn btn-primary" aria-label="Create Content">
+        <button class="btn btn-icon btn-primary" aria-label="Create Content">
             <svg lucideSquarePlus></svg>
         </button>
         <button class="notify-btn icon-btn" aria-label="Notifications">

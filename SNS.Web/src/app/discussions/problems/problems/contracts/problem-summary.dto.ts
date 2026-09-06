@@ -1,5 +1,6 @@
 import { DifficultyLevel } from '../../../shared/enums/difficulty-level.enum';
 import { ProblemStatus } from '../../enums/problem-status.enum';
+import { ProblemContentBlockDto } from './problem-content-block.dto';
 
 export interface ProblemSummaryDto {
     id: string;
@@ -14,4 +15,5 @@ export interface ProblemSummaryDto {
     tags: string[];
     topics: string[];
     createdAt: string;
+    contentBlocks: ProblemContentBlockDto[];
 }

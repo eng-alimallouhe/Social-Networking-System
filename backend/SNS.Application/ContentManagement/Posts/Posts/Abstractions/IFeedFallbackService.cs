@@ -3,7 +3,7 @@ using SNS.Application.Search.ContentManagement.Posts.Queries;
 
 namespace SNS.Application.ContentManagement.Posts.Posts.Abstractions;
 
-internal interface IFeedFallbackService
+public interface IFeedFallbackService
 {
     Task<List<PostOverviewDto>> GetFallbackFeedAsync(
         FeedRequestParameter parameter, 

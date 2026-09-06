@@ -1,99 +1,60 @@
-<!-- ======================== -->
-<!-- INLINE MODE              -->
-<!-- ======================== -->
-@if (mode === 'inline') {
-<div class="media-inline">
+<!-- ============================================== -->
+<!-- NORMAL POST PRESENTATION                       -->
+<!-- ============================================== -->
+@if (sortedMedia.length > 0) {
+<div class="media-card-stage" (click)="openPreview(0)" role="button" tabindex="0" (keydown.enter)="openPreview(0)"
+    [attr.aria-label]="sortedMedia[0].type === MediaType.Video ? ('ContentManagement.Posts.PlayVideo' | translate) : ('ContentManagement.Posts.ViewMedia' | translate)">
 
-    <!-- Single or current media display -->
-    <div class="media-inline-stage">
+    @if (sortedMedia[0].type === MediaType.Image) {
+    <img [src]="sortedMedia[0].url" alt="Post media" class="media-card-img animate-fade">
+    }
 
-        @if (currentMedia.type === MediaType.Image) {
-        <img [src]="currentMedia.url" alt="Post media" class="media-inline-img animate-fade">
-        }
-
-        @if (currentMedia.type === MediaType.Video) {
-        <div class="media-inline-video-container animate-fade">
-            <video #videoElement [src]="currentMedia.url" class="media-inline-img"
-                (ended)="isPlaying.set(false)"></video>
-            <button type="button" class="media-inline-play-btn" [class.hidden]="isPlaying()"
-                (click)="toggleVideoPlayback()">
-                <svg lucidePlay></svg>
-            </button>
+    @if (sortedMedia[0].type === MediaType.Video) {
+    <div class="media-card-video-container animate-fade">
+        <video [src]="sortedMedia[0].url" class="media-card-img" playsinline preload="metadata"></video>
+        <div class="media-card-video-badge" aria-hidden="true">
+            <svg lucidePlay></svg>
         </div>
-        }
-
-        <!-- Prev / Next navigation buttons (only when multiple items) -->
-        @if (hasMultiple && currentIndex() > 0) {
-        <button type="button" class="media-inline-nav media-inline-nav--prev" aria-label="Previous media"
-            (click)="prev()">
-            <svg lucideChevronLeft></svg>
-        </button>
-        }
-
-        @if (hasMultiple && currentIndex() < sortedMedia.length - 1) { <button type="button"
-            class="media-inline-nav media-inline-nav--next" aria-label="Next media" (click)="next()">
-            <svg lucideChevronRight></svg>
-            </button>
-            }
-
-            <!-- Dot indicators + counter (only when multiple items) -->
-            @if (hasMultiple) {
-            <div class="media-inline-counter">
-                {{ currentIndex() + 1 }} / {{ sortedMedia.length }}
-            </div>
-            }
     </div>
+    }
 
-    <!-- Thumbnail strip for multiple media -->
+    <!-- Multiple media indicator overlay -->
     @if (hasMultiple) {
-    <div class="media-inline-thumbs">
-        @for (item of sortedMedia; track item.url; let idx = $index) {
-        <button type="button" class="media-inline-thumb" [class.active]="idx === currentIndex()"
-            (click)="selectMedia(idx)" [attr.aria-label]="'Media ' + (idx + 1)">
-            @if (item.type === MediaType.Image) {
-            <img [src]="item.url" class="media-thumb-img" alt="">
-            }
-            @if (item.type === MediaType.Video) {
-            <video [src]="item.url" class="media-thumb-img" muted playsinline></video>
-            <span class="media-thumb-video-icon">
-                <svg lucidePlay></svg>
-            </span>
-            }
-        </button>
-        }
+    <div class="media-card-overlay">
+        <span class="media-count-badge">
+            {{ sortedMedia.length }} {{ 'ContentManagement.Posts.Media' | translate }}
+        </span>
     </div>
     }
 </div>
 }
 
-<!-- ======================== -->
-<!-- MODAL MODE               -->
-<!-- ======================== -->
-@if (mode === 'modal') {
-<div class="media-modal-backdrop">
+<!-- ============================================== -->
+<!-- PREVIEW MODAL                                  -->
+<!-- ============================================== -->
+@if (isPreviewOpen() && currentMedia) {
+<div class="media-modal-backdrop" (click)="closePreview()">
 
     <!-- Header -->
-    <header class="media-modal-header">
+    <header class="media-modal-header" (click)="$event.stopPropagation()">
         <div class="media-modal-counter">
             {{ currentIndex() + 1 }}
             <span>/</span>
             {{ sortedMedia.length }}
         </div>
 
-        <button type="button" class="media-modal-close" aria-label="Close" (click)="closeModal()">
+        <button type="button" class="media-modal-close" [attr.aria-label]="'ContentManagement.Posts.ClosePreview' | translate"
+            (click)="closePreview()">
             <svg lucideX></svg>
         </button>
     </header>
 
-
     <!-- Viewer -->
-    <div class="media-modal-viewer">
+    <div class="media-modal-viewer" (click)="$event.stopPropagation()">
 
         <!-- Media Stage -->
         <div class="media-modal-stage">
-
             <div class="media-modal-media">
-
                 @if (currentMedia.type === MediaType.Image) {
                 <img [src]="currentMedia.url" alt="Expanded media" class="media-modal-content animate-fade">
                 }
@@ -104,24 +65,20 @@
                         (ended)="isPlaying.set(false)"></video>
 
                     <button type="button" class="media-modal-play" [class.hidden]="isPlaying()"
-                        (click)="toggleVideoPlayback()" aria-label="Play video">
+                        (click)="toggleVideoPlayback()" [attr.aria-label]="'ContentManagement.Posts.PlayVideo' | translate">
                         <svg lucidePlay></svg>
                     </button>
                 </div>
                 }
-
             </div>
-
         </div>
 
-
         <!-- Navigation -->
-        @if (sortedMedia.length > 1) {
+        @if (hasMultiple) {
         <div class="media-modal-navigation">
-
             <button type="button" class="media-modal-nav" [disabled]="currentIndex() === 0" (click)="prev()"
-                aria-label="Previous media">
-                <svg lucideChevronLeft></svg>
+                [attr.aria-label]="'ContentManagement.Posts.PreviousMedia' | translate">
+                <svg lucideChevronLeft class="directional-icon"></svg>
             </button>
 
             <div class="media-modal-position">
@@ -129,28 +86,19 @@
             </div>
 
             <button type="button" class="media-modal-nav" [disabled]="currentIndex() === sortedMedia.length - 1"
-                (click)="next()" aria-label="Next media">
-                <svg lucideChevronRight></svg>
+                (click)="next()" [attr.aria-label]="'ContentManagement.Posts.NextMedia' | translate">
+                <svg lucideChevronRight class="directional-icon"></svg>
             </button>
-
         </div>
         }
 
-
         <!-- Thumbnails -->
-        @if (sortedMedia.length > 1) {
+        @if (hasMultiple) {
         <div class="media-modal-thumbnails">
-
             <div class="media-modal-thumbnails-track">
-
-                @for (
-                media of sortedMedia;
-                track media.url;
-                let idx = $index
-                ) {
-
+                @for (media of sortedMedia; track media.url; let idx = $index) {
                 <button type="button" class="media-modal-thumbnail" [class.active]="idx === currentIndex()"
-                    (click)="selectMedia(idx)" [attr.aria-label]="'Media ' + (idx + 1)">
+                    (click)="selectMedia(idx)" [attr.aria-label]="('ContentManagement.Posts.Media' | translate) + ' ' + (idx + 1)">
 
                     @if (media.type === MediaType.Image) {
                     <img [src]="media.url" alt="">
@@ -158,18 +106,13 @@
 
                     @if (media.type === MediaType.Video) {
                     <video [src]="media.url" muted playsinline></video>
-
                     <span class="media-modal-thumbnail-play">
                         <svg lucidePlay></svg>
                     </span>
                     }
-
                 </button>
-
                 }
-
             </div>
-
         </div>
         }
 

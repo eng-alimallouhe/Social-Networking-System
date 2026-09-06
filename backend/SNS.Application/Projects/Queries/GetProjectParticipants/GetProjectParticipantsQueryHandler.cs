@@ -28,6 +28,7 @@ internal sealed class GetProjectParticipantsQueryHandler : IQueryHandler<GetProj
 
         var query = _dbContext.ProjectContributors
             .Where(c => c.ProjectId == request.ProjectId && c.InvitingStatus == InvitingStatus.Accepted)
+            .OrderBy(p => p.ContributorId)
             .Select(c => new ProjectParticipantDetailsDto(
                 c.ContributorId,
                 c.Contributor.ProfilePictureObjectKey,
@@ -37,8 +38,7 @@ internal sealed class GetProjectParticipantsQueryHandler : IQueryHandler<GetProj
                 c.Contributor.Followings.Count(),
                 currentProfileId.HasValue && c.Contributor.Followers.Any(f => f.FollowerId == currentProfileId.Value),
                 c.Role.ToString()
-            ))
-            .OrderBy(p => p.ProfileId); 
+            )); 
 
         var count = await query.CountAsync(cancellationToken);
 

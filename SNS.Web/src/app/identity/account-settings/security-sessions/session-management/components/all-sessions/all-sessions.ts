@@ -6,7 +6,7 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 import { rxResource, toSignal } from '@angular/core/rxjs-interop';
 import { finalize, of } from 'rxjs';
 import { SessionManagementService } from '../../services/session-management.service';
-import { TokenService } from '../../../../../shared/services/token.service';
+import { AuthenticationService } from '../../../../../shared/services/authentication.service';
 import { GlobalLoaderService } from '../../../../../../shared/Loading/services/global-loader.service';
 import { ConfirmStateService } from '../../../../../../shared/design-system/services/confirm-state.service';
 import { ConfirmAction } from '../../../../../../shared/design-system/services/confirm-action.enum';
@@ -25,7 +25,7 @@ import { AppPagination } from '../../../../../../shared/design-system/components
 })
 export class AllSessionsComponent {
     private sessionService = inject(SessionManagementService);
-    private tokenService = inject(TokenService);
+    private authenticationService = inject(AuthenticationService);
     private globalLoader = inject(GlobalLoaderService);
     private confirmState = inject(ConfirmStateService);
     private router = inject(Router);
@@ -39,7 +39,7 @@ export class AllSessionsComponent {
     targetUserId = computed(() => {
         const queryId = this.queryParams()['userId'];
         if (queryId) return queryId;
-        return this.tokenService.getClaim('uid') || this.tokenService.getClaim('http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier') || '';
+        return this.authenticationService.getClaim('uid') || this.authenticationService.getClaim('http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier') || '';
     });
 
     currentPage = signal<number>(1);
@@ -56,11 +56,11 @@ export class AllSessionsComponent {
         stream: ({ params }) => {
             this.globalLoader.show();
             if (!params.userId) {
-                this.globalLoader.hide();   
+                this.globalLoader.hide();
                 return of({ isSuccess: false, error: { message: 'Failed to identify user' } } as any);
             }
             return this.sessionService.getUserSessions(params.userId, params.justActive, params.page, params.size)
-                        .pipe(finalize(() => this.globalLoader.hide()));
+                .pipe(finalize(() => this.globalLoader.hide()));
         }
     });
 
@@ -118,13 +118,13 @@ export class AllSessionsComponent {
 
     isCurrentSession(session: SessionSummaryDto): boolean {
         const targetId = this.targetUserId();
-        const currentUserId = this.tokenService.getClaim('uid') || this.tokenService.getClaim('http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier') || '';
+        const currentUserId = this.authenticationService.getClaim('uid') || this.authenticationService.getClaim('http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier') || '';
 
         if (targetId !== currentUserId) {
             return false;
         }
 
-        const currentSessionId = this.tokenService.getClaim('sid');
+        const currentSessionId = this.authenticationService.getClaim('sid');
         return currentSessionId !== null && currentSessionId === session.id;
     }
 

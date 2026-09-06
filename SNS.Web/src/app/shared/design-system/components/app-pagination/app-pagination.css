@@ -1,9 +1,15 @@
+:host {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
 .pagination-container {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: var(--spacing-2);
-    margin-top: var(--spacing-lg);
+    margin: var(--spacing-2, 8px) auto;
 }
 
 .pages-group {

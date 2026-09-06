@@ -9,7 +9,7 @@ namespace SNS.Application.Search.Queries.GlobalSearch;
 /// <param name="SearchTerm">The search keyword or term to query across categories.</param>
 /// <param name="TopResultsPerCategory">The maximum number of top search results to return per category.</param>
 public sealed record GetGlobalSearchQuery(
-    string SearchTerm,
+    string SearchTerm = "",
     int TopResultsPerCategory = 4 
 ) : IQuery<GlobalSearchResultDto>;
 

@@ -1,3 +1,11 @@
+:host {
+    display: block;
+    width: 100%;
+    max-width: 680px;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
 .def {
     width: 100%;
     height: 100%;
@@ -9,12 +17,14 @@
     display: flex;
     flex-direction: column;
     gap: var(--spacing-2);
-    max-width: 550px;
+    width: 100%;
+    max-width: 680px;
     margin: 0 auto;
     padding: var(--spacing-4);
     background-color: var(--bg-card);
     border-radius: var(--radius-lg);
     border-bottom: 1px solid var(--border-color);
+    box-sizing: border-box;
     /* Separator between posts if needed, though user said no outer border. Let's omit outer border. */
 }
 
@@ -167,26 +177,6 @@
     border-radius: var(--radius-md, 8px);
     overflow: hidden;
     margin-top: var(--spacing-2, 8px);
-    max-height: 300px;
-}
-
-.media-overlay-count {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: var(--backdrop-color);
-    color: var(--text-inverse);
-    font-size: var(--header-1);
-    font-weight: var(--font-weight-bold);
-    padding: var(--spacing-4) var(--spacing-6);
-    border-radius: var(--radius-sm);
-    pointer-events: none;
-    backdrop-filter: var(--backdrop-blur);
 }
 
 .post-tags {
@@ -300,6 +290,10 @@
     animation: slideUpFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
+[dir="rtl"] .reaction-picker-menu {
+    direction: rtl;
+}
+
 .reaction-option {
     display: flex;
     align-items: center;
@@ -364,6 +358,11 @@
     min-width: 200px;
 }
 
+[dir="rtl"] .actions-menu-dropdown {
+    direction: rtl;
+    text-align: right;
+}
+
 .menu-item {
     display: flex;
     align-items: center;
@@ -372,7 +371,7 @@
     background: none;
     border: none;
     width: 100%;
-    text-align: left;
+    text-align: start;
     font-size: var(--text-sm);
     color: var(--text-primary);
     cursor: pointer;
@@ -433,7 +432,7 @@
     font-weight: 500;
     font-size: inherit;
     padding: 0;
-    margin-left: var(--spacing-1);
+    margin-inline-start: var(--spacing-1);
     cursor: pointer;
     text-decoration: underline;
     transition: color var(--transition-base);

@@ -1,1 +1,246 @@
-<p>search works!</p>
+@if (isSearchRootRoute()) {
+<div class="search-page-container">
+    <!-- Top Search Header -->
+    <header class="search-header">
+        <form class="search-input-form" (ngSubmit)="onSearchSubmit()">
+            <div class="search-input-wrapper">
+                <svg lucideSearch class="search-input-icon"></svg>
+                <input
+                    type="text"
+                    class="search-input"
+                    [placeholder]="'Search.Placeholder' | translate"
+                    [ngModel]="searchInput()"
+                    (ngModelChange)="searchInput.set($event)"
+                    name="searchQuery"
+                    autocomplete="off" />
+                <button type="submit" class="search-btn">
+                    <span>{{ 'Search.Search_Button' | translate }}</span>
+                </button>
+            </div>
+        </form>
+
+        <!-- Category Selector & Filter Control -->
+        <div class="categories-bar">
+            <div class="categories-tabs">
+                @for (cat of categories; track cat) {
+                    <button
+                        type="button"
+                        class="tab-pill"
+                        [class.active]="activeCategory() === cat"
+                        (click)="onSelectCategory(cat)">
+                        {{ ('Search.Categories.' + cat) | translate }}
+                    </button>
+                }
+            </div>
+
+            <button
+                #filterTrigger="cdkOverlayOrigin"
+                cdkOverlayOrigin
+                type="button"
+                class="filter-toggle-btn"
+                [class.filter-active]="isFilterOpen()"
+                (click)="toggleFilter()"
+                [attr.aria-label]="'Search.Filters' | translate">
+                <svg lucideSlidersHorizontal class="filter-icon"></svg>
+            </button>
+        </div>
+    </header>
+
+    <div class="search-divider"></div>
+
+    <!-- Desktop Floating Filter Panel Overlay (Connected to trigger button via CDK Overlay) -->
+    <ng-template
+        cdkConnectedOverlay
+        [cdkConnectedOverlayOrigin]="filterTrigger"
+        [cdkConnectedOverlayOpen]="isFilterOpen() && !isMobile()"
+        [cdkConnectedOverlayHasBackdrop]="true"
+        cdkConnectedOverlayBackdropClass="cdk-overlay-transparent-backdrop"
+        [cdkConnectedOverlayPositions]="filterPositions()"
+        (backdropClick)="closeFilter()">
+        <div class="desktop-filter-card" (click)="$event.stopPropagation()">
+            <button
+                type="button"
+                class="filter-close-btn"
+                (click)="closeFilter()"
+                [attr.aria-label]="'Search.Close_Filters' | translate">
+                <svg lucideX class="close-icon"></svg>
+            </button>
+            <app-search-filters
+                [category]="activeCategory()"
+                (filterChange)="onFilterChange($event)"
+                (resetFilters)="onResetFilters()">
+            </app-search-filters>
+        </div>
+    </ng-template>
+
+    <!-- Mobile Filter Bottom Sheet Overlay -->
+    @if (isFilterOpen() && isMobile()) {
+        <div class="mobile-sheet-backdrop" (click)="closeFilter()">
+            <div class="mobile-bottom-sheet" (click)="$event.stopPropagation()">
+                <div class="sheet-handle"></div>
+                <app-search-filters
+                    [category]="activeCategory()"
+                    (filterChange)="onFilterChange($event)"
+                    (resetFilters)="onResetFilters()">
+                </app-search-filters>
+            </div>
+        </div>
+    }
+
+    <!-- Main Content Area -->
+    <main class="search-main-content">
+        <!-- Initial Search Landing / Guidance State (When search has not yet been executed) -->
+        @if (!hasSearched()) {
+            <section class="search-intro-section">
+                <div class="intro-card">
+                    <div class="intro-icon-wrapper">
+                        <svg lucideSearch class="intro-icon"></svg>
+                    </div>
+                    <h2 class="intro-title">{{ 'Search.Intro_Title' | translate }}</h2>
+                    <p class="intro-subtitle">{{ 'Search.Intro_Subtitle' | translate }}</p>
+                </div>
+            </section>
+        }
+
+        <!-- Loading Skeletons -->
+        @if (isLoading()) {
+            <div class="search-skeletons" aria-busy="true">
+                <app-skeleton-loader [type]="SkeletonType.Post"></app-skeleton-loader>
+                <app-skeleton-loader [type]="SkeletonType.Post"></app-skeleton-loader>
+                <app-skeleton-loader [type]="SkeletonType.Post"></app-skeleton-loader>
+            </div>
+        }
+
+        <!-- Error State -->
+        @if (hasError() && !isLoading()) {
+            <div class="search-error-state" role="alert">
+                <svg lucideAlertCircle class="error-icon"></svg>
+                <h3 class="error-title">{{ 'Search.Error_Title' | translate }}</h3>
+                <p class="error-desc">{{ 'Search.Error_Desc' | translate }}</p>
+                <button type="button" class="btn-retry" (click)="retry()">
+                    <svg lucideRefreshCw class="btn-retry-icon"></svg>
+                    <span>{{ 'ContentManagement.Posts.Retry' | translate }}</span>
+                </button>
+            </div>
+        }
+
+        <!-- Empty State -->
+        @if (hasSearched() && !isLoading() && !hasError() && !hasAnyResults()) {
+            <div class="search-empty-state">
+                <svg lucideSearch class="empty-icon"></svg>
+                <h3 class="empty-title">{{ 'Search.No_Results_Title' | translate }}</h3>
+                <p class="empty-desc">{{ 'Search.No_Results_Desc' | translate }}</p>
+            </div>
+        }
+
+        <!-- Results Display -->
+        @if (hasSearched() && !isLoading() && !hasError() && hasAnyResults()) {
+            <!-- Specific Entity Results with Numbered Pagination in Uniform List -->
+            <div class="search-results-list">
+                @if (activeCategory() === 'Posts') {
+                    @for (post of postsResults(); track post.id) {
+                        <app-post [post]="post" (commentsClick)="onPostCommentsClick($event)"></app-post>
+                    }
+                }
+
+                @if (activeCategory() === 'People') {
+                    @for (profile of profilesResults(); track profile.id) {
+                        <app-profile [profile]="profile" (profileClicked)="onProfileClicked($event)"></app-profile>
+                    }
+                }
+
+                @if (activeCategory() === 'Projects') {
+                    @for (project of projectsResults(); track project.id) {
+                        <app-project [project]="project" (projectClicked)="onProjectClicked($event)"></app-project>
+                    }
+                }
+
+                @if (activeCategory() === 'Communities') {
+                    @for (community of communitiesResults(); track community.id) {
+                        <app-community [community]="community" (communityClicked)="onCommunityClicked($event)"></app-community>
+                    }
+                }
+
+                @if (activeCategory() === 'Jobs') {
+                    @for (job of jobsResults(); track job.id) {
+                        <app-job [job]="job" (jobClicked)="onJobClicked($event)"></app-job>
+                    }
+                }
+
+                @if (activeCategory() === 'Problems') {
+                    @for (problem of problemsResults(); track problem.id) {
+                        <app-problem [problem]="problem" (problemClicked)="onProblemClicked($event)"></app-problem>
+                    }
+                }
+            </div>
+
+            <!-- Page-based Pagination (Strict AppPagination, No Infinite Scroll) -->
+            @if (totalPages() > 1) {
+                <div class="search-pagination-wrapper">
+                    <app-pagination
+                        [currentPage]="currentPage()"
+                        [totalPages]="totalPages()"
+                        (pageChange)="onPageChange($event)">
+                    </app-pagination>
+                </div>
+            }
+        }
+
+        <!-- Discovery Section (Structurally Below Search Results / Loading / Empty / Error) -->
+        <section class="discovery-section">
+            <!-- Recent Searches -->
+            <div class="discovery-col">
+                <div class="col-header">
+                    <svg lucideHistory class="col-icon"></svg>
+                    <h3 class="col-title">{{ 'Search.Recent_Searches' | translate }}</h3>
+                </div>
+                <ul class="discovery-list">
+                    @for (item of recentSearches; track item) {
+                        <li class="discovery-item">
+                            <button type="button" class="discovery-item-btn" (click)="onPickTopic(item)">
+                                {{ item }}
+                            </button>
+                        </li>
+                    }
+                </ul>
+            </div>
+
+            <!-- Trending Topics -->
+            <div class="discovery-col">
+                <div class="col-header">
+                    <svg lucideTrendingUp class="col-icon"></svg>
+                    <h3 class="col-title">{{ 'Search.Trending_Topics' | translate }}</h3>
+                </div>
+                <ul class="discovery-list">
+                    @for (item of trendingTopics; track item) {
+                        <li class="discovery-item">
+                            <button type="button" class="discovery-item-btn" (click)="onPickTopic(item)">
+                                {{ item }}
+                            </button>
+                        </li>
+                    }
+                </ul>
+            </div>
+
+            <!-- Suggested for You -->
+            <div class="discovery-col">
+                <div class="col-header">
+                    <svg lucideLightbulb class="col-icon"></svg>
+                    <h3 class="col-title">{{ 'Search.Suggested_For_You' | translate }}</h3>
+                </div>
+                <ul class="discovery-list">
+                    @for (item of suggestedForYou; track item) {
+                        <li class="discovery-item">
+                            <button type="button" class="discovery-item-btn" (click)="onPickTopic(item)">
+                                {{ item }}
+                            </button>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </section>
+    </main>
+</div>
+}
+
+<router-outlet />

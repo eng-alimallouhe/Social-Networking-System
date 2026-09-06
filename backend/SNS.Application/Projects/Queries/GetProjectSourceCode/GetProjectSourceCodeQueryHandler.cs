@@ -37,13 +37,27 @@ internal sealed class GetProjectSourceCodeQueryHandler : IQueryHandler<GetProjec
             return Result<List<FileNode>>.Success(new List<FileNode>(), OperationStatusCode.Success);
         }
 
-        var jsonOptions = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
-        var tree = JsonSerializer.Deserialize<List<FileNode>>(project.SourceCodeTree, jsonOptions);
+        Console.WriteLine("========== SourceCodeTree ==========");
+        Console.WriteLine(project.SourceCodeTree);
+        Console.WriteLine("====================================");
 
-        if (tree == null)
+        var jsonOptions = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
+
+        var root = JsonSerializer.Deserialize<FileNode>(
+            project.SourceCodeTree,
+            jsonOptions);
+
+        if (root == null)
         {
-            return Result<List<FileNode>>.Success(new List<FileNode>(), OperationStatusCode.Success);
+            return Result<List<FileNode>>.Success(
+                new List<FileNode>(),
+                OperationStatusCode.Success);
         }
+
+        var tree = new List<FileNode>
+        {
+            root
+        };
 
         await ProcessFileNodesAsync(tree);
 

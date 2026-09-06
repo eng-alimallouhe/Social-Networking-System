@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../../environments/environment.development';
 import { IDENTITY_API_ROUTES } from '../../shared/constants/api-routes/identity-api.routes';
 import { Result } from '../../shared/contracts/result';
 import {

@@ -4,9 +4,10 @@ import { SalaryType } from '../../enums/salary-type.enum';
 export interface JobSummaryDto {
     id: string;
     title: string;
-    companyId: string;
+    description?: string;
+    companyId?: string;
     companyName: string;
-    companyLogoUrl: string | null;
+    companyLogoUrl?: string | null;
     location: string;
     type: JobType;
     minSalary: number;
@@ -14,6 +15,9 @@ export interface JobSummaryDto {
     currencyCode: string;
     salaryType: SalaryType;
     createdAt: string;
-    isClosed: boolean;
-    applicationsCount: number;
+    closedAt?: string | null;
+    isClosed?: boolean;
+    isActive?: boolean;
+    applicationsCount?: number;
+    skills?: string[];
 }

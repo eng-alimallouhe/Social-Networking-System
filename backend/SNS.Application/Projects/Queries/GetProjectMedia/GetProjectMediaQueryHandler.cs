@@ -28,7 +28,7 @@ internal sealed class GetProjectMediaQueryHandler : IQueryHandler<GetProjectMedi
                 m.Id,
                 m.MediaUrl,
                 m.Type.ToString(),
-                0, // No order property in entity
+                0,
                 m.CreatedAt
             ));
 

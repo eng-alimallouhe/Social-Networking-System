@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { finalize, Observable } from 'rxjs';
 import { environment } from '../../../../../../environments/environment.development';
 import { Result } from '../../../../../shared/contracts/result';
 import { UserActiveSessionsAndDevicesResult } from '../contracts/user-active-sessions-and-devices-result.dto';
@@ -10,6 +10,7 @@ import { IDENTITY_API_ROUTES } from '../../../../../shared/constants/api-routes/
 import { SessionDetailsDto } from '../contracts/session-details.dto';
 import { SessionSummaryDto } from '../contracts/session-summary.dto';
 import { Paged } from '../../../../../shared/contracts/paged';
+import { AuthenticationService } from '../../../../shared/services/authentication.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +18,7 @@ import { Paged } from '../../../../../shared/contracts/paged';
 export class SessionManagementService {
   private http = inject(HttpClient);
   private baseUrl = `${environment.apiUrl}${IDENTITY_API_ROUTES.SessionManagement}`;
+  private authenticationService = inject(AuthenticationService);
 
   getUserActiveSessionsAndDevices(): Observable<Result<UserActiveSessionsAndDevicesResult>> {
     return this.http.get<Result<UserActiveSessionsAndDevicesResult>>(`${this.baseUrl}/user-active-sessions-and-devices`);
@@ -42,6 +44,14 @@ export class SessionManagementService {
 
   logoutFromOtherDevices(): Observable<Result<void>> {
     return this.http.post<Result<void>>(`${this.baseUrl}/logout-from-other-devices`, {});
+  }
+
+  logout(): Observable<Result<void>> {
+    return this.http
+      .post<Result<void>>(`${this.baseUrl}/logout`, {})
+      .pipe(finalize(() => {
+        this.authenticationService.removeToken();
+      }));
   }
 
   refreshTokens(): Observable<Result<AuthTokenDto>> {

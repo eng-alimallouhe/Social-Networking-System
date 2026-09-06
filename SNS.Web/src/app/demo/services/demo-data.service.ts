@@ -1,11 +1,11 @@
 import { inject, Injectable } from '@angular/core';
-import { TokenService } from '../../identity/shared/services/token.service';
+import { AuthenticationService } from '../../identity/shared/services/authentication.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DemoDataService {
-  private tokenService = inject(TokenService);
+  private authenticationService = inject(AuthenticationService);
 
   public generateGuid(): string {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -15,7 +15,7 @@ export class DemoDataService {
   }
 
   public getDemoEmail(): string {
-    const token = this.tokenService.getAccessToken();
+    const token = this.authenticationService.getAccessToken();
     if (token) {
         try {
             const payload = JSON.parse(atob(token.split('.')[1]));
@@ -26,7 +26,7 @@ export class DemoDataService {
   }
 
   public getDemoUserId(): string {
-      const token = this.tokenService.getAccessToken();
+      const token = this.authenticationService.getAccessToken();
       if (token) {
           try {
               const payload = JSON.parse(atob(token.split('.')[1]));

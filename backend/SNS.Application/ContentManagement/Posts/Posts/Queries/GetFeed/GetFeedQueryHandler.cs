@@ -6,6 +6,7 @@ using SNS.Application.ContentManagement.Posts.Posts.Contracts;
 using SNS.Application.Identity.Shared.Abstractions;
 using SNS.Application.Profiles.Profiles.Contracts;
 using SNS.Application.Search.ContentManagement.Posts.Queries;
+using SNS.Application.Shared.Abstractions.BackgroundJobs;
 using SNS.Application.Shared.Abstractions.Data;
 using SNS.Application.Shared.Abstractions.Messaging;
 using SNS.Application.Shared.Abstractions.Storage;
@@ -27,19 +28,22 @@ internal sealed class GetFeedQueryHandler
     private readonly IPostCacheService _postCacheService;
     private readonly IFeedFallbackService _feedFallbackService;
     private readonly IFileStorageService _fileStorageService;
+    private readonly IJobSchedulerService _jobSchedulerService;
 
     public GetFeedQueryHandler(
         ICurrentUserService currentUserService,
         IApplicationDbContext dbContext,
         IPostCacheService postCacheService,
         IFeedFallbackService feedFallbackService,
-        IFileStorageService fileStorageService)
+        IFileStorageService fileStorageService,
+        IJobSchedulerService jobSchedulerService)
     {
         _currentUserService = currentUserService;
         _dbContext = dbContext;
         _postCacheService = postCacheService;
         _feedFallbackService = feedFallbackService;
         _fileStorageService = fileStorageService;
+        _jobSchedulerService = jobSchedulerService;
     }
 
     public async Task<Result<List<PostOverviewDto>>> Handle(GetFeedQuery request, CancellationToken cancellationToken)
@@ -166,7 +170,7 @@ internal sealed class GetFeedQueryHandler
             return Result<List<PostOverviewDto>>.Success(orderedPosts, ResourceStatusCode.Found);
         }
 
-        if (request.CurrentPage == 1)
+        if (request.CurrentPage >= 1)
         {
             var followedProfileIds = await _dbContext.Follows
                 .Where(f => f.FollowerId == profileId.Value)
@@ -178,6 +182,19 @@ internal sealed class GetFeedQueryHandler
                 .Select(cm => cm.CommunityId)
                 .ToListAsync(cancellationToken);
 
+            var feedParams = new FeedRequestParameter(
+                ProfileId: profileId.Value,
+                Skills: new List<string>(),
+                ExcludedPostsIds: new List<Guid>(),
+                ExcludedProfilesIds: new List<Guid>(),
+                CommunitiesIds: communityIds,
+                FollowedProfilesIds: followedProfileIds,
+                StartDate: DateTime.UtcNow.AddYears(-7),
+                Topics: new List<ProfileTopicSnapshot>(),
+                Tags: new List<ProfileTagSnapshot>(),
+                FeedSize: 100
+            );
+
             var initialFeed = await _feedFallbackService.GetFallbackFeedAsync(new FeedRequestParameter(
                 ProfileId: profileId.Value,
                 Skills: new List<string>(),
@@ -185,7 +202,7 @@ internal sealed class GetFeedQueryHandler
                 ExcludedProfilesIds: new List<Guid>(),
                 CommunitiesIds: communityIds,
                 FollowedProfilesIds: followedProfileIds,
-                StartDate: DateTime.UtcNow.AddDays(-7),
+                StartDate: DateTime.UtcNow.AddYears(-7),
                 Topics: new List<ProfileTopicSnapshot>(),
                 Tags: new List<ProfileTagSnapshot>(),
                 FeedSize: request.PageSize
@@ -198,6 +215,11 @@ internal sealed class GetFeedQueryHandler
                     initialFeed.Select(f => new FeedItemModel(f.Id, 0.0)).ToList(), 
                     cancellationToken);
             }
+
+            _jobSchedulerService.Enqueue<IFeedBackgroundService>(
+                service => service.ComputeAndCacheUserFeedAsync(
+                    profileId.Value, 
+                    feedParams));
 
             return Result<List<PostOverviewDto>>.Success(initialFeed, OperationStatusCode.Success);
         }
