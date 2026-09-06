@@ -11,6 +11,7 @@ import { ProjectMediaDto } from '../contracts/project-media.dto';
 import { ProjectParticipantDetailsDto } from '../contracts/project-participant-details.dto';
 import { ProjectRatingDto } from '../contracts/project-rating.dto';
 import { ProjectMilestoneDto } from '../contracts/project-milestone.dto';
+import { ProjectSkillDto } from '../contracts/project-skill.dto';
 import { FileNode } from '../contracts/file-node.dto';
 import { CreateProjectCommand } from '../contracts/create-project.command';
 import { 
@@ -89,5 +90,10 @@ export class ProjectService {
 
     updateProjectReadme(projectId: string, command: UpdateProjectReadmeCommand): Observable<Result> {
         return this.http.put<Result>(`${this.baseUrl}/${projectId}/readme`, command);
+    }
+
+    searchSkills(search?: string): Observable<Result<ProjectSkillDto[]>> {
+        const url = `${environment.apiUrl}preferences/skills${search ? `?search=${encodeURIComponent(search)}` : ''}`;
+        return this.http.get<Result<ProjectSkillDto[]>>(url);
     }
 }

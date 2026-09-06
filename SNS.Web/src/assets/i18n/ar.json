@@ -1035,5 +1035,146 @@
             "Apply_Filters": "تطبيق التصفيات",
             "Reset_Filters": "إعادة ضبط التصفيات"
         }
+    },
+    "ProjectEdit": {
+        "Header": {
+            "Title": "تعديل المشروع",
+            "Subtitle": "إدارة تفاصيل مشروعك، والتقنيات، والمساهمين، وحالة المشروع"
+        },
+        "Common": {
+            "Back": "رجوع",
+            "Back_To_Project": "العودة إلى المشروع",
+            "Save": "حفظ",
+            "Cancel": "إلغاء",
+            "Remove": "إزالة",
+            "Optional": "اختياري",
+            "View_Live": "معاينة مباشرة",
+            "Saved_Title": "تم بنجاح",
+            "Not_Specified": "غير محدد"
+        },
+        "Tabs": {
+            "General": "المعلومات العامة",
+            "Readme": "ملف README",
+            "Skills": "التقنيات",
+            "Tags": "الوسوم",
+            "Contributors": "المساهمون",
+            "Media": "الوسائط",
+            "Source_Code": "الكود المصدري",
+            "Settings": "الإعدادات والحالة"
+        },
+        "General": {
+            "Title": "المعلومات العامة",
+            "Description": "تحديث المعلومات الأساسية للمشروع، والوصف، وروابط المستودع.",
+            "Project_Title": "عنوان المشروع",
+            "Short_Description": "الوصف المختصر",
+            "Live_Demo_Url": "رابط المعاينة المباشرة",
+            "GitHub_Url": "رابط مستودع GitHub",
+            "GitHub_Readonly_Hint": "رابط المستودع مرتبط بمستودع مشروعك.",
+            "Save_Button": "حفظ التعديلات",
+            "Saved_Message": "تم تحديث تفاصيل المشروع بنجاح."
+        },
+        "Readme": {
+            "Title": "توثيق README",
+            "Description": "قدم توثيقاً شاملاً، وتعليمات الإعداد، وأدلة المشروع بصيغة Markdown.",
+            "Content_Label": "محتوى README (Markdown)",
+            "Placeholder": "اكتب توثيق مشروعك بصيغة Markdown (عناوين، كتل كود، نقاط توضيحية، إلخ)...",
+            "Save_Button": "حفظ README",
+            "Saved_Message": "تم تحديث توثيق README بنجاح."
+        },
+        "Skills": {
+            "Title": "تقنيات المشروع",
+            "Description": "إدارة التقنيات والمهارات المستخدمة في هذا المشروع.",
+            "Add_Skill_Button": "إضافة تقنية",
+            "Add_Skill_Title": "إضافة تقنية إلى المشروع",
+            "Add_Skill_Subtitle": "ابحث عن التقنيات والمهارات لإضافتها إلى مشروعك",
+            "Search_Placeholder": "ابحث عن المهارات (مثال: Angular, .NET, Docker)...",
+            "Available_Skills": "التقنيات المتاحة",
+            "Selected": "المحددة",
+            "Already_Added": "مضافة",
+            "No_Skills_Found": "لم يتم العثور على تقنيات مطابقة.",
+            "No_Skills_Assigned": "لم يتم تعيين أي تقنيات لهذا المشروع بعد.",
+            "Skill_Added_Toast": "تمت إضافة التقنية إلى المشروع بنجاح.",
+            "Skill_Removed_Toast": "تمت إزالة التقنية من المشروع."
+        },
+        "Tags": {
+            "Title": "وسوم المشروع",
+            "Description": "تصنيف مشروعك باستخدام الوسوم ذات الصلة.",
+            "Add_Tag_Button": "إضافة وسم",
+            "Add_Tag_Placeholder": "أدخل اسم الوسم...",
+            "Search_Placeholder": "ابحث عن الوسوم المتاحة (مثل: web, ai, api)...",
+            "Available_Tags": "الوسوم المتاحة",
+            "Selected": "المحدد",
+            "Already_Added": "مضاف",
+            "No_Tags_Found": "لم يتم العثور على وسوم مطابقة لبحثك.",
+            "No_Tags_Assigned": "لم يتم تعيين أي وسوم لهذا المشروع بعد.",
+            "Tag_Added_Toast": "تمت إضافة الوسم بنجاح.",
+            "Tag_Removed_Toast": "تمت إزالة الوسم من المشروع."
+        },
+        "Contributors": {
+            "Title": "المساهمون في المشروع",
+            "Description": "إدارة أعضاء الفريق المقبولين ودعوات المساهمين المعلقة.",
+            "Add_Contributor_Button": "إضافة مساهم",
+            "Add_Contributor_Title": "دعوة مساهم",
+            "Add_Contributor_Subtitle": "اختر من جهات اتصالك المؤهلة لدعوتهم لهذا المشروع",
+            "Invite_Team_Member": "دعوة عضو للفريق",
+            "Search_Placeholder": "ابحث بالاسم أو التخصص في جهات اتصالك المؤهلة...",
+            "Eligible_Candidates": "المرشحون المؤهلون",
+            "Eligibility_Hint": "يمكن دعوة المتابعين المتبادلين والمتابعين لك فقط",
+            "Mutual_Follow": "متابعة متبادلة",
+            "No_Candidates_Title": "لا يوجد مرشحون مؤهلون",
+            "No_Candidates_Desc": "يمكنك فقط دعوة الحسابات التي تتابعك. جرّب البحث بكلمة أخرى.",
+            "Role_Label": "الدور في المشروع",
+            "Invitation_Message_Label": "رسالة الدعوة",
+            "Invitation_Message_Placeholder": "أضف رسالة مخصصة مع الدعوة (اختياري)...",
+            "Send_Invitation_Button": "إرسال الدعوة",
+            "Accepted_Header": "المساهمون الحاليون",
+            "No_Accepted_Members": "لا يوجد مساهمون مقبولون بعد.",
+            "Remove_Contributor": "إزالة",
+            "Pending_Header": "الدعوات المعلقة",
+            "No_Pending_Invitations": "لا توجد دعوات معلقة حالياً.",
+            "Status_Pending": "الدعوة معلقة",
+            "Sent_Message_Label": "رسالة الدعوة المرسلة",
+            "Cancel_Invitation": "إلغاء الدعوة",
+            "Invitation_Sent_Title": "تم إرسال الدعوة",
+            "Invitation_Sent_Message": "تم إرسال دعوة المساهمة بنجاح.",
+            "Invitation_Canceled_Toast": "تم إلغاء الدعوة بنجاح.",
+            "Contributor_Removed_Toast": "تمت إزالة المساهم بنجاح."
+        },
+        "Media": {
+            "Title": "وسائط المشروع",
+            "Description": "رفع لقطات الشاشة، والمخططات، ووسائط معاينة المشروع.",
+            "Upload_Button": "رفع الوسائط",
+            "Caption_Placeholder": "أدخل وصف الصورة...",
+            "No_Media": "لم يتم رفع وسائط بعد.",
+            "Uploaded_Toast": "تم رفع الوسائط بنجاح.",
+            "Deleted_Toast": "تمت إزالة الوسائط بنجاح."
+        },
+        "Source_Code": {
+            "Title": "الكود المصدري",
+            "Description": "استعراض شجرة الكود المصدري المرفوعة ورابط المستودع."
+        },
+        "Settings": {
+            "Title": "حالة وإعدادات المشروع",
+            "Description": "التحكم في دورة حياة المشروع وحالة الظهور.",
+            "Save_Status": "تحديث الحالة",
+            "Status_Changed_Toast": "تم تحديث حالة المشروع بنجاح."
+        },
+        "Roles": {
+            "Developer": "مطور برمجيات",
+            "Designer": "مصمم واجهات",
+            "Tester": "مختبر جودة",
+            "ProjectManager": "مدير مشروع",
+            "Other": "أخرى"
+        },
+        "Status": {
+            "InProgress": "قيد التنفيذ",
+            "Completed": "مكتمل",
+            "Archived": "مؤرشف"
+        },
+        "Status_Desc": {
+            "InProgress": "المشروع قيد التطوير النشط والعمل المستمر.",
+            "Completed": "المشروع وصل إلى مرحلة مستقرة أو إطلاق نهائي.",
+            "Archived": "المشروع للقراءة فقط ومحفوظ للأرشفة."
+        }
     }
 }

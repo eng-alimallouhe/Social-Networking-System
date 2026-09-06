@@ -1035,5 +1035,146 @@
             "Apply_Filters": "Apply Filters",
             "Reset_Filters": "Reset Filters"
         }
+    },
+    "ProjectEdit": {
+        "Header": {
+            "Title": "Edit Project",
+            "Subtitle": "Manage your project details, tech stack, collaborators, and status"
+        },
+        "Common": {
+            "Back": "Back",
+            "Back_To_Project": "Back to Project",
+            "Save": "Save",
+            "Cancel": "Cancel",
+            "Remove": "Remove",
+            "Optional": "Optional",
+            "View_Live": "Live Demo",
+            "Saved_Title": "Success",
+            "Not_Specified": "Not specified"
+        },
+        "Tabs": {
+            "General": "General Info",
+            "Readme": "README Content",
+            "Skills": "Skills",
+            "Tags": "Tags",
+            "Contributors": "Contributors",
+            "Media": "Media",
+            "Source_Code": "Source Code",
+            "Settings": "Settings / Status"
+        },
+        "General": {
+            "Title": "General Information",
+            "Description": "Update your project's basic information, description, and repository details.",
+            "Project_Title": "Project Title",
+            "Short_Description": "Short Description",
+            "Live_Demo_Url": "Live Demo URL",
+            "GitHub_Url": "GitHub Repository URL",
+            "GitHub_Readonly_Hint": "Repository URL is linked to your project repository.",
+            "Save_Button": "Save Changes",
+            "Saved_Message": "Project details updated successfully."
+        },
+        "Readme": {
+            "Title": "README Documentation",
+            "Description": "Provide detailed project documentation, setup instructions, and guides in Markdown.",
+            "Content_Label": "README Content (Markdown)",
+            "Placeholder": "Write your project README in Markdown (headings, code blocks, bullet points, etc.)...",
+            "Save_Button": "Save README",
+            "Saved_Message": "Project README updated successfully."
+        },
+        "Skills": {
+            "Title": "Project Skills",
+            "Description": "Manage technologies and skills used in this project.",
+            "Add_Skill_Button": "Add Skill",
+            "Add_Skill_Title": "Add Skill to Project",
+            "Add_Skill_Subtitle": "Search for technologies and skills to add to your project",
+            "Search_Placeholder": "Search skills (e.g. Angular, .NET, Docker)...",
+            "Available_Skills": "Available Skills",
+            "Selected": "Selected",
+            "Already_Added": "Added",
+            "No_Skills_Found": "No matching skills found.",
+            "No_Skills_Assigned": "No skills assigned to this project yet.",
+            "Skill_Added_Toast": "Skill added to project successfully.",
+            "Skill_Removed_Toast": "Skill removed from project."
+        },
+        "Tags": {
+            "Title": "Project Tags",
+            "Description": "Categorize your project with relevant topic tags.",
+            "Add_Tag_Button": "Add Tag",
+            "Add_Tag_Placeholder": "Enter tag name...",
+            "Search_Placeholder": "Search available tags (e.g. web, ai, api)...",
+            "Available_Tags": "Available Tags",
+            "Selected": "Selected",
+            "Already_Added": "Added",
+            "No_Tags_Found": "No tags found matching your search.",
+            "No_Tags_Assigned": "No tags assigned to this project yet.",
+            "Tag_Added_Toast": "Tag added successfully.",
+            "Tag_Removed_Toast": "Tag removed from project."
+        },
+        "Contributors": {
+            "Title": "Project Contributors",
+            "Description": "Manage accepted team members and pending collaborator invitations.",
+            "Add_Contributor_Button": "Add Contributor",
+            "Add_Contributor_Title": "Invite Contributor",
+            "Add_Contributor_Subtitle": "Select an eligible connection to invite to this project",
+            "Invite_Team_Member": "Invite a team member",
+            "Search_Placeholder": "Search eligible connections by name or specialization...",
+            "Eligible_Candidates": "Eligible Candidates",
+            "Eligibility_Hint": "Mutual follows and followers can be invited",
+            "Mutual_Follow": "Mutual Follow",
+            "No_Candidates_Title": "No Eligible Candidates Found",
+            "No_Candidates_Desc": "You can only invite profiles who follow you. Try searching with a different keyword.",
+            "Role_Label": "Project Role",
+            "Invitation_Message_Label": "Invitation Message",
+            "Invitation_Message_Placeholder": "Add an optional personalized note with your invitation...",
+            "Send_Invitation_Button": "Send Invitation",
+            "Accepted_Header": "Accepted Contributors",
+            "No_Accepted_Members": "No accepted contributors yet.",
+            "Remove_Contributor": "Remove",
+            "Pending_Header": "Pending Invitations",
+            "No_Pending_Invitations": "No pending invitations at this time.",
+            "Status_Pending": "Invitation Pending",
+            "Sent_Message_Label": "Invitation message sent",
+            "Cancel_Invitation": "Cancel Invitation",
+            "Invitation_Sent_Title": "Invitation Sent",
+            "Invitation_Sent_Message": "Contributor invitation sent successfully.",
+            "Invitation_Canceled_Toast": "Invitation has been canceled.",
+            "Contributor_Removed_Toast": "Contributor has been removed."
+        },
+        "Media": {
+            "Title": "Project Media",
+            "Description": "Upload screenshots, diagrams, and project preview media.",
+            "Upload_Button": "Upload Media",
+            "Caption_Placeholder": "Enter image caption...",
+            "No_Media": "No media uploaded yet.",
+            "Uploaded_Toast": "Media uploaded successfully.",
+            "Deleted_Toast": "Media deleted successfully."
+        },
+        "Source_Code": {
+            "Title": "Source Code",
+            "Description": "Browse the uploaded project source code tree and repository link."
+        },
+        "Settings": {
+            "Title": "Project Status & Settings",
+            "Description": "Control project lifecycle and visibility status.",
+            "Save_Status": "Update Status",
+            "Status_Changed_Toast": "Project status updated successfully."
+        },
+        "Roles": {
+            "Developer": "Developer",
+            "Designer": "Designer",
+            "Tester": "Tester",
+            "ProjectManager": "Project Manager",
+            "Other": "Other"
+        },
+        "Status": {
+            "InProgress": "In Progress",
+            "Completed": "Completed",
+            "Archived": "Archived"
+        },
+        "Status_Desc": {
+            "InProgress": "Active development is ongoing. Open to updates and collaborator activity.",
+            "Completed": "The project reached a stable milestone or production release.",
+            "Archived": "The project is read-only and preserved for archival purposes."
+        }
     }
 }

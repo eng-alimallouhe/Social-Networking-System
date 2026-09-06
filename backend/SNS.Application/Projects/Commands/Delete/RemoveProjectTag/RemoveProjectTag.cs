@@ -55,7 +55,9 @@ internal sealed class RemoveProjectTagCommandHandler : ICommandHandler<RemovePro
             return Result.Failure(ProjectStatusCodes.NotProjectOwner);
         }
 
-        var existingProjectTag = await _projectTagRepo.GetSingleByExpressionAsync(pt => pt.ProjectId == request.ProjectId && pt.Id == request.ProjectTagId, cancellationToken);
+        var existingProjectTag = await _projectTagRepo.GetSingleByExpressionAsync(
+            pt => pt.ProjectId == request.ProjectId && (pt.Id == request.ProjectTagId || pt.TagId == request.ProjectTagId),
+            cancellationToken);
 
         if (existingProjectTag != null)
         {

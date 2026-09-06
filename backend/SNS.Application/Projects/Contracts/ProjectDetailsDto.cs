@@ -4,6 +4,7 @@ namespace SNS.Application.Projects.Contracts;
 
 public record ProjectDetailsDto(
     Guid ProjectId,
+    Guid OwnerId,
     string Title,
     string ShortDescription,
     string MainImageUrl,

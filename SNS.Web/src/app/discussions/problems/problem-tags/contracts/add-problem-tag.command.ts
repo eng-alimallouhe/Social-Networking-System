@@ -1,3 +1,3 @@
 export interface AddProblemTagCommand {
-    tagName: string;
+    tagId: string;
 }

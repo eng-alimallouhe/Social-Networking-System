@@ -16,14 +16,14 @@ namespace SNS.Application.Discussions.Problems.ProblemTags.Commands.AddProblemTa
 /// Command to attach a tag to an existing discussion problem.
 /// </summary>
 /// <param name="ProblemId">The unique identifier of the problem.</param>
-/// <param name="TagName">The name of the tag to add.</param>
+/// <param name="TagId">The unique identifier of the tag to add.</param>
 public sealed record AddProblemTagCommand(
     Guid ProblemId,
-    string TagName
+    Guid TagId
 ) : ICommand;
 
 /// <summary>
-/// Handles <see cref="AddProblemTagCommand"/> to verify problem ownership, match/create tag, and establish the relation.
+/// Handles <see cref="AddProblemTagCommand"/> to verify problem ownership, validate tag existence, and establish the relation.
 /// </summary>
 internal sealed class AddProblemTagCommandHandler : ICommandHandler<AddProblemTagCommand>
 {
@@ -55,7 +55,7 @@ internal sealed class AddProblemTagCommandHandler : ICommandHandler<AddProblemTa
             return Result.Failure(SecurityStatusCodes.AuthenticationRequired);
         }
 
-        if (string.IsNullOrWhiteSpace(request.TagName))
+        if (request.TagId == Guid.Empty)
         {
             return Result.Failure(OperationStatusCode.InvalidInput);
         }
@@ -73,27 +73,21 @@ internal sealed class AddProblemTagCommandHandler : ICommandHandler<AddProblemTa
             return Result.Failure(ProblemStatusCodes.NotProblemOwner);
         }
 
-        var normalizedName = request.TagName.Trim().ToLower();
-
-        var tag = await _dbContext.Tags
-            .FirstOrDefaultAsync(t => t.Name.ToLower() == normalizedName, cancellationToken);
-
-        if (tag == null)
+        var tagExists = await _tagRepo.ExistsAsync(t => t.Id == request.TagId, cancellationToken);
+        if (!tagExists)
         {
-            tag = Tag.Create(normalizedName);
-            _tagRepo.Add(tag);
-            await _unitOfWork.CompleteAsync(cancellationToken);
+            return Result.Failure(ProblemStatusCodes.TagNotFound);
         }
 
         var alreadyAssociated = await _dbContext.ProblemTags
-            .AnyAsync(pt => pt.ProblemId == request.ProblemId && pt.TagId == tag.Id, cancellationToken);
+            .AnyAsync(pt => pt.ProblemId == request.ProblemId && pt.TagId == request.TagId, cancellationToken);
 
         if (alreadyAssociated)
         {
             return Result.Failure(ProblemStatusCodes.TagAlreadyExists);
         }
 
-        var problemTag = ProblemTag.Create(request.ProblemId, tag.Id);
+        var problemTag = ProblemTag.Create(request.ProblemId, request.TagId);
         _problemTagRepo.Add(problemTag);
         await _unitOfWork.CompleteAsync(cancellationToken);
 

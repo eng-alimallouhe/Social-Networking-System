@@ -39,6 +39,10 @@ export class AuthenticationService {
         return this.getClaim('sub');
     }
 
+    public getProfileId(): string | null {
+        return this.getClaim('profileId');
+    }
+
     public refreshAuthenticationState(): void {
         const token = this.getAccessToken();
         if (token) {

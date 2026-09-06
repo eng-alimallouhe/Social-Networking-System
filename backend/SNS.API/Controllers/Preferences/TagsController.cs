@@ -12,6 +12,8 @@ namespace SNS.API.Controllers.Preferences;
 /// <summary>
 /// Handles tag retrieval and autocomplete operations.
 /// </summary>
+[Route("api/v{version:apiVersion}/tags")]
+[Route("api/v{version:apiVersion}/preferences/[controller]")]
 [Route("api/v{version:apiVersion}/content-managment/[controller]")]
 [ApiVersion("1.0")]
 [ApiController]

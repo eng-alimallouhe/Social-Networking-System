@@ -1,0 +1,671 @@
+<div class="project-edit-page">
+  @if (isLoadingProject()) {
+  <div class="page-loader-wrap">
+    <app-circle-loader></app-circle-loader>
+  </div>
+  } @else {
+  <!-- Top Header Bar (matches Post Details component styling) -->
+  <header class="edit-page-header">
+    <div class="title-section">
+      <button type="button" class="btn btn-icon-text back-btn" (click)="goBack()"
+        [attr.aria-label]="'ProjectEdit.Common.Back' | translate">
+        <svg lucideArrowLeft class="directional-icon"></svg>
+      </button>
+      <h1 class="page-title">
+        <span class="edit-title-text">{{ 'ProjectEdit.Header.Title' | translate }}</span>
+        @if (project()?.title) {
+        <span class="project-name-text">{{ project()?.title }}</span>
+        }
+      </h1>
+    </div>
+
+    <div class="header-row">
+      <div class="header-right">
+        @if (project()?.liveDemoUrl) {
+        <a [href]="project()?.liveDemoUrl" target="_blank" rel="noopener" class="btn btn-primary">
+          <svg lucideExternalLink></svg>
+          <span>{{ 'ProjectEdit.Common.View_Live' | translate }}</span>
+        </a>
+        }
+      </div>
+      <!-- Section Navigation Dropdown -->
+      <div class="section-dropdown-wrap">
+        <button type="button" class="section-dropdown-trigger" [class.open]="isSectionDropdownOpen()"
+          (click)="toggleSectionDropdown()" aria-haspopup="listbox" [attr.aria-expanded]="isSectionDropdownOpen()">
+          <div class="trigger-selected-content">
+            @switch (activeTab()) {
+            @case ('general') {
+            <svg lucideInfo class="section-icon"></svg>
+            <span class="section-label">{{ 'ProjectEdit.Tabs.General' | translate }}</span>
+            }
+            @case ('readme') {
+            <svg lucideBookOpen class="section-icon"></svg>
+            <span class="section-label">{{ 'ProjectEdit.Tabs.Readme' | translate }}</span>
+            }
+            @case ('skills') {
+            <svg lucideCode class="section-icon"></svg>
+            <span class="section-label">{{ 'ProjectEdit.Tabs.Skills' | translate }}</span>
+            <span class="section-badge">{{ skills().length }}</span>
+            }
+            @case ('tags') {
+            <svg lucideTag class="section-icon"></svg>
+            <span class="section-label">{{ 'ProjectEdit.Tabs.Tags' | translate }}</span>
+            <span class="section-badge">{{ tags().length }}</span>
+            }
+            @case ('contributors') {
+            <svg lucideUsers class="section-icon"></svg>
+            <span class="section-label">{{ 'ProjectEdit.Tabs.Contributors' | translate }}</span>
+            @if (pendingContributors().length > 0) {
+            <span class="section-badge-pending">{{ pendingContributors().length }}</span>
+            }
+            }
+            @case ('media') {
+            <svg lucideImage class="section-icon"></svg>
+            <span class="section-label">{{ 'ProjectEdit.Tabs.Media' | translate }}</span>
+            }
+            @case ('source-code') {
+            <svg lucideGitBranch class="section-icon"></svg>
+            <span class="section-label">{{ 'ProjectEdit.Tabs.Source_Code' | translate }}</span>
+            }
+            @case ('settings') {
+            <svg lucideSettings class="section-icon"></svg>
+            <span class="section-label">{{ 'ProjectEdit.Tabs.Settings' | translate }}</span>
+            }
+            }
+          </div>
+          <svg lucideChevronDown class="dropdown-chevron" [class.rotated]="isSectionDropdownOpen()"></svg>
+        </button>
+
+        @if (isSectionDropdownOpen()) {
+        <div class="section-dropdown-menu" role="listbox" tabindex="-1">
+          <!-- 1. General Information -->
+          <button type="button" class="section-menu-item" [class.active]="activeTab() === 'general'"
+            (click)="selectSection('general')" role="option" [attr.aria-selected]="activeTab() === 'general'">
+            <div class="item-left">
+              <svg lucideInfo class="section-icon"></svg>
+              <span class="item-label">{{ 'ProjectEdit.Tabs.General' | translate }}</span>
+            </div>
+            @if (activeTab() === 'general') {
+            <svg lucideCheck class="item-check-icon"></svg>
+            }
+          </button>
+
+          <!-- 2. README Content -->
+          <button type="button" class="section-menu-item" [class.active]="activeTab() === 'readme'"
+            (click)="selectSection('readme')" role="option" [attr.aria-selected]="activeTab() === 'readme'">
+            <div class="item-left">
+              <svg lucideBookOpen class="section-icon"></svg>
+              <span class="item-label">{{ 'ProjectEdit.Tabs.Readme' | translate }}</span>
+            </div>
+            @if (activeTab() === 'readme') {
+            <svg lucideCheck class="item-check-icon"></svg>
+            }
+          </button>
+
+          <!-- 3. Skills -->
+          <button type="button" class="section-menu-item" [class.active]="activeTab() === 'skills'"
+            (click)="selectSection('skills')" role="option" [attr.aria-selected]="activeTab() === 'skills'">
+            <div class="item-left">
+              <svg lucideCode class="section-icon"></svg>
+              <span class="item-label">{{ 'ProjectEdit.Tabs.Skills' | translate }}</span>
+            </div>
+            <div class="item-right">
+              <span class="section-badge">{{ skills().length }}</span>
+              @if (activeTab() === 'skills') {
+              <svg lucideCheck class="item-check-icon"></svg>
+              }
+            </div>
+          </button>
+
+          <!-- 4. Tags -->
+          <button type="button" class="section-menu-item" [class.active]="activeTab() === 'tags'"
+            (click)="selectSection('tags')" role="option" [attr.aria-selected]="activeTab() === 'tags'">
+            <div class="item-left">
+              <svg lucideTag class="section-icon"></svg>
+              <span class="item-label">{{ 'ProjectEdit.Tabs.Tags' | translate }}</span>
+            </div>
+            <div class="item-right">
+              <span class="section-badge">{{ tags().length }}</span>
+              @if (activeTab() === 'tags') {
+              <svg lucideCheck class="item-check-icon"></svg>
+              }
+            </div>
+          </button>
+
+          <!-- 5. Contributors -->
+          <button type="button" class="section-menu-item" [class.active]="activeTab() === 'contributors'"
+            (click)="selectSection('contributors')" role="option" [attr.aria-selected]="activeTab() === 'contributors'">
+            <div class="item-left">
+              <svg lucideUsers class="section-icon"></svg>
+              <span class="item-label">{{ 'ProjectEdit.Tabs.Contributors' | translate }}</span>
+            </div>
+            <div class="item-right">
+              @if (pendingContributors().length > 0) {
+              <span class="section-badge-pending">{{ pendingContributors().length }}</span>
+              }
+              @if (activeTab() === 'contributors') {
+              <svg lucideCheck class="item-check-icon"></svg>
+              }
+            </div>
+          </button>
+
+          <!-- 6. Media -->
+          <button type="button" class="section-menu-item" [class.active]="activeTab() === 'media'"
+            (click)="selectSection('media')" role="option" [attr.aria-selected]="activeTab() === 'media'">
+            <div class="item-left">
+              <svg lucideImage class="section-icon"></svg>
+              <span class="item-label">{{ 'ProjectEdit.Tabs.Media' | translate }}</span>
+            </div>
+            @if (activeTab() === 'media') {
+            <svg lucideCheck class="item-check-icon"></svg>
+            }
+          </button>
+
+          <!-- 7. Source Code -->
+          <button type="button" class="section-menu-item" [class.active]="activeTab() === 'source-code'"
+            (click)="selectSection('source-code')" role="option" [attr.aria-selected]="activeTab() === 'source-code'">
+            <div class="item-left">
+              <svg lucideGitBranch class="section-icon"></svg>
+              <span class="item-label">{{ 'ProjectEdit.Tabs.Source_Code' | translate }}</span>
+            </div>
+            @if (activeTab() === 'source-code') {
+            <svg lucideCheck class="item-check-icon"></svg>
+            }
+          </button>
+
+          <!-- 8. Project Settings / Status -->
+          <button type="button" class="section-menu-item" [class.active]="activeTab() === 'settings'"
+            (click)="selectSection('settings')" role="option" [attr.aria-selected]="activeTab() === 'settings'">
+            <div class="item-left">
+              <svg lucideSettings class="section-icon"></svg>
+              <span class="item-label">{{ 'ProjectEdit.Tabs.Settings' | translate }}</span>
+            </div>
+            @if (activeTab() === 'settings') {
+            <svg lucideCheck class="item-check-icon"></svg>
+            }
+          </button>
+        </div>
+        }
+      </div>
+    </div>
+  </header>
+
+
+  <!-- Tab Content Area -->
+  <main class="edit-tab-content">
+    <!-- 1. GENERAL INFORMATION TAB -->
+    @if (activeTab() === 'general') {
+    <section class="tab-panel general-panel">
+      <div class="panel-header">
+        <div>
+          <h2 class="panel-title">{{ 'ProjectEdit.General.Title' | translate }}</h2>
+          <p class="panel-desc">{{ 'ProjectEdit.General.Description' | translate }}</p>
+        </div>
+        <button type="button" class="btn btn-primary" [disabled]="isSavingGeneral()" (click)="saveGeneralInfo()">
+          <svg lucideSave class="icon-sm"></svg>
+          <span>{{ 'ProjectEdit.General.Save_Button' | translate }}</span>
+        </button>
+      </div>
+
+      <div class="form-grid">
+        <div class="form-field full-width">
+          <label for="project-title" class="field-label">{{ 'ProjectEdit.General.Project_Title' | translate }}</label>
+          <input id="project-title" type="text" class="field-input" [ngModel]="generalTitle()"
+            (ngModelChange)="generalTitle.set($event)" />
+        </div>
+
+        <div class="form-field full-width">
+          <app-textarea
+            id="project-short-desc"
+            [label]="'ProjectEdit.General.Short_Description' | translate"
+            [rows]="3"
+            [maxlength]="250"
+            [showCharCount]="true"
+            [ngModel]="generalShortDesc()"
+            (ngModelChange)="generalShortDesc.set($event)">
+          </app-textarea>
+        </div>
+
+        <div class="form-field">
+          <label for="project-live-demo" class="field-label">{{ 'ProjectEdit.General.Live_Demo_Url' | translate
+            }}</label>
+          <input id="project-live-demo" type="url" class="field-input" placeholder="https://..."
+            [ngModel]="generalLiveDemo()" (ngModelChange)="generalLiveDemo.set($event)" />
+        </div>
+
+        <div class="form-field">
+          <label for="project-github" class="field-label">{{ 'ProjectEdit.General.GitHub_Url' | translate }}</label>
+          <input id="project-github" type="url" class="field-input" placeholder="https://github.com/..."
+            [ngModel]="generalGithubUrl()" (ngModelChange)="generalGithubUrl.set($event)" disabled />
+          <span class="field-hint">{{ 'ProjectEdit.General.GitHub_Readonly_Hint' | translate }}</span>
+        </div>
+      </div>
+    </section>
+    }
+
+    <!-- 2. README CONTENT TAB -->
+    @if (activeTab() === 'readme') {
+    <section class="tab-panel readme-panel">
+      <div class="panel-header">
+        <div>
+          <h2 class="panel-title">{{ 'ProjectEdit.Readme.Title' | translate }}</h2>
+          <p class="panel-desc">{{ 'ProjectEdit.Readme.Description' | translate }}</p>
+        </div>
+        <button type="button" class="btn btn-primary" [disabled]="isSavingReadme()" (click)="saveReadme()">
+          <svg lucideSave class="icon-sm"></svg>
+          <span>{{ 'ProjectEdit.Readme.Save_Button' | translate }}</span>
+        </button>
+      </div>
+
+      <div class="readme-editor-wrap">
+        <app-textarea
+          id="project-readme"
+          [label]="'ProjectEdit.Readme.Content_Label' | translate"
+          [placeholder]="'ProjectEdit.Readme.Placeholder' | translate"
+          [rows]="16"
+          [codeFont]="true"
+          [ngModel]="generalReadme()"
+          (ngModelChange)="generalReadme.set($event)">
+        </app-textarea>
+      </div>
+    </section>
+    }
+
+    <!-- 2. SKILLS TAB -->
+    @if (activeTab() === 'skills') {
+    <section class="tab-panel skills-panel">
+      <div class="panel-header">
+        <div>
+          <h2 class="panel-title">{{ 'ProjectEdit.Skills.Title' | translate }}</h2>
+          <p class="panel-desc">{{ 'ProjectEdit.Skills.Description' | translate }}</p>
+        </div>
+        <button type="button" class="btn-primary" (click)="openAddSkill()">
+          <svg lucidePlus class="icon-sm"></svg>
+          <span>{{ 'ProjectEdit.Skills.Add_Skill_Button' | translate }}</span>
+        </button>
+      </div>
+
+      @if (isLoadingSkills()) {
+      <div class="panel-loader-wrap">
+        <app-circle-loader></app-circle-loader>
+      </div>
+      } @else {
+      <div class="skills-manager-grid">
+        @for (skill of skills(); track skill.skillId) {
+        <div class="skill-manage-chip">
+          <span class="skill-name">{{ skill.skillName }}</span>
+          <button type="button" class="btn-chip-remove" (click)="removeSkill(skill)"
+            [attr.aria-label]="'ProjectEdit.Common.Remove' | translate">
+            <svg lucideX class="icon-xs"></svg>
+          </button>
+        </div>
+        }
+        @if (skills().length === 0) {
+        <div class="empty-panel-state">
+          <p>{{ 'ProjectEdit.Skills.No_Skills_Assigned' | translate }}</p>
+        </div>
+        }
+      </div>
+      }
+    </section>
+    }
+
+    <!-- 3. TAGS TAB -->
+    @if (activeTab() === 'tags') {
+    <section class="tab-panel tags-panel">
+      <div class="panel-header">
+        <div>
+          <h2 class="panel-title">{{ 'ProjectEdit.Tags.Title' | translate }}</h2>
+          <p class="panel-desc">{{ 'ProjectEdit.Tags.Description' | translate }}</p>
+        </div>
+        <button type="button" class="btn-primary" (click)="toggleAddTagUi()">
+          @if (isAddTagOpen()) {
+          <svg lucideX class="icon-sm"></svg>
+          <span>{{ 'ProjectEdit.Common.Cancel' | translate }}</span>
+          } @else {
+          <svg lucidePlus class="icon-sm"></svg>
+          <span>{{ 'ProjectEdit.Tags.Add_Tag_Button' | translate }}</span>
+          }
+        </button>
+      </div>
+
+      @if (isAddTagOpen()) {
+      <div class="tag-search-container">
+        <div class="search-input-wrapper">
+          <svg lucideSearch class="search-icon"></svg>
+          <input type="text" class="search-input" [placeholder]="'ProjectEdit.Tags.Search_Placeholder' | translate"
+            [ngModel]="tagSearchQuery()" (ngModelChange)="onTagSearchChange($event)"
+            (keydown.enter)="onTagInputEnter($event)" autofocus />
+          @if (tagSearchQuery()) {
+          <button type="button" class="clear-search-btn" (click)="onTagSearchChange('')">
+            <svg lucideX class="icon-xs"></svg>
+          </button>
+          }
+        </div>
+
+        @if (selectedTag(); as selected) {
+        <div class="selected-tag-bar">
+          <span class="selected-label">{{ 'ProjectEdit.Tags.Selected' | translate }}:</span>
+          <span class="tag-pill active-pill">
+            <svg lucideCheck class="icon-xs"></svg>
+            #{{ selected.name }}
+          </span>
+          <button type="button" class="btn-clear-selection" (click)="clearSelectedTag()"
+            [attr.aria-label]="'ProjectEdit.Common.Cancel' | translate">
+            <svg lucideX class="icon-xs"></svg>
+          </button>
+        </div>
+        }
+
+        <div class="tag-suggestions-box">
+          <span class="suggestions-label">{{ 'ProjectEdit.Tags.Available_Tags' | translate }}</span>
+
+          @if (isLoadingTagSuggestions()) {
+          <div class="tag-loader-wrap">
+            <app-circle-loader></app-circle-loader>
+          </div>
+          } @else {
+          <div class="tag-suggestions-grid">
+            @for (item of tagSuggestions(); track item.id) {
+            <button type="button" class="tag-suggestion-pill" [class.selected]="selectedTag()?.id === item.id"
+              [class.disabled]="isTagAlreadyAdded(item.id)" [disabled]="isTagAlreadyAdded(item.id)"
+              (click)="selectTag(item)">
+              @if (selectedTag()?.id === item.id) {
+              <svg lucideCheck class="icon-xs"></svg>
+              } @else if (!isTagAlreadyAdded(item.id)) {
+              <svg lucidePlus class="icon-xs"></svg>
+              }
+              <span>#{{ item.name }}</span>
+              @if (isTagAlreadyAdded(item.id)) {
+              <span class="badge-added">{{ 'ProjectEdit.Tags.Already_Added' | translate }}</span>
+              }
+            </button>
+            }
+            @if (tagSuggestions().length === 0 && !isLoadingTagSuggestions()) {
+            <p class="empty-suggestions-text">{{ 'ProjectEdit.Tags.No_Tags_Found' | translate }}</p>
+            }
+          </div>
+          }
+        </div>
+
+        <div class="tag-actions-row">
+          <button type="button" class="btn-primary" [disabled]="!selectedTag() || isAddingTag()" (click)="addTag()">
+            <svg lucidePlus class="icon-sm"></svg>
+            <span>{{ 'ProjectEdit.Tags.Add_Tag_Button' | translate }}</span>
+          </button>
+          <button type="button" class="btn-outlined" (click)="closeAddTagUi()">
+            <span>{{ 'ProjectEdit.Common.Cancel' | translate }}</span>
+          </button>
+        </div>
+      </div>
+      }
+
+      <div class="tags-manager-grid">
+        @for (tag of tags(); track tag.tagId) {
+        <div class="tag-manage-chip">
+          <span>#{{ tag.tagName }}</span>
+          <button type="button" class="btn-chip-remove" (click)="removeTag(tag)"
+            [attr.aria-label]="'ProjectEdit.Common.Remove' | translate">
+            <svg lucideX class="icon-xs"></svg>
+          </button>
+        </div>
+        }
+        @if (tags().length === 0 && !isAddTagOpen()) {
+        <div class="empty-panel-state">
+          <p>{{ 'ProjectEdit.Tags.No_Tags_Assigned' | translate }}</p>
+        </div>
+        }
+      </div>
+    </section>
+    }
+
+    <!-- 4. CONTRIBUTORS TAB -->
+    @if (activeTab() === 'contributors') {
+    <section class="tab-panel contributors-panel">
+      <div class="panel-header">
+        <div>
+          <h2 class="panel-title">{{ 'ProjectEdit.Contributors.Title' | translate }}</h2>
+          <p class="panel-desc">{{ 'ProjectEdit.Contributors.Description' | translate }}</p>
+        </div>
+        <button type="button" class="btn-primary" (click)="openAddContributor()">
+          <svg lucidePlus class="icon-sm"></svg>
+          <span>{{ 'ProjectEdit.Contributors.Add_Contributor_Button' | translate }}</span>
+        </button>
+      </div>
+
+      @if (isLoadingContributors()) {
+      <div class="panel-loader-wrap">
+        <app-circle-loader></app-circle-loader>
+      </div>
+      } @else {
+      <!-- Sub-section A: Accepted Contributors -->
+      <div class="contributors-subgroup">
+        <h3 class="subgroup-title">
+          {{ 'ProjectEdit.Contributors.Accepted_Header' | translate }}
+          <span class="subgroup-count">({{ acceptedContributors().length }})</span>
+        </h3>
+
+        <div class="contributors-cards-grid">
+          @for (c of acceptedContributors(); track c.profileId) {
+          <div class="contributor-manage-card">
+            <img [src]="c.profileImageUrl || defaultAvatar" [alt]="c.displayName" class="member-avatar"
+              (error)="onAvatarError($event)" />
+            <div class="member-meta">
+              <div class="member-header">
+                <span class="member-name">{{ c.displayName }}</span>
+                <span class="badge-role">{{ 'ProjectEdit.Roles.' + c.role | translate }}</span>
+              </div>
+              <span class="member-spec">{{ c.specialization || ('ProjectEdit.Common.Not_Specified' | translate)
+                }}</span>
+            </div>
+
+            <button type="button" class="btn-danger-outline btn-sm" (click)="removeContributorOrInvitation(c)">
+              <svg lucideTrash2 class="icon-xs"></svg>
+              <span>{{ 'ProjectEdit.Contributors.Remove_Contributor' | translate }}</span>
+            </button>
+          </div>
+          }
+          @if (acceptedContributors().length === 0) {
+          <p class="empty-subgroup-text">{{ 'ProjectEdit.Contributors.No_Accepted_Members' | translate }}</p>
+          }
+        </div>
+      </div>
+
+      <div class="subgroup-divider"></div>
+
+      <!-- Sub-section B: Pending Invitations (Owner View Only) -->
+      <div class="contributors-subgroup">
+        <h3 class="subgroup-title">
+          {{ 'ProjectEdit.Contributors.Pending_Header' | translate }}
+          <span class="subgroup-count">({{ pendingContributors().length }})</span>
+        </h3>
+
+        <div class="contributors-cards-grid">
+          @for (c of pendingContributors(); track c.profileId) {
+          <div class="contributor-manage-card pending-card">
+            <div class="pending-badge-row">
+              <span class="badge-pending">
+                <svg lucideClock class="icon-xs"></svg>
+                <span>{{ 'ProjectEdit.Contributors.Status_Pending' | translate }}</span>
+              </span>
+              <span class="sent-time">{{ c.invitationSentAt | date:'mediumDate' }}</span>
+            </div>
+
+            <div class="member-main-row">
+              <img [src]="c.profileImageUrl || defaultAvatar" [alt]="c.displayName" class="member-avatar"
+                (error)="onAvatarError($event)" />
+              <div class="member-meta">
+                <div class="member-header">
+                  <span class="member-name">{{ c.displayName }}</span>
+                  <span class="badge-role">{{ 'ProjectEdit.Roles.' + c.role | translate }}</span>
+                </div>
+                <span class="member-spec">{{ c.specialization }}</span>
+              </div>
+            </div>
+
+            @if (c.invitationMessage) {
+            <div class="invitation-quote-box">
+              <span class="quote-label">{{ 'ProjectEdit.Contributors.Sent_Message_Label' | translate }}:</span>
+              <p class="quote-content">"{{ c.invitationMessage }}"</p>
+            </div>
+            }
+
+            <div class="card-actions-row">
+              <button type="button" class="btn-cancel-invite btn-sm" (click)="removeContributorOrInvitation(c)">
+                <svg lucideX class="icon-xs"></svg>
+                <span>{{ 'ProjectEdit.Contributors.Cancel_Invitation' | translate }}</span>
+              </button>
+            </div>
+          </div>
+          }
+          @if (pendingContributors().length === 0) {
+          <p class="empty-subgroup-text">{{ 'ProjectEdit.Contributors.No_Pending_Invitations' | translate }}</p>
+          }
+        </div>
+      </div>
+      }
+    </section>
+    }
+
+    <!-- 5. MEDIA TAB -->
+    @if (activeTab() === 'media') {
+    <section class="tab-panel media-panel">
+      <div class="panel-header">
+        <div>
+          <h2 class="panel-title">{{ 'ProjectEdit.Media.Title' | translate }}</h2>
+          <p class="panel-desc">{{ 'ProjectEdit.Media.Description' | translate }}</p>
+        </div>
+      </div>
+
+      <!-- Upload Box -->
+      <div class="media-upload-box">
+        <div class="upload-inputs">
+          <input type="file" #fileInput accept="image/*" class="file-picker-input"
+            (change)="onMediaFileSelected($event)" />
+          <input type="text" class="field-input caption-input"
+            [placeholder]="'ProjectEdit.Media.Caption_Placeholder' | translate" [ngModel]="newMediaCaption()"
+            (ngModelChange)="newMediaCaption.set($event)" />
+        </div>
+        <button type="button" class="btn-primary" [disabled]="!selectedMediaFile() || isUploadingMedia()"
+          (click)="uploadMedia()">
+          <svg lucideUpload class="icon-sm"></svg>
+          <span>{{ 'ProjectEdit.Media.Upload_Button' | translate }}</span>
+        </button>
+      </div>
+
+      <!-- Media Grid -->
+      @if (isLoadingMedia()) {
+      <div class="panel-loader-wrap">
+        <app-circle-loader></app-circle-loader>
+      </div>
+      } @else {
+      <div class="media-manage-grid">
+        @for (item of mediaList(); track item.mediaId) {
+        <div class="media-item-card">
+          <img [src]="item.mediaUrl" alt="Project Media" class="media-thumbnail" />
+          <button type="button" class="btn-media-delete" (click)="deleteMedia(item)"
+            [attr.aria-label]="'ProjectEdit.Common.Remove' | translate">
+            <svg lucideTrash2 class="icon-xs"></svg>
+          </button>
+        </div>
+        }
+        @if (mediaList().length === 0) {
+        <div class="empty-panel-state">
+          <p>{{ 'ProjectEdit.Media.No_Media' | translate }}</p>
+        </div>
+        }
+      </div>
+      }
+    </section>
+    }
+
+    <!-- 6. SOURCE CODE TAB -->
+    @if (activeTab() === 'source-code') {
+    <section class="tab-panel source-code-panel">
+      <div class="panel-header">
+        <div>
+          <h2 class="panel-title">{{ 'ProjectEdit.Source_Code.Title' | translate }}</h2>
+          <p class="panel-desc">{{ 'ProjectEdit.Source_Code.Description' | translate }}</p>
+        </div>
+        @if (project()?.gitHubUrl) {
+        <a [href]="project()?.gitHubUrl" target="_blank" rel="noopener" class="btn-outlined btn-sm">
+          <svg lucideExternalLink class="icon-xs"></svg>
+          <span>{{ 'Project.View_On_Github' | translate }}</span>
+        </a>
+        }
+      </div>
+
+      @if (isLoadingSourceCode()) {
+      <div class="panel-loader-wrap">
+        <app-circle-loader></app-circle-loader>
+      </div>
+      } @else {
+      <div class="source-tree-viewer">
+        @if (sourceCodeTree().length > 0) {
+        <div class="tree-list">
+          @for (node of sourceCodeTree(); track node.name) {
+          <div class="tree-node-row">
+            @if (node.type === 'directory') {
+            <svg lucideFolder class="node-icon folder-icon"></svg>
+            } @else {
+            <svg lucideFileText class="node-icon file-icon"></svg>
+            }
+            <span class="node-name">{{ node.name }}</span>
+          </div>
+          }
+        </div>
+        } @else {
+        <div class="empty-panel-state">
+          <p>{{ 'Project.Source_Code_Empty_Desc' | translate }}</p>
+        </div>
+        }
+      </div>
+      }
+    </section>
+    }
+
+    <!-- 7. PROJECT SETTINGS / STATUS TAB -->
+    @if (activeTab() === 'settings') {
+    <section class="tab-panel settings-panel">
+      <div class="panel-header">
+        <div>
+          <h2 class="panel-title">{{ 'ProjectEdit.Settings.Title' | translate }}</h2>
+          <p class="panel-desc">{{ 'ProjectEdit.Settings.Description' | translate }}</p>
+        </div>
+        <button type="button" class="btn-primary" [disabled]="isSavingStatus()" (click)="saveProjectStatus()">
+          <svg lucideSave class="icon-sm"></svg>
+          <span>{{ 'ProjectEdit.Settings.Save_Status' | translate }}</span>
+        </button>
+      </div>
+
+      <div class="status-selector-grid">
+        @for (st of allowedStatuses; track st) {
+        <div class="status-choice-card" [class.selected]="selectedStatus() === st" (click)="selectedStatus.set(st)">
+          <div class="status-card-header">
+            <span class="status-name">{{ 'ProjectEdit.Status.' + st | translate }}</span>
+            <div class="status-radio-indicator">
+              @if (selectedStatus() === st) {
+              <svg lucideCheck class="icon-xs"></svg>
+              }
+            </div>
+          </div>
+          <p class="status-card-desc">{{ 'ProjectEdit.Status_Desc.' + st | translate }}</p>
+        </div>
+        }
+      </div>
+    </section>
+    }
+  </main>
+
+  <!-- Modals -->
+  @if (isAddSkillModalOpen()) {
+  <app-add-skill-modal [projectId]="projectId()" [existingSkillIds]="existingSkillIds()"
+    (skillAdded)="onSkillAdded($event)" (closeModal)="closeAddSkill()"></app-add-skill-modal>
+  }
+
+  @if (isAddContributorModalOpen()) {
+  <app-add-contributor-modal [projectId]="projectId()" (contributorInvited)="onContributorInvited()"
+    (closeModal)="closeAddContributor()"></app-add-contributor-modal>
+  }
+  }
+</div>

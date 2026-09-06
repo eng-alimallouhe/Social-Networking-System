@@ -1,0 +1,166 @@
+<div class="modal-backdrop" (click)="onClose()">
+  <div class="modal-container" (click)="$event.stopPropagation()">
+    <!-- Header -->
+    <div class="modal-header">
+      <div class="modal-title-wrap">
+        <h3 class="modal-title">{{ 'ProjectEdit.Contributors.Add_Contributor_Title' | translate }}</h3>
+        <p class="modal-subtitle">{{ 'ProjectEdit.Contributors.Add_Contributor_Subtitle' | translate }}</p>
+      </div>
+      <button type="button" class="btn-close" (click)="onClose()" aria-label="Close">
+        <svg lucideX class="icon-sm"></svg>
+      </button>
+    </div>
+
+    <!-- Body -->
+    <div class="modal-body">
+      <!-- Search Input -->
+      <div class="search-input-wrapper">
+        <svg lucideSearch class="search-icon"></svg>
+        <input
+          type="text"
+          class="search-input"
+          [placeholder]="'ProjectEdit.Contributors.Search_Placeholder' | translate"
+          [ngModel]="searchQuery()"
+          (ngModelChange)="onSearchInput($event)"
+          autofocus
+        />
+        @if (searchQuery()) {
+          <button type="button" class="clear-search-btn" (click)="onSearchInput('')">
+            <svg lucideX class="icon-xs"></svg>
+          </button>
+        }
+      </div>
+
+      <!-- Candidates Selection List -->
+      <div class="candidates-section">
+        <div class="section-header-row">
+          <span class="section-label">{{ 'ProjectEdit.Contributors.Eligible_Candidates' | translate }}</span>
+          <span class="candidates-hint">{{ 'ProjectEdit.Contributors.Eligibility_Hint' | translate }}</span>
+        </div>
+
+        @if (isLoadingCandidates()) {
+          <div class="loader-container">
+            <app-circle-loader></app-circle-loader>
+          </div>
+        } @else {
+          <div class="candidates-list">
+            @for (candidate of candidates(); track candidate.id) {
+              <div
+                class="candidate-card"
+                [class.selected]="selectedCandidate()?.id === candidate.id"
+                (click)="selectCandidate(candidate)"
+              >
+                <img
+                  [src]="candidate.profilePictureUrl || defaultAvatar"
+                  [alt]="candidate.fullName"
+                  class="candidate-avatar"
+                  (error)="onAvatarError($event)"
+                />
+
+                <div class="candidate-details">
+                  <div class="candidate-name-row">
+                    <span class="candidate-name">{{ candidate.fullName }}</span>
+                    @if (candidate.isMutualFollow) {
+                      <span class="badge-mutual">
+                        <svg lucideSparkles class="icon-xs"></svg>
+                        <span>{{ 'ProjectEdit.Contributors.Mutual_Follow' | translate }}</span>
+                      </span>
+                    }
+                  </div>
+                  @if (candidate.specialization) {
+                    <span class="candidate-spec">{{ candidate.specialization }}</span>
+                  }
+                </div>
+
+                <div class="candidate-radio">
+                  @if (selectedCandidate()?.id === candidate.id) {
+                    <div class="radio-checked">
+                      <svg lucideCheck class="icon-xs"></svg>
+                    </div>
+                  } @else {
+                    <div class="radio-unchecked"></div>
+                  }
+                </div>
+              </div>
+            }
+
+            @if (candidates().length === 0 && !isLoadingCandidates()) {
+              <div class="empty-candidates">
+                <p class="empty-state-title">{{ 'ProjectEdit.Contributors.No_Candidates_Title' | translate }}</p>
+                <p class="empty-state-desc">{{ 'ProjectEdit.Contributors.No_Candidates_Desc' | translate }}</p>
+              </div>
+            }
+          </div>
+        }
+      </div>
+
+      <!-- Configuration: Role & Invitation Message -->
+      @if (selectedCandidate()) {
+        <div class="invitation-config-card">
+          <div class="form-group">
+            <label class="form-label" for="role-select">
+              {{ 'ProjectEdit.Contributors.Role_Label' | translate }}
+            </label>
+            <select
+              id="role-select"
+              class="form-select"
+              [ngModel]="selectedRole()"
+              (ngModelChange)="selectedRole.set($event)"
+            >
+              @for (role of availableRoles; track role) {
+                <option [value]="role">
+                  {{ 'ProjectEdit.Roles.' + role | translate }}
+                </option>
+              }
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="invitation-message">
+              {{ 'ProjectEdit.Contributors.Invitation_Message_Label' | translate }}
+              <span class="optional-tag">{{ 'ProjectEdit.Common.Optional' | translate }}</span>
+            </label>
+            <textarea
+              id="invitation-message"
+              class="form-textarea"
+              rows="3"
+              [placeholder]="'ProjectEdit.Contributors.Invitation_Message_Placeholder' | translate"
+              [ngModel]="invitationMessage()"
+              (ngModelChange)="invitationMessage.set($event)"
+            ></textarea>
+          </div>
+        </div>
+      }
+
+      <!-- Error Message -->
+      @if (errorMessage()) {
+        <div class="error-banner">
+          <span>{{ errorMessage() }}</span>
+        </div>
+      }
+    </div>
+
+    <!-- Footer -->
+    <div class="modal-footer">
+      <button type="button" class="btn-cancel" (click)="onClose()">
+        {{ 'ProjectEdit.Common.Cancel' | translate }}
+      </button>
+
+      <button
+        type="button"
+        class="btn-submit"
+        [disabled]="!selectedCandidate() || isSubmitting()"
+        (click)="sendInvitation()"
+      >
+        @if (isSubmitting()) {
+          <div class="btn-loader-wrapper">
+            <app-circle-loader></app-circle-loader>
+          </div>
+        } @else {
+          <svg lucideSend class="icon-sm"></svg>
+          <span>{{ 'ProjectEdit.Contributors.Send_Invitation_Button' | translate }}</span>
+        }
+      </button>
+    </div>
+  </div>
+</div>

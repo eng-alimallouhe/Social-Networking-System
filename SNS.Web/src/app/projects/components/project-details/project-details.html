@@ -83,9 +83,11 @@
                     <svg lucideGlobe class="action-icon"></svg>
                 </button>
 
-                <button type="button" class="btn btn-icon btn-outlined" aria-label="Settings">
+                @if (isOwner()) {
+                <button type="button" class="btn btn-icon btn-outlined" (click)="navigateToEdit()" aria-label="Settings">
                     <svg lucideSettings class="action-icon"></svg>
                 </button>
+                }
             </div>
             }
         </div>
@@ -172,10 +174,16 @@
                     <div class="sidebar-info-block">
                         <span class="info-label">{{ 'Project.Tech_Stack' | translate }}</span>
                         <div class="tech-stack-chips">
+                            @if (isOwner()) {
+                            <button type="button" class="tech-chip add-chip-btn" (click)="openAddSkillModal()">
+                                <svg lucidePlus class="chip-add-icon"></svg>
+                                <span>{{ 'ProjectEdit.Skills.Add_Skill_Button' | translate }}</span>
+                            </button>
+                            }
                             @for (skill of p.skills; track skill.skillId) {
                             <span class="tech-chip">{{ skill.skillName }}</span>
                             }
-                            @if (!p.skills || p.skills.length === 0) {
+                            @if (!isOwner() && (!p.skills || p.skills.length === 0)) {
                             <span class="text-muted text-sm">{{ 'Project.No_Skills' | translate }}</span>
                             }
                         </div>
@@ -194,6 +202,22 @@
 
                 <div class="sidebar-card-body">
                     <div class="collaborators-list">
+                        @if (isLoadingCollaborators()) {
+                        <div class="collaborators-loader-container">
+                            <app-circle-loader></app-circle-loader>
+                        </div>
+                        } @else {
+                        @if (isOwner()) {
+                        <button type="button" class="collaborator-item add-collaborator-item" (click)="openAddContributorModal()">
+                            <div class="collaborator-avatar add-avatar-circle">
+                                <svg lucidePlus class="add-avatar-icon"></svg>
+                            </div>
+                            <div class="collaborator-info">
+                                <h4 class="collaborator-name">{{ 'ProjectEdit.Contributors.Add_Contributor_Button' | translate }}</h4>
+                                <p class="collaborator-role">{{ 'ProjectEdit.Contributors.Invite_Team_Member' | translate }}</p>
+                            </div>
+                        </button>
+                        }
                         @for (c of collaborators(); track c.profileId) {
                         <div class="collaborator-item">
                             <img [src]="c.profileImageUrl || defaultAvatar" [alt]="c.displayName"
@@ -204,8 +228,9 @@
                             </div>
                         </div>
                         }
-                        @if (collaborators().length === 0) {
+                        @if (collaborators().length === 0 && !isOwner()) {
                         <p class="text-muted text-sm empty-collab-text">{{ 'Project.No_Collaborators' | translate }}</p>
+                        }
                         }
                     </div>
                 </div>
@@ -429,5 +454,24 @@
             </div>
         </div>
     </div>
+    }
+
+    <!-- Add Skill Modal -->
+    @if (isAddSkillModalOpen()) {
+    <app-add-skill-modal
+        [projectId]="projectId()"
+        [existingSkillIds]="existingSkillIds()"
+        (skillAdded)="onSkillAdded($event)"
+        (closeModal)="closeAddSkillModal()"
+    ></app-add-skill-modal>
+    }
+
+    <!-- Add Contributor Modal -->
+    @if (isAddContributorModalOpen()) {
+    <app-add-contributor-modal
+        [projectId]="projectId()"
+        (contributorInvited)="onContributorInvited()"
+        (closeModal)="closeAddContributorModal()"
+    ></app-add-contributor-modal>
     }
 </div>

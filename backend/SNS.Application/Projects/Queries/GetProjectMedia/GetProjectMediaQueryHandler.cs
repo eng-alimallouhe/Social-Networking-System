@@ -5,7 +5,6 @@ using SNS.Application.Shared.Abstractions.Messaging;
 using SNS.Application.Shared.DTOs;
 using SNS.Shared.Results;
 using SNS.Shared.StatusCodes;
-using System.Linq;
 
 namespace SNS.Application.Projects.Queries.GetProjectMedia;
 

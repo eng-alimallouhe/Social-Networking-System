@@ -6,12 +6,15 @@ import { DISCUSSIONS_API_ROUTES } from '../../../../shared/constants/api-routes/
 import { Result } from '../../../../shared/contracts/result';
 import { AddProblemTagCommand } from '../contracts/add-problem-tag.command';
 import { ProblemTagDto } from '../contracts/problem-tag.dto';
+import { TagDto } from '../../../../shared/contracts/tag.dto';
+import { TagsService } from '../../../../shared/services/tags.service';
 
 @Injectable({
     providedIn: 'root',
 })
 export class ProblemTagsService {
     private http = inject(HttpClient);
+    private tagsService = inject(TagsService);
     private baseUrl = environment.apiUrl;
 
     addProblemTag(problemId: string, command: AddProblemTagCommand): Observable<Result> {
@@ -31,5 +34,9 @@ export class ProblemTagsService {
         return this.http.get<Result<ProblemTagDto[]>>(
             `${this.baseUrl}${DISCUSSIONS_API_ROUTES.ProblemTags(problemId)}`
         );
+    }
+
+    getTags(search?: string): Observable<Result<TagDto[]>> {
+        return this.tagsService.getTags(search);
     }
 }

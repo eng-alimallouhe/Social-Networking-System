@@ -5,6 +5,7 @@ import { ProjectTagDto } from './project-tag.dto';
 
 export interface ProjectDetailsDto {
     projectId: string;
+    ownerId: string;
     id?: string;
     title: string;
     shortDescription: string;

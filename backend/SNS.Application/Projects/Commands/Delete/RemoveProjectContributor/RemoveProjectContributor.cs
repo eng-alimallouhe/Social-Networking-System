@@ -5,46 +5,45 @@ using SNS.Domain.Projects.Bridges;
 using SNS.Domain.Projects.Entities;
 using SNS.Domain.Shared.Abstractions.Repositories;
 using SNS.Shared.Results;
+using SNS.Shared.StatusCodes;
 using SNS.Shared.StatusCodes.Identity;
 using SNS.Shared.StatusCodes.Projects;
-using Microsoft.EntityFrameworkCore;
 
-namespace SNS.Application.Projects.Commands.Delete.RemoveProjectSkill;
+namespace SNS.Application.Projects.Commands.Delete.RemoveProjectContributor;
 
-public sealed record RemoveProjectSkillCommand(
+public sealed record RemoveProjectContributorCommand(
     Guid ProjectId,
-    Guid ProjectSkillId
+    Guid ContributorId
 ) : ICommand;
 
-internal sealed class RemoveProjectSkillCommandHandler : ICommandHandler<RemoveProjectSkillCommand>
+internal sealed class RemoveProjectContributorCommandHandler : ICommandHandler<RemoveProjectContributorCommand>
 {
     private readonly ISoftDeletableRepository<Project> _projectRepo;
-    private readonly IRepository<ProjectSkill> _projectSkillRepo;
+    private readonly IRepository<ProjectContributor> _contributorRepo;
     private readonly ICurrentUserService _currentUserService;
     private readonly IUnitOfWork _unitOfWork;
 
-    public RemoveProjectSkillCommandHandler(
+    public RemoveProjectContributorCommandHandler(
         ISoftDeletableRepository<Project> projectRepo,
-        IRepository<ProjectSkill> projectSkillRepo,
+        IRepository<ProjectContributor> contributorRepo,
         ICurrentUserService currentUserService,
         IUnitOfWork unitOfWork)
     {
         _projectRepo = projectRepo;
-        _projectSkillRepo = projectSkillRepo;
+        _contributorRepo = contributorRepo;
         _currentUserService = currentUserService;
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<Result> Handle(RemoveProjectSkillCommand request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(RemoveProjectContributorCommand request, CancellationToken cancellationToken)
     {
         var profileId = _currentUserService.ProfileId;
-        if (profileId == null)
+        if (!profileId.HasValue)
         {
             return Result.Failure(SecurityStatusCodes.AuthenticationRequired);
         }
 
         var project = await _projectRepo.GetSingleByExpressionAsync(p => p.Id == request.ProjectId, cancellationToken);
-
         if (project == null)
         {
             return Result.Failure(ProjectStatusCodes.ProjectNotFound);
@@ -55,16 +54,18 @@ internal sealed class RemoveProjectSkillCommandHandler : ICommandHandler<RemoveP
             return Result.Failure(ProjectStatusCodes.NotProjectOwner);
         }
 
-        var existingProjectSkill = await _projectSkillRepo.GetSingleByExpressionAsync(
-            ps => ps.ProjectId == request.ProjectId && (ps.Id == request.ProjectSkillId || ps.SkillId == request.ProjectSkillId),
+        var existingContributor = await _contributorRepo.GetSingleByExpressionAsync(
+            c => c.ProjectId == request.ProjectId && c.ContributorId == request.ContributorId,
             cancellationToken);
 
-        if (existingProjectSkill != null)
+        if (existingContributor == null)
         {
-            _projectSkillRepo.Delete(existingProjectSkill);
-            await _unitOfWork.CompleteAsync(cancellationToken);
+            return Result.Failure(ProjectStatusCodes.ContributorInvitationNotFound);
         }
 
-        return Result.Success(ProjectStatusCodes.SkillRemoved);
+        _contributorRepo.Delete(existingContributor);
+        await _unitOfWork.CompleteAsync(cancellationToken);
+
+        return Result.Success(OperationStatusCode.Success);
     }
 }

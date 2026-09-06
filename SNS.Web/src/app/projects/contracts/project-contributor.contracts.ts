@@ -1,9 +1,10 @@
+import { ProjectRole } from '../enums/project-role.enum';
+
 export interface AddProjectContributorCommand {
     projectId: string;
-    userId: string;
-    role: string;
-    description: string;
-    profitRatio: number;
+    targetProfileId: string;
+    role: ProjectRole | string;
+    invitationMessage?: string;
 }
 
 export interface ChangeContributorStatusRequest {

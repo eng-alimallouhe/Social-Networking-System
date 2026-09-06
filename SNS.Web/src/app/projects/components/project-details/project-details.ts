@@ -21,7 +21,8 @@ import {
     LucideRefreshCw,
     LucideFolder,
     LucideFileText,
-    LucideCheckCircle2
+    LucideCheckCircle2,
+    LucidePlus
 } from '@lucide/angular';
 import { ProjectService } from '../../services/project.service';
 import { AuthenticationService } from '../../../identity/shared/services/authentication.service';
@@ -30,9 +31,13 @@ import { ProjectParticipantDetailsDto } from '../../contracts/project-participan
 import { ProjectRatingDto } from '../../contracts/project-rating.dto';
 import { ProjectMediaDto } from '../../contracts/project-media.dto';
 import { ProjectMilestoneDto } from '../../contracts/project-milestone.dto';
+import { ProjectSkillDto } from '../../contracts/project-skill.dto';
 import { FileNode } from '../../contracts/file-node.dto';
 import { MarkdownService } from '../../../shared/services/markdown.service';
 import { SkeletonLoaderComponent, SkeletonType } from '../../../shared/Loading/components/skeleton-loader/skeleton-loader';
+import { CircleLoader } from '../../../shared/Loading/components/circle-loader/circle-loader';
+import { AddSkillModal } from '../add-skill-modal/add-skill-modal';
+import { AddContributorModal } from '../add-contributor-modal/add-contributor-modal';
 
 export type ProjectTab = 'readme' | 'media' | 'milestones' | 'source-code' | 'reviews';
 
@@ -43,6 +48,9 @@ export type ProjectTab = 'readme' | 'media' | 'milestones' | 'source-code' | 're
         CommonModule,
         TranslatePipe,
         SkeletonLoaderComponent,
+        CircleLoader,
+        AddSkillModal,
+        AddContributorModal,
         LucideArrowLeft,
         LucidePencil,
         LucideUserPlus,
@@ -61,7 +69,8 @@ export type ProjectTab = 'readme' | 'media' | 'milestones' | 'source-code' | 're
         LucideRefreshCw,
         LucideFolder,
         LucideFileText,
-        LucideCheckCircle2
+        LucideCheckCircle2,
+        LucidePlus
     ],
     templateUrl: './project-details.html',
     styleUrl: './project-details.css'
@@ -98,27 +107,32 @@ export class ProjectDetails implements OnInit {
     isLoadingReviews = signal<boolean>(false);
     isLoadingCollaborators = signal<boolean>(false);
 
+    isAddSkillModalOpen = signal<boolean>(false);
+    isAddContributorModalOpen = signal<boolean>(false);
+
     readonly isOwner = computed(() => {
         if (!this.authService.isAuthenticated()) return false;
-        const currentId = this.authService.getClaim('ProfileId') || this.authService.getUserId();
-        if (!currentId) return true;
+        console.log("is Authenticated: ", this.authService.isAuthenticated());
 
-        const proj = this.project() as any;
+        const currentId = this.authService.getProfileId();
+        console.log("currentId: ", currentId);
+
+        if (!currentId) return false;
+
+        const proj = this.project();
+        console.log("proj: ", proj);
+
+        console.log("is Owner: ", proj?.ownerId === currentId);
+
+
         if (proj?.ownerId && String(proj.ownerId).toLowerCase() === currentId.toLowerCase()) {
             return true;
         }
 
-        const ownerCollab = this.collaborators().find(c =>
-            c.profileId && String(c.profileId).toLowerCase() === currentId.toLowerCase() &&
-            (c.role?.toLowerCase() === 'owner' || c.role?.toLowerCase() === 'projectmanager')
-        );
-        if (ownerCollab) return true;
-
-        // If no collaborators are listed yet or ownerId isn't on DTO, default to true for authenticated user
-        if (this.collaborators().length === 0) return true;
-
         return false;
     });
+
+    readonly existingSkillIds = computed(() => this.project()?.skills?.map(s => s.skillId) || []);
 
     readonly averageRating = computed(() => {
         const r = this.ratings();
@@ -272,12 +286,52 @@ export class ProjectDetails implements OnInit {
         }
     }
 
+    navigateToEdit(): void {
+        const id = this.projectId();
+        if (id) {
+            this.router.navigate(['/projects', id, 'edit']);
+        }
+    }
+
     onUpdateProject(): void {
-        this.router.navigate(['/projects/edit', this.projectId()]);
+        this.navigateToEdit();
     }
 
     onAddCollaborator(): void {
-        // action hook for collaborator addition
+        this.openAddContributorModal();
+    }
+
+    openAddSkillModal(): void {
+        this.isAddSkillModalOpen.set(true);
+    }
+
+    closeAddSkillModal(): void {
+        this.isAddSkillModalOpen.set(false);
+    }
+
+    onSkillAdded(newSkill: ProjectSkillDto): void {
+        const proj = this.project();
+        if (proj) {
+            const alreadyExists = proj.skills?.some(s => s.skillId?.toLowerCase() === newSkill.skillId?.toLowerCase());
+            if (!alreadyExists) {
+                this.project.set({
+                    ...proj,
+                    skills: [...(proj.skills || []), newSkill]
+                });
+            }
+        }
+    }
+
+    openAddContributorModal(): void {
+        this.isAddContributorModalOpen.set(true);
+    }
+
+    closeAddContributorModal(): void {
+        this.isAddContributorModalOpen.set(false);
+    }
+
+    onContributorInvited(): void {
+        this.loadCollaborators();
     }
 
     onAvatarError(event: Event): void {

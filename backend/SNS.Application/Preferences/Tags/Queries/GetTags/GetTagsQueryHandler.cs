@@ -34,8 +34,8 @@ internal sealed class GetTagsQueryHandler : IQueryHandler<GetTagsQuery, List<Tag
 
         if (!string.IsNullOrWhiteSpace(request.Search))
         {
-            var search = request.Search.Trim();
-            query = query.Where(t => t.Name.Contains(search));
+            var search = request.Search.Trim().ToLower();
+            query = query.Where(t => t.Name.ToLower().Contains(search));
         }
 
         var tags = await query

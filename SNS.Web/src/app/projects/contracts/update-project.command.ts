@@ -5,10 +5,11 @@ export interface UpdateProjectCommand {
     projectId: string;
     title: string;
     shortDescription: string;
-    rate: number;
-    readmeContent: string;
-    type: ProjectType;
-    status: ProjectStatus;
+    liveDemoUrl?: string;
+    rate?: number;
+    readmeContent?: string;
+    type?: ProjectType;
+    status?: ProjectStatus;
 }
 
 export interface UpdateProjectBasicInfoCommand {

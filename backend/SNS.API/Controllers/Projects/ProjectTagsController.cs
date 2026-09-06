@@ -33,8 +33,11 @@ public class ProjectTagsController : ControllerBase
         [FromRoute] Guid projectId,
         [FromBody] AddProjectTagCommand command)
     {
-        if (projectId != command.ProjectId) return BadRequest(Result.Failure(SNS.Shared.StatusCodes.OperationStatusCode.InvalidInput));
-        return (await _mediator.Send(command)).ToActionResult(this);
+        if (command.ProjectId != Guid.Empty && projectId != command.ProjectId) 
+            return BadRequest(Result.Failure(SNS.Shared.StatusCodes.OperationStatusCode.InvalidInput));
+
+        var request = command with { ProjectId = projectId };
+        return (await _mediator.Send(request)).ToActionResult(this);
     }
 
     [Authorize]

@@ -23,6 +23,7 @@ internal sealed class GetProjectByIdQueryHandler : IQueryHandler<GetProjectByIdQ
             .Where(p => p.Id == request.ProjectId && p.IsActive)
             .Select(p => new ProjectDetailsDto(
                 p.Id,
+                p.OwnerId,
                 p.Title,
                 p.ShortDescription,
                 p.MainImageUrl,

@@ -23,6 +23,16 @@ export const routes: Routes = [
         loadChildren: () => import('./home/routes/home.routes').then(m => m.HomeRoutes)
     },
     {
+        path: 'projects',
+        component: HomeLayout,
+        children: [
+            {
+                path: '',
+                loadChildren: () => import('./projects/routes/projects.routes').then(m => m.PROJECTS_ROUTES)
+            }
+        ]
+    },
+    {
         path: 'demo',
         loadChildren: () => import('./demo/routes/demo.routes').then(m => m.DemoRoutes)
     },

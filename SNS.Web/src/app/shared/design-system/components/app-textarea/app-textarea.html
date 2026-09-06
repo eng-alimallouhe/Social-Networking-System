@@ -1,0 +1,39 @@
+<div class="textarea-container" [class.disabled]="disabled()" [class.invalid]="invalid" [class.focused]="focused()">
+    <label *ngIf="label" [for]="textareaId" class="textarea-label">
+        <span class="label-text">{{ label }}</span>
+        <span *ngIf="required" class="required-asterisk" aria-hidden="true">*</span>
+        <span *ngIf="showOptional && !required" class="optional-indicator">(optional)</span>
+    </label>
+
+    <div class="textarea-box">
+        <textarea
+            [id]="textareaId"
+            [name]="name"
+            [value]="value()"
+            [placeholder]="placeholder"
+            [rows]="rows"
+            [disabled]="disabled()"
+            [readonly]="readonly"
+            [attr.maxlength]="maxlength"
+            [attr.aria-required]="required ? 'true' : null"
+            (input)="onInput($event)"
+            (blur)="onBlur()"
+            (focus)="onFocus()"
+            class="textarea-field"
+            [class.code-font]="codeFont"
+        ></textarea>
+
+        <div class="textarea-footer" *ngIf="showCharCount || maxlength">
+            <div class="textarea-actions">
+                <ng-content select="[actions]"></ng-content>
+            </div>
+            <div class="textarea-meta">
+                <span class="char-count-pill">
+                    {{ charCount() }}<span *ngIf="maxlength">/{{ maxlength }}</span>
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="hint" class="textarea-hint">{{ hint }}</div>
+</div>

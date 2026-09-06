@@ -237,5 +237,23 @@ public class ProfilesController : ControllerBase
     {
         return (await _mediator.Send(new GetProfileByIdQuery(id))).ToActionResult(this);
     }
+
+    /// <summary>
+    /// Retrieves candidate profiles eligible for a project contributor invitation.
+    /// </summary>
+    [Authorize]
+    [MapToApiVersion("1.0")]
+    [HttpGet("project-invitation-candidates")]
+    [ProducesResponseType(typeof(List<ProfileInvitationCandidateDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [RequireSession]
+    public async Task<ActionResult<Result<List<ProfileInvitationCandidateDto>>>> GetProfilesForProjectInvitationAsync(
+        [FromQuery] Guid projectId,
+        [FromQuery] string? search = null)
+    {
+        return (await _mediator.Send(new SNS.Application.Profiles.Profiles.Queries.GetProfilesForProjectInvitation.GetProfilesForProjectInvitationQuery(projectId, search))).ToActionResult(this);
+    }
 }
 
