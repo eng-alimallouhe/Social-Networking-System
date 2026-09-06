@@ -114,6 +114,33 @@ services:
     networks:
       - backend
 
+  ai-service:
+    image: ghcr.io/ggml-org/llama.cpp:server
+    container_name: ai-service
+    restart: unless-stopped
+
+    ports:
+      - "8080:8080"
+
+    volumes:
+      - ./ai-service/models:/models:ro
+
+    command:
+      - -m
+      - /models/Qwen3-0.6B-Q4_0.gguf
+      - --host
+      - 0.0.0.0
+      - --port
+      - "8080"
+      - -c
+      - "2048"
+      - -t
+      - "4"
+
+    networks:
+      - backend  
+
+
 networks:
   elk:
   backend:

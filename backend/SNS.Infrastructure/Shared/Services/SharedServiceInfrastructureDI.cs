@@ -26,7 +26,7 @@ public static class SharedServiceInfrastructureDI
             .AddStorageServices(configuration)
             .AddCachingServices(configuration)
             .AddBackgroundJobsServices()
-            .AddAIDI();
+            .AddAIDI(configuration);
 
         services.AddSingleton(sp =>
         {
