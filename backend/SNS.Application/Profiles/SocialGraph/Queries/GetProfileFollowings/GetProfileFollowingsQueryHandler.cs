@@ -65,11 +65,25 @@ internal sealed class GetProfileFollowingsQueryHandler
             })
             .ToListAsync(cancellationToken);
 
+        var distinctKeysList = followers
+            .Where(pv => !string.IsNullOrWhiteSpace(pv.ProfilePictureObjectKey))
+            .Select(pv => pv.ProfilePictureObjectKey!)
+            .Distinct()
+            .ToList();
+
+        var urlTasks = distinctKeysList.Select(async k => new
+        {
+            Key = k,
+            Url = await _fileStorageService.GetTemporaryUrlAsync(k, TimeSpan.FromHours(1))
+        });
+        var resolvedUrls = await Task.WhenAll(urlTasks);
+        var distinctKeys = resolvedUrls.ToDictionary(x => x.Key, x => x.Url);
+
         var followersResult = followers.Select(pv => new ProfileFollowDto
         (
             ProfileId: pv.ProfileId,
             FullName: pv.FullName,
-            ProfilePictureUrl: pv.ProfilePictureObjectKey != null ? _fileStorageService.GetFilePublicUrl(pv.ProfilePictureObjectKey) : null,
+            ProfilePictureUrl: pv.ProfilePictureObjectKey != null && distinctKeys.TryGetValue(pv.ProfilePictureObjectKey, out var url) ? url : null,
             Specialization: pv.Specialization,
             FollowDate: pv.FollowDate
         )).ToList();

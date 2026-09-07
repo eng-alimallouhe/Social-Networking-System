@@ -116,22 +116,13 @@
 }
 
 .toast-close {
-    background: transparent;
-    border: none;
-    cursor: pointer;
     color: var(--text-muted);
     padding: var(--spacing-1);
-    margin-left: var(--spacing-2);
-    border-radius: var(--radius-sm);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all var(--transition-fast);
+    margin-inline-start: var(--spacing-2);
 }
 
 .toast-close:hover {
     color: var(--text-primary);
-    background: var(--bg-hover);
     transform: rotate(90deg);
 }
 

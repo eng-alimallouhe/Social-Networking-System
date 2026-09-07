@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using SNS.Application.Abstractions.Messaging;
 using SNS.Application.Identity.Shared.Abstractions;
 using SNS.Application.Shared.Abstractions.Data;
+using SNS.Domain.ContentManagement.Communities.Entities;
 using SNS.Domain.ContentManagement.Communities.Enums;
 using SNS.Domain.Shared.Abstractions.Repositories;
 using SNS.Shared.Results;
@@ -24,15 +25,18 @@ public sealed record RejectMembershipCommand(
 internal sealed class RejectMembershipCommandHandler : ICommandHandler<RejectMembershipCommand>
 {
     private readonly IApplicationDbContext _dbContext;
+    private readonly IRepository<CommunityJoinRequest> _joinRequestRepo;
     private readonly IUnitOfWork _unitOfWork;
     private readonly ICurrentUserService _currentUserService;
 
     public RejectMembershipCommandHandler(
         IApplicationDbContext dbContext,
+        IRepository<CommunityJoinRequest> joinRequestRepo,
         IUnitOfWork unitOfWork,
         ICurrentUserService currentUserService)
     {
         _dbContext = dbContext;
+        _joinRequestRepo = joinRequestRepo;
         _unitOfWork = unitOfWork;
         _currentUserService = currentUserService;
     }
@@ -45,17 +49,28 @@ internal sealed class RejectMembershipCommandHandler : ICommandHandler<RejectMem
             return Result.Failure(SecurityStatusCodes.AuthenticationRequired);
         }
 
-        var joinRequest = await _dbContext.CommunityJoinRequests
-            .Include(r => r.Community)
-            .FirstOrDefaultAsync(r => r.Id == request.RequestId, cancellationToken);
+        var joinRequest = await _joinRequestRepo.GetSingleByExpressionAsync(
+            r => r.Id == request.RequestId, cancellationToken);
 
         if (joinRequest == null || joinRequest.Status != JoinRequestStatus.Pending)
         {
             return Result.Failure(ResourceStatusCode.NotFound);
         }
 
-        var isOwner = joinRequest.Community.OwnerId == profileId.Value;
+        var community = await _dbContext.Communities
+            .AsNoTracking()
+            .Where(c => c.Id == joinRequest.CommunityId && c.IsActive)
+            .Select(c => new { c.Id, c.OwnerId })
+            .FirstOrDefaultAsync(cancellationToken);
+
+        if (community == null)
+        {
+            return Result.Failure(ResourceStatusCode.NotFound);
+        }
+
+        var isOwner = community.OwnerId == profileId.Value;
         var isModerator = !isOwner && await _dbContext.CommunityMemberships
+            .AsNoTracking()
             .AnyAsync(m => m.CommunityId == joinRequest.CommunityId &&
                            m.MemberId == profileId.Value &&
                            (m.Role == CommunityRole.Moderator || m.Role == CommunityRole.Owner) &&

@@ -2,11 +2,7 @@
     <!-- Header: Avatar, Info, Actions -->
     <div class="card-header">
         <div class="avatar-container">
-            <img 
-                [src]="profile().profilePictureUrl || defaultAvatar" 
-                [alt]="profile().fullName" 
-                class="avatar-img"
-                (error)="onAvatarError($event)" />
+            <app-avatar [src]="profile().profilePictureUrl" [name]="profile().fullName" size="lg"></app-avatar>
             <span class="online-indicator" aria-label="Online"></span>
         </div>
 
@@ -27,20 +23,26 @@
         </div>
 
         <div class="header-actions">
-            <button
-                type="button"
-                class="btn-follow"
-                [class.btn-following]="isFollowing()"
-                (click)="toggleFollow()">
-                @if (isFollowing()) {
-                    <svg lucideUserCheck class="action-icon"></svg>
-                    <span>{{ 'Profile.Following' | translate }}</span>
-                } @else {
-                    <svg lucideUserPlus class="action-icon"></svg>
-                    <span>{{ 'Profile.Follow' | translate }}</span>
-                }
-            </button>
-            <button type="button" class="btn-more" aria-label="More options">
+            @if (!isSelf()) {
+                <button
+                    type="button"
+                    class="btn btn-sm btn-follow"
+                    [class.btn-primary]="!isFollowing()"
+                    [class.btn-secondary]="isFollowing()"
+                    [disabled]="isActionLoading()"
+                    (click)="toggleFollow()">
+                    @if (isActionLoading()) {
+                        <app-circle-loader></app-circle-loader>
+                    } @else if (isFollowing()) {
+                        <svg lucideUserCheck class="action-icon"></svg>
+                        <span>{{ 'Profile.Following' | translate }}</span>
+                    } @else {
+                        <svg lucideUserPlus class="action-icon"></svg>
+                        <span>{{ 'Profile.Follow' | translate }}</span>
+                    }
+                </button>
+            }
+            <button type="button" class="btn btn-icon btn-ghost btn-more" aria-label="More options">
                 <svg lucideMoreVertical class="more-icon"></svg>
             </button>
         </div>
@@ -80,7 +82,7 @@
             </span>
         </div>
 
-        <a [routerLink]="['/profiles', profile().id]" class="view-profile-link" (click)="onProfileClick($event)">
+        <a [routerLink]="['/profiles', profile().id]" class="btn btn-ghost btn-sm view-profile-link" (click)="onProfileClick($event)">
             <span>{{ 'Profile.View_Profile' | translate }}</span>
             <svg lucideArrowRight class="link-arrow"></svg>
         </a>

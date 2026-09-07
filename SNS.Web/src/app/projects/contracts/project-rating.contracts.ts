@@ -1,4 +1,5 @@
 export interface RateProjectCommand {
     projectId: string;
-    rating: number;
+    ratingValue: number;
+    comment: string;
 }

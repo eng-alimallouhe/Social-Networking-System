@@ -9,6 +9,8 @@ using SNS.Application.Jobs.Companies.Commands.UpdateCompany;
 using SNS.Application.Jobs.Companies.Contracts;
 using SNS.Application.Jobs.Companies.Queries.GetCompanyById;
 using SNS.Application.Jobs.Companies.Queries.GetMyCompanies;
+using SNS.Application.Jobs.CompanyAdministrators.Contracts;
+using SNS.Application.Jobs.CompanyAdministrators.Queries.GetCompanyAdministrators;
 using SNS.Shared.Results;
 using SNS.API.Attributes;
 
@@ -42,6 +44,20 @@ public class CompaniesController : ControllerBase
     public async Task<ActionResult<Result<CompanyDetailsDto>>> GetCompanyByIdAsync([FromRoute] Guid companyId)
     {
         return (await _mediator.Send(new GetCompanyByIdQuery(companyId))).ToActionResult(this);
+    }
+
+    /// <summary>
+    /// Retrieves managers/administrators of a specific company.
+    /// </summary>
+    /// <param name="companyId">The company unique identifier.</param>
+    /// <response code="200">Company managers retrieved successfully.</response>
+    /// <response code="404">Company not found.</response>
+    [HttpGet("{companyId:guid}/managers")]
+    [ProducesResponseType(typeof(Result<List<CompanyAdministratorDto>>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Result), StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<Result<List<CompanyAdministratorDto>>>> GetCompanyManagersAsync([FromRoute] Guid companyId)
+    {
+        return (await _mediator.Send(new GetCompanyAdministratorsQuery(companyId))).ToActionResult(this);
     }
 
     /// <summary>

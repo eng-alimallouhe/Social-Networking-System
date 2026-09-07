@@ -1,7 +1,7 @@
 <div class="post-details-container" [attr.dir]="isRtl() ? 'rtl' : 'ltr'">
     <!-- Top Bar Navigation -->
     <div class="title-section">
-        <button class="btn btn-icon-text back-btn" (click)="goBack()" [attr.aria-label]="'ContentManagement.Posts.Back' | translate">
+        <button type="button" class="btn btn-secondary btn-icon back-btn" (click)="goBack()" [attr.aria-label]="'ContentManagement.Posts.Back' | translate">
             <svg lucideArrowLeft class="directional-icon"></svg>
         </button>
         <h1>{{ 'ContentManagement.Posts.Post_Details' | translate }}</h1>
@@ -10,7 +10,7 @@
     <!-- Post Loading Skeleton -->
     @if (isPostLoading()) {
     <section class="post-section" [attr.aria-label]="'ContentManagement.Posts.Loading' | translate" aria-busy="true">
-        <app-skeleton-loader [type]="SkeletonType.Post"></app-skeleton-loader>
+        <app-skeleton-loader [type]="SkeletonType.Content"></app-skeleton-loader>
     </section>
     }
 
@@ -19,7 +19,7 @@
     <div class="error-card" role="alert">
         <svg lucideAlertCircle class="error-icon"></svg>
         <p class="error-message">{{ 'ContentManagement.Posts.Error' | translate }}</p>
-        <button type="button" class="retry-btn" (click)="loadPost()">
+        <button type="button" class="btn btn-primary" (click)="loadPost()">
             <svg lucideRefreshCw class="retry-icon"></svg>
             <span>{{ 'ContentManagement.Posts.Retry' | translate }}</span>
         </button>
@@ -53,7 +53,7 @@
                 <span class="reply-text">
                     {{ 'ContentManagement.Comments.Replying_To' | translate }}: <strong>{{ rep.author.fullName || ('ContentManagement.Comments.Anonymous' | translate) }}</strong>
                 </span>
-                <button type="button" class="cancel-reply-btn" (click)="cancelReply()"
+                <button type="button" class="btn btn-icon btn-ghost cancel-reply-btn" (click)="cancelReply()"
                     [attr.aria-label]="'ContentManagement.Comments.Cancel_Reply' | translate">&times;</button>
             </div>
             }
@@ -64,7 +64,7 @@
                     (keydown.enter)="onEnterKey($event)">
                 </textarea>
                 <div class="composer-actions">
-                    <button type="button" class="submit-comment-btn"
+                    <button type="button" class="btn btn-primary submit-comment-btn"
                         [disabled]="!newCommentText().trim() || isSubmittingComment()" (click)="submitComment()">
                         @if (isSubmittingComment()) {
                         <span class="spinner"></span>
@@ -89,7 +89,7 @@
         @else if (commentsError()) {
         <div class="error-card small" role="alert">
             <p class="error-message">{{ 'ContentManagement.Comments.Error' | translate }}</p>
-            <button type="button" class="retry-btn" (click)="loadInitialComments()">
+            <button type="button" class="btn btn-primary" (click)="loadInitialComments()">
                 <svg lucideRefreshCw class="retry-icon"></svg>
                 <span>{{ 'ContentManagement.Posts.Retry' | translate }}</span>
             </button>

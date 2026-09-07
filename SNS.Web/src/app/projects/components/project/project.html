@@ -30,8 +30,8 @@
                 <h3 class="collaburators-title">{{'Project.Collaburators' | translate}}</h3>
                 <div class="collaburators-container">
                     @for (collaburator of project.participants; track $index) {
-                    <div class="collaburator" [title]="">
-                        <img [src]="collaburator.profileImageUrl || defaultAvatar" (error)="onAvatarError($event)" [alt]="">
+                    <div class="collaburator">
+                        <app-avatar [src]="collaburator.profileImageUrl" size="custom"></app-avatar>
                     </div>
                     }
                     @if (project.participantsCount > 3) {

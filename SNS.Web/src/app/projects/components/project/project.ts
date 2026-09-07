@@ -1,4 +1,5 @@
 import { Component, Input, output } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { ProjectOverviewDto } from '../../contracts/project-summary.dto';
 import { TranslatePipe } from '@ngx-translate/core';
 import { LucideExternalLink, LucideStar, LucideUsers, LucideGlobe, LucideSave, LucideGitFork } from "@lucide/angular";
@@ -6,16 +7,20 @@ import { RouterLink } from "@angular/router";
 import { ProjectStatus } from '../../enums/project-status.enum';
 import { ProjectType } from '../../enums/project-type.enum';
 
+import { AppAvatar } from '../../../shared/design-system/components/app-avatar/app-avatar';
+
 @Component({
   selector: 'app-project',
   imports: [
+    CommonModule,
     TranslatePipe, 
     LucideStar, 
     LucideExternalLink, 
     RouterLink, 
     LucideGlobe, 
     LucideSave,
-    LucideGitFork
+    LucideGitFork,
+    AppAvatar
   ],
   templateUrl: './project.html',
   styleUrl: './project.css',
@@ -23,8 +28,6 @@ import { ProjectType } from '../../enums/project-type.enum';
 export class Project {
   @Input({ required: true }) project!: ProjectOverviewDto;
   projectClicked = output<string>();
-
-  defaultAvatar = 'assets/images/default-avatar.png';
 
   onProjectClick(event?: Event): void {
     if (event) {
@@ -40,13 +43,6 @@ export class Project {
     if (!skill) return '';
     if (typeof skill === 'string') return skill;
     return skill.skillName || skill.name || '';
-  }
-
-  onAvatarError(event: Event): void {
-    const target = event.target as HTMLImageElement;
-    if (target && target.src !== this.defaultAvatar) {
-      target.src = this.defaultAvatar;
-    }
   }
 
   ngOnInit(): void {

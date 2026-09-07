@@ -11,6 +11,7 @@ import {
     LucideUsers
 } from '@lucide/angular';
 import { JobSummaryDto } from '../../contracts/job-summary.dto';
+import { AppAvatar } from '../../../../shared/design-system/components/app-avatar/app-avatar';
 
 @Component({
     selector: 'app-job',
@@ -24,7 +25,8 @@ import { JobSummaryDto } from '../../contracts/job-summary.dto';
         LucideMapPin,
         LucideBanknote,
         LucideClock,
-        LucideUsers
+        LucideUsers,
+        AppAvatar
     ],
     templateUrl: './job.html',
     styleUrl: './job.css'
@@ -32,8 +34,6 @@ import { JobSummaryDto } from '../../contracts/job-summary.dto';
 export class Job {
     job = input.required<JobSummaryDto>();
     jobClicked = output<string>();
-
-    readonly defaultCompanyLogo = 'assets/images/default-avatar.png';
 
     isBookmarked = signal<boolean>(false);
 
@@ -43,16 +43,6 @@ export class Job {
         if (j.closedAt) return false;
         if (j.isClosed !== undefined && j.isClosed !== null) return !j.isClosed;
         return true;
-    });
-
-    initials = computed(() => {
-        const name = this.job().companyName?.trim();
-        if (!name) return 'JB';
-        const parts = name.split(/\s+/);
-        if (parts.length >= 2) {
-            return (parts[0][0] + parts[1][0]).toUpperCase();
-        }
-        return name.slice(0, 2).toUpperCase();
     });
 
     visibleSkills = computed(() => {
@@ -66,13 +56,6 @@ export class Job {
         if (!skills || !Array.isArray(skills)) return 0;
         return Math.max(0, skills.length - 4);
     });
-
-    onLogoError(event: Event): void {
-        const target = event.target as HTMLImageElement;
-        if (target && target.src !== this.defaultCompanyLogo) {
-            target.src = this.defaultCompanyLogo;
-        }
-    }
 
     toggleBookmark(): void {
         this.isBookmarked.update(b => !b);

@@ -18,7 +18,27 @@ export class PostsService {
     private rootUrl = environment.apiUrl;
 
     createPost(command: CreatePostCommand): Observable<Result> {
-        return this.http.post<Result>(`${this.rootUrl}${CONTENT_MANAGEMENT_API_ROUTES.Posts}`, command);
+        const formData = new FormData();
+        if (command.communityId) {
+            formData.append('communityId', command.communityId);
+        }
+        formData.append('title', command.title);
+        formData.append('content', command.content);
+        formData.append('isPenned', String(command.isPenned ?? false));
+
+        if (command.files && command.files.length > 0) {
+            for (const file of command.files) {
+                formData.append('files', file);
+            }
+        }
+
+        if (command.mentionedProfileIds && command.mentionedProfileIds.length > 0) {
+            for (const id of command.mentionedProfileIds) {
+                formData.append('mentionedProfileIds', id);
+            }
+        }
+
+        return this.http.post<Result>(`${this.rootUrl}${CONTENT_MANAGEMENT_API_ROUTES.Posts}`, formData);
     }
 
     updatePost(postId: string, command: UpdatePostCommand): Observable<Result> {
@@ -63,5 +83,41 @@ export class PostsService {
 
     decreaseInterest(postId: string): Observable<Result> {
         return this.http.post<Result>(`${this.rootUrl}${CONTENT_MANAGEMENT_API_ROUTES.DecreasePostInterest(postId)}`, {});
+    }
+
+    getCommunityPosts(communityId: string, page: number = 1, pageSize: number = 10): Observable<Result<Paged<PostOverviewDto>>> {
+        const params = new HttpParams()
+            .set('page', page.toString())
+            .set('pageSize', pageSize.toString());
+
+        return this.http.get<Result<Paged<PostOverviewDto>>>(
+            `${this.rootUrl}${CONTENT_MANAGEMENT_API_ROUTES.CommunityPosts(communityId)}`,
+            { params }
+        );
+    }
+
+    getPendingCommunityPosts(communityId: string, page: number = 1, pageSize: number = 10): Observable<Result<Paged<PostOverviewDto>>> {
+        const params = new HttpParams()
+            .set('page', page.toString())
+            .set('pageSize', pageSize.toString());
+
+        return this.http.get<Result<Paged<PostOverviewDto>>>(
+            `${this.rootUrl}${CONTENT_MANAGEMENT_API_ROUTES.PendingCommunityPosts(communityId)}`,
+            { params }
+        );
+    }
+
+    approveCommunityPost(communityId: string, postId: string): Observable<Result> {
+        return this.http.post<Result>(
+            `${this.rootUrl}${CONTENT_MANAGEMENT_API_ROUTES.ApproveCommunityPost(communityId, postId)}`,
+            {}
+        );
+    }
+
+    rejectCommunityPost(communityId: string, postId: string): Observable<Result> {
+        return this.http.post<Result>(
+            `${this.rootUrl}${CONTENT_MANAGEMENT_API_ROUTES.RejectCommunityPost(communityId, postId)}`,
+            {}
+        );
     }
 }

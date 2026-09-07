@@ -43,7 +43,7 @@
             {{ sortedMedia.length }}
         </div>
 
-        <button type="button" class="media-modal-close" [attr.aria-label]="'ContentManagement.Posts.ClosePreview' | translate"
+        <button type="button" class="btn btn-icon btn-ghost media-modal-close" [attr.aria-label]="'ContentManagement.Posts.ClosePreview' | translate"
             (click)="closePreview()">
             <svg lucideX></svg>
         </button>
@@ -76,7 +76,7 @@
         <!-- Navigation -->
         @if (hasMultiple) {
         <div class="media-modal-navigation">
-            <button type="button" class="media-modal-nav" [disabled]="currentIndex() === 0" (click)="prev()"
+            <button type="button" class="btn btn-icon btn-ghost media-modal-nav" [disabled]="currentIndex() === 0" (click)="prev()"
                 [attr.aria-label]="'ContentManagement.Posts.PreviousMedia' | translate">
                 <svg lucideChevronLeft class="directional-icon"></svg>
             </button>
@@ -85,7 +85,7 @@
                 {{ currentIndex() + 1 }} / {{ sortedMedia.length }}
             </div>
 
-            <button type="button" class="media-modal-nav" [disabled]="currentIndex() === sortedMedia.length - 1"
+            <button type="button" class="btn btn-icon btn-ghost media-modal-nav" [disabled]="currentIndex() === sortedMedia.length - 1"
                 (click)="next()" [attr.aria-label]="'ContentManagement.Posts.NextMedia' | translate">
                 <svg lucideChevronRight class="directional-icon"></svg>
             </button>

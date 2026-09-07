@@ -2,7 +2,7 @@
     <!-- LEFT SIDE -->
     <div class="nav-left">
         @if (isMobile()) {
-        <button class="mobile-menu-btn icon-btn" (click)="toggleSideMenu()" aria-label="Open menu">
+        <button type="button" class="btn btn-icon btn-ghost mobile-menu-btn icon-btn" (click)="toggleSideMenu()" aria-label="Open menu">
             <svg lucideMenu></svg>
         </button>
         }
@@ -35,10 +35,39 @@
 
     <!-- RIGHT SIDE -->
     <div class="nav-right">
-        <button class="btn btn-icon btn-primary" aria-label="Create Content">
+        <button type="button" class="btn btn-icon btn-primary" aria-label="Create Content"
+            cdkOverlayOrigin #createOrigin="cdkOverlayOrigin"
+            (click)="isCreateMenuOpen.set(!isCreateMenuOpen())">
             <svg lucideSquarePlus></svg>
         </button>
-        <button class="notify-btn icon-btn" aria-label="Notifications">
+
+        <!-- Create Content Dropdown Overlay -->
+        <ng-template cdkConnectedOverlay 
+            [cdkConnectedOverlayOrigin]="createOrigin"
+            [cdkConnectedOverlayOpen]="isCreateMenuOpen()" 
+            [cdkConnectedOverlayPositions]="createMenuPositions()"
+            [cdkConnectedOverlayHasBackdrop]="true" 
+            cdkConnectedOverlayBackdropClass="cdk-overlay-transparent-backdrop"
+            (backdropClick)="isCreateMenuOpen.set(false)">
+            <div class="actions-menu-dropdown create-menu-dropdown">
+                <div class="menu-group">
+                    <button type="button" class="btn btn-ghost menu-item" (click)="navigateTo('/home/create-post')">
+                        <svg lucideFileText></svg>
+                        <span>{{ 'ContentCreation.Dropdown.Create_Post' | translate }}</span>
+                    </button>
+                    <button type="button" class="btn btn-ghost menu-item" (click)="navigateTo('/home/create-problem')">
+                        <svg lucideHelpCircle></svg>
+                        <span>{{ 'ContentCreation.Dropdown.Create_Problem' | translate }}</span>
+                    </button>
+                    <button type="button" class="btn btn-ghost menu-item" (click)="navigateTo('/home/create-project')">
+                        <svg lucideFolderPlus></svg>
+                        <span>{{ 'ContentCreation.Dropdown.Create_Project' | translate }}</span>
+                    </button>
+                </div>
+            </div>
+        </ng-template>
+
+        <button type="button" class="btn btn-icon btn-ghost notify-btn icon-btn" aria-label="Notifications">
             <svg lucideBell></svg>
         </button>
     </div>

@@ -6,6 +6,7 @@ using SNS.Application.Shared.Abstractions.Data;
 using SNS.Application.Shared.Abstractions.Messaging;
 using SNS.Application.Shared.Abstractions.Storage;
 using SNS.Domain.ContentManagement.Communities.Enums;
+using SNS.Domain.ContentManagement.Posts.Enums;
 using SNS.Shared.Results;
 using SNS.Shared.StatusCodes;
 
@@ -61,7 +62,9 @@ internal sealed class GetCommunityByIdQueryHandler : IQueryHandler<GetCommunityB
                     ? c.Memberships.Where(m => m.MemberId == profileId.Value && m.Status == CommunityMembershipStatus.Active).Select(m => (CommunityRole?)m.Role).FirstOrDefault()
                     : null,
 
-                HasPendingRequest = profileId != null && _dbContext.CommunityJoinRequests.Any(r => r.CommunityId == c.Id && r.SubmitterId == profileId.Value && r.Status == JoinRequestStatus.Pending)
+                HasPendingRequest = profileId != null && _dbContext.CommunityJoinRequests.Any(r => r.CommunityId == c.Id && r.SubmitterId == profileId.Value && r.Status == JoinRequestStatus.Pending),
+
+                HasPendingPost = profileId != null && _dbContext.Posts.Any(p => p.CommunityId == c.Id && p.AuthorId == profileId.Value && p.Status == PostStatus.Pending && p.IsActive)
             })
             .FirstOrDefaultAsync(cancellationToken);
 
@@ -69,6 +72,8 @@ internal sealed class GetCommunityByIdQueryHandler : IQueryHandler<GetCommunityB
         {
             return Result<CommunityDetailsDto>.Failure(ResourceStatusCode.NotFound);
         }
+
+        var isManager = profileId.HasValue && (raw.OwnerId == profileId.Value || raw.UserMembership == CommunityRole.Owner || raw.UserMembership == CommunityRole.Moderator);
 
         var distinctKeys = new List<string?>
         {
@@ -105,7 +110,9 @@ internal sealed class GetCommunityByIdQueryHandler : IQueryHandler<GetCommunityB
             ),
             IsMember: raw.UserMembership.HasValue,
             CurrentUserRole: raw.UserMembership,
-            HasPendingJoinRequest: raw.HasPendingRequest
+            HasPendingJoinRequest: raw.HasPendingRequest,
+            IsManager: isManager,
+            HasPendingPost: raw.HasPendingPost
         );
 
         return Result<CommunityDetailsDto>.Success(details, OperationStatusCode.Success);

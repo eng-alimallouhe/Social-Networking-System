@@ -11,6 +11,7 @@ using SNS.Application.Discussions.Problems.Problems.Commands.UpdateProblem;
 using SNS.Application.Discussions.Problems.Problems.Contracts;
 using SNS.Application.Discussions.Problems.Problems.Queries.GetMyProblems;
 using SNS.Application.Discussions.Problems.Problems.Queries.GetProblemById;
+using SNS.Application.Discussions.Problems.Problems.Queries.GetProblems;
 using SNS.Application.Discussions.Problems.Problems.Queries.GetProblemsByAuthor;
 using SNS.Application.Discussions.Problems.Problems.Queries.GetProblemsByCommunity;
 using SNS.Application.Shared.DTOs;
@@ -33,6 +34,19 @@ public class ProblemsController : ControllerBase
     public ProblemsController(IMediator mediator)
     {
         _mediator = mediator;
+    }
+
+    /// <summary>
+    /// Retrieves a paginated list of discussion problems for the main Problems page,
+    /// featuring database-level recommendation, relevance ranking, and optional filters.
+    /// </summary>
+    /// <param name="query">Pagination, filtering, and search parameters.</param>
+    /// <response code="200">Problems retrieved successfully.</response>
+    [HttpGet]
+    [ProducesResponseType(typeof(Result<Paged<ProblemSummaryDto>>), StatusCodes.Status200OK)]
+    public async Task<ActionResult<Result<Paged<ProblemSummaryDto>>>> GetProblemsAsync([FromQuery] GetProblemsQuery query)
+    {
+        return (await _mediator.Send(query)).ToActionResult(this);
     }
 
     /// <summary>

@@ -148,25 +148,7 @@
 }
 
 .copy-btn {
-    background: transparent;
-    border: none;
-    color: var(--text-muted);
-    cursor: pointer;
-    padding: var(--spacing-2) var(--spacing-3);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--spacing-2);
-    font-size: var(--text-sm);
-    font-weight: var(--font-weight-medium);
-    transition: color 0.2s ease, background-color 0.2s ease;
-    border-radius: var(--radius-sm);
     min-width: 90px;
-}
-
-.copy-btn:hover {
-    color: var(--primary-color);
-    background-color: var(--bg-hover);
 }
 
 .copy-btn svg {

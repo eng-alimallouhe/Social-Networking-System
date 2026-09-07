@@ -694,7 +694,11 @@
                 "Authentication": "Authentication",
                 "Registration": "Registration",
                 "DemoPages": "Demo Pages",
-                "AccountSettings": "Account Settings"
+                "AccountSettings": "Account Settings",
+                "Profiles": "Profiles & Social Graph",
+                "Companies": "Companies & Jobs",
+                "Communities": "Communities",
+                "ContentCreation": "Content Creation"
             },
             "Pages": {
                 "Login": "Password Login",
@@ -712,7 +716,29 @@
                 "RoleSwitcher": "Role Switcher",
                 "RoleSwitcher_Desc": "Quickly switch between predefined roles.",
                 "Dashboard": "Demo Dashboard",
-                "Dashboard_Desc": "The hub for all demo features."
+                "Dashboard_Desc": "The hub for all demo features.",
+                "ProfileSettings": "Profile Settings",
+                "ProfileSettings_Desc": "Edit your profile, choose specializations with the dropdown, and update bio and pictures.",
+                "ProfileDetails": "Profile Details",
+                "ProfileDetails_Desc": "View user profile header, reputation, posts, and project showcases.",
+                "Followers": "Followers",
+                "Followers_Desc": "Browse the followers list with profile cards and follow actions.",
+                "Following": "Following",
+                "Following_Desc": "Browse followed members and connection relationships.",
+                "CompanyDetails": "Company Details",
+                "CompanyDetails_Desc": "Explore company overview, published jobs, and management team with tab navigation.",
+                "JobDetails": "Job Details",
+                "JobDetails_Desc": "View job vacancy specifications, compensation range, and publisher company.",
+                "CommunityDetails": "Community Details",
+                "CommunityDetails_Desc": "Explore community members, discussion feeds, and community rules.",
+                "CreatePost": "Create Post",
+                "CreatePost_Desc": "Compose and publish new posts with markdown formatting and media upload.",
+                "CreateProblem": "Create Problem",
+                "CreateProblem_Desc": "Submit technical questions and coding problems for community discussion.",
+                "CreateProject": "Create Project",
+                "CreateProject_Desc": "Publish and showcase new open-source or commercial developer projects.",
+                "HomeFeed": "Home Feed",
+                "HomeFeed_Desc": "Main feed with navigation sidebar showing communities, jobs, and discussions."
             }
         },
         "RoleSwitcher": {
@@ -853,6 +879,31 @@
         "Source_Code_Empty_Desc": "Source code files have not been uploaded directly to the platform.",
         "Reviews_Empty_Title": "No Reviews Yet",
         "Reviews_Empty_Desc": "Be the first to share your thoughts and review this project.",
+        "Rating": {
+            "Add_Rating_Title": "Rate this project",
+            "Update_Rating_Title": "Your rating",
+            "Add_Rating_Subtitle": "Share your experience with the community",
+            "Stars_Label": "Rating score out of 5 stars",
+            "Star_1": "1 star",
+            "Star_2": "2 stars",
+            "Star_3": "3 stars",
+            "Star_4": "4 stars",
+            "Star_5": "5 stars",
+            "Star_Label_1": "Terrible",
+            "Star_Label_2": "Poor",
+            "Star_Label_3": "Average",
+            "Star_Label_4": "Good",
+            "Star_Label_5": "Excellent",
+            "Review_Comment_Label": "Review comment",
+            "Review_Comment_Placeholder": "Write a short comment...",
+            "Submit_Rating_Button": "Add Rating",
+            "Update_Rating_Button": "Update Rating",
+            "Submitting": "Submitting...",
+            "Rating_Success_Title": "Rating Submitted",
+            "Rating_Success_Message": "Thank you! Your rating has been added.",
+            "Rating_Update_Message": "Your rating has been updated successfully.",
+            "Login_To_Rate": "Sign in to rate and review this project."
+        },
         "View_On_Github": "View Repository on GitHub",
         "File": "File",
         "Directory": "Directory",
@@ -872,7 +923,14 @@
             "Closed": "Closed"
         },
         "Upvotes": "Upvotes",
+        "Downvotes": "Downvotes",
+        "Upvote": "Upvote",
+        "Downvote": "Downvote",
         "Solutions": "Solutions",
+        "Discussions": "Discussions",
+        "Solutions_Empty_Title": "No solutions yet",
+        "Solutions_Empty_Desc": "Be the first to submit a solution for this problem!",
+        "Load_More_Solutions": "Load more solutions",
         "View_Problem": "View Problem",
         "Video_Attachment": "Video attachment",
         "Save": "Save problem",
@@ -880,7 +938,21 @@
         "Error_Title": "Failed to load problem",
         "Error_Desc": "We were unable to load the problem details. Please try again.",
         "Retry": "Retry",
-        "Views": "views"
+        "Views": "views",
+        "Empty_Title": "No problems found",
+        "Empty_Description": "There are no discussion problems available right now. Check back later!",
+        "Feed_Error_Title": "Failed to load problems",
+        "Feed_Error_Description": "Something went wrong while fetching discussion problems. Please try again.",
+        "Load_More_Error": "Failed to load more problems",
+        "End_Of_Feed": "You've reached the end of the problems list"
+    },
+    "Solution": {
+        "Status": {
+            "Pending": "Pending",
+            "Accepted": "Accepted",
+            "Rejected": "Rejected",
+            "BestSolution": "Best Solution"
+        }
     },
     "Job": {
         "Type": {
@@ -940,7 +1012,53 @@
         "Posts": "posts",
         "Error_Title": "Failed to load community",
         "Error_Desc": "We were unable to load the community details. Please try again.",
-        "Retry": "Retry"
+        "Retry": "Retry",
+        "View_Community": "View Community",
+        "Join_Community": "Join Community",
+        "Waiting_For_Approval": "Waiting for approval",
+        "Cancel_Request": "Cancel Request",
+        "Manage_Community": "Manage Community",
+        "Tabs": {
+            "About": "About",
+            "Posts": "Posts",
+            "Problems": "Problems",
+            "Members": "Members",
+            "Management": "Management"
+        },
+        "Create_Post_Prompt": "Share something with the community...",
+        "Create_Post": "Create Post",
+        "Pending_Post_Notice": "You have a post waiting for moderation approval.",
+        "Moderation_Policy": "Moderation Policy",
+        "Management_Pending_Posts": "Pending Posts",
+        "Management_Join_Requests": "Join Requests",
+        "Approve": "Approve",
+        "Reject": "Reject",
+        "No_Pending_Posts": "No posts waiting for approval",
+        "No_Join_Requests": "No join requests waiting for approval",
+        "No_Posts": "No posts yet in this community",
+        "No_Problems": "No problems yet in this community",
+        "No_Members": "No members found",
+        "Shared": "Shared",
+        "Pending": "Pending",
+        "Post_Title_Placeholder": "Post title",
+        "Toasts": {
+            "Joined_Success": "Joined community successfully",
+            "Join_Pending": "Join request submitted for approval",
+            "Join_Failed": "Failed to join community",
+            "Cancel_Success": "Join request cancelled",
+            "Cancel_Failed": "Failed to cancel join request",
+            "Link_Copied": "Link copied to clipboard",
+            "Post_Submitted": "Post submitted successfully",
+            "Post_Failed": "Failed to create post",
+            "Post_Approved": "Post approved",
+            "Post_Approve_Failed": "Failed to approve post",
+            "Post_Rejected": "Post rejected",
+            "Post_Reject_Failed": "Failed to reject post",
+            "Request_Approved": "Join request approved",
+            "Request_Approve_Failed": "Failed to approve request",
+            "Request_Rejected": "Join request rejected",
+            "Request_Reject_Failed": "Failed to reject request"
+        }
     },
     "Profile": {
         "Follow": "Follow",
@@ -974,7 +1092,84 @@
         "No_Problems_Title": "No problems published",
         "No_Problems_Desc": "This profile hasn't published any discussion problems yet.",
         "No_Resumes_Title": "No resumes available",
-        "No_Resumes_Desc": "There are no public resumes or CVs available for this profile."
+        "No_Resumes_Desc": "There are no public resumes or CVs available for this profile.",
+        "Followers_Title": "Followers",
+        "Following_Title": "Following",
+        "Follow_Date_Label": "Followed",
+        "No_Followers_Title": "No followers yet",
+        "No_Followers_Desc": "This profile doesn't have any followers yet.",
+        "No_Following_Title": "Not following anyone yet",
+        "No_Following_Desc": "This profile isn't following anyone yet.",
+        "Followers_Error": "Could not load followers for this profile.",
+        "Following_Error": "Could not load following profiles.",
+        "End_Of_List": "You've reached the end of the list",
+        "EditProfile": "Edit Profile",
+        "Follow_Error": "Failed to update follow status."
+    },
+    "ProfileEdit": {
+        "Header": {
+            "Title": "Edit Profile"
+        },
+        "Common": {
+            "Back": "Back",
+            "Save": "Save Changes",
+            "Saving": "Saving...",
+            "Uploading": "Uploading..."
+        },
+        "Tabs": {
+            "General": "General Information",
+            "Picture": "Profile Picture",
+            "Social": "Social Links",
+            "Skills": "Skills & Expertise"
+        },
+        "General": {
+            "Title": "General Information",
+            "Subtitle": "Update your basic identity, title, location, and bio.",
+            "FullName": "Full Name",
+            "FullNamePlaceholder": "Enter your full name",
+            "Specialization": "Specialization / Professional Title",
+            "SpecializationPlaceholder": "e.g. Senior Full Stack Engineer",
+            "Location": "Location",
+            "LocationPlaceholder": "e.g. San Francisco, CA or Remote",
+            "Bio": "Biography",
+            "BioPlaceholder": "Tell people a little bit about yourself, your background, and what you're working on..."
+        },
+        "Picture": {
+            "Title": "Profile Picture",
+            "Subtitle": "Upload or change your profile avatar image.",
+            "CurrentPreview": "Current Avatar Preview",
+            "DropzoneTitle": "Drag & drop a new photo here",
+            "DropzoneHint": "PNG, JPG, or WEBP up to 5MB",
+            "SelectFile": "Choose File",
+            "UploadButton": "Upload New Picture"
+        },
+        "Social": {
+            "Title": "Social & Web Links",
+            "Subtitle": "Add your profiles so others can connect with you across platforms."
+        },
+        "Skills": {
+            "Title": "Skills & Expertise",
+            "Subtitle": "Manage the professional skills displayed on your profile.",
+            "AddSkill": "Add Skill",
+            "NoSkills": "No skills added to your profile yet.",
+            "RemoveSkill": "Remove skill"
+        },
+        "Validation": {
+            "NameRequired": "Full Name is required.",
+            "ImageOnly": "Please select a valid image file."
+        },
+        "Success": {
+            "GeneralUpdated": "General information updated successfully.",
+            "PictureUpdated": "Profile picture updated successfully.",
+            "SocialUpdated": "Social links updated successfully.",
+            "SkillAdded": "Skill added to your profile.",
+            "SkillRemoved": "Skill removed from your profile."
+        },
+        "Errors": {
+            "NotFound": "Profile not found.",
+            "LoadFailed": "Failed to load profile details.",
+            "UpdateFailed": "An error occurred while saving."
+        }
     },
     "Search": {
         "Intro_Title": "Find What You're Looking For",
@@ -1100,6 +1295,8 @@
             "Title": "Project Tags",
             "Description": "Categorize your project with relevant topic tags.",
             "Add_Tag_Button": "Add Tag",
+            "Add_Tag_Title": "Add Tag to Project",
+            "Add_Tag_Subtitle": "Search for and select tags to categorize your project",
             "Add_Tag_Placeholder": "Enter tag name...",
             "Search_Placeholder": "Search available tags (e.g. web, ai, api)...",
             "Available_Tags": "Available Tags",
@@ -1144,6 +1341,7 @@
             "Title": "Project Media",
             "Description": "Upload screenshots, diagrams, and project preview media.",
             "Upload_Button": "Upload Media",
+            "Uploading": "Uploading...",
             "Caption_Placeholder": "Enter image caption...",
             "No_Media": "No media uploaded yet.",
             "Uploaded_Toast": "Media uploaded successfully.",
@@ -1175,6 +1373,106 @@
             "InProgress": "Active development is ongoing. Open to updates and collaborator activity.",
             "Completed": "The project reached a stable milestone or production release.",
             "Archived": "The project is read-only and preserved for archival purposes."
+        }
+    },
+    "ContentCreation": {
+        "Dropdown": {
+            "Create_Post": "Create Post",
+            "Create_Problem": "Create Problem",
+            "Create_Project": "Create Project"
+        },
+        "Post": {
+            "Title": "Create Post",
+            "Subtitle": "Share knowledge, insights, or updates with the community",
+            "Post_Name": "Post Title",
+            "Post_Name_Placeholder": "Enter post title...",
+            "Post_Content": "Post Content",
+            "Post_Content_Placeholder": "Write your post in Markdown...",
+            "Add_Media": "Attach Media",
+            "Dropzone_Prompt": "Drag & drop images or videos here, or click to browse",
+            "Submit": "Publish Post",
+            "Publishing": "Publishing..."
+        },
+        "Problem": {
+            "Title": "Create Problem",
+            "Subtitle": "Post a coding challenge or problem for discussion",
+            "Problem_Title": "Problem Title",
+            "Problem_Title_Placeholder": "e.g. Invert a Binary Tree in TypeScript",
+            "Level": "Difficulty Level",
+            "Content_Blocks": "Content Blocks",
+            "Tags": "Problem Tags",
+            "Add_Tag": "Add Tag",
+            "No_Tags": "No tags added yet. Click \"Add Tag\" to categorize this problem.",
+            "Submit": "Create Problem",
+            "Creating": "Creating..."
+        },
+        "Project": {
+            "Title": "Create Project",
+            "Subtitle": "Showcase a new open-source, commercial, or personal project",
+            "Project_Title": "Project Title",
+            "Project_Title_Placeholder": "e.g. SyrianDevs Community Platform",
+            "Short_Description": "Short Description",
+            "Short_Description_Placeholder": "Brief summary of what this project does...",
+            "Project_Type": "Project Type",
+            "GitHub_Url": "GitHub Repository URL",
+            "GitHub_Url_Placeholder": "https://github.com/...",
+            "Live_Demo_Url": "Live Demo URL",
+            "Live_Demo_Url_Placeholder": "https://...",
+            "Skills": "Technologies & Skills",
+            "Add_Skill": "Add Skill",
+            "Tags": "Project Tags",
+            "Add_Tag": "Add Tag",
+            "Submit": "Create Project",
+            "Creating": "Creating..."
+        }
+    },
+    "Common": {
+        "Back": "Back"
+    },
+    "Communities": {
+        "MyCommunities": "My Communities",
+        "SuggestedCommunities": "Suggested Communities",
+        "NoCommunitiesYet": "You haven't joined any communities yet.",
+        "NoSuggestedCommunities": "No community recommendations right now.",
+        "Members": "members"
+    },
+    "Jobs": {
+        "SuggestedJobs": "Suggested Jobs",
+        "NoSuggestedJobs": "No job recommendations right now."
+    },
+    "Company": {
+        "Roles": {
+            "Owner": "Owner",
+            "Manager": "Manager"
+        },
+        "Tabs": {
+            "About": "About",
+            "PublishedJobs": "Jobs",
+            "Managers": "Administrators"
+        },
+        "About": {
+            "Title": "Company Overview",
+            "Industry": "Industry",
+            "Website": "Website",
+            "Founded": "Created",
+            "ActiveJobs": "Active Jobs",
+            "Administrators": "Administrators",
+            "NoInfo": "Not specified"
+        },
+        "Jobs": {
+            "Empty": "No Jobs Published",
+            "EmptySubtitle": "This company has not posted any active job vacancies yet."
+        },
+        "Managers": {
+            "Empty": "No Managers Found",
+            "EmptySubtitle": "No company administrators or managers are listed.",
+            "Role": {
+                "TeamMember": "Team Member"
+            }
+        },
+        "NotFound": {
+            "Title": "Company Not Found",
+            "Subtitle": "The requested company could not be found or has been removed."
         }
     }
 }

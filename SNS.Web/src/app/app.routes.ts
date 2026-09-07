@@ -33,6 +33,54 @@ export const routes: Routes = [
         ]
     },
     {
+        path: 'problems',
+        redirectTo: 'home/problems'
+    },
+    {
+        path: 'problems/:problemId',
+        redirectTo: 'home/problems/:problemId'
+    },
+    {
+        path: 'communities',
+        redirectTo: 'home/communities'
+    },
+    {
+        path: 'communities/:communityId',
+        redirectTo: 'home/communities/:communityId'
+    },
+    {
+        path: 'companies/:companyId',
+        redirectTo: 'home/companies/:companyId'
+    },
+    {
+        path: 'discussions',
+        redirectTo: 'home/discussion'
+    },
+    {
+        path: 'discussions/problems/:problemId',
+        redirectTo: 'home/problems/:problemId'
+    },
+    {
+        path: 'profile/:profileId',
+        redirectTo: 'home/search/profile/:profileId'
+    },
+    {
+        path: 'profile/:profileId/followers',
+        redirectTo: 'home/search/profile/:profileId/followers'
+    },
+    {
+        path: 'profile/:profileId/following',
+        redirectTo: 'home/search/profile/:profileId/following'
+    },
+    {
+        path: 'profile/:profileId/settings',
+        redirectTo: 'home/profiles/:profileId/settings'
+    },
+    {
+        path: 'jobs/:jobId',
+        redirectTo: 'home/search/job/:jobId'
+    },
+    {
         path: 'demo',
         loadChildren: () => import('./demo/routes/demo.routes').then(m => m.DemoRoutes)
     },

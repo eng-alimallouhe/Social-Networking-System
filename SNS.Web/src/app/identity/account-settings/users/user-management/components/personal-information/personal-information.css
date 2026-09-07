@@ -80,17 +80,9 @@
 }
 
 .btn-change {
-    background: transparent;
-    border: none;
     color: var(--primary-color);
-    font-size: var(--text-sm);
     font-weight: var(--font-weight-semibold);
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-1);
-    cursor: pointer;
-    padding: 0;
-    transition: color 0.2s ease;
+    padding: var(--spacing-1) var(--spacing-2);
 }
 
 .btn-change:hover {

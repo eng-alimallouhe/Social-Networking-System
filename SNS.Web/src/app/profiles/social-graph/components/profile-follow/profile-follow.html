@@ -1,0 +1,67 @@
+<div class="profile-follow-card">
+    <div class="card-content">
+        <!-- Avatar Section -->
+        <button
+            type="button"
+            class="avatar-btn"
+            (click)="onProfileClick($event)"
+            [attr.aria-label]="follow().fullName">
+            <app-avatar [src]="follow().profilePictureUrl" [name]="follow().fullName" size="lg"></app-avatar>
+        </button>
+
+        <!-- Profile Info -->
+        <div class="user-info">
+            <div class="name-row">
+                <button
+                    type="button"
+                    class="name-btn"
+                    (click)="onProfileClick($event)">
+                    {{ follow().fullName }}
+                </button>
+                <svg lucideBadgeCheck class="verified-badge" aria-hidden="true"></svg>
+            </div>
+
+            @if (follow().specialization) {
+                <p class="specialization">{{ follow().specialization }}</p>
+            }
+
+            <div class="meta-row">
+                <svg lucideCalendar class="meta-icon" aria-hidden="true"></svg>
+                <span class="meta-text">
+                    {{ 'Profile.Follow_Date_Label' | translate }} {{ follow().followDate | date:'mediumDate' }}
+                </span>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="actions-group">
+            @if (showAction() && !isSelf()) {
+                <button
+                    type="button"
+                    class="btn btn-sm btn-follow"
+                    [class.btn-primary]="!isFollowing()"
+                    [class.btn-secondary]="isFollowing()"
+                    [disabled]="isActionLoading()"
+                    (click)="toggleFollow()"
+                    [attr.aria-label]="(isFollowing() ? 'Profile.Following' : 'Profile.Follow') | translate">
+                    @if (isFollowing()) {
+                        <svg lucideUserCheck class="action-icon" aria-hidden="true"></svg>
+                        <span>{{ 'Profile.Following' | translate }}</span>
+                    } @else {
+                        <svg lucideUserPlus class="action-icon" aria-hidden="true"></svg>
+                        <span>{{ 'Profile.Follow' | translate }}</span>
+                    }
+                </button>
+            }
+
+            <button
+                type="button"
+                class="btn btn-ghost btn-sm view-profile-btn"
+                (click)="onProfileClick($event)"
+                [attr.aria-label]="'Profile.View_Profile' | translate">
+                <span>{{ 'Profile.View_Profile' | translate }}</span>
+                <svg lucideArrowRight class="directional-icon link-arrow" aria-hidden="true"></svg>
+            </button>
+        </div>
+    </div>
+</div>

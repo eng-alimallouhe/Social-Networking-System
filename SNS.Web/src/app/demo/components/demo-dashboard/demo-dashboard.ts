@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
@@ -14,12 +14,12 @@ import { DemoDataService } from '../../services/demo-data.service';
   templateUrl: './demo-dashboard.html',
   styleUrl: './demo-dashboard.css',
 })
-export class DemoDashboard {
+export class DemoDashboard implements OnInit {
   private demoDataService = inject(DemoDataService);
   private translateService = inject(TranslateService);
 
   searchQuery = signal('');
-  collapsedSections = signal<Set<string>>(new Set<string>(DEMO_CONFIG.map(section => section.titleKey)));
+  collapsedSections = signal<Set<string>>(new Set<string>());
 
   toggleSection(sectionKey: string) {
     this.collapsedSections.update(set => {
@@ -33,16 +33,25 @@ export class DemoDashboard {
     });
   }
 
-  // Map the config to resolve dynamic query parameters once
-  private baseSections = signal<DemoSection[]>(
-    DEMO_CONFIG.map(section => ({
-      ...section,
-      pages: section.pages.map(page => ({
-        ...page,
-        queryParams: page.generateQueryParams ? page.generateQueryParams(this.demoDataService) : page.queryParams
+  // Map the config to resolve dynamic query parameters and routes
+  baseSections = signal<DemoSection[]>([]);
+
+  ngOnInit(): void {
+    this.refreshSections();
+  }
+
+  refreshSections(): void {
+    this.baseSections.set(
+      DEMO_CONFIG.map(section => ({
+        ...section,
+        pages: section.pages.map(page => ({
+          ...page,
+          route: page.generateRoute ? page.generateRoute(this.demoDataService) : page.route,
+          queryParams: page.generateQueryParams ? page.generateQueryParams(this.demoDataService) : page.queryParams
+        }))
       }))
-    }))
-  );
+    );
+  }
 
   // Computed signal for filtered sections based on search query
   filteredSections = computed(() => {

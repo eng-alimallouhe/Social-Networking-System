@@ -1,7 +1,7 @@
 <div class="problem-details-page">
     <!-- Top Bar with Back Button -->
     <div class="details-top-bar">
-        <button type="button" class="btn-back" (click)="goBack()" [attr.aria-label]="'Common.Back' | translate">
+        <button type="button" class="btn btn-secondary btn-sm btn-back" (click)="goBack()" [attr.aria-label]="'Common.Back' | translate">
             <svg lucideArrowLeft></svg>
             <span class="back-text">{{ 'Common.Back' | translate }}</span>
         </button>
@@ -10,8 +10,8 @@
     <!-- Loading Skeleton -->
     @if (isLoading()) {
         <div class="details-loading" aria-busy="true">
-            <app-skeleton-loader [type]="SkeletonType.Post"></app-skeleton-loader>
-            <app-skeleton-loader [type]="SkeletonType.Post"></app-skeleton-loader>
+            <app-skeleton-loader [type]="SkeletonType.Content"></app-skeleton-loader>
+            <app-skeleton-loader [type]="SkeletonType.Content"></app-skeleton-loader>
         </div>
     }
 
@@ -31,43 +31,64 @@
     <!-- Main Problem Details Content -->
     @if (!isLoading() && problem(); as p) {
         <article class="problem-details-card">
-            <!-- Header: Author, Metadata & Action Buttons -->
+            <!-- Header: Author, Community, Metadata & Action Buttons -->
             <header class="problem-header">
                 <div class="author-block">
-                    <img 
-                        [src]="p.author.profilePictureUrl || defaultAvatar" 
-                        [alt]="p.author.fullName" 
-                        class="author-avatar"
-                        (error)="onAvatarError($event)" />
+                    <div class="author-avatar">
+                        <app-avatar [src]="p.author.profilePictureUrl" [name]="p.author.fullName" size="lg"></app-avatar>
+                    </div>
+
                     <div class="author-meta">
-                        <span class="author-name">{{ p.author.fullName }}</span>
-                        <div class="post-date-row">
-                            <svg lucideCalendar class="date-icon"></svg>
-                            <span>{{ p.createdAt | date:'mediumDate' }}</span>
+                        <div class="author-name-row">
+                            <span class="author-name">{{ p.author.fullName }}</span>
+
+                            @if (p.community) {
+                                <a 
+                                    [routerLink]="['/communities', p.community!.id]" 
+                                    class="community-badge"
+                                    (click)="$event.stopPropagation()">
+                                    <svg lucideUsers class="community-icon"></svg>
+                                    <span class="community-name">{{ p.community!.name }}</span>
+                                </a>
+                            }
+                        </div>
+
+                        <div class="author-sub-row">
+                            @if (p.author.specialization) {
+                                <span class="author-specialization">{{ p.author.specialization }}</span>
+                                <span class="meta-dot">&bull;</span>
+                            }
+                            <div class="post-date-row">
+                                <svg lucideCalendar class="date-icon"></svg>
+                                <span>{{ p.createdAt | localDate }}</span>
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="header-badges-actions">
-                    <span class="badge badge-level" [attr.data-level]="p.level">
-                        {{ ('Problem.Level.' + p.level) | translate }}
-                    </span>
                     <span class="badge badge-status" [attr.data-status]="p.status">
-                        {{ ('Problem.Status.' + p.status) | translate }}
+                        <span class="badge-dot">●</span>
+                        <span>{{ ('Problem.Status.' + p.status) | translate }}</span>
+                    </span>
+
+                    <span class="badge badge-level" [attr.data-level]="p.level">
+                        <span class="badge-dot">●</span>
+                        <span>{{ ('Problem.Level.' + p.level) | translate }}</span>
                     </span>
 
                     <button 
                         type="button" 
-                        class="btn-icon-action" 
+                        class="btn btn-icon btn-ghost btn-icon-action" 
                         [class.active]="isSaved()"
                         (click)="toggleSave()"
                         [attr.aria-label]="'Problem.Save' | translate">
-                        <svg lucideBookmark class="action-icon"></svg>
+                        <svg lucideBookmark class="action-icon" [class.fill-current]="isSaved()"></svg>
                     </button>
 
                     <button 
                         type="button" 
-                        class="btn-icon-action" 
+                        class="btn btn-icon btn-ghost btn-icon-action" 
                         (click)="share()"
                         [attr.aria-label]="'Problem.Share' | translate">
                         <svg lucideShare2 class="action-icon"></svg>
@@ -77,21 +98,42 @@
 
             <h1 class="problem-main-title">{{ p.title }}</h1>
 
-            <!-- Metrics Bar -->
+            <!-- Interactive Voting & Metrics Bar -->
             <div class="problem-metrics-bar">
-                <div class="metric-item">
-                    <svg lucideThumbsUp class="metric-icon"></svg>
-                    <span><strong>{{ p.upvotesCount | number }}</strong> {{ 'Problem.Upvotes' | translate }}</span>
+                <div class="vote-group">
+                    <button 
+                        type="button" 
+                        class="btn btn-secondary btn-sm vote-pill-btn" 
+                        [class.active]="isUpVoted()" 
+                        (click)="toggleUpvote()"
+                        [attr.aria-label]="'Problem.Upvote' | translate"
+                        [disabled]="isVoting()">
+                        <svg lucideArrowUp class="vote-icon"></svg>
+                        <span class="vote-count">{{ upvotesCount() }}</span>
+                    </button>
+
+                    <button 
+                        type="button" 
+                        class="btn btn-secondary btn-sm vote-pill-btn" 
+                        [class.active]="isDownVoted()" 
+                        (click)="toggleDownvote()"
+                        [attr.aria-label]="'Problem.Downvote' | translate"
+                        [disabled]="isVoting()">
+                        <svg lucideArrowDown class="vote-icon"></svg>
+                        <span class="vote-count">{{ downvotesCount() }}</span>
+                    </button>
                 </div>
-                <div class="metric-divider"></div>
-                <div class="metric-item">
-                    <svg lucideCheckCircle2 class="metric-icon"></svg>
-                    <span><strong>{{ p.solutionsCount | number }}</strong> {{ 'Problem.Solutions' | translate }}</span>
-                </div>
-                <div class="metric-divider"></div>
-                <div class="metric-item">
-                    <svg lucideEye class="metric-icon"></svg>
-                    <span><strong>{{ p.viewsCount | number }}</strong> {{ 'Problem.Views' | translate }}</span>
+
+                <div class="metrics-right">
+                    <div class="metric-item">
+                        <svg lucideLightbulb class="metric-icon"></svg>
+                        <span><strong>{{ p.solutionsCount | number }}</strong> {{ 'Problem.Solutions' | translate }}</span>
+                    </div>
+                    <div class="metric-divider"></div>
+                    <div class="metric-item">
+                        <svg lucideEye class="metric-icon"></svg>
+                        <span><strong>{{ p.viewsCount | number }}</strong> {{ 'Problem.Views' | translate }}</span>
+                    </div>
                 </div>
             </div>
 
@@ -147,5 +189,80 @@
                 </footer>
             }
         </article>
+
+        <!-- Solutions Section -->
+        <section class="solutions-section">
+            <div class="solutions-header">
+                <div class="solutions-header-title">
+                    <svg lucideLightbulb class="solutions-header-icon"></svg>
+                    <h2 class="solutions-title">{{ 'Problem.Solutions' | translate }}</h2>
+                    <span class="solutions-count-badge">{{ solutionsTotalCount() || p.solutionsCount }}</span>
+                </div>
+            </div>
+
+            <!-- Solutions List -->
+            @if (solutions().length > 0) {
+                <div class="solutions-list">
+                    @for (sol of solutions(); track sol.id) {
+                        <app-solution [solution]="sol"></app-solution>
+                    }
+                </div>
+            }
+
+            <!-- Initial Solutions Loading -->
+            @if (isSolutionsInitialLoading()) {
+                <div class="solutions-loading" aria-busy="true">
+                    <app-skeleton-loader [type]="SkeletonType.Content"></app-skeleton-loader>
+                    <app-skeleton-loader [type]="SkeletonType.Content"></app-skeleton-loader>
+                </div>
+            }
+
+            <!-- Solutions Error State -->
+            @if (solutionsError() && !isSolutionsInitialLoading()) {
+                <div class="solutions-error" role="alert">
+                    <svg lucideAlertCircle class="error-icon"></svg>
+                    <span>{{ 'Problem.Load_More_Error' | translate }}</span>
+                    <button type="button" class="btn btn-primary btn-sm btn-retry" (click)="loadSolutions(1, false)">
+                        <svg lucideRefreshCw class="btn-icon"></svg>
+                        <span>{{ 'Problem.Retry' | translate }}</span>
+                    </button>
+                </div>
+            }
+
+            <!-- Solutions Empty State -->
+            @if (!isSolutionsInitialLoading() && !solutionsError() && solutions().length === 0) {
+                <div class="solutions-empty">
+                    <div class="empty-icon-wrapper">
+                        <svg lucideLightbulb class="empty-icon"></svg>
+                    </div>
+                    <h3 class="empty-title">{{ 'Problem.Solutions_Empty_Title' | translate }}</h3>
+                    <p class="empty-desc">{{ 'Problem.Solutions_Empty_Desc' | translate }}</p>
+                </div>
+            }
+
+            <!-- Load More Solutions Button -->
+            @if (hasMoreSolutions()) {
+                <div class="solutions-pagination">
+                    <button 
+                        type="button" 
+                        class="btn btn-secondary btn-load-more" 
+                        (click)="loadMoreSolutions()"
+                        [disabled]="isLoadingMoreSolutions()">
+                        @if (isLoadingMoreSolutions()) {
+                            <svg lucideRefreshCw class="spin-icon"></svg>
+                            <span>{{ 'Common.Loading' | translate }}</span>
+                        } @else {
+                            <span>{{ 'Problem.Load_More_Solutions' | translate }}</span>
+                        }
+                    </button>
+                </div>
+            }
+        </section>
     }
 </div>
+
+<app-want-to-login 
+    [isOpen]="isWantToLoginOpen()" 
+    (isOpenChange)="isWantToLoginOpen.set($event)"
+    (closed)="isWantToLoginOpen.set(false)">
+</app-want-to-login>

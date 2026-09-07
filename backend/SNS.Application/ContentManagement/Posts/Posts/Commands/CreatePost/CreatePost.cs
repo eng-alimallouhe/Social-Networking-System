@@ -92,6 +92,11 @@ internal sealed class CreatePostCommandHandler
             return Result.Failure(ProfileStatusCodes.NotFound);
         }
 
+        if (string.IsNullOrWhiteSpace(request.Title) || string.IsNullOrWhiteSpace(request.Content))
+        {
+            return Result.Failure(OperationStatusCode.InvalidInput);
+        }
+
         var postsCreatedToday = await _dbContext.Posts
             .CountAsync(p => p.AuthorId == profileId.Value && p.CreatedAt >= DateTime.UtcNow.Date, cancellationToken);
 

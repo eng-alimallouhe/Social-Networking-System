@@ -12,6 +12,7 @@ using SNS.Application.Jobs.Jobs.Contracts;
 using SNS.Application.Jobs.Jobs.Queries.GetJobById;
 using SNS.Application.Jobs.Jobs.Queries.GetJobsByCompany;
 using SNS.Application.Jobs.Jobs.Queries.GetMyCompanyJobs;
+using SNS.Application.Jobs.Jobs.Queries.GetSuggestedJobs;
 using SNS.Application.Shared.DTOs;
 using SNS.Shared.Results;
 using SNS.API.Attributes;
@@ -108,6 +109,19 @@ public class JobsController : ControllerBase
         [FromQuery] bool includeClosed = false)
     {
         return (await _mediator.Send(new GetJobsByCompanyQuery(companyId, pageSize, currentPage, includeClosed))).ToActionResult(this);
+    }
+
+    /// <summary>
+    /// Retrieves suggested/recommended jobs for the authenticated user based on profile skills and specialization.
+    /// </summary>
+    /// <param name="count">Number of suggested jobs to retrieve.</param>
+    /// <response code="200">Returns list of recommended jobs.</response>
+    [HttpGet("suggested")]
+    [ProducesResponseType(typeof(Result<List<JobSummaryDto>>), StatusCodes.Status200OK)]
+    public async Task<ActionResult<Result<List<JobSummaryDto>>>> GetSuggestedJobsAsync(
+        [FromQuery] int count = 5)
+    {
+        return (await _mediator.Send(new GetSuggestedJobsQuery(count))).ToActionResult(this);
     }
 
     /// <summary>

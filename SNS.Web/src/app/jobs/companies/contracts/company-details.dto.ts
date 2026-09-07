@@ -1,3 +1,5 @@
+import { CompanyRole } from '../../enums/company-role.enum';
+
 export interface CompanyDetailsDto {
     id: string;
     name: string;
@@ -9,4 +11,5 @@ export interface CompanyDetailsDto {
     isActive: boolean;
     administratorsCount: number;
     activeJobsCount: number;
+    currentUserRole?: CompanyRole | null;
 }

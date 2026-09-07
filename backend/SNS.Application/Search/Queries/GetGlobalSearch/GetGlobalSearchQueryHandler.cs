@@ -199,6 +199,7 @@ public class GetGlobalSearchQueryHandler
 
         // 5. Problems
         var problemIds = problemsTask.Result.Hits.Select(h => h.Document.Id).ToList();
+        var currentProfileIdForProblems = _currentUserService.ProfileId;
         var rawProblems = await _dbContext.Problems
             .AsNoTracking()
             .Where(p => problemIds.Contains(p.Id))
@@ -208,11 +209,19 @@ public class GetGlobalSearchQueryHandler
                 p.Title,
                 p.Status,
                 p.Level,
-                p.AuthorId,
+                AuthorId = p.Author.Id,
                 AuthorFullName = p.Author.FullName,
+                AuthorSpecialization = p.Author.Specialization,
                 AuthorProfilePictureObjectKey = p.Author.ProfilePictureObjectKey,
+                CommunityId = p.CommunityId,
+                CommunityName = p.Community != null ? p.Community.Name : null,
+                CommunityType = p.Community != null ? (SNS.Domain.ContentManagement.Communities.Enums.CommunityType?)p.Community.Type : null,
+                CommunityLogoObjectKey = p.Community != null ? p.Community.LogoObjectKey : null,
                 UpvotesCount = p.Votes.Count(v => v.Type == VoteType.Upvote),
+                DownvotesCount = p.Votes.Count(v => v.Type == VoteType.Downvote),
                 SolutionsCount = p.Solutions.Count(s => s.IsActive),
+                IsUpVotedByCurrentUser = currentProfileIdForProblems.HasValue && p.Votes.Any(v => v.VoterId == currentProfileIdForProblems.Value && v.Type == VoteType.Upvote),
+                IsDownVotedByCurrentUser = currentProfileIdForProblems.HasValue && p.Votes.Any(v => v.VoterId == currentProfileIdForProblems.Value && v.Type == VoteType.Downvote),
                 Tags = p.ProblemTags.Select(pt => pt.Tag.Name).ToList(),
                 Topics = p.ProblemTopics.Select(pt => pt.Topic.Name).ToList(),
                 p.CreatedAt,
@@ -230,27 +239,56 @@ public class GetGlobalSearchQueryHandler
             })
             .ToListAsync(cancellationToken);
 
+        var distinctProblemKeys = rawProblems
+            .Select(p => p.AuthorProfilePictureObjectKey)
+            .Concat(rawProblems.Select(p => p.CommunityLogoObjectKey))
+            .Where(k => !string.IsNullOrWhiteSpace(k))
+            .Distinct()
+            .ToList();
+
+        var problemUrlTasks = distinctProblemKeys.Select(async k => new
+        {
+            Key = k!,
+            Url = await _fileStorageService.GetTemporaryUrlAsync(k!, TimeSpan.FromHours(1))
+        });
+        var resolvedProblemUrls = await Task.WhenAll(problemUrlTasks);
+        var urlMap = resolvedProblemUrls.ToDictionary(r => r.Key, r => r.Url);
+
         var problems = rawProblems.Select(p => new ProblemSummaryDto(
-            p.Id,
-            p.Title,
-            p.Status,
-            p.Level,
-            p.AuthorId,
-            p.AuthorFullName,
-            p.AuthorProfilePictureObjectKey != null ? _fileStorageService.GetFilePublicUrl(p.AuthorProfilePictureObjectKey) : null,
-            p.UpvotesCount,
-            p.SolutionsCount,
-            p.Tags,
-            p.Topics,
-            p.CreatedAt,
-            p.ContentBlocks.Select(cb => new ProblemContentBlockDto(
-                cb.Id,
-                cb.Type,
-                (cb.Type == ProblemBlockType.Image || cb.Type == ProblemBlockType.Video) && !string.IsNullOrWhiteSpace(cb.Content)
+            Id: p.Id,
+            Title: p.Title,
+            Status: p.Status,
+            Level: p.Level,
+            Author: new ProfileSnapshotDto(
+                Id: p.AuthorId,
+                FullName: p.AuthorFullName,
+                Specialization: p.AuthorSpecialization,
+                ProfilePictureUrl: p.AuthorProfilePictureObjectKey != null && urlMap.TryGetValue(p.AuthorProfilePictureObjectKey, out var authorPicUrl) ? authorPicUrl : (p.AuthorProfilePictureObjectKey != null ? _fileStorageService.GetFilePublicUrl(p.AuthorProfilePictureObjectKey) : null)
+            ),
+            Community: p.CommunityId.HasValue && p.CommunityName != null && p.CommunityType.HasValue
+                ? new CommunitySnapshotDto(
+                    Id: p.CommunityId.Value,
+                    Name: p.CommunityName,
+                    Type: p.CommunityType.Value,
+                    LogoUrl: p.CommunityLogoObjectKey != null && urlMap.TryGetValue(p.CommunityLogoObjectKey, out var commLogoUrl) ? commLogoUrl : (p.CommunityLogoObjectKey != null ? _fileStorageService.GetFilePublicUrl(p.CommunityLogoObjectKey) : null)
+                )
+                : null,
+            UpvotesCount: p.UpvotesCount,
+            DownvotesCount: p.DownvotesCount,
+            SolutionsCount: p.SolutionsCount,
+            IsUpVotedByCurrentUser: p.IsUpVotedByCurrentUser,
+            IsDownVotedByCurrentUser: p.IsDownVotedByCurrentUser,
+            Tags: p.Tags,
+            Topics: p.Topics,
+            CreatedAt: p.CreatedAt,
+            ContentBlocks: p.ContentBlocks.Select(cb => new ProblemContentBlockDto(
+                Id: cb.Id,
+                Type: cb.Type,
+                Content: (cb.Type == ProblemBlockType.Image || cb.Type == ProblemBlockType.Video) && !string.IsNullOrWhiteSpace(cb.Content)
                     ? _fileStorageService.GetFilePublicUrl(cb.Content)
                     : cb.Content,
-                cb.ExtraInfo,
-                cb.Order
+                ExtraInfo: cb.ExtraInfo,
+                Order: cb.Order
             )).ToList()
         )).ToList();
         var orderedProblems = problemIds.Select(id => problems.FirstOrDefault(p => p.Id == id)).Where(p => p != null).Select(p => p!).ToList();

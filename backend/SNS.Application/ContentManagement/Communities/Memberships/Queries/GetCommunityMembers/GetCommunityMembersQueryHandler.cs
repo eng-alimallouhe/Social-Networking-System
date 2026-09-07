@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using SNS.Application.ContentManagement.Communities.Memberships.Contracts;
+using SNS.Application.Identity.Shared.Abstractions;
 using SNS.Application.Profiles.Profiles.Contracts;
 using SNS.Application.Shared.Abstractions.Data;
 using SNS.Application.Shared.Abstractions.Messaging;
@@ -8,6 +9,7 @@ using SNS.Application.Shared.DTOs;
 using SNS.Domain.ContentManagement.Communities.Enums;
 using SNS.Shared.Results;
 using SNS.Shared.StatusCodes;
+using SNS.Shared.StatusCodes.Identity;
 
 namespace SNS.Application.ContentManagement.Communities.Memberships.Queries.GetCommunityMembers;
 
@@ -18,23 +20,39 @@ internal sealed class GetCommunityMembersQueryHandler : IQueryHandler<GetCommuni
 {
     private readonly IApplicationDbContext _dbContext;
     private readonly IFileStorageService _fileStorageService;
+    private readonly ICurrentUserService _currentUserService;
 
     public GetCommunityMembersQueryHandler(
         IApplicationDbContext dbContext,
-        IFileStorageService fileStorageService)
+        IFileStorageService fileStorageService,
+        ICurrentUserService currentUserService)
     {
         _dbContext = dbContext;
         _fileStorageService = fileStorageService;
+        _currentUserService = currentUserService;
     }
 
     public async Task<Result<Paged<CommunityMemberDto>>> Handle(GetCommunityMembersQuery request, CancellationToken cancellationToken)
     {
-        var communityExists = await _dbContext.Communities
-            .AnyAsync(c => c.Id == request.CommunityId && c.IsActive, cancellationToken);
+        var community = await _dbContext.Communities
+            .AsNoTracking()
+            .Where(c => c.Id == request.CommunityId && c.IsActive)
+            .Select(c => new { c.Id, c.Type, c.OwnerId })
+            .FirstOrDefaultAsync(cancellationToken);
 
-        if (!communityExists)
+        if (community == null)
         {
             return Result<Paged<CommunityMemberDto>>.Failure(ResourceStatusCode.NotFound);
+        }
+
+        var profileId = _currentUserService.ProfileId;
+        if (community.Type == CommunityType.Private)
+        {
+            var isMember = profileId.HasValue && (community.OwnerId == profileId.Value || await _dbContext.CommunityMemberships.AnyAsync(m => m.CommunityId == request.CommunityId && m.MemberId == profileId.Value && m.Status == CommunityMembershipStatus.Active, cancellationToken));
+            if (!isMember)
+            {
+                return Result<Paged<CommunityMemberDto>>.Failure(SecurityStatusCodes.UnAuthorized);
+            }
         }
 
         var page = request.Page > 0 ? request.Page : 1;

@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { LucideHome, LucideSearch, LucidePieChart, LucideSettings, LucideFolderGit2, LucideMessagesSquare, LucideUser } from '@lucide/angular';
+import { AuthenticationService } from '../../../identity/shared/services/authentication.service';
 
 @Component({
   selector: 'app-home-bottom-navbar',
@@ -22,11 +23,20 @@ import { LucideHome, LucideSearch, LucidePieChart, LucideSettings, LucideFolderG
   styleUrl: './home-bottom-navbar.css'
 })
 export class HomeBottomNavbar {
-  navItems = [
-    { path: '/home', icon: 'home', labelKey: 'App.Layout.Home', exact: true },
-    { path: '/home/search', icon: 'search', labelKey: 'App.Layout.Search', exact: false },
-    { path: '/home/projects', icon: 'folder-git-2', labelKey: 'App.Layout.Projects', exact: false },
-    { path: '/home/discussion', icon: 'messages-square', labelKey: 'App.Layout.Forum', exact: false },
-    { path: '/home/profile', icon: 'user', labelKey: 'App.Layout.Profile', exact: false },
-  ];
+  private authService = inject(AuthenticationService);
+
+  get profilePath(): string {
+    const pId = this.authService.getProfileId() || this.authService.getUserId();
+    return pId ? `/home/profiles/${pId}` : '/home';
+  }
+
+  get navItems() {
+    return [
+      { path: '/home', icon: 'home', labelKey: 'App.Layout.Home', exact: true },
+      { path: '/home/search', icon: 'search', labelKey: 'App.Layout.Search', exact: false },
+      { path: '/home/projects', icon: 'folder-git-2', labelKey: 'App.Layout.Projects', exact: false },
+      { path: '/home/discussion', icon: 'messages-square', labelKey: 'App.Layout.Forum', exact: false },
+      { path: this.profilePath, icon: 'user', labelKey: 'App.Layout.Profile', exact: false },
+    ];
+  }
 }

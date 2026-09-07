@@ -1,0 +1,312 @@
+<div class="create-problem-container">
+  <!-- Page Header -->
+  <header class="page-header">
+    <div class="header-left">
+      <button type="button" class="btn btn-icon btn-ghost btn-back" (click)="goBack()" [attr.aria-label]="'Common.Back' | translate">
+        <svg lucideArrowLeft></svg>
+      </button>
+      <div>
+        <h1 class="page-title">{{ 'ContentCreation.Problem.Title' | translate }}</h1>
+        <p class="page-subtitle">{{ 'ContentCreation.Problem.Subtitle' | translate }}</p>
+      </div>
+    </div>
+  </header>
+
+  @if (errorMessage()) {
+    <div class="error-banner" role="alert">
+      <svg lucideAlertCircle class="error-icon"></svg>
+      <span>{{ errorMessage() }}</span>
+      <button type="button" class="btn btn-icon btn-ghost btn-sm" (click)="errorMessage.set(null)" aria-label="Close error">
+        <svg lucideX class="icon-xs"></svg>
+      </button>
+    </div>
+  }
+
+  <!-- Main Creation Form -->
+  <form class="create-problem-form" (ngSubmit)="onSubmit()">
+    <!-- Section 1: Problem Title & Level -->
+    <section class="form-section card-section">
+      <div class="section-header">
+        <h2 class="section-title">{{ 'ContentCreation.Problem.Problem_Title' | translate }}</h2>
+      </div>
+
+      <div class="form-field">
+        <input 
+          id="problem-title" 
+          type="text" 
+          class="field-input" 
+          [placeholder]="'ContentCreation.Problem.Problem_Title_Placeholder' | translate"
+          [ngModel]="title()" 
+          (ngModelChange)="title.set($event)"
+          name="problemTitle"
+          maxlength="250"
+          required
+          [disabled]="isSubmitting()"
+        />
+      </div>
+
+      <!-- Difficulty Level Selection -->
+      <div class="level-selection-group">
+        <label class="field-label">{{ 'ContentCreation.Problem.Level' | translate }}</label>
+        <div class="level-pills">
+          @for (lvl of levels; track lvl.value) {
+            <button 
+              type="button" 
+              class="btn-level-pill" 
+              [class.active]="level() === lvl.value"
+              [attr.data-level]="lvl.value"
+              (click)="setLevel(lvl.value)"
+              [disabled]="isSubmitting()">
+              {{ lvl.label | translate }}
+            </button>
+          }
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 2: Problem Content Blocks -->
+    <section class="form-section card-section">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">{{ 'ContentCreation.Problem.Content_Blocks' | translate }}</h2>
+          <span class="section-subtitle">Add text, code snippets, or images to structure your problem description</span>
+        </div>
+      </div>
+
+      <div class="blocks-container">
+        @for (block of contentBlocks(); track block.id; let i = $index) {
+          <div class="block-card">
+            <!-- Block Toolbar -->
+            <div class="block-header">
+              <div class="block-type-selector">
+                <span class="block-index">#{{ i + 1 }}</span>
+                <div class="type-buttons">
+                  <button 
+                    type="button" 
+                    class="btn-type-pill" 
+                    [class.active]="block.type === ProblemBlockType.Text"
+                    (click)="changeBlockType(i, ProblemBlockType.Text)">
+                    <svg lucideFileText class="icon-xs"></svg>
+                    <span>Text</span>
+                  </button>
+                  <button 
+                    type="button" 
+                    class="btn-type-pill" 
+                    [class.active]="block.type === ProblemBlockType.Code"
+                    (click)="changeBlockType(i, ProblemBlockType.Code)">
+                    <svg lucideFileCode class="icon-xs"></svg>
+                    <span>Code</span>
+                  </button>
+                  <button 
+                    type="button" 
+                    class="btn-type-pill" 
+                    [class.active]="block.type === ProblemBlockType.Image"
+                    (click)="changeBlockType(i, ProblemBlockType.Image)">
+                    <svg lucideImage class="icon-xs"></svg>
+                    <span>Image</span>
+                  </button>
+                  <button 
+                    type="button" 
+                    class="btn-type-pill" 
+                    [class.active]="block.type === ProblemBlockType.Video"
+                    (click)="changeBlockType(i, ProblemBlockType.Video)">
+                    <svg lucideVideo class="icon-xs"></svg>
+                    <span>Video</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Reordering & Delete Actions -->
+              <div class="block-actions">
+                <button 
+                  type="button" 
+                  class="btn btn-icon btn-ghost btn-sm" 
+                  (click)="moveBlockUp(i)"
+                  [disabled]="i === 0 || isSubmitting()"
+                  title="Move Up">
+                  <svg lucideMoveUp class="icon-xs"></svg>
+                </button>
+                <button 
+                  type="button" 
+                  class="btn btn-icon btn-ghost btn-sm" 
+                  (click)="moveBlockDown(i)"
+                  [disabled]="i === contentBlocks().length - 1 || isSubmitting()"
+                  title="Move Down">
+                  <svg lucideMoveDown class="icon-xs"></svg>
+                </button>
+                <button 
+                  type="button" 
+                  class="btn btn-icon btn-delete btn-sm" 
+                  (click)="removeBlock(i)"
+                  [disabled]="contentBlocks().length <= 1 || isSubmitting()"
+                  title="Remove Block">
+                  <svg lucideTrash2 class="icon-xs"></svg>
+                </button>
+              </div>
+            </div>
+
+            <!-- Block Content Editor Body -->
+            <div class="block-content">
+              @if (block.type === ProblemBlockType.Text) {
+                <textarea 
+                  class="field-input field-textarea block-input" 
+                  rows="4" 
+                  placeholder="Enter problem description, constraints, examples (Markdown supported)..."
+                  [(ngModel)]="block.content"
+                  [name]="'blockContent' + block.id"
+                  [disabled]="isSubmitting()">
+                </textarea>
+              } @else if (block.type === ProblemBlockType.Code) {
+                <div class="code-block-fields">
+                  <div class="code-meta-row">
+                    <label class="meta-label">Language:</label>
+                    <input 
+                      type="text" 
+                      class="field-input field-input-sm code-lang-input" 
+                      placeholder="e.g. typescript, csharp, python"
+                      [(ngModel)]="block.extraInfo"
+                      [name]="'blockLang' + block.id"
+                      [disabled]="isSubmitting()"
+                    />
+                  </div>
+                  <textarea 
+                    class="field-input field-textarea block-input code-font" 
+                    rows="6" 
+                    placeholder="// Enter code snippet, starter template, or test cases..."
+                    [(ngModel)]="block.content"
+                    [name]="'blockContent' + block.id"
+                    [disabled]="isSubmitting()">
+                  </textarea>
+                </div>
+              } @else if (block.type === ProblemBlockType.Image) {
+                <div class="url-block-fields">
+                  <input 
+                    type="url" 
+                    class="field-input block-input" 
+                    placeholder="https://example.com/diagram.png"
+                    [(ngModel)]="block.content"
+                    [name]="'blockContent' + block.id"
+                    [disabled]="isSubmitting()"
+                  />
+                  @if (block.content.trim().length > 0) {
+                    <div class="url-preview-wrap">
+                      <img [src]="block.content" alt="Image preview" class="url-preview-img" (error)="$any($event.target).style.display='none'" />
+                    </div>
+                  }
+                </div>
+              } @else if (block.type === ProblemBlockType.Video) {
+                <div class="url-block-fields">
+                  <input 
+                    type="url" 
+                    class="field-input block-input" 
+                    placeholder="https://example.com/walkthrough.mp4"
+                    [(ngModel)]="block.content"
+                    [name]="'blockContent' + block.id"
+                    [disabled]="isSubmitting()"
+                  />
+                </div>
+              }
+            </div>
+          </div>
+        }
+      </div>
+
+      <!-- Add Block Toolbar -->
+      <div class="add-block-actions">
+        <button 
+          type="button" 
+          class="btn btn-secondary btn-sm" 
+          (click)="addBlock(ProblemBlockType.Text)"
+          [disabled]="isSubmitting()">
+          <svg lucidePlus class="icon-xs"></svg>
+          <span>Add Text Block</span>
+        </button>
+        <button 
+          type="button" 
+          class="btn btn-secondary btn-sm" 
+          (click)="addBlock(ProblemBlockType.Code)"
+          [disabled]="isSubmitting()">
+          <svg lucidePlus class="icon-xs"></svg>
+          <span>Add Code Block</span>
+        </button>
+        <button 
+          type="button" 
+          class="btn btn-secondary btn-sm" 
+          (click)="addBlock(ProblemBlockType.Image)"
+          [disabled]="isSubmitting()">
+          <svg lucidePlus class="icon-xs"></svg>
+          <span>Add Image Block</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- Section 3: Problem Tags (Search & Selection Modal) -->
+    <section class="form-section card-section">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">{{ 'ContentCreation.Problem.Tags' | translate }}</h2>
+          <span class="section-subtitle">Categorize this problem with relevant topic tags</span>
+        </div>
+        <button 
+          type="button" 
+          class="btn btn-primary btn-sm" 
+          (click)="openAddTagModal()"
+          [disabled]="isSubmitting()">
+          <svg lucidePlus class="icon-xs"></svg>
+          <span>{{ 'ContentCreation.Problem.Add_Tag' | translate }}</span>
+        </button>
+      </div>
+
+      <div class="tags-container">
+        @for (tag of selectedTags(); track tag.tagId) {
+          <div class="tag-pill-item">
+            <span class="tag-text">#{{ tag.tagName }}</span>
+            <button 
+              type="button" 
+              class="btn btn-icon btn-ghost btn-tag-remove" 
+              (click)="removeTag(tag.tagId)"
+              [disabled]="isSubmitting()"
+              aria-label="Remove tag">
+              <svg lucideX class="icon-xs"></svg>
+            </button>
+          </div>
+        }
+        @if (selectedTags().length === 0) {
+          <p class="no-tags-prompt">{{ 'ContentCreation.Problem.No_Tags' | translate }}</p>
+        }
+      </div>
+    </section>
+
+    <!-- Form Actions Footer -->
+    <div class="form-actions-footer">
+      <button 
+        type="button" 
+        class="btn btn-secondary" 
+        (click)="goBack()" 
+        [disabled]="isSubmitting()">
+        {{ 'Shared.Actions.Cancel' | translate }}
+      </button>
+      <button 
+        type="submit" 
+        class="btn btn-primary" 
+        [disabled]="!canSubmit()">
+        @if (isSubmitting()) {
+          <span class="spinner-small"></span>
+          <span>{{ 'ContentCreation.Problem.Creating' | translate }}</span>
+        } @else {
+          <svg lucideSend class="icon-sm"></svg>
+          <span>{{ 'ContentCreation.Problem.Submit' | translate }}</span>
+        }
+      </button>
+    </div>
+  </form>
+
+  <!-- Reusable Add Tag Modal (In-Memory Selection Mode) -->
+  @if (isAddTagModalOpen()) {
+    <app-add-tag-modal 
+      [existingTagIds]="existingTagIds()"
+      (tagAdded)="onTagAdded($event)"
+      (closeModal)="closeAddTagModal()">
+    </app-add-tag-modal>
+  }
+</div>

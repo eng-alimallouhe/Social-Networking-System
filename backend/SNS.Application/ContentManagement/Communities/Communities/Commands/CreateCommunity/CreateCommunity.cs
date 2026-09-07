@@ -91,6 +91,7 @@ internal sealed class CreateCommunityCommandHandler : ICommandHandler<CreateComm
         }
 
         var nameExists = await _dbContext.Communities
+            .AsNoTracking()
             .AnyAsync(c => c.Name == request.Name && c.IsActive, cancellationToken);
 
         if (nameExists)

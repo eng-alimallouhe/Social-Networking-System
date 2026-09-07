@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { inject } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { SuggestedUser } from '../../contracts/suggested-user';
-import { rxResource } from '@angular/core/rxjs-interop';
+import { AppAvatar } from '../../../../shared/design-system/components/app-avatar/app-avatar';
 
 const MOCK_SUGGESTED_USERS: SuggestedUser[] = [
   {
@@ -114,7 +114,7 @@ const MIN_FOLLOWS = 5;
 @Component({
   selector: 'app-follow-people',
   standalone: true,
-  imports: [CommonModule, TranslatePipe],
+  imports: [CommonModule, TranslatePipe, AppAvatar],
   templateUrl: './follow-people.html',
   styleUrl: './follow-people.css'
 })
@@ -155,15 +155,6 @@ export class FollowPeople {
       }
       return next;
     });
-  }
-
-  getInitials(fullName: string): string {
-    return fullName
-      .split(' ')
-      .slice(0, 2)
-      .map(n => n[0])
-      .join('')
-      .toUpperCase();
   }
 
   /** Compact count formatter: 12430 → "12.4K", 1200000 → "1.2M" */

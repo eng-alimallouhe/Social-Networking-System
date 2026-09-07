@@ -23,6 +23,10 @@ export class CommunityMembershipsService {
         return this.http.post<Result>(`${this.rootUrl}${CONTENT_MANAGEMENT_API_ROUTES.JoinCommunity(communityId)}`, request || {});
     }
 
+    cancelJoinRequest(communityId: string): Observable<Result> {
+        return this.http.delete<Result>(`${this.rootUrl}${CONTENT_MANAGEMENT_API_ROUTES.CancelJoinRequest(communityId)}`);
+    }
+
     leaveCommunity(communityId: string): Observable<Result> {
         return this.http.post<Result>(`${this.rootUrl}${CONTENT_MANAGEMENT_API_ROUTES.LeaveCommunity(communityId)}`, {});
     }

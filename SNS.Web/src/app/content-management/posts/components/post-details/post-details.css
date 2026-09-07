@@ -40,31 +40,9 @@
     margin: 0;
 }
 
-.back-btn {
-    margin: 0;
-    padding: var(--spacing-2);
-    color: var(--primary-color);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: var(--text-sm);
-    font-weight: var(--font-weight-medium);
-    background-color: var(--bg-main);
-    text-decoration: none;
-    border: none;
-    cursor: pointer;
-    border-radius: var(--radius-full);
-    transition: color 0.2s ease;
-}
-
 .back-btn svg {
-    width: 25px;
-    height: 25px;
-    stroke-width: 4px;
-}
-
-.back-btn:hover {
-    color: var(--text-primary);
+    width: 20px;
+    height: 20px;
 }
 
 .page-title {
@@ -154,13 +132,8 @@
 }
 
 .cancel-reply-btn {
-    background: transparent;
-    border: none;
     font-size: 1.25rem;
-    cursor: pointer;
-    color: var(--text-muted);
     padding: 0 var(--spacing-1);
-    line-height: 1;
 }
 
 .cancel-reply-btn:hover {
@@ -201,27 +174,7 @@
 }
 
 .submit-comment-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--spacing-2);
-    padding: var(--spacing-2) var(--spacing-5);
-    background-color: var(--primary-color);
-    color: var(--text-inverse, #ffffff);
-    border: none;
     border-radius: var(--radius-full);
-    font-size: 0.9rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color var(--transition-fast, 0.15s), opacity var(--transition-fast, 0.15s);
-}
-
-.submit-comment-btn:hover:not(:disabled) {
-    background-color: var(--primary-hover);
-}
-
-.submit-comment-btn:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
 }
 
 .send-icon {
@@ -315,30 +268,7 @@
     margin: 0;
 }
 
-.retry-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--spacing-2);
-    padding: var(--spacing-2) var(--spacing-4);
-    background-color: transparent;
-    border: 1px solid var(--primary-color);
-    border-radius: var(--radius-full);
-    color: var(--primary-color);
-    font-size: 0.875rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color var(--transition-fast, 0.15s), color var(--transition-fast, 0.15s);
-}
 
-.retry-btn:hover {
-    background-color: var(--primary-color);
-    color: var(--text-inverse, #ffffff);
-}
-
-.retry-icon {
-    width: 16px;
-    height: 16px;
-}
 
 /* Spinner */
 .spinner {

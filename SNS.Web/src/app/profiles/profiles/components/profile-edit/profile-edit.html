@@ -1,0 +1,360 @@
+<div class="profile-edit-page" [class.rtl]="isRtl()">
+  @if (isLoadingProfile()) {
+    <div class="page-loader-wrap">
+      <app-circle-loader></app-circle-loader>
+    </div>
+  } @else {
+    <!-- Top Header Bar (matches Project Edit header styling) -->
+    <header class="edit-page-header">
+      <div class="title-section">
+        <button type="button" class="btn back-button" (click)="goBack()"
+          [attr.aria-label]="'ProfileEdit.Common.Back' | translate">
+          <svg lucideArrowLeft class="directional-icon"></svg>
+        </button>
+        <h1 class="page-title">
+          <span class="edit-title-text">{{ 'ProfileEdit.Header.Title' | translate }}</span>
+          @if (profile()?.fullName) {
+            <span class="profile-name-text">{{ profile()?.fullName }}</span>
+          }
+        </h1>
+      </div>
+
+      <div class="header-row">
+        <!-- Section Navigation Dropdown -->
+        <div class="section-dropdown-wrap">
+          <button type="button" class="section-dropdown-trigger" [class.open]="isSectionDropdownOpen()"
+            (click)="toggleSectionDropdown()" aria-haspopup="listbox" [attr.aria-expanded]="isSectionDropdownOpen()">
+            <div class="trigger-selected-content">
+              @switch (activeTab()) {
+                @case ('general') {
+                  <svg lucideInfo class="section-icon"></svg>
+                  <span class="section-label">{{ 'ProfileEdit.Tabs.General' | translate }}</span>
+                }
+                @case ('picture') {
+                  <svg lucideCamera class="section-icon"></svg>
+                  <span class="section-label">{{ 'ProfileEdit.Tabs.Picture' | translate }}</span>
+                }
+                @case ('social') {
+                  <svg lucideGlobe class="section-icon"></svg>
+                  <span class="section-label">{{ 'ProfileEdit.Tabs.Social' | translate }}</span>
+                }
+                @case ('skills') {
+                  <svg lucideCode class="section-icon"></svg>
+                  <span class="section-label">{{ 'ProfileEdit.Tabs.Skills' | translate }}</span>
+                  <span class="section-badge">{{ skills().length }}</span>
+                }
+              }
+            </div>
+            <svg lucideChevronDown class="dropdown-chevron" [class.rotated]="isSectionDropdownOpen()"></svg>
+          </button>
+
+          @if (isSectionDropdownOpen()) {
+            <div class="section-dropdown-menu" role="listbox" tabindex="-1">
+              <!-- 1. General -->
+              <button type="button" class="section-menu-item" [class.active]="activeTab() === 'general'"
+                (click)="selectSection('general')" role="option" [attr.aria-selected]="activeTab() === 'general'">
+                <div class="item-left">
+                  <svg lucideInfo class="section-icon"></svg>
+                  <span class="item-label">{{ 'ProfileEdit.Tabs.General' | translate }}</span>
+                </div>
+                @if (activeTab() === 'general') {
+                  <svg lucideCheck class="item-check-icon"></svg>
+                }
+              </button>
+
+              <!-- 2. Picture -->
+              <button type="button" class="section-menu-item" [class.active]="activeTab() === 'picture'"
+                (click)="selectSection('picture')" role="option" [attr.aria-selected]="activeTab() === 'picture'">
+                <div class="item-left">
+                  <svg lucideCamera class="section-icon"></svg>
+                  <span class="item-label">{{ 'ProfileEdit.Tabs.Picture' | translate }}</span>
+                </div>
+                @if (activeTab() === 'picture') {
+                  <svg lucideCheck class="item-check-icon"></svg>
+                }
+              </button>
+
+              <!-- 3. Social -->
+              <button type="button" class="section-menu-item" [class.active]="activeTab() === 'social'"
+                (click)="selectSection('social')" role="option" [attr.aria-selected]="activeTab() === 'social'">
+                <div class="item-left">
+                  <svg lucideGlobe class="section-icon"></svg>
+                  <span class="item-label">{{ 'ProfileEdit.Tabs.Social' | translate }}</span>
+                </div>
+                @if (activeTab() === 'social') {
+                  <svg lucideCheck class="item-check-icon"></svg>
+                }
+              </button>
+
+              <!-- 4. Skills -->
+              <button type="button" class="section-menu-item" [class.active]="activeTab() === 'skills'"
+                (click)="selectSection('skills')" role="option" [attr.aria-selected]="activeTab() === 'skills'">
+                <div class="item-left">
+                  <svg lucideCode class="section-icon"></svg>
+                  <span class="item-label">{{ 'ProfileEdit.Tabs.Skills' | translate }}</span>
+                </div>
+                <div class="item-right">
+                  <span class="section-badge">{{ skills().length }}</span>
+                  @if (activeTab() === 'skills') {
+                    <svg lucideCheck class="item-check-icon"></svg>
+                  }
+                </div>
+              </button>
+            </div>
+          }
+        </div>
+      </div>
+    </header>
+
+    <!-- Content Sections -->
+    <main class="edit-content-wrap">
+      <!-- 1. GENERAL INFORMATION -->
+      @if (activeTab() === 'general') {
+        <section class="tab-panel animate-fade-in" aria-labelledby="heading-general">
+          <div class="panel-header">
+            <div>
+              <h2 id="heading-general" class="panel-title">{{ 'ProfileEdit.General.Title' | translate }}</h2>
+              <p class="panel-subtitle">{{ 'ProfileEdit.General.Subtitle' | translate }}</p>
+            </div>
+            <button type="button" class="btn btn-primary" (click)="saveGeneralInformation()"
+              [disabled]="isSavingGeneral() || !fullName().trim()">
+              @if (isSavingGeneral()) {
+                <app-circle-loader size="18px"></app-circle-loader>
+                <span>{{ 'ProfileEdit.Common.Saving' | translate }}</span>
+              } @else {
+                <svg lucideSave></svg>
+                <span>{{ 'ProfileEdit.Common.Save' | translate }}</span>
+              }
+            </button>
+          </div>
+
+          <div class="form-grid">
+            <div class="form-group">
+              <app-input
+                id="fullName"
+                type="text"
+                [label]="'ProfileEdit.General.FullName' | translate"
+                [placeholder]="'ProfileEdit.General.FullNamePlaceholder' | translate"
+                [required]="true"
+                [ngModel]="fullName()"
+                (ngModelChange)="fullName.set($event)">
+              </app-input>
+            </div>
+
+            <div class="form-group">
+              <app-select
+                id="specialization"
+                [label]="'ProfileEdit.General.Specialization' | translate"
+                [placeholder]="'ProfileEdit.General.SpecializationPlaceholder' | translate"
+                [enableSearch]="true"
+                [searchPlaceholder]="'ProfileEdit.General.SpecializationPlaceholder' | translate"
+                [options]="specializationOptions()"
+                [ngModel]="specialization()"
+                (ngModelChange)="specialization.set($event)">
+              </app-select>
+            </div>
+
+            <div class="form-group full-width">
+              <app-input
+                id="location"
+                type="text"
+                [label]="'ProfileEdit.General.Location' | translate"
+                [placeholder]="'ProfileEdit.General.LocationPlaceholder' | translate"
+                [ngModel]="locationValue()"
+                (ngModelChange)="locationValue.set($event)">
+              </app-input>
+            </div>
+
+            <div class="form-group full-width">
+              <app-textarea
+                id="bio"
+                [label]="'ProfileEdit.General.Bio' | translate"
+                [placeholder]="'ProfileEdit.General.BioPlaceholder' | translate"
+                [rows]="4"
+                [showCharCount]="true"
+                [maxlength]="500"
+                [ngModel]="bio()"
+                (ngModelChange)="bio.set($event)">
+              </app-textarea>
+            </div>
+          </div>
+        </section>
+      }
+
+      <!-- 2. PROFILE PICTURE -->
+      @if (activeTab() === 'picture') {
+        <section class="tab-panel animate-fade-in" aria-labelledby="heading-picture">
+          <div class="panel-header">
+            <div>
+              <h2 id="heading-picture" class="panel-title">{{ 'ProfileEdit.Picture.Title' | translate }}</h2>
+              <p class="panel-subtitle">{{ 'ProfileEdit.Picture.Subtitle' | translate }}</p>
+            </div>
+            @if (selectedPictureFile()) {
+              <button type="button" class="btn btn-primary" (click)="uploadProfilePicture()"
+                [disabled]="isUploadingPicture()">
+                @if (isUploadingPicture()) {
+                  <app-circle-loader></app-circle-loader>
+                  <span>{{ 'ProfileEdit.Common.Uploading' | translate }}</span>
+                } @else {
+                  <svg lucideUpload></svg>
+                  <span>{{ 'ProfileEdit.Picture.UploadButton' | translate }}</span>
+                }
+              </button>
+            }
+          </div>
+
+          <div class="picture-management-wrap">
+            <div class="avatar-preview-box">
+              <app-avatar [src]="previewPictureUrl()" [name]="fullName()" size="xl"
+                class="picture-avatar-preview"></app-avatar>
+              <span class="preview-caption">{{ 'ProfileEdit.Picture.CurrentPreview' | translate }}</span>
+            </div>
+
+            <div class="upload-dropzone" [class.drag-over]="isDragOver()" (dragover)="onDragOver($event)"
+              (dragleave)="onDragLeave($event)" (drop)="onDrop($event)" (click)="triggerFileInput()">
+              <input #fileInput type="file" accept="image/*" class="hidden-file-input"
+                (change)="onFileSelected($event)" />
+              <div class="dropzone-content">
+                <svg lucideCamera class="dropzone-icon"></svg>
+                <h3 class="dropzone-title">{{ 'ProfileEdit.Picture.DropzoneTitle' | translate }}</h3>
+                <p class="dropzone-hint">{{ 'ProfileEdit.Picture.DropzoneHint' | translate }}</p>
+                <button type="button" class="btn btn-secondary btn-sm select-photo-btn">
+                  {{ 'ProfileEdit.Picture.SelectFile' | translate }}
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+      }
+
+      <!-- 3. SOCIAL LINKS -->
+      @if (activeTab() === 'social') {
+        <section class="tab-panel animate-fade-in" aria-labelledby="heading-social">
+          <div class="panel-header">
+            <div>
+              <h2 id="heading-social" class="panel-title">{{ 'ProfileEdit.Social.Title' | translate }}</h2>
+              <p class="panel-subtitle">{{ 'ProfileEdit.Social.Subtitle' | translate }}</p>
+            </div>
+            <button type="button" class="btn btn-primary" (click)="saveSocialLinks()"
+              [disabled]="isSavingSocial()">
+              @if (isSavingSocial()) {
+                <app-circle-loader size="18px"></app-circle-loader>
+                <span>{{ 'ProfileEdit.Common.Saving' | translate }}</span>
+              } @else {
+                <svg lucideSave></svg>
+                <span>{{ 'ProfileEdit.Common.Save' | translate }}</span>
+              }
+            </button>
+          </div>
+
+          <div class="form-grid">
+            <div class="form-group">
+              <app-input
+                id="facebookUrl"
+                type="url"
+                label="Facebook"
+                placeholder="https://facebook.com/username"
+                [ngModel]="facebookUrl()"
+                (ngModelChange)="facebookUrl.set($event)">
+              </app-input>
+            </div>
+
+            <div class="form-group">
+              <app-input
+                id="linkedInUrl"
+                type="url"
+                label="LinkedIn"
+                placeholder="https://linkedin.com/in/username"
+                [ngModel]="linkedInUrl()"
+                (ngModelChange)="linkedInUrl.set($event)">
+              </app-input>
+            </div>
+
+            <div class="form-group">
+              <app-input
+                id="gitHubUrl"
+                type="url"
+                label="GitHub"
+                placeholder="https://github.com/username"
+                [ngModel]="gitHubUrl()"
+                (ngModelChange)="gitHubUrl.set($event)">
+              </app-input>
+            </div>
+
+            <div class="form-group">
+              <app-input
+                id="xUrl"
+                type="url"
+                label="X (Twitter)"
+                placeholder="https://x.com/username"
+                [ngModel]="xUrl()"
+                (ngModelChange)="xUrl.set($event)">
+              </app-input>
+            </div>
+
+            <div class="form-group full-width">
+              <app-input
+                id="website"
+                type="url"
+                label="Website"
+                placeholder="https://yourwebsite.com"
+                [ngModel]="website()"
+                (ngModelChange)="website.set($event)">
+              </app-input>
+            </div>
+          </div>
+        </section>
+      }
+
+      <!-- 4. SKILLS MANAGEMENT -->
+      @if (activeTab() === 'skills') {
+        <section class="tab-panel animate-fade-in" aria-labelledby="heading-skills">
+          <div class="panel-header">
+            <div>
+              <h2 id="heading-skills" class="panel-title">{{ 'ProfileEdit.Skills.Title' | translate }}</h2>
+              <p class="panel-subtitle">{{ 'ProfileEdit.Skills.Subtitle' | translate }}</p>
+            </div>
+            <button type="button" class="btn btn-primary" (click)="openAddSkillModal()">
+              <svg lucidePlus></svg>
+              <span>{{ 'ProfileEdit.Skills.AddSkill' | translate }}</span>
+            </button>
+          </div>
+
+          <div class="skills-chips-wrapper">
+            @if (skills().length === 0) {
+              <div class="empty-skills-state">
+                <p>{{ 'ProfileEdit.Skills.NoSkills' | translate }}</p>
+              </div>
+            } @else {
+              <div class="chips-container">
+                @for (skill of skills(); track skill.skillId) {
+                  <div class="skill-chip">
+                    <span class="skill-name">{{ skill.skillName }}</span>
+                    <button type="button" class="btn-remove-skill" (click)="removeSkill(skill)"
+                      [disabled]="removingSkillId() === skill.skillId"
+                      [attr.aria-label]="'ProfileEdit.Skills.RemoveSkill' | translate">
+                      @if (removingSkillId() === skill.skillId) {
+                        <app-circle-loader></app-circle-loader>
+                      } @else {
+                        <svg lucideX class="remove-icon"></svg>
+                      }
+                    </button>
+                  </div>
+                }
+              </div>
+            }
+          </div>
+        </section>
+      }
+    </main>
+  }
+
+  <!-- Add Skill Modal -->
+  @if (isAddSkillModalOpen()) {
+    <app-add-skill-modal
+      [existingSkillIds]="existingSkillIds()"
+      (skillAdded)="onSkillSelected($event)"
+      (closeModal)="isAddSkillModalOpen.set(false)">
+    </app-add-skill-modal>
+  }
+</div>

@@ -694,7 +694,11 @@
                 "Authentication": "المصادقة",
                 "Registration": "التسجيل",
                 "DemoPages": "الصفحات التجريبية",
-                "AccountSettings": "إعدادات الحساب"
+                "AccountSettings": "إعدادات الحساب",
+                "Profiles": "الملفات الشخصية والشبكة الاجتماعية",
+                "Companies": "الشركات والوظائف",
+                "Communities": "المجتمعات التقنية",
+                "ContentCreation": "إنشاء المحتوى"
             },
             "Pages": {
                 "Login": "تسجيل الدخول بكلمة المرور",
@@ -712,7 +716,29 @@
                 "RoleSwitcher": "مبدّل الأدوار",
                 "RoleSwitcher_Desc": "التبديل السريع بين الأدوار المحددة مسبقاً.",
                 "Dashboard": "لوحة التحكم التجريبية",
-                "Dashboard_Desc": "المركز الرئيسي لجميع الميزات التجريبية."
+                "Dashboard_Desc": "المركز الرئيسي لجميع الميزات التجريبية.",
+                "ProfileSettings": "إعدادات الملف الشخصي",
+                "ProfileSettings_Desc": "تعديل الملف الشخصي، واختيار التخصص بالقائمة المنسدلة، وتحديث النبذة والصورة.",
+                "ProfileDetails": "تفاصيل الملف الشخصي",
+                "ProfileDetails_Desc": "عرض ترويسة الملف الشخصي، السمعة، المنشورات، والمشاريع البرمجية.",
+                "Followers": "المتابعون",
+                "Followers_Desc": "استعراض قائمة المتابعين مع بطاقات الحسابات وإجراءات المتابعة.",
+                "Following": "المتابَعون",
+                "Following_Desc": "استعراض الحسابات التي يتابعها المستخدم وروابط الشبكة الاجتماعية.",
+                "CompanyDetails": "تفاصيل الشركة",
+                "CompanyDetails_Desc": "استكشاف تفاصيل الشركة، الوظائف المنشورة، وفريق الإدارة عبر التبويبات.",
+                "JobDetails": "تفاصيل الوظيفة",
+                "JobDetails_Desc": "عرض تفاصيل الشاغر الوظيفي ومستوى الراتب والشركة الناشرة.",
+                "CommunityDetails": "تفاصيل المجتمع",
+                "CommunityDetails_Desc": "استكشاف أعضاء المجتمع ونقاشاته وقواعده التنظيمية.",
+                "CreatePost": "إنشاء منشور",
+                "CreatePost_Desc": "كتابة ونشر منشور جديد مع دعم تنسيق ماركداون ورفع الوسائط.",
+                "CreateProblem": "إنشاء مسألة",
+                "CreateProblem_Desc": "طرح مسألة برمجية أو استفسار تقني للنقاش مع المجتمع.",
+                "CreateProject": "إنشاء مشروع",
+                "CreateProject_Desc": "إضافة وعرض مشروع برمجي جديد ومشاركته مع المطورين.",
+                "HomeFeed": "الخلاصة الرئيسية",
+                "HomeFeed_Desc": "الصفحة الرئيسية مع القائمة الجانبية التي تعرض المجتمعات والوظائف."
             }
         },
         "RoleSwitcher": {
@@ -853,6 +879,31 @@
         "Source_Code_Empty_Desc": "لم يتم رفع ملفات الكود المصدري مباشرة إلى المنصة.",
         "Reviews_Empty_Title": "لا توجد مراجعات بعد",
         "Reviews_Empty_Desc": "كن أول من يشارك رأيه ويراجع هذا المشروع.",
+        "Rating": {
+            "Add_Rating_Title": "قيّم هذا المشروع",
+            "Update_Rating_Title": "تقييمك للمشروع",
+            "Add_Rating_Subtitle": "شارك رأيك وتجربتك مع المجتمع",
+            "Stars_Label": "التقييم من 5 نجوم",
+            "Star_1": "نجمة واحدة",
+            "Star_2": "نجمتان",
+            "Star_3": "3 نجوم",
+            "Star_4": "4 نجوم",
+            "Star_5": "5 نجوم",
+            "Star_Label_1": "سيء جداً",
+            "Star_Label_2": "سيء",
+            "Star_Label_3": "متوسط",
+            "Star_Label_4": "جيد",
+            "Star_Label_5": "ممتاز",
+            "Review_Comment_Label": "تعليق المراجعة",
+            "Review_Comment_Placeholder": "اكتب تعليقاً مختصراً...",
+            "Submit_Rating_Button": "إضافة التقييم",
+            "Update_Rating_Button": "تحديث التقييم",
+            "Submitting": "جارٍ الإرسال...",
+            "Rating_Success_Title": "تم إرسال التقييم",
+            "Rating_Success_Message": "شكراً لك! تم تسجيل تقييمك بنجاح.",
+            "Rating_Update_Message": "تم تحديث تقييمك بنجاح.",
+            "Login_To_Rate": "سجّل الدخول لتتمكن من تقييم هذا المشروع ومراجعته."
+        },
         "View_On_Github": "عرض المستودع على GitHub",
         "File": "ملف",
         "Directory": "مجلد",
@@ -872,7 +923,14 @@
             "Closed": "مغلقة"
         },
         "Upvotes": "التأييدات",
+        "Downvotes": "عدم التأييد",
+        "Upvote": "تأييد",
+        "Downvote": "عدم تأييد",
         "Solutions": "الحلول",
+        "Discussions": "النقاشات",
+        "Solutions_Empty_Title": "لا توجد حلول بعد",
+        "Solutions_Empty_Desc": "كن أول من يشارك حلاً لهذه المسألة!",
+        "Load_More_Solutions": "تحميل المزيد من الحلول",
         "View_Problem": "عرض المسألة",
         "Video_Attachment": "فيديو مرفق",
         "Save": "حفظ المسألة",
@@ -880,7 +938,21 @@
         "Error_Title": "فشل تحميل المسألة",
         "Error_Desc": "تعذر تحميل تفاصيل المسألة. يرجى المحاولة مرة أخرى.",
         "Retry": "إعادة المحاولة",
-        "Views": "المشاهدات"
+        "Views": "المشاهدات",
+        "Empty_Title": "لا توجد مسائل حالياً",
+        "Empty_Description": "لا توجد مسائل نقاشية متاحة في الوقت الحالي. يرجى التحقق مرة أخرى لاحقاً!",
+        "Feed_Error_Title": "فشل تحميل المسائل",
+        "Feed_Error_Description": "حدث خطأ أثناء جلب المسائل النقاشية. يرجى إعادة المحاولة.",
+        "Load_More_Error": "فشل تحميل المزيد من المسائل",
+        "End_Of_Feed": "لقد وصلت إلى نهاية قائمة المسائل"
+    },
+    "Solution": {
+        "Status": {
+            "Pending": "قيد الانتظار",
+            "Accepted": "مقبول",
+            "Rejected": "مرفوض",
+            "BestSolution": "أفضل حل"
+        }
     },
     "Job": {
         "Type": {
@@ -940,7 +1012,53 @@
         "Posts": "المنشورات",
         "Error_Title": "فشل تحميل المجتمع",
         "Error_Desc": "تعذر تحميل تفاصيل المجتمع. يرجى المحاولة مرة أخرى.",
-        "Retry": "إعادة المحاولة"
+        "Retry": "إعادة المحاولة",
+        "View_Community": "عرض المجتمع",
+        "Join_Community": "الانضمام للمجتمع",
+        "Waiting_For_Approval": "بانتظار الموافقة",
+        "Cancel_Request": "إلغاء الطلب",
+        "Manage_Community": "إدارة المجتمع",
+        "Tabs": {
+            "About": "حول",
+            "Posts": "المنشورات",
+            "Problems": "المشكلات",
+            "Members": "الأعضاء",
+            "Management": "الإدارة"
+        },
+        "Create_Post_Prompt": "شارك شيئاً مع أعضاء المجتمع...",
+        "Create_Post": "إنشاء منشور",
+        "Pending_Post_Notice": "لديك منشور قيد مراجعة المشرفين حالياً.",
+        "Moderation_Policy": "سياسة الإشراف",
+        "Management_Pending_Posts": "المنشورات المعلقة",
+        "Management_Join_Requests": "طلبات الانضمام",
+        "Approve": "قبول",
+        "Reject": "رفض",
+        "No_Pending_Posts": "لا توجد منشورات بانتظار الموافقة",
+        "No_Join_Requests": "لا توجد طلبات انضمام معلقة",
+        "No_Posts": "لا توجد منشورات في هذا المجتمع بعد",
+        "No_Problems": "لا توجد مشكلات في هذا المجتمع بعد",
+        "No_Members": "لم يتم العثور على أعضاء",
+        "Shared": "مشاركة",
+        "Pending": "قيد الانتظار",
+        "Post_Title_Placeholder": "عنوان المنشور",
+        "Toasts": {
+            "Joined_Success": "تم الانضمام إلى المجتمع بنجاح",
+            "Join_Pending": "تم إرسال طلب الانضمام للموافقة",
+            "Join_Failed": "فشل الانضمام إلى المجتمع",
+            "Cancel_Success": "تم إلغاء طلب الانضمام",
+            "Cancel_Failed": "فشل إلغاء طلب الانضمام",
+            "Link_Copied": "تم نسخ الرابط إلى الحافظة",
+            "Post_Submitted": "تم نشر المنشور بنجاح",
+            "Post_Failed": "فشل إنشاء المنشور",
+            "Post_Approved": "تمت الموافقة على المنشور",
+            "Post_Approve_Failed": "فشلت الموافقة على المنشور",
+            "Post_Rejected": "تم رفض المنشور",
+            "Post_Reject_Failed": "فشل رفض المنشور",
+            "Request_Approved": "تمت الموافقة على طلب الانضمام",
+            "Request_Approve_Failed": "فشلت الموافقة على طلب الانضمام",
+            "Request_Rejected": "تم رفض طلب الانضمام",
+            "Request_Reject_Failed": "فشل رفض طلب الانضمام"
+        }
     },
     "Profile": {
         "Follow": "متابعة",
@@ -974,7 +1092,84 @@
         "No_Problems_Title": "لا توجد مسائل منشورة",
         "No_Problems_Desc": "لم ينشر هذا الحساب أي مسائل للنقاش بعد.",
         "No_Resumes_Title": "لا توجد سير ذاتية متاحة",
-        "No_Resumes_Desc": "لا توجد سير ذاتية عامة متاحة لهذا الملف الشخصي."
+        "No_Resumes_Desc": "لا توجد سير ذاتية عامة متاحة لهذا الملف الشخصي.",
+        "Followers_Title": "المتابعون",
+        "Following_Title": "المتابَعون",
+        "Follow_Date_Label": "تاريخ المتابعة:",
+        "No_Followers_Title": "لا يوجد متابعون بعد",
+        "No_Followers_Desc": "هذا الملف الشخصي ليس لديه أي متابعين بعد.",
+        "No_Following_Title": "لا يتابع أحداً بعد",
+        "No_Following_Desc": "هذا الملف الشخصي لا يتابع أي شخص بعد.",
+        "Followers_Error": "تعذر تحميل المتابعين لهذا الملف الشخصي.",
+        "Following_Error": "تعذر تحميل الحسابات المتابعة.",
+        "End_Of_List": "لقد وصلت إلى نهاية القائمة",
+        "EditProfile": "تعديل الملف الشخصي",
+        "Follow_Error": "فشل تحديث حالة المتابعة."
+    },
+    "ProfileEdit": {
+        "Header": {
+            "Title": "تعديل الملف الشخصي"
+        },
+        "Common": {
+            "Back": "رجوع",
+            "Save": "حفظ التغييرات",
+            "Saving": "جارٍ الحفظ...",
+            "Uploading": "جارٍ الرفع..."
+        },
+        "Tabs": {
+            "General": "المعلومات العامة",
+            "Picture": "الصورة الشخصية",
+            "Social": "روابط التواصل",
+            "Skills": "المهارات والخبرات"
+        },
+        "General": {
+            "Title": "المعلومات الأساسية",
+            "Subtitle": "تعديل الاسم والنبذة التعريفية والتخصص والموقع الجغرافي.",
+            "FullName": "الاسم الكامل",
+            "FullNamePlaceholder": "أدخل اسمك الكامل",
+            "Specialization": "التخصص أو المسمى الوظيفي",
+            "SpecializationPlaceholder": "مثال: مهندس برمجيات أول",
+            "Location": "الموقع / المدينة",
+            "LocationPlaceholder": "مثال: عمان، الأردن أو عن بُعد",
+            "Bio": "النبذة التعريفية (Bio)",
+            "BioPlaceholder": "اكتب نبذة مختصرة عن خلفيتك المهنية وخبراتك..."
+        },
+        "Picture": {
+            "Title": "الصورة الشخصية",
+            "Subtitle": "رفع أو تغيير صورة ملفك الشخصي.",
+            "CurrentPreview": "معاينة الصورة الحالية",
+            "DropzoneTitle": "اسحب وأفلت صورة جديدة هنا",
+            "DropzoneHint": "يدعم PNG أو JPG أو WEBP بحد أقصى 5 ميغابايت",
+            "SelectFile": "اختر صورة",
+            "UploadButton": "رفع الصورة الجديدة"
+        },
+        "Social": {
+            "Title": "روابط التواصل والويب",
+            "Subtitle": "أضف روابط حساباتك حتى يتمكن الآخرون من التواصل معك عبر المنصات."
+        },
+        "Skills": {
+            "Title": "المهارات والخبرات",
+            "Subtitle": "إدارة المهارات التقنية والمهنية المعروضة في ملفك الشخصي.",
+            "AddSkill": "إضافة مهارة",
+            "NoSkills": "لم تتم إضافة أي مهارات إلى ملفك الشخصي بعد.",
+            "RemoveSkill": "حذف المهارة"
+        },
+        "Validation": {
+            "NameRequired": "الاسم الكامل مطلوب.",
+            "ImageOnly": "يرجى اختيار ملف صورة صالح."
+        },
+        "Success": {
+            "GeneralUpdated": "تم تحديث المعلومات العامة بنجاح.",
+            "PictureUpdated": "تم تحديث الصورة الشخصية بنجاح.",
+            "SocialUpdated": "تم تحديث روابط التواصل بنجاح.",
+            "SkillAdded": "تمت إضافة المهارة إلى ملفك الشخصي.",
+            "SkillRemoved": "تمت إزالة المهارة من ملفك الشخصي."
+        },
+        "Errors": {
+            "NotFound": "الملف الشخصي غير موجود.",
+            "LoadFailed": "تعذر تحميل تفاصيل الملف الشخصي.",
+            "UpdateFailed": "حدث خطأ أثناء حفظ التعديلات."
+        }
     },
     "Search": {
         "Intro_Title": "ابحث عما تريد",
@@ -1143,8 +1338,15 @@
         "Media": {
             "Title": "وسائط المشروع",
             "Description": "رفع لقطات الشاشة، والمخططات، ووسائط معاينة المشروع.",
-            "Upload_Button": "رفع الوسائط",
-            "Caption_Placeholder": "أدخل وصف الصورة...",
+            "Upload_Button": "رفع الصورة",
+            "Uploading": "جارٍ الرفع...",
+            "Dropzone_Title": "انقر لاختيار صورة، أو اسحبها وأفلتها هنا",
+            "Dropzone_Hint": "PNG، JPG، WEBP أو GIF (الحد الأقصى 10 ميغابايت)",
+            "Change_Image": "تغيير",
+            "Remove_Image": "إزالة",
+            "Ready_Badge": "جاهزة للرفع",
+            "Caption_Label": "وصف الصورة (اختياري)",
+            "Caption_Placeholder": "مثال: نظرة عامة على لوحة التحكم، مخطط النظام...",
             "No_Media": "لم يتم رفع وسائط بعد.",
             "Uploaded_Toast": "تم رفع الوسائط بنجاح.",
             "Deleted_Toast": "تمت إزالة الوسائط بنجاح."
@@ -1175,6 +1377,106 @@
             "InProgress": "المشروع قيد التطوير النشط والعمل المستمر.",
             "Completed": "المشروع وصل إلى مرحلة مستقرة أو إطلاق نهائي.",
             "Archived": "المشروع للقراءة فقط ومحفوظ للأرشفة."
+        }
+    },
+    "ContentCreation": {
+        "Dropdown": {
+            "Create_Post": "إنشاء منشور",
+            "Create_Problem": "إنشاء مسألة برمجية",
+            "Create_Project": "إنشاء مشروع"
+        },
+        "Post": {
+            "Title": "إنشاء منشور",
+            "Subtitle": "شارك معارفك ورؤاك وتحديثاتك مع المجتمع التقني",
+            "Post_Name": "عنوان المنشور",
+            "Post_Name_Placeholder": "أدخل عنوان المنشور...",
+            "Post_Content": "محتوى المنشور",
+            "Post_Content_Placeholder": "اكتب محتوى المنشور باستخدام تنسيق Markdown...",
+            "Add_Media": "إرفاق وسائط",
+            "Dropzone_Prompt": "اسحب وأفلت الصور أو مقاطع الفيديو هنا، أو انقر للاستعراض",
+            "Submit": "نشر المنشور",
+            "Publishing": "جاري النشر..."
+        },
+        "Problem": {
+            "Title": "إنشاء مسألة برمجية",
+            "Subtitle": "انشر تحدياً برمجياً أو مسألة للنقاش والحلول التشاركية",
+            "Problem_Title": "عنوان المسألة",
+            "Problem_Title_Placeholder": "مثال: عكس شجرة ثنائية في TypeScript",
+            "Level": "مستوى الصعوبة",
+            "Content_Blocks": "كتل المحتوى",
+            "Tags": "وسوم المسألة",
+            "Add_Tag": "إضافة وسم",
+            "No_Tags": "لم تتم إضافة وسوم بعد. انقر على \"إضافة وسم\" لتصنيف المسألة.",
+            "Submit": "إنشاء المسألة",
+            "Creating": "جاري الإنشاء..."
+        },
+        "Project": {
+            "Title": "إنشاء مشروع",
+            "Subtitle": "اعرض مشروعاً جديداً سواء كان مفتوح المصدر أو تجارياً أو شخصياً",
+            "Project_Title": "عنوان المشروع",
+            "Project_Title_Placeholder": "مثال: منصة مجتمع المطورين السوريين",
+            "Short_Description": "وصف قصير",
+            "Short_Description_Placeholder": "ملخص موجز حول ما يقدمه هذا المشروع...",
+            "Project_Type": "نوع المشروع",
+            "GitHub_Url": "رابط مستودع GitHub",
+            "GitHub_Url_Placeholder": "https://github.com/...",
+            "Live_Demo_Url": "رابط العرض الحي",
+            "Live_Demo_Url_Placeholder": "https://...",
+            "Skills": "التقنيات والمهارات",
+            "Add_Skill": "إضافة مهارة",
+            "Tags": "وسوم المشروع",
+            "Add_Tag": "إضافة وسم",
+            "Submit": "إنشاء المشروع",
+            "Creating": "جاري الإنشاء..."
+        }
+    },
+    "Common": {
+        "Back": "رجوع"
+    },
+    "Communities": {
+        "MyCommunities": "مجتمعاتي",
+        "SuggestedCommunities": "مجتمعات مقترحة",
+        "NoCommunitiesYet": "لم تنضم إلى أي مجتمع بعد.",
+        "NoSuggestedCommunities": "لا توجد مجتمعات مقترحة حالياً.",
+        "Members": "عضو"
+    },
+    "Jobs": {
+        "SuggestedJobs": "وظائف مقترحة",
+        "NoSuggestedJobs": "لا توجد وظائف مقترحة حالياً."
+    },
+    "Company": {
+        "Roles": {
+            "Owner": "مالك",
+            "Manager": "مدير"
+        },
+        "Tabs": {
+            "About": "حول الشركة",
+            "PublishedJobs": "الوظائف المنشورة",
+            "Managers": "المسؤولون والإداريون"
+        },
+        "About": {
+            "Title": "نظرة عامة على الشركة",
+            "Industry": "مجال العمل",
+            "Website": "الموقع الإلكتروني",
+            "Founded": "تاريخ الإنشاء",
+            "ActiveJobs": "الوظائف النشطة",
+            "Administrators": "عدد المدراء",
+            "NoInfo": "غير محدد"
+        },
+        "Jobs": {
+            "Empty": "لا توجد وظائف منشورة",
+            "EmptySubtitle": "لم تقم هذه الشركة بنشر أي شواغر وظيفية نشطة بعد."
+        },
+        "Managers": {
+            "Empty": "لا يوجد مسؤولون",
+            "EmptySubtitle": "لا يوجد مدراء أو مسؤولون مسجلون لهذه الشركة حالياً.",
+            "Role": {
+                "TeamMember": "عضو فريق"
+            }
+        },
+        "NotFound": {
+            "Title": "الشركة غير موجودة",
+            "Subtitle": "لم يتم العثور على الشركة المطلوبة أو قد تم حذفها."
         }
     }
 }

@@ -1,7 +1,7 @@
-import { Component, input, output, signal, computed } from '@angular/core';
+import { Component, input, output, signal, computed, effect, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import {
     LucideUserPlus,
     LucideUserCheck,
@@ -11,6 +11,11 @@ import {
     LucideArrowRight
 } from '@lucide/angular';
 import { ProfileSummaryDto } from '../../contracts/profile-summary.dto';
+import { AppAvatar } from '../../../../shared/design-system/components/app-avatar/app-avatar';
+import { FollowsService } from '../../../social-graph/services/follows.service';
+import { AuthenticationService } from '../../../../identity/shared/services/authentication.service';
+import { ToastService } from '../../../../identity/notifications/services/toast.service';
+import { CircleLoader } from '../../../../shared/Loading/components/circle-loader/circle-loader';
 
 @Component({
     selector: 'app-profile',
@@ -19,6 +24,8 @@ import { ProfileSummaryDto } from '../../contracts/profile-summary.dto';
         CommonModule,
         RouterLink,
         TranslatePipe,
+        AppAvatar,
+        CircleLoader,
         LucideUserPlus,
         LucideUserCheck,
         LucideCalendar,
@@ -30,28 +37,24 @@ import { ProfileSummaryDto } from '../../contracts/profile-summary.dto';
     styleUrl: './profile.css'
 })
 export class Profile {
+    private followsService = inject(FollowsService);
+    private authService = inject(AuthenticationService);
+    private toastService = inject(ToastService);
+    private translate = inject(TranslateService);
+
     profile = input.required<ProfileSummaryDto>();
     profileClicked = output<string>();
-
-    readonly defaultAvatar = 'assets/images/default-avatar.png';
+    followToggled = output<boolean>();
 
     isFollowing = signal<boolean>(false);
+    isActionLoading = signal<boolean>(false);
 
-    onAvatarError(event: Event): void {
-        const target = event.target as HTMLImageElement;
-        if (target && target.src !== this.defaultAvatar) {
-            target.src = this.defaultAvatar;
-        }
-    }
+    currentProfileId = computed(() => this.authService.getProfileId() || this.authService.getUserId());
 
-    initials = computed(() => {
-        const name = this.profile().fullName?.trim();
-        if (!name) return '??';
-        const parts = name.split(/\s+/);
-        if (parts.length >= 2) {
-            return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
-        }
-        return name.slice(0, 2).toUpperCase();
+    isSelf = computed(() => {
+        const myId = this.currentProfileId();
+        const pId = this.profile()?.id;
+        return !!(myId && pId && myId.toLowerCase() === pId.toLowerCase());
     });
 
     visibleSkills = computed(() => {
@@ -64,8 +67,53 @@ export class Profile {
         return all.length > 5 ? all.length - 5 : 0;
     });
 
+    constructor() {
+        effect(() => {
+            const p = this.profile();
+            if (p) {
+                this.isFollowing.set(!!p.isFollowedByCurrentUser);
+            }
+        });
+    }
+
     toggleFollow(): void {
-        this.isFollowing.update(v => !v);
+        if (this.isActionLoading() || this.isSelf()) return;
+
+        const targetProfileId = this.profile().id;
+        const willFollow = !this.isFollowing();
+
+        // Optimistic update
+        this.isFollowing.set(willFollow);
+        this.isActionLoading.set(true);
+
+        const request$ = willFollow
+            ? this.followsService.followProfile(targetProfileId)
+            : this.followsService.unfollowProfile(targetProfileId);
+
+        request$.subscribe({
+            next: res => {
+                this.isActionLoading.set(false);
+                if (res?.isSuccess) {
+                    this.followToggled.emit(willFollow);
+                } else {
+                    // Rollback
+                    this.isFollowing.set(!willFollow);
+                    this.toastService.error(
+                        this.translate.instant('Common.Error') || 'Error',
+                        this.translate.instant('Profile.Follow_Error') || 'Failed to update follow status.'
+                    );
+                }
+            },
+            error: () => {
+                this.isActionLoading.set(false);
+                // Rollback
+                this.isFollowing.set(!willFollow);
+                this.toastService.error(
+                    this.translate.instant('Common.Error') || 'Error',
+                    'An error occurred while updating follow status.'
+                );
+            }
+        });
     }
 
     onProfileClick(event?: Event): void {

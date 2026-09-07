@@ -18,7 +18,7 @@
                         }}</label>
                     <div class="field-control">
                         <span class="field-value">{{ personalInformation.userName }}</span>
-                        <button class="btn-change" (click)="navigateToUsernameChange(personalInformation.userName)">
+                        <button class="btn btn-ghost btn-sm btn-change" (click)="navigateToUsernameChange(personalInformation.userName)">
                             {{ 'Shared.Actions.Change' | translate }}
                             <svg lucideChevronRight class="directional-icon"></svg>
                         </button>
@@ -31,7 +31,7 @@
                         }}</label>
                     <div class="field-control">
                         <span class="field-value">{{ personalInformation.email }}</span>
-                        <button class="btn-change" (click)="navigateToEmailCgange()">
+                        <button class="btn btn-ghost btn-sm btn-change" (click)="navigateToEmailCgange()">
                             {{ 'Shared.Actions.Change' | translate }}
                             <svg lucideChevronRight class="directional-icon"></svg>
                         </button>
@@ -45,7 +45,7 @@
                     <div class="field-control">
                         <span class="field-value">{{
                             `Shared.Supported_Languages.${personalInformation.preferredLanguage}` | translate }}</span>
-                        <button class="btn-change" (click)="navigateToLanguageChange()">
+                        <button class="btn btn-ghost btn-sm btn-change" (click)="navigateToLanguageChange()">
                             {{ 'Shared.Actions.Change' | translate }}
                             <svg lucideChevronRight class="directional-icon"></svg>
                         </button>

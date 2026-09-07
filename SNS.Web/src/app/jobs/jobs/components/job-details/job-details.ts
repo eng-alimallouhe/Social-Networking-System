@@ -21,6 +21,7 @@ import { JobDetailsDto } from '../../contracts/job-details.dto';
 import { JobType } from '../../../enums/job-type.enum';
 import { SalaryType } from '../../../enums/salary-type.enum';
 import { SkeletonLoaderComponent, SkeletonType } from '../../../../shared/Loading/components/skeleton-loader/skeleton-loader';
+import { AppAvatar } from '../../../../shared/design-system/components/app-avatar/app-avatar';
 
 @Component({
     selector: 'app-job-details',
@@ -40,7 +41,8 @@ import { SkeletonLoaderComponent, SkeletonType } from '../../../../shared/Loadin
         LucideAlertCircle,
         LucideRefreshCw,
         LucideBriefcase,
-        LucideFileText
+        LucideFileText,
+        AppAvatar
     ],
     templateUrl: './job-details.html',
     styleUrl: './job-details.css'
@@ -54,7 +56,6 @@ export class JobDetails implements OnInit {
     readonly SkeletonType = SkeletonType;
     readonly JobType = JobType;
     readonly SalaryType = SalaryType;
-    readonly defaultLogo = 'assets/images/default-avatar.png';
 
     jobId = signal<string>('');
     job = signal<JobDetailsDto | null>(null);
@@ -62,16 +63,6 @@ export class JobDetails implements OnInit {
     hasError = signal<boolean>(false);
     isBookmarked = signal<boolean>(false);
     isApplied = signal<boolean>(false);
-
-    initials = computed(() => {
-        const name = this.job()?.company?.name?.trim();
-        if (!name) return 'JB';
-        const parts = name.split(/\s+/);
-        if (parts.length >= 2) {
-            return (parts[0][0] + parts[1][0]).toUpperCase();
-        }
-        return name.slice(0, 2).toUpperCase();
-    });
 
     isActive = computed(() => {
         const j = this.job();
@@ -133,13 +124,6 @@ export class JobDetails implements OnInit {
     share(): void {
         if (typeof window !== 'undefined' && navigator.clipboard) {
             navigator.clipboard.writeText(window.location.href);
-        }
-    }
-
-    onLogoError(event: Event): void {
-        const target = event.target as HTMLImageElement;
-        if (target && target.src !== this.defaultLogo) {
-            target.src = this.defaultLogo;
         }
     }
 

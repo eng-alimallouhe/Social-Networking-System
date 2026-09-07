@@ -4,6 +4,7 @@ export const JOBS_API_ROUTES = {
     JobById: (jobId: string) => `jobs/${jobId}`,
     MyCompanyJobs: 'jobs/my-company-jobs',
     JobsByCompany: (companyId: string) => `jobs/company/${companyId}`,
+    SuggestedJobs: 'jobs/suggested',
     CloseJob: (jobId: string) => `jobs/${jobId}/close`,
 
     // Companies

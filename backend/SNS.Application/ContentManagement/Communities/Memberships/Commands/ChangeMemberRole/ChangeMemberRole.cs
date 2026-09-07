@@ -29,15 +29,18 @@ public sealed record ChangeMemberRoleCommand(
 internal sealed class ChangeMemberRoleCommandHandler : ICommandHandler<ChangeMemberRoleCommand>
 {
     private readonly IApplicationDbContext _dbContext;
+    private readonly IRepository<CommunityMembership> _membershipRepo;
     private readonly IUnitOfWork _unitOfWork;
     private readonly ICurrentUserService _currentUserService;
 
     public ChangeMemberRoleCommandHandler(
         IApplicationDbContext dbContext,
+        IRepository<CommunityMembership> membershipRepo,
         IUnitOfWork unitOfWork,
         ICurrentUserService currentUserService)
     {
         _dbContext = dbContext;
+        _membershipRepo = membershipRepo;
         _unitOfWork = unitOfWork;
         _currentUserService = currentUserService;
     }
@@ -66,10 +69,11 @@ internal sealed class ChangeMemberRoleCommandHandler : ICommandHandler<ChangeMem
 
         var isOwner = community.OwnerId == profileId.Value;
         var callerMembership = await _dbContext.CommunityMemberships
+            .AsNoTracking()
             .FirstOrDefaultAsync(m => m.CommunityId == request.CommunityId && m.MemberId == profileId.Value && m.Status == CommunityMembershipStatus.Active, cancellationToken);
 
-        var targetMembership = await _dbContext.CommunityMemberships
-            .FirstOrDefaultAsync(m => m.CommunityId == request.CommunityId && m.MemberId == request.MemberProfileId && m.Status == CommunityMembershipStatus.Active, cancellationToken);
+        var targetMembership = await _membershipRepo.GetSingleByExpressionAsync(
+            m => m.CommunityId == request.CommunityId && m.MemberId == request.MemberProfileId && m.Status == CommunityMembershipStatus.Active, cancellationToken);
 
         if (targetMembership == null)
         {

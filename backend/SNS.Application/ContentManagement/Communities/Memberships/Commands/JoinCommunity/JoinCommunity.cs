@@ -69,8 +69,8 @@ internal sealed class JoinCommunityCommandHandler : ICommandHandler<JoinCommunit
             return Result.Failure(ResourceStatusCode.NotFound);
         }
 
-        var existingMembership = await _dbContext.CommunityMemberships
-            .FirstOrDefaultAsync(m => m.CommunityId == request.CommunityId && m.MemberId == profileId.Value, cancellationToken);
+        var existingMembership = await _membershipRepo.GetSingleByExpressionAsync(
+            m => m.CommunityId == request.CommunityId && m.MemberId == profileId.Value, cancellationToken);
 
         if (existingMembership != null && existingMembership.Status == CommunityMembershipStatus.Active)
         {
@@ -111,6 +111,7 @@ internal sealed class JoinCommunityCommandHandler : ICommandHandler<JoinCommunit
         else
         {
             var pendingRequest = await _dbContext.CommunityJoinRequests
+                .AsNoTracking()
                 .FirstOrDefaultAsync(r => r.CommunityId == request.CommunityId && r.SubmitterId == profileId.Value && r.Status == JoinRequestStatus.Pending, cancellationToken);
 
             if (pendingRequest != null)

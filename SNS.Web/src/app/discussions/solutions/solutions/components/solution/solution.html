@@ -1,0 +1,125 @@
+<article class="solution-card" [class.accepted]="solution().status === SolutionStatus.Accepted || solution().status === SolutionStatus.BestSolution">
+    <!-- Solution Header -->
+    <header class="solution-header">
+        <div class="author-section">
+            <div class="author-avatar">
+                <app-avatar [src]="solution().author.profilePictureUrl" [name]="solution().author.fullName" size="md"></app-avatar>
+            </div>
+
+            <div class="author-details">
+                <span class="author-name">{{ solution().author.fullName }}</span>
+                @if (solution().author.specialization) {
+                    <span class="author-specialization">{{ solution().author.specialization }}</span>
+                }
+            </div>
+        </div>
+
+        <div class="header-right">
+            <!-- Status Badge -->
+            <span class="badge badge-status" [attr.data-status]="solution().status">
+                @if (solution().status === SolutionStatus.Accepted || solution().status === SolutionStatus.BestSolution) {
+                    <svg lucideCheckCircle2 class="status-icon"></svg>
+                } @else if (solution().status === SolutionStatus.Pending) {
+                    <svg lucideHourglass class="status-icon"></svg>
+                }
+                <span>{{ ('Solution.Status.' + solution().status) | translate }}</span>
+            </span>
+
+            <!-- Timestamp -->
+            <div class="posted-time">
+                <svg lucideClock class="time-icon"></svg>
+                <span>{{ solution().createdAt | localDate }}</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Solution Content Blocks -->
+    <div class="solution-body">
+        @for (block of renderedBlocks(); track block.id) {
+            <!-- Text Block (Markdown) -->
+            @if (block.type === SolutionBlockType.Text && block.renderedHtml) {
+                <div class="solution-text-block" [innerHTML]="block.renderedHtml"></div>
+            }
+
+            <!-- Code Block -->
+            @if (block.type === SolutionBlockType.Code) {
+                <div class="solution-code-box">
+                    <div class="code-box-header">
+                        <svg lucideFileCode class="code-icon"></svg>
+                        <span class="code-lang-tag">{{ block.extraInfo || 'Code' }}</span>
+                    </div>
+                    <pre class="solution-code-pre"><code>{{ block.rawContent }}</code></pre>
+                </div>
+            }
+
+            <!-- Media Block -->
+            @if (block.type === SolutionBlockType.Media && block.rawContent) {
+                <div class="solution-media-box">
+                    <img [src]="block.rawContent" alt="Solution diagram" class="solution-media-img" />
+                </div>
+            }
+        }
+    </div>
+
+    <!-- Solution Footer -->
+    <footer class="solution-footer">
+        <div class="footer-left">
+            <!-- Upvote Button -->
+            <button 
+                type="button" 
+                class="btn btn-secondary btn-sm vote-pill-btn upvote" 
+                [class.active]="isUpVoted()" 
+                (click)="toggleUpvote()"
+                [attr.aria-label]="'Problem.Upvote' | translate"
+                [disabled]="isVoting()">
+                <svg lucideArrowUp class="vote-icon"></svg>
+                <span class="vote-count">{{ upvotesCount() }}</span>
+            </button>
+
+            <!-- Downvote Button (Variant C Red Tint When Active) -->
+            <button 
+                type="button" 
+                class="btn btn-secondary btn-sm vote-pill-btn downvote" 
+                [class.active]="isDownVoted()" 
+                (click)="toggleDownvote()"
+                [attr.aria-label]="'Problem.Downvote' | translate"
+                [disabled]="isVoting()">
+                <svg lucideArrowDown class="vote-icon"></svg>
+                <span class="vote-count">{{ downvotesCount() }}</span>
+            </button>
+
+            <!-- Discussions Count Pill -->
+            <div class="discussions-pill">
+                <svg lucideMessagesSquare class="discussions-icon"></svg>
+                <span>{{ solution().discussionsCount | number }} {{ 'Problem.Discussions' | translate }}</span>
+            </div>
+        </div>
+
+        <div class="footer-right">
+            <!-- Bookmark Button -->
+            <button 
+                type="button" 
+                class="btn btn-icon btn-ghost action-icon-btn" 
+                [class.saved]="isSaved()" 
+                (click)="toggleSave()"
+                [attr.aria-label]="'Problem.Save' | translate">
+                <svg lucideBookmark class="btn-icon" [class.fill-current]="isSaved()"></svg>
+            </button>
+
+            <!-- Share Button -->
+            <button 
+                type="button" 
+                class="btn btn-icon btn-ghost action-icon-btn" 
+                (click)="share()"
+                [attr.aria-label]="'Problem.Share' | translate">
+                <svg lucideShare2 class="btn-icon"></svg>
+            </button>
+        </div>
+    </footer>
+</article>
+
+<app-want-to-login 
+    [isOpen]="isWantToLoginOpen()" 
+    (isOpenChange)="isWantToLoginOpen.set($event)"
+    (closed)="isWantToLoginOpen.set(false)">
+</app-want-to-login>

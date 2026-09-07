@@ -1,7 +1,7 @@
 <div class="profile-details-page">
     <!-- Top Bar with Back Button -->
     <div class="title-section">
-        <button class="btn btn-icon-text back-btn" (click)="goBack()"
+        <button type="button" class="btn btn-secondary btn-icon back-btn" (click)="goBack()"
             [attr.aria-label]="'ContentManagement.Posts.Back' | translate">
             <svg lucideArrowLeft class="directional-icon"></svg>
         </button>
@@ -12,7 +12,7 @@
     @if (isLoadingProfile()) {
     <div class="profile-details-loading" aria-busy="true">
         <div class="cards-skeleton-grid">
-            <app-skeleton-loader [type]="SkeletonType.Post"></app-skeleton-loader>
+            <app-skeleton-loader [type]="SkeletonType.Content"></app-skeleton-loader>
         </div>
     </div>
     }
@@ -37,8 +37,7 @@
         <div class="header-main-row">
             <!-- Avatar with Online Badge -->
             <div class="avatar-wrapper">
-                <img [src]="p.profilePictureUrl || defaultAvatar" [alt]="p.fullName" class="avatar-image"
-                    (error)="onAvatarError($event)" />
+                <app-avatar [src]="p.profilePictureUrl" [name]="p.fullName" size="xl"></app-avatar>
                 <span class="online-indicator" aria-label="Online"></span>
             </div>
 
@@ -133,9 +132,22 @@
 
             <!-- Right Action Buttons -->
             <div class="header-action-buttons">
-                <button type="button" class="btn btn-follow" [class.btn-following]="isFollowing()"
+                @if (isOwner()) {
+                <button type="button" class="btn btn-icon btn-ghost btn-icon-action"
+                    (click)="navigateToSettings()"
+                    [attr.aria-label]="'Profile.EditProfile' | translate"
+                    title="{{ 'Profile.EditProfile' | translate }}">
+                    <svg lucideSettings class="action-icon"></svg>
+                </button>
+                } @else {
+                <button type="button" class="btn btn-sm btn-follow"
+                    [class.btn-primary]="!isFollowing()"
+                    [class.btn-secondary]="isFollowing()"
+                    [disabled]="isFollowLoading()"
                     (click)="toggleFollow()">
-                    @if (isFollowing()) {
+                    @if (isFollowLoading()) {
+                    <app-circle-loader></app-circle-loader>
+                    } @else if (isFollowing()) {
                     <svg lucideUserCheck></svg>
                     <span>{{ 'Profile.Following' | translate }}</span>
                     } @else {
@@ -143,13 +155,14 @@
                     <span>{{ 'Profile.Follow' | translate }}</span>
                     }
                 </button>
+                }
 
-                <button type="button" class="btn-icon-action" (click)="copyProfileLink()"
+                <button type="button" class="btn btn-icon btn-ghost btn-icon-action" (click)="copyProfileLink()"
                     [attr.aria-label]="'Profile.Share' | translate">
                     <svg lucideShare2 class="action-icon"></svg>
                 </button>
 
-                <button type="button" class="btn-icon-action" aria-label="More options">
+                <button type="button" class="btn btn-icon btn-ghost btn-icon-action" aria-label="More options">
                     <svg lucideMoreVertical class="action-icon"></svg>
                 </button>
             </div>
@@ -158,15 +171,23 @@
         <!-- Header Card Footer Stats & Achievement Badge -->
         <div class="header-stats-row">
             <div class="stats-counters">
-                <div class="counter-item">
+                <button
+                    type="button"
+                    class="counter-item clickable-counter"
+                    (click)="navigateToFollowers()"
+                    [attr.aria-label]="'Profile.Followers' | translate">
                     <strong class="counter-number">{{ p.followersCount | number }}</strong>
                     <span class="counter-label">{{ 'Profile.Followers' | translate }}</span>
-                </div>
+                </button>
 
-                <div class="counter-item">
+                <button
+                    type="button"
+                    class="counter-item clickable-counter"
+                    (click)="navigateToFollowing()"
+                    [attr.aria-label]="'Profile.Following_Count' | translate">
                     <strong class="counter-number">{{ p.followingsCount | number }}</strong>
                     <span class="counter-label">{{ 'Profile.Following_Count' | translate }}</span>
-                </div>
+                </button>
 
                 <div class="counter-item">
                     <strong class="counter-number">{{ (p.viewsCount > 0 ? p.viewsCount : 0.1) | number }}</strong>
@@ -185,7 +206,7 @@
                     <svg lucideUser class="title-icon"></svg>
                     <h2 class="card-heading">{{ 'Profile.About' | translate }}</h2>
                 </div>
-                <button type="button" class="card-action-icon-btn" (click)="copyProfileLink()"
+                <button type="button" class="btn btn-icon btn-ghost card-action-icon-btn" (click)="copyProfileLink()"
                     [attr.aria-label]="'Profile.Copy_Link' | translate">
                     <svg lucideCopy class="action-icon-sm"></svg>
                 </button>
@@ -260,7 +281,7 @@
 
     <!-- 4. Profile Tabs Bar -->
     <nav class="profile-tabs-bar" aria-label="Profile navigation tabs">
-        <button type="button" class="profile-tab-pill" [class.tab-active]="activeTab() === 'posts'"
+        <button type="button" class="btn profile-tab-pill" [class.btn-primary]="activeTab() === 'posts'" [class.btn-ghost]="activeTab() !== 'posts'" [class.tab-active]="activeTab() === 'posts'"
             (click)="onSelectTab('posts')">
             <svg lucideFileText class="tab-icon"></svg>
             <span>{{ 'Profile.Posts_Tab' | translate }}</span>
@@ -269,7 +290,7 @@
             }
         </button>
 
-        <button type="button" class="profile-tab-pill" [class.tab-active]="activeTab() === 'problems'"
+        <button type="button" class="btn profile-tab-pill" [class.btn-primary]="activeTab() === 'problems'" [class.btn-ghost]="activeTab() !== 'problems'" [class.tab-active]="activeTab() === 'problems'"
             (click)="onSelectTab('problems')">
             <svg lucideCode class="tab-icon"></svg>
             <span>{{ 'Profile.Problems_Tab' | translate }}</span>
@@ -278,7 +299,7 @@
             }
         </button>
 
-        <button type="button" class="profile-tab-pill" [class.tab-active]="activeTab() === 'resumes'"
+        <button type="button" class="btn profile-tab-pill" [class.btn-primary]="activeTab() === 'resumes'" [class.btn-ghost]="activeTab() !== 'resumes'" [class.tab-active]="activeTab() === 'resumes'"
             (click)="onSelectTab('resumes')">
             <svg lucideTerminal class="tab-icon"></svg>
             <span>{{ 'Profile.Resumes_Tab' | translate }}</span>
@@ -292,8 +313,8 @@
         <div class="tab-pane posts-pane">
             @if (isLoadingPosts()) {
             <div class="pane-skeletons" aria-busy="true">
-                <app-skeleton-loader [type]="SkeletonType.Post"></app-skeleton-loader>
-                <app-skeleton-loader [type]="SkeletonType.Post"></app-skeleton-loader>
+                <app-skeleton-loader [type]="SkeletonType.Content"></app-skeleton-loader>
+                <app-skeleton-loader [type]="SkeletonType.Content"></app-skeleton-loader>
             </div>
             }
 
@@ -301,7 +322,7 @@
             <div class="pane-error" role="alert">
                 <svg lucideAlertCircle class="error-icon"></svg>
                 <p>{{ 'Profile.Posts_Error' | translate }}</p>
-                <button type="button" class="btn btn-outline" (click)="loadPosts(postsCurrentPage())">
+                <button type="button" class="btn btn-outlined" (click)="loadPosts(postsCurrentPage())">
                     {{ 'Profile.Retry' | translate }}
                 </button>
             </div>
@@ -338,8 +359,8 @@
         <div class="tab-pane problems-pane">
             @if (isLoadingProblems()) {
             <div class="pane-skeletons" aria-busy="true">
-                <app-skeleton-loader [type]="SkeletonType.Post"></app-skeleton-loader>
-                <app-skeleton-loader [type]="SkeletonType.Post"></app-skeleton-loader>
+                <app-skeleton-loader [type]="SkeletonType.Content"></app-skeleton-loader>
+                <app-skeleton-loader [type]="SkeletonType.Content"></app-skeleton-loader>
             </div>
             }
 
@@ -347,7 +368,7 @@
             <div class="pane-error" role="alert">
                 <svg lucideAlertCircle class="error-icon"></svg>
                 <p>{{ 'Profile.Problems_Error' | translate }}</p>
-                <button type="button" class="btn btn-outline" (click)="loadProblems(problemsCurrentPage())">
+                <button type="button" class="btn btn-outlined" (click)="loadProblems(problemsCurrentPage())">
                     {{ 'Profile.Retry' | translate }}
                 </button>
             </div>
@@ -384,7 +405,7 @@
         <div class="tab-pane resumes-pane">
             @if (isLoadingResumes()) {
             <div class="pane-skeletons" aria-busy="true">
-                <app-skeleton-loader [type]="SkeletonType.Post"></app-skeleton-loader>
+                <app-skeleton-loader [type]="SkeletonType.Content"></app-skeleton-loader>
             </div>
             }
 

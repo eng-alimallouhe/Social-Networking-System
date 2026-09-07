@@ -78,4 +78,12 @@ export class CommunitiesService {
 
         return this.http.get<Result<Paged<CommunitySummaryDto>>>(`${this.rootUrl}${CONTENT_MANAGEMENT_API_ROUTES.MyCommunities}`, { params });
     }
+
+    getSuggestedCommunities(count: number = 5): Observable<Result<CommunitySummaryDto[]>> {
+        const params = new HttpParams().set('count', count.toString());
+        return this.http.get<Result<CommunitySummaryDto[]>>(
+            `${this.rootUrl}${CONTENT_MANAGEMENT_API_ROUTES.SuggestedCommunities}`,
+            { params }
+        );
+    }
 }

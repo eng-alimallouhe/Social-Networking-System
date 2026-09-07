@@ -4,13 +4,18 @@ import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { CreateProfileRequest } from "../contracts/create-profile-request.dto";
 import { ProfileDetailsDto } from "../contracts/profile-details.dto";
+import { ProfileBaseDto } from "../contracts/profile-base.dto";
 import { Result } from "../../../shared/contracts/result";
+
+import { UpdateBasicInformationDto } from "../contracts/update-basic-information.dto";
+import { UpdateSocialLinksDto } from "../contracts/update-social-links.dto";
 
 @Injectable({
     providedIn: 'root'
 })
 export class ProfilesService {
     private apiUrl = environment.apiUrl + 'profiles/profiles';
+    private skillApiUrl = environment.apiUrl + 'profiles/ProfileSkill';
     private http = inject(HttpClient);
 
     public createProfile(profile: CreateProfileRequest): Observable<Result> {
@@ -26,5 +31,38 @@ export class ProfilesService {
 
     public getProfileById(profileId: string): Observable<Result<ProfileDetailsDto>> {
         return this.http.get<Result<ProfileDetailsDto>>(`${this.apiUrl}/${profileId}`);
+    }
+
+    public getCurrentUserProfile(): Observable<Result<ProfileBaseDto>> {
+        return this.http.get<Result<ProfileBaseDto>>(`${this.apiUrl}/base`);
+    }
+
+    public updateBasicInformation(dto: UpdateBasicInformationDto): Observable<Result> {
+        return this.http.put<Result>(`${this.apiUrl}/basic-information`, dto);
+    }
+
+    public updateSocialLinks(dto: UpdateSocialLinksDto): Observable<Result> {
+        return this.http.put<Result>(`${this.apiUrl}/social-links`, dto);
+    }
+
+    public updateProfilePicture(file: File): Observable<Result> {
+        const formData = new FormData();
+        formData.append('profilePicture', file);
+        return this.http.put<Result>(`${this.apiUrl}/profile-picture`, formData);
+    }
+
+    public addSkillToProfile(skillId: string, proficiencyLevel: number = 1): Observable<Result> {
+        return this.http.post<Result>(this.skillApiUrl, {
+            skillId,
+            proficiencyLevel
+        });
+    }
+
+    public removeSkillFromProfile(skillId: string): Observable<Result> {
+        return this.http.delete<Result>(this.skillApiUrl, {
+            body: {
+                skillId
+            }
+        });
     }
 }

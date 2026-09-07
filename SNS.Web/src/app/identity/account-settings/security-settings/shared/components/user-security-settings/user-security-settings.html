@@ -118,7 +118,7 @@
                     <span class="row-sub">{{ 'Identity.Security_Settings.Security_Settings_Page.Methods.' + settings.defualtCommunicationMethod | translate }}</span>
                 </div>
                 <div class="row-action">
-                    <button class="btn btn-outline btn-sm" (click)="onChangeCommunicationClick(settings)">
+                    <button class="btn btn-outlined btn-sm" (click)="onChangeCommunicationClick(settings)">
                         {{ 'Identity.Security_Settings.Security_Settings_Page.Actions.Change' | translate }}
                     </button>
                 </div>
@@ -159,7 +159,7 @@
     <div class="modal-container" (click)="$event.stopPropagation()">
         <div class="modal-header">
             <h3>{{ 'Identity.Security_Settings.Security_Settings_Page.MFA.Choose_Provider_Title' | translate }}</h3>
-            <button class="close-btn" (click)="showEnableMfaModal.set(false)">
+            <button class="btn btn-icon btn-ghost close-btn" (click)="showEnableMfaModal.set(false)" aria-label="Close">
                 <svg lucideXCircle></svg>
             </button>
         </div>
@@ -231,7 +231,7 @@
     <div class="modal-container" (click)="$event.stopPropagation()">
         <div class="modal-header">
             <h3>{{ 'Identity.Security_Settings.Security_Settings_Page.Preferences.Change_Method' | translate }}</h3>
-            <button class="close-btn" (click)="showCommunicationModal.set(false)">
+            <button class="btn btn-icon btn-ghost close-btn" (click)="showCommunicationModal.set(false)" aria-label="Close">
                 <svg lucideXCircle></svg>
             </button>
         </div>
@@ -271,7 +271,7 @@
     <div class="modal-container" (click)="$event.stopPropagation()">
         <div class="modal-header">
             <h3>{{ 'Identity.Security_Settings.Security_Settings_Page.Preferences.Change_Method' | translate }}</h3>
-            <button class="close-btn" (click)="showRecoveryWarningModal.set(false)">
+            <button class="btn btn-icon btn-ghost close-btn" (click)="showRecoveryWarningModal.set(false)" aria-label="Close">
                 <svg lucideXCircle></svg>
             </button>
         </div>

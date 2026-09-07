@@ -17,6 +17,7 @@ import { StateControllerService, State } from '../../services/state-controller.s
 import { GlobalLoaderService } from '../../../../../shared/Loading/services/global-loader.service';
 import { UserManagementService } from '../../../users/user-management/services/user-management.service';
 import { UserAccount } from '../../../users/user-management/contracts/user-account.dto';
+import { AppAvatar } from '../../../../../shared/design-system/components/app-avatar/app-avatar';
 
 @Component({
   selector: 'app-settings-layout',
@@ -36,7 +37,8 @@ import { UserAccount } from '../../../users/user-management/contracts/user-accou
     LucideSearchX,
     LucideChevronRight,
     HighlightPipe,
-    CircleLoader
+    CircleLoader,
+    AppAvatar
   ],
   templateUrl: './settings-layout.html',
   styleUrl: './settings-layout.css',

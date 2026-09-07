@@ -23,7 +23,7 @@ import { GlobalLoaderService } from '../../../../shared/Loading/services/global-
 
 /** All common software / engineering specializations. Replacing with an API
  *  call later only requires swapping the signal population in ngOnInit. */
-const ALL_SPECIALIZATIONS: string[] = [
+export const ALL_SPECIALIZATIONS: string[] = [
   'Software Engineer',
   'Backend Developer',
   'Frontend Developer',

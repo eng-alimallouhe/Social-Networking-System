@@ -1,6 +1,6 @@
 <div class="settings-page-wrapper">
     <div class="title-section">
-        <button class="btn btn-icon-text back-btn" (click)="goBack()">
+        <button class="btn btn-icon btn-secondary back-btn" (click)="goBack()" [attr.aria-label]="'Shared.Actions.Back' | translate">
             <svg lucideArrowLeft></svg>
         </button>
         <h1>{{ 'Identity.Security_Settings.Session_Management.All_Sessions' | translate }}</h1>

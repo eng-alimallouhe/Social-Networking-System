@@ -61,13 +61,7 @@
 
             <!-- Avatar -->
             <div class="avatar-wrap" aria-hidden="true">
-                <div class="avatar" [style.background-color]="user.avatarColor ?? '#4f46e5'">
-                    @if (user.avatarUrl) {
-                    <img [src]="user.avatarUrl" [alt]="user.fullName" class="avatar-img" />
-                    } @else {
-                    <span class="avatar-initials">{{ getInitials(user.fullName) }}</span>
-                    }
-                </div>
+                <app-avatar [src]="user.avatarUrl" [name]="user.fullName" size="lg"></app-avatar>
             </div>
 
             <!-- Identity -->

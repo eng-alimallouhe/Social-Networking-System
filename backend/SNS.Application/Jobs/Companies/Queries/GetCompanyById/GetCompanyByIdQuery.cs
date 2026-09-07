@@ -61,14 +61,18 @@ internal sealed class GetCompanyByIdQueryHandler : IQueryHandler<GetCompanyByIdQ
             return Result<CompanyDetailsDto>.Failure(CompanyStatusCodes.CompanyNotFound);
         }
 
+        string? logoUrl = null;
+        if (!string.IsNullOrWhiteSpace(company.LogoObjectKey))
+        {
+            logoUrl = await _fileStorageService.GetTemporaryUrlAsync(company.LogoObjectKey, TimeSpan.FromHours(1));
+        }
+
         var details = new CompanyDetailsDto(
             Id: company.Id,
             Name: company.Name,
             Industry: company.Industry,
             WebsiteUrl: company.WebsiteUrl,
-            LogoUrl: !string.IsNullOrWhiteSpace(company.LogoObjectKey)
-                ? _fileStorageService.GetFilePublicUrl(company.LogoObjectKey)
-                : null,
+            LogoUrl: logoUrl,
             CreatedAt: company.CreatedAt,
             IsActive: company.IsActive,
             ActiveJobsCount: company.ActiveJobsCount,

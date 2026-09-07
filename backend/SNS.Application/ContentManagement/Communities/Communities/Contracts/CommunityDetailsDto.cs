@@ -22,6 +22,8 @@ namespace SNS.Application.ContentManagement.Communities.Communities.Contracts;
 /// <param name="IsMember">Indicates whether the current authenticated user is an active member.</param>
 /// <param name="CurrentUserRole">The role of the current user in the community, if a member.</param>
 /// <param name="HasPendingJoinRequest">Indicates whether the current user has a pending join request.</param>
+/// <param name="IsManager">Indicates whether the current user is an owner or moderator of the community.</param>
+/// <param name="HasPendingPost">Indicates whether the current user has a post awaiting moderation approval in this community.</param>
 public sealed record CommunityDetailsDto(
     Guid Id,
     string Name,
@@ -38,5 +40,7 @@ public sealed record CommunityDetailsDto(
     ProfileSnapshotDto Owner,
     bool IsMember,
     CommunityRole? CurrentUserRole,
-    bool HasPendingJoinRequest
+    bool HasPendingJoinRequest,
+    bool IsManager,
+    bool HasPendingPost
 );

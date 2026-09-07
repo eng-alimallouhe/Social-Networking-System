@@ -68,6 +68,14 @@ export class JobsService {
         );
     }
 
+    getSuggestedJobs(count: number = 5): Observable<Result<JobSummaryDto[]>> {
+        const params = new HttpParams().set('count', count.toString());
+        return this.http.get<Result<JobSummaryDto[]>>(
+            `${this.baseUrl}${JOBS_API_ROUTES.SuggestedJobs}`,
+            { params }
+        );
+    }
+
     updateJob(jobId: string, command: UpdateJobCommand): Observable<Result> {
         return this.http.put<Result>(
             `${this.baseUrl}${JOBS_API_ROUTES.JobById(jobId)}`,

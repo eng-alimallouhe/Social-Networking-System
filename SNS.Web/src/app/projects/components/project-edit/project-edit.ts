@@ -1,10 +1,8 @@
-import { Component, OnInit, OnDestroy, inject, signal, computed, ElementRef, HostListener } from '@angular/core';
+import { Component, OnInit, inject, signal, computed, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { Subject, Subscription } from 'rxjs';
-import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import {
   LucideArrowLeft,
   LucideInfo,
@@ -19,7 +17,6 @@ import {
   LucideTrash2,
   LucideX,
   LucideCheck,
-  LucideSearch,
   LucideChevronDown,
   LucideExternalLink,
   LucideClock,
@@ -28,7 +25,6 @@ import {
   LucideFileText,
   LucideBookOpen
 } from '@lucide/angular';
-import { TagDto } from '../../../shared/contracts/tag.dto';
 import { LanguageService } from '../../../shared/services/language.service';
 import { SupportedLanguage } from '../../../shared/contracts/supported-language.enum';
 import { ProjectService } from '../../services/project.service';
@@ -50,7 +46,9 @@ import { InvitingStatus } from '../../enums/inviting-status.enum';
 import { CircleLoader } from '../../../shared/Loading/components/circle-loader/circle-loader';
 import { AddSkillModal } from '../add-skill-modal/add-skill-modal';
 import { AddContributorModal } from '../add-contributor-modal/add-contributor-modal';
+import { AddTagModal } from '../add-tag-modal/add-tag-modal';
 import { AppTextarea } from '../../../shared/design-system/components/app-textarea/app-textarea';
+import { AppAvatar } from '../../../shared/design-system/components/app-avatar/app-avatar';
 
 export type ProjectEditTab = 'general' | 'readme' | 'skills' | 'tags' | 'contributors' | 'media' | 'source-code' | 'settings';
 
@@ -64,7 +62,9 @@ export type ProjectEditTab = 'general' | 'readme' | 'skills' | 'tags' | 'contrib
     CircleLoader,
     AddSkillModal,
     AddContributorModal,
+    AddTagModal,
     AppTextarea,
+    AppAvatar,
     LucideArrowLeft,
     LucideInfo,
     LucideCode,
@@ -78,7 +78,6 @@ export type ProjectEditTab = 'general' | 'readme' | 'skills' | 'tags' | 'contrib
     LucideTrash2,
     LucideX,
     LucideCheck,
-    LucideSearch,
     LucideChevronDown,
     LucideExternalLink,
     LucideClock,
@@ -90,7 +89,7 @@ export type ProjectEditTab = 'general' | 'readme' | 'skills' | 'tags' | 'contrib
   templateUrl: './project-edit.html',
   styleUrl: './project-edit.css'
 })
-export class ProjectEdit implements OnInit, OnDestroy {
+export class ProjectEdit implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private location = inject(Location);
@@ -106,7 +105,6 @@ export class ProjectEdit implements OnInit, OnDestroy {
 
   private elementRef = inject(ElementRef);
 
-  readonly defaultAvatar = 'assets/images/default-avatar.png';
   readonly InvitingStatus = InvitingStatus;
   readonly ProjectStatus = ProjectStatus;
 
@@ -147,14 +145,7 @@ export class ProjectEdit implements OnInit, OnDestroy {
 
   // Tags tab
   tags = signal<ProjectTagDto[]>([]);
-  isAddTagOpen = signal<boolean>(false);
-  tagSearchQuery = signal<string>('');
-  tagSuggestions = signal<TagDto[]>([]);
-  selectedTag = signal<TagDto | null>(null);
-  isLoadingTagSuggestions = signal<boolean>(false);
-  isAddingTag = signal<boolean>(false);
-  private tagSearchSubject = new Subject<string>();
-  private tagSearchSubscription?: Subscription;
+  isAddTagModalOpen = signal<boolean>(false);
 
   // Contributors tab
   contributors = signal<ProjectContributorManagementDto[]>([]);
@@ -162,11 +153,23 @@ export class ProjectEdit implements OnInit, OnDestroy {
   isAddContributorModalOpen = signal<boolean>(false);
 
   // Media tab
+  @ViewChild('fileInput') fileInputRef?: ElementRef<HTMLInputElement>;
   mediaList = signal<ProjectMediaDto[]>([]);
   isLoadingMedia = signal<boolean>(false);
   newMediaCaption = signal<string>('');
   selectedMediaFile = signal<File | null>(null);
+  selectedMediaPreviewUrl = signal<string | null>(null);
   isUploadingMedia = signal<boolean>(false);
+  isDragOver = signal<boolean>(false);
+
+  readonly selectedMediaFileSizeFormatted = computed(() => {
+    const file = this.selectedMediaFile();
+    if (!file) return '';
+    const bytes = file.size;
+    if (bytes < 1024) return `${bytes} B`;
+    if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+    return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+  });
 
   // Source code tab
   sourceCodeTree = signal<FileNode[]>([]);
@@ -184,6 +187,7 @@ export class ProjectEdit implements OnInit, OnDestroy {
   });
 
   readonly existingSkillIds = computed(() => this.skills().map(s => s.skillId));
+  readonly existingTagIds = computed(() => this.tags().map(t => t.tagId));
 
   readonly acceptedContributors = computed(() =>
     this.contributors().filter(c => c.invitingStatus === InvitingStatus.Accepted)
@@ -194,28 +198,6 @@ export class ProjectEdit implements OnInit, OnDestroy {
   );
 
   ngOnInit(): void {
-    this.tagSearchSubscription = this.tagSearchSubject.pipe(
-      debounceTime(300),
-      distinctUntilChanged(),
-      switchMap(query => {
-        this.isLoadingTagSuggestions.set(true);
-        return this.projectTagsService.getTags(query);
-      })
-    ).subscribe({
-      next: res => {
-        this.isLoadingTagSuggestions.set(false);
-        if (res?.isSuccess && res.value) {
-          this.tagSuggestions.set(res.value);
-        } else {
-          this.tagSuggestions.set([]);
-        }
-      },
-      error: () => {
-        this.isLoadingTagSuggestions.set(false);
-        this.tagSuggestions.set([]);
-      }
-    });
-
     this.route.paramMap.subscribe(params => {
       const id = params.get('projectId') || params.get('id');
       if (id) {
@@ -397,90 +379,23 @@ export class ProjectEdit implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy(): void {
-    this.tagSearchSubscription?.unsubscribe();
-    this.tagSearchSubject.complete();
-  }
-
   // Tags Tab
-  openAddTagUi(): void {
-    this.isAddTagOpen.set(true);
-    this.selectedTag.set(null);
-    this.tagSearchQuery.set('');
-    this.tagSearchSubject.next('');
+  openAddTagModal(): void {
+    this.isAddTagModalOpen.set(true);
   }
 
-  closeAddTagUi(): void {
-    this.isAddTagOpen.set(false);
-    this.selectedTag.set(null);
-    this.tagSearchQuery.set('');
-    this.tagSuggestions.set([]);
+  closeAddTagModal(): void {
+    this.isAddTagModalOpen.set(false);
   }
 
-  toggleAddTagUi(): void {
-    if (this.isAddTagOpen()) {
-      this.closeAddTagUi();
-    } else {
-      this.openAddTagUi();
+  onTagAdded(newTag: ProjectTagDto): void {
+    const alreadyExists = this.tags().some(t => t.tagId?.toLowerCase() === newTag.tagId?.toLowerCase());
+    if (!alreadyExists) {
+      this.tags.set([...this.tags(), newTag]);
     }
-  }
-
-  onTagSearchChange(val: string): void {
-    this.tagSearchQuery.set(val);
-    this.tagSearchSubject.next(val);
-  }
-
-  onTagInputEnter(event: Event): void {
-    if (this.selectedTag()) {
-      event.preventDefault();
-      this.addTag();
-    }
-  }
-
-  selectTag(tag: TagDto): void {
-    if (this.isTagAlreadyAdded(tag.id)) return;
-    this.selectedTag.set(tag);
-  }
-
-  clearSelectedTag(): void {
-    this.selectedTag.set(null);
-  }
-
-  isTagAlreadyAdded(tagId: string): boolean {
-    return this.tags().some(t => t.tagId?.toLowerCase() === tagId?.toLowerCase());
-  }
-
-  addTag(): void {
-    const id = this.projectId();
-    const selected = this.selectedTag();
-    if (!id || !selected || !selected.id || this.isAddingTag()) return;
-
-    this.isAddingTag.set(true);
-    this.projectTagsService.addProjectTag(id, { projectId: id, tagId: selected.id }).subscribe({
-      next: res => {
-        this.isAddingTag.set(false);
-        if (res?.isSuccess) {
-          const newTag: ProjectTagDto = {
-            tagId: selected.id,
-            tagName: selected.name
-          };
-          this.tags.set([...this.tags(), newTag]);
-          this.selectedTag.set(null);
-          this.tagSearchQuery.set('');
-          this.tagSuggestions.set([]);
-          this.isAddTagOpen.set(false);
-          const title = this.translate.instant('ProjectEdit.Common.Saved_Title') || 'Success';
-          const msg = this.translate.instant('ProjectEdit.Tags.Tag_Added_Toast') || 'Tag added.';
-          this.toastService.success(title, msg);
-        } else {
-          this.toastService.error('Error', 'Failed to add tag.');
-        }
-      },
-      error: () => {
-        this.isAddingTag.set(false);
-        this.toastService.error('Error', 'An error occurred while adding tag.');
-      }
-    });
+    const title = this.translate.instant('ProjectEdit.Common.Saved_Title') || 'Success';
+    const msg = this.translate.instant('ProjectEdit.Tags.Tag_Added_Toast') || 'Tag added successfully.';
+    this.toastService.success(title, msg);
   }
 
   removeTag(tag: ProjectTagDto): void {
@@ -569,10 +484,58 @@ export class ProjectEdit implements OnInit, OnDestroy {
     });
   }
 
+  triggerFileInput(): void {
+    if (this.isUploadingMedia()) return;
+    this.fileInputRef?.nativeElement.click();
+  }
+
   onMediaFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input?.files && input.files[0]) {
-      this.selectedMediaFile.set(input.files[0]);
+      this.handleSelectedFile(input.files[0]);
+    }
+  }
+
+  onDragOver(event: DragEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+    if (!this.isUploadingMedia()) {
+      this.isDragOver.set(true);
+    }
+  }
+
+  onDragLeave(event: DragEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+    this.isDragOver.set(false);
+  }
+
+  onFileDrop(event: DragEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+    this.isDragOver.set(false);
+    if (this.isUploadingMedia()) return;
+
+    const file = event.dataTransfer?.files?.[0];
+    if (file && file.type.startsWith('image/')) {
+      this.handleSelectedFile(file);
+    }
+  }
+
+  handleSelectedFile(file: File): void {
+    this.selectedMediaFile.set(file);
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.selectedMediaPreviewUrl.set(reader.result as string);
+    };
+    reader.readAsDataURL(file);
+  }
+
+  clearSelectedMediaFile(): void {
+    this.selectedMediaFile.set(null);
+    this.selectedMediaPreviewUrl.set(null);
+    if (this.fileInputRef?.nativeElement) {
+      this.fileInputRef.nativeElement.value = '';
     }
   }
 
@@ -586,7 +549,7 @@ export class ProjectEdit implements OnInit, OnDestroy {
       next: res => {
         this.isUploadingMedia.set(false);
         if (res?.isSuccess) {
-          this.selectedMediaFile.set(null);
+          this.clearSelectedMediaFile();
           this.newMediaCaption.set('');
           this.loadMedia();
           this.toastService.success(
@@ -681,10 +644,5 @@ export class ProjectEdit implements OnInit, OnDestroy {
     } else {
       this.location.back();
     }
-  }
-
-  onAvatarError(event: Event): void {
-    const img = event.target as HTMLImageElement;
-    if (img) img.src = this.defaultAvatar;
   }
 }

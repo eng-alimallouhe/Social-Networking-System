@@ -27,9 +27,11 @@ export const CONTENT_MANAGEMENT_API_ROUTES = {
     Communities: 'content-managment/communities',
     CommunityById: (id: string) => `content-managment/communities/${id}`,
     MyCommunities: 'content-managment/communities/my-communities',
+    SuggestedCommunities: 'content-managment/communities/suggested',
 
     // Community Memberships
     JoinCommunity: (communityId: string) => `content-managment/communities/${communityId}/memberships/join`,
+    CancelJoinRequest: (communityId: string) => `content-managment/communities/${communityId}/memberships/join-request`,
     LeaveCommunity: (communityId: string) => `content-managment/communities/${communityId}/memberships/leave`,
     CommunityMembers: (communityId: string) => `content-managment/communities/${communityId}/memberships/members`,
     MembershipRequests: (communityId: string) => `content-managment/communities/${communityId}/memberships/requests`,
@@ -38,6 +40,12 @@ export const CONTENT_MANAGEMENT_API_ROUTES = {
     RemoveCommunityMember: (communityId: string, memberProfileId: string) => `content-managment/communities/${communityId}/memberships/members/${memberProfileId}`,
     ChangeCommunityMemberRole: (communityId: string, memberProfileId: string) => `content-managment/communities/${communityId}/memberships/members/${memberProfileId}/role`,
     MyCommunityMembershipStatus: (communityId: string) => `content-managment/communities/${communityId}/memberships/my-status`,
+
+    // Community Posts & Moderation
+    CommunityPosts: (communityId: string) => `content-managment/communities/${communityId}/posts`,
+    PendingCommunityPosts: (communityId: string) => `content-managment/communities/${communityId}/pending-posts`,
+    ApproveCommunityPost: (communityId: string, postId: string) => `content-managment/communities/${communityId}/pending-posts/${postId}/approve`,
+    RejectCommunityPost: (communityId: string, postId: string) => `content-managment/communities/${communityId}/pending-posts/${postId}/reject`,
 
     // Community Settings
     CommunitySettings: (communityId: string) => `content-managment/communities/${communityId}/settings`,

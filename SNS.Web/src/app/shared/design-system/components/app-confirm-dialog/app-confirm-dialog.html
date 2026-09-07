@@ -1,7 +1,7 @@
 @if (isOpen()) {
 <div class="modal-backdrop" (click)="onCancel()">
     <div class="modal-card" (click)="$event.stopPropagation()">
-        <button class="btn-close" (click)="onCancel()" aria-label="Close">
+        <button class="btn btn-icon btn-ghost btn-close" (click)="onCancel()" aria-label="Close">
             <svg lucideX></svg>
         </button>
         <div class="modal-header">

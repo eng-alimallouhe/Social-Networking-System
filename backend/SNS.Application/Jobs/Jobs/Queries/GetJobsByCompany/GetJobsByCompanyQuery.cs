@@ -72,12 +72,26 @@ internal sealed class GetJobsByCompanyQueryHandler : IQueryHandler<GetJobsByComp
             })
             .ToListAsync(cancellationToken);
 
+        var distinctKeys = rawItems
+            .Select(j => j.CompanyLogoObjectKey)
+            .Where(k => !string.IsNullOrWhiteSpace(k))
+            .Distinct()
+            .ToList();
+
+        var urlTasks = distinctKeys.Select(async k => new
+        {
+            Key = k!,
+            Url = await _fileStorageService.GetTemporaryUrlAsync(k!, TimeSpan.FromHours(1))
+        });
+        var resolvedUrls = await Task.WhenAll(urlTasks);
+        var urlMap = resolvedUrls.ToDictionary(r => r.Key, r => r.Url);
+
         var items = rawItems.Select(j => new JobSummaryDto(
             Id: j.Id,
             CompanyId: j.CompanyId,
             CompanyName: j.CompanyName,
-            CompanyLogoUrl: !string.IsNullOrWhiteSpace(j.CompanyLogoObjectKey)
-                ? _fileStorageService.GetFilePublicUrl(j.CompanyLogoObjectKey)
+            CompanyLogoUrl: !string.IsNullOrWhiteSpace(j.CompanyLogoObjectKey) && urlMap.TryGetValue(j.CompanyLogoObjectKey, out var url)
+                ? url
                 : null,
             Title: j.Title,
             Description: j.Description,

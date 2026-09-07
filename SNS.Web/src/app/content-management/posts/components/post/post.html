@@ -3,23 +3,23 @@
         <header class="post-header">
             <div class="post-header-content">
                 <div class="post-avatar">
-                    @if (post().author.profilePictureUrl) {
-                    <img [src]="post().author.profilePictureUrl" alt="Author avatar" class="avatar-img">
-                    } @else {
-                    <div class="avatar-placeholder">
-                        {{ post().author.fullName.charAt(0) }}
-                    </div>
-                    }
+                    <app-avatar [src]="post().author.profilePictureUrl" [name]="post().author.fullName" size="lg"></app-avatar>
 
-                    @if (post().community?.logoUrl) {
-                    <img [src]="post().community!.logoUrl" alt="Community logo" class="community-micro-logo">
+                    @if (post().community) {
+                        <div class="community-micro-box" [title]="post().community!.name">
+                            @if (post().community!.logoUrl) {
+                                <img [src]="post().community!.logoUrl" [alt]="post().community!.name" class="community-micro-logo">
+                            } @else {
+                                <span class="community-micro-fallback">{{ communityInitials() }}</span>
+                            }
+                        </div>
                     }
                 </div>
 
                 <div class="post-meta">
                     <div class="post-author-row">
                         <span class="author-name">{{ post().author.fullName }}</span>
-                        <button type="button" class="post-options-btn" aria-label="More options"
+                        <button type="button" class="btn btn-icon btn-ghost post-options-btn" aria-label="More options"
                             cdkOverlayOrigin #actionsOrigin="cdkOverlayOrigin"
                             (click)="isActionsMenuOpen.set(!isActionsMenuOpen())">
                             <svg lucideMoreHorizontal></svg>
@@ -35,15 +35,15 @@
                         (backdropClick)="isActionsMenuOpen.set(false)">
                         <div class="actions-menu-dropdown">
                             <div class="menu-group">
-                                <button type="button" class="menu-item" (click)="onInterested()">
+                                <button type="button" class="btn btn-ghost menu-item" (click)="onInterested()">
                                     <svg lucideSmile></svg>
                                     <span>{{ 'ContentManagement.Posts.Interested' | translate }}</span>
                                 </button>
-                                <button type="button" class="menu-item" (click)="onNotInterested()">
+                                <button type="button" class="btn btn-ghost menu-item" (click)="onNotInterested()">
                                     <svg lucideFrown></svg>
                                     <span>{{ 'ContentManagement.Posts.Not_Interested' | translate }}</span>
                                 </button>
-                                <button type="button" class="menu-item" (click)="onReport()">
+                                <button type="button" class="btn btn-ghost menu-item" (click)="onReport()">
                                     <svg lucideFlag></svg>
                                     <span>{{ 'ContentManagement.Posts.Report_Post' | translate }}</span>
                                 </button>
@@ -52,11 +52,11 @@
                             @if (isOwner()) {
                                 <div class="menu-divider"></div>
                                 <div class="menu-group">
-                                    <button type="button" class="menu-item" disabled>
+                                    <button type="button" class="btn btn-ghost menu-item" disabled>
                                         <svg lucideEdit2></svg>
                                         <span>Edit Post</span>
                                     </button>
-                                    <button type="button" class="menu-item destructive-action" (click)="onDelete()">
+                                    <button type="button" class="btn btn-delete menu-item destructive-action" (click)="onDelete()">
                                         <svg lucideTrash2></svg>
                                         <span>Delete Post</span>
                                     </button>
@@ -94,7 +94,7 @@
             </div>
 
             @if (shouldShowMoreButton()) {
-                <button type="button" class="show-more-btn" (click)="toggleContent()">
+                <button type="button" class="btn btn-ghost btn-sm show-more-btn" (click)="toggleContent()">
                     {{ (isContentExpanded() ? 'ContentManagement.Posts.Show_Less' : 'ContentManagement.Posts.Show_More') | translate }}
                 </button>
             }
@@ -118,7 +118,7 @@
         <footer class="post-interactions">
             <div class="interaction-group main-interactions">
                 <!-- Reaction Button -->
-                <button type="button" class="interaction-btn" [class.active-reaction]="post().currentUserReaction"
+                <button type="button" class="btn btn-ghost interaction-btn" [class.active-reaction]="post().currentUserReaction"
                     aria-label="Like" cdkOverlayOrigin #reactionOrigin="cdkOverlayOrigin" (click)="toggleLike()">
 
                     @if (post().currentUserReaction === 'Love') {
@@ -144,8 +144,8 @@
 
                     <div class="reaction-picker-menu">
                         @for (rt of reactionTypes; track rt.type) {
-                        <button type="button" class="reaction-option"
-                            (click)="applyReaction(rt.type); $event.stopPropagation()" [title]="rt.type">
+                        <button type="button" class="btn btn-icon btn-ghost reaction-option"
+                            (click)="applyReaction(rt.type); $event.stopPropagation()" [title]="rt.type" [attr.aria-label]="rt.type">
 
                             @if (rt.type === 'Like') {
                             <svg lucideThumbsUp class="picker-icon"></svg>
@@ -162,18 +162,18 @@
                         }
                     </div>
                 </ng-template>
-                <button type="button" class="interaction-btn" aria-label="Comment" (click)="onCommentClick()">
+                <button type="button" class="btn btn-ghost interaction-btn" aria-label="Comment" (click)="onCommentClick()">
                     <svg lucideMessageSquare></svg>
                     <span>{{ post().commentsCount }}</span>
                 </button>
-                <button type="button" class="interaction-btn" aria-label="Share">
+                <button type="button" class="btn btn-ghost interaction-btn" aria-label="Share">
                     <svg lucideShare2></svg>
                     <span>Share</span>
                 </button>
             </div>
 
             <div class="interaction-group secondary-interactions">
-                <button type="button" class="interaction-btn" aria-label="Save">
+                <button type="button" class="btn btn-ghost interaction-btn" aria-label="Save">
                     <svg lucideBookmark></svg>
                     <span>{{ post().savesCount }}</span>
                 </button>

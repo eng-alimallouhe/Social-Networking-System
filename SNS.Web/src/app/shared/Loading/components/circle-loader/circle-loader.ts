@@ -9,6 +9,7 @@ import { Subscription } from 'rxjs';
   styleUrl: './circle-loader.css',
 })
 export class CircleLoader implements OnInit, OnDestroy {
+  @Input() size?: string;
   @Input() translationKey?: string;
   @Input({ required: false }) isChangeLanguage: boolean = true;
 

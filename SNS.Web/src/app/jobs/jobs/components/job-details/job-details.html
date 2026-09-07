@@ -1,7 +1,7 @@
 <div class="job-details-page">
     <!-- Top Bar with Back Button -->
     <div class="details-top-bar">
-        <button type="button" class="btn-back" (click)="goBack()" [attr.aria-label]="'Common.Back' | translate">
+        <button type="button" class="btn btn-secondary btn-sm btn-back" (click)="goBack()" [attr.aria-label]="'Common.Back' | translate">
             <svg lucideArrowLeft></svg>
             <span class="back-text">{{ 'Common.Back' | translate }}</span>
         </button>
@@ -10,8 +10,8 @@
     <!-- Loading Skeleton -->
     @if (isLoading()) {
     <div class="details-loading" aria-busy="true">
-        <app-skeleton-loader [type]="SkeletonType.Post"></app-skeleton-loader>
-        <app-skeleton-loader [type]="SkeletonType.Post"></app-skeleton-loader>
+        <app-skeleton-loader [type]="SkeletonType.Content"></app-skeleton-loader>
+        <app-skeleton-loader [type]="SkeletonType.Content"></app-skeleton-loader>
     </div>
     }
 
@@ -34,12 +34,7 @@
         <!-- Header: Company Logo, Title, Status & Actions -->
         <header class="job-header">
             <div class="company-logo-box">
-                @if (j.company.logoUrl) {
-                <img [src]="j.company.logoUrl" [alt]="j.company.name" class="company-logo"
-                    (error)="onLogoError($event)" />
-                } @else {
-                <span class="company-initials">{{ initials() }}</span>
-                }
+                <app-avatar [src]="j.company.logoUrl" [name]="j.company.name" shape="square" size="lg"></app-avatar>
             </div>
 
             <div class="job-header-main">
@@ -63,12 +58,12 @@
             </div>
 
             <div class="header-action-group">
-                <button type="button" class="btn-icon-action" [class.active]="isBookmarked()" (click)="toggleBookmark()"
+                <button type="button" class="btn btn-icon btn-ghost btn-icon-action" [class.active]="isBookmarked()" (click)="toggleBookmark()"
                     [attr.aria-label]="'Job.Bookmark' | translate">
                     <svg lucideBookmark class="action-icon"></svg>
                 </button>
 
-                <button type="button" class="btn-icon-action" (click)="share()"
+                <button type="button" class="btn btn-icon btn-ghost btn-icon-action" (click)="share()"
                     [attr.aria-label]="'Job.Share' | translate">
                     <svg lucideShare2 class="action-icon"></svg>
                 </button>

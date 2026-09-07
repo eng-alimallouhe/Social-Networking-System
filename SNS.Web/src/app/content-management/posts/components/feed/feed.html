@@ -9,7 +9,7 @@
                             <svg lucideInfo class="feedback-icon"></svg>
                             <span class="feedback-text">{{ 'ContentManagement.Posts.Not_Interested_Feedback' | translate }}</span>
                         </div>
-                        <button type="button" class="feedback-undo-btn" (click)="undoNotInterested(post.id)">
+                        <button type="button" class="btn btn-ghost btn-sm feedback-undo-btn" (click)="undoNotInterested(post.id)">
                             {{ 'ContentManagement.Posts.Undo' | translate }}
                         </button>
                     </div>
@@ -22,16 +22,16 @@
         <!-- Initial Loading Skeletons -->
         @if (isInitialLoading()) {
             <div class="feed-skeletons" aria-label="Loading posts" aria-busy="true">
-                <app-skeleton-loader [type]="SkeletonType.Post"></app-skeleton-loader>
-                <app-skeleton-loader [type]="SkeletonType.Post"></app-skeleton-loader>
-                <app-skeleton-loader [type]="SkeletonType.Post"></app-skeleton-loader>
+                <app-skeleton-loader [type]="SkeletonType.Content"></app-skeleton-loader>
+                <app-skeleton-loader [type]="SkeletonType.Content"></app-skeleton-loader>
+                <app-skeleton-loader [type]="SkeletonType.Content"></app-skeleton-loader>
             </div>
         }
 
         <!-- Next Page Loading Skeleton (Appended Below Existing Posts) -->
         @if (isLoadingNextPage()) {
             <div class="feed-skeletons feed-skeletons-more" aria-label="Loading more posts" aria-busy="true">
-                <app-skeleton-loader [type]="SkeletonType.Post"></app-skeleton-loader>
+                <app-skeleton-loader [type]="SkeletonType.Content"></app-skeleton-loader>
             </div>
         }
 
@@ -45,7 +45,7 @@
             <div class="feed-error-banner" role="alert">
                 <svg lucideAlertCircle class="banner-icon"></svg>
                 <span class="banner-text">{{ 'ContentManagement.Posts.Load_More_Error' | translate }}</span>
-                <button type="button" class="feed-retry-btn" (click)="retry()">
+                <button type="button" class="btn btn-primary btn-sm feed-retry-btn" (click)="retry()">
                     <svg lucideRefreshCw class="btn-icon"></svg>
                     <span>{{ 'ContentManagement.Posts.Retry' | translate }}</span>
                 </button>
@@ -60,7 +60,7 @@
                 </div>
                 <h3 class="error-title">{{ 'ContentManagement.Posts.Feed_Error_Title' | translate }}</h3>
                 <p class="error-description">{{ 'ContentManagement.Posts.Feed_Error_Description' | translate }}</p>
-                <button type="button" class="feed-retry-btn feed-retry-btn-lg" (click)="retry()">
+                <button type="button" class="btn btn-primary btn-lg feed-retry-btn" (click)="retry()">
                     <svg lucideRefreshCw class="btn-icon"></svg>
                     <span>{{ 'ContentManagement.Posts.Retry' | translate }}</span>
                 </button>

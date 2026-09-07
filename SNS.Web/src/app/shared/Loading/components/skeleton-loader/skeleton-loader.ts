@@ -8,7 +8,7 @@ import { CommonModule } from '@angular/common';
   styleUrl: './skeleton-loader.css',
 })
 export class SkeletonLoaderComponent {
-  type = input<SkeletonType>(SkeletonType.AccountOnPhone);
+  type = input<SkeletonType>(SkeletonType.Content);
   width = input<string>('100%');
   height = input<string>('auto');
 
@@ -16,8 +16,9 @@ export class SkeletonLoaderComponent {
 }
 
 export enum SkeletonType {
+  Content = 'Content',
+  Comment = 'Comment',
   AccountOnPhone = 'AccountOnPhone',
   AccountOnDesktop = 'AccountOnDesktop',
-  Post = 'Post',
-  Comment = 'Comment',
+  Post = 'Content',
 }

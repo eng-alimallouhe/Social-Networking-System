@@ -2,8 +2,8 @@
     <!-- Top Header: Author Info & Options Menu -->
     <div class="comment-header">
         <div class="comment-author-info">
-            <img class="comment-avatar" [src]="activeComment().author.profilePictureUrl || defaultAvatar"
-                [alt]="activeComment().author.fullName || 'User'" loading="lazy" />
+            <app-avatar [src]="activeComment().author.profilePictureUrl"
+                [name]="activeComment().author.fullName || 'User'" size="md"></app-avatar>
 
             <div class="author-details">
                 <h4 class="author-name">{{ activeComment().author.fullName || 'Anonymous' }}</h4>
@@ -13,7 +13,7 @@
 
         <!-- More Options Menu Button -->
         <div class="comment-actions-menu">
-            <button type="button" class="more-btn" [attr.aria-label]="'ContentManagement.Comments.Options' | translate"
+            <button type="button" class="btn btn-icon btn-ghost more-btn" [attr.aria-label]="'ContentManagement.Comments.Options' | translate"
                 cdkOverlayOrigin #menuOrigin="cdkOverlayOrigin"
                 (click)="isActionsMenuOpen.set(!isActionsMenuOpen())">
                 <svg lucideMoreHorizontal class="more-icon"></svg>
@@ -28,12 +28,12 @@
                 (backdropClick)="isActionsMenuOpen.set(false)">
                 <div class="actions-menu-dropdown">
                     @if (isOwner()) {
-                    <button type="button" class="menu-item delete-item" (click)="openDeleteConfirm()">
+                    <button type="button" class="btn btn-delete btn-sm menu-item delete-item" (click)="openDeleteConfirm()">
                         <svg lucideTrash2 class="item-icon"></svg>
                         <span>{{ 'ContentManagement.Comments.Delete' | translate }}</span>
                     </button>
                     } @else {
-                    <button type="button" class="menu-item" (click)="openReport()">
+                    <button type="button" class="btn btn-ghost btn-sm menu-item" (click)="openReport()">
                         <svg lucideFlag class="item-icon"></svg>
                         <span>{{ 'ContentManagement.Comments.Report' | translate }}</span>
                     </button>
@@ -52,7 +52,7 @@
     <div class="comment-footer">
         <div class="comment-interactions">
             <!-- Like Action Button -->
-            <button type="button" class="interaction-btn"
+            <button type="button" class="btn btn-ghost btn-sm interaction-btn"
                 [class.active-like]="activeComment().currentUserReaction === ReactionType.Like"
                 (click)="toggleLike()">
                 <svg lucideThumbsUp class="btn-icon" [class.fill-current]="activeComment().currentUserReaction === ReactionType.Like"></svg>
@@ -63,7 +63,7 @@
             </button>
 
             <!-- Reply Action Button -->
-            <button type="button" class="interaction-btn" (click)="onReply()">
+            <button type="button" class="btn btn-ghost btn-sm interaction-btn" (click)="onReply()">
                 <svg lucideCornerUpLeft class="btn-icon directional-icon"></svg>
                 <span class="btn-label">{{ 'ContentManagement.Comments.Reply' | translate }}</span>
                 @if (activeComment().repliesCount > 0) {

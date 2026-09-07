@@ -17,7 +17,14 @@ export const HomeRoutes: Routes = [
                 path: 'projects',
                 loadChildren: () => import('../../projects/routes/projects.routes').then(m => m.PROJECTS_ROUTES)
             },
-            // More home routes can be added here
+            {
+                path: 'profiles',
+                loadChildren: () => import('../../profiles/profiles/routes/profiles.routes').then(m => m.PROFILES_ROUTES)
+            },
+            {
+                path: 'companies',
+                loadChildren: () => import('../../jobs/companies/routes/companies.routes').then(m => m.COMPANIES_ROUTES)
+            }
         ]
     }
 ];

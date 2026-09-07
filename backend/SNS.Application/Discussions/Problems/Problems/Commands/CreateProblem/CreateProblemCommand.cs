@@ -24,13 +24,13 @@ namespace SNS.Application.Discussions.Problems.Problems.Commands.CreateProblem;
 /// <param name="Level">The difficulty level.</param>
 /// <param name="CommunityId">Optional community ID if posted within a community.</param>
 /// <param name="ContentBlocks">The ordered structured content blocks.</param>
-/// <param name="Tags">Optional tag names to associate with the problem.</param>
+/// <param name="TagIds">Optional tag unique identifiers to associate with the problem.</param>
 public sealed record CreateProblemCommand(
     string Title,
     DifficultyLevel Level,
     Guid? CommunityId,
     List<CreateProblemContentBlockDto> ContentBlocks,
-    List<string>? Tags
+    IReadOnlyCollection<Guid>? TagIds
 ) : ICommand<Guid>;
 
 /// <summary>
@@ -111,29 +111,23 @@ internal sealed class CreateProblemCommandHandler : ICommandHandler<CreateProble
             _contentBlockRepo.AddRange(blocks);
         }
 
-        if (request.Tags != null && request.Tags.Any())
+        if (request.TagIds != null && request.TagIds.Any())
         {
-            var normalizedTagNames = request.Tags
-                .Where(t => !string.IsNullOrWhiteSpace(t))
-                .Select(t => t.Trim().ToLower())
-                .Distinct()
+            var distinctTagIds = request.TagIds.Distinct().ToList();
+
+            var existingTagsCount = await _dbContext.Tags
+                .CountAsync(t => distinctTagIds.Contains(t.Id), cancellationToken);
+
+            if (existingTagsCount != distinctTagIds.Count)
+            {
+                return Result<Guid>.Failure(ProblemStatusCodes.TagNotFound);
+            }
+
+            var problemTags = distinctTagIds
+                .Select(tagId => ProblemTag.Create(problem.Id, tagId))
                 .ToList();
 
-            if (normalizedTagNames.Any())
-            {
-                var existingTags = await _dbContext.Tags
-                    .Where(t => normalizedTagNames.Contains(t.Name.ToLower()))
-                    .ToListAsync(cancellationToken);
-
-                var problemTags = existingTags
-                    .Select(tag => ProblemTag.Create(problem.Id, tag.Id))
-                    .ToList();
-
-                if (problemTags.Any())
-                {
-                    _problemTagRepo.AddRange(problemTags);
-                }
-            }
+            _problemTagRepo.AddRange(problemTags);
         }
 
         await _unitOfWork.CompleteAsync(cancellationToken);

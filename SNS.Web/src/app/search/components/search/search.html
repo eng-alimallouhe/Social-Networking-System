@@ -13,7 +13,7 @@
                     (ngModelChange)="searchInput.set($event)"
                     name="searchQuery"
                     autocomplete="off" />
-                <button type="submit" class="search-btn">
+                <button type="submit" class="btn btn-primary search-btn">
                     <span>{{ 'Search.Search_Button' | translate }}</span>
                 </button>
             </div>
@@ -25,7 +25,9 @@
                 @for (cat of categories; track cat) {
                     <button
                         type="button"
-                        class="tab-pill"
+                        class="btn tab-pill"
+                        [class.btn-primary]="activeCategory() === cat"
+                        [class.btn-ghost]="activeCategory() !== cat"
                         [class.active]="activeCategory() === cat"
                         (click)="onSelectCategory(cat)">
                         {{ ('Search.Categories.' + cat) | translate }}
@@ -37,7 +39,7 @@
                 #filterTrigger="cdkOverlayOrigin"
                 cdkOverlayOrigin
                 type="button"
-                class="filter-toggle-btn"
+                class="btn btn-icon btn-ghost filter-toggle-btn"
                 [class.filter-active]="isFilterOpen()"
                 (click)="toggleFilter()"
                 [attr.aria-label]="'Search.Filters' | translate">
@@ -60,7 +62,7 @@
         <div class="desktop-filter-card" (click)="$event.stopPropagation()">
             <button
                 type="button"
-                class="filter-close-btn"
+                class="btn btn-icon btn-ghost filter-close-btn"
                 (click)="closeFilter()"
                 [attr.aria-label]="'Search.Close_Filters' | translate">
                 <svg lucideX class="close-icon"></svg>
@@ -105,9 +107,9 @@
         <!-- Loading Skeletons -->
         @if (isLoading()) {
             <div class="search-skeletons" aria-busy="true">
-                <app-skeleton-loader [type]="SkeletonType.Post"></app-skeleton-loader>
-                <app-skeleton-loader [type]="SkeletonType.Post"></app-skeleton-loader>
-                <app-skeleton-loader [type]="SkeletonType.Post"></app-skeleton-loader>
+                <app-skeleton-loader [type]="SkeletonType.Content"></app-skeleton-loader>
+                <app-skeleton-loader [type]="SkeletonType.Content"></app-skeleton-loader>
+                <app-skeleton-loader [type]="SkeletonType.Content"></app-skeleton-loader>
             </div>
         }
 
@@ -117,7 +119,7 @@
                 <svg lucideAlertCircle class="error-icon"></svg>
                 <h3 class="error-title">{{ 'Search.Error_Title' | translate }}</h3>
                 <p class="error-desc">{{ 'Search.Error_Desc' | translate }}</p>
-                <button type="button" class="btn-retry" (click)="retry()">
+                <button type="button" class="btn btn-primary btn-sm btn-retry" (click)="retry()">
                     <svg lucideRefreshCw class="btn-retry-icon"></svg>
                     <span>{{ 'ContentManagement.Posts.Retry' | translate }}</span>
                 </button>
@@ -197,7 +199,7 @@
                 <ul class="discovery-list">
                     @for (item of recentSearches; track item) {
                         <li class="discovery-item">
-                            <button type="button" class="discovery-item-btn" (click)="onPickTopic(item)">
+                            <button type="button" class="btn btn-ghost btn-sm discovery-item-btn" (click)="onPickTopic(item)">
                                 {{ item }}
                             </button>
                         </li>
@@ -214,7 +216,7 @@
                 <ul class="discovery-list">
                     @for (item of trendingTopics; track item) {
                         <li class="discovery-item">
-                            <button type="button" class="discovery-item-btn" (click)="onPickTopic(item)">
+                            <button type="button" class="btn btn-ghost btn-sm discovery-item-btn" (click)="onPickTopic(item)">
                                 {{ item }}
                             </button>
                         </li>
@@ -231,7 +233,7 @@
                 <ul class="discovery-list">
                     @for (item of suggestedForYou; track item) {
                         <li class="discovery-item">
-                            <button type="button" class="discovery-item-btn" (click)="onPickTopic(item)">
+                            <button type="button" class="btn btn-ghost btn-sm discovery-item-btn" (click)="onPickTopic(item)">
                                 {{ item }}
                             </button>
                         </li>

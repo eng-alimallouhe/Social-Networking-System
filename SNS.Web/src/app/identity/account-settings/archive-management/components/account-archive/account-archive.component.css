@@ -28,30 +28,12 @@
 }
 
 .back-btn {
-    margin: 0;
-    padding: var(--spacing-2);
-    color: var(--primary-color);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: var(--text-sm);
-    font-weight: var(--font-weight-medium);
-    background-color: var(--bg-main);
-    text-decoration: none;
-    border: none;
-    cursor: pointer;
     border-radius: var(--radius-full);
-    transition: color 0.2s ease;
 }
 
 .back-btn svg {
-    width: 25px;
-    height: 25px;
-    stroke-width: 4px;
-}
-
-.back-btn:hover {
-    color: var(--text-primary);
+    width: 20px;
+    height: 20px;
 }
 
 .back-link:hover {

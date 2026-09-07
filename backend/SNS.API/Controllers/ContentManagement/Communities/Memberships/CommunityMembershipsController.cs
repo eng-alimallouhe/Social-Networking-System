@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using SNS.API.Contracts.ContentManagement.Communities;
 using SNS.API.Extensions;
 using SNS.Application.ContentManagement.Communities.Memberships.Commands.ApproveMembership;
+using SNS.Application.ContentManagement.Communities.Memberships.Commands.CancelJoinRequest;
 using SNS.Application.ContentManagement.Communities.Memberships.Commands.ChangeMemberRole;
 using SNS.Application.ContentManagement.Communities.Memberships.Commands.JoinCommunity;
 using SNS.Application.ContentManagement.Communities.Memberships.Commands.LeaveCommunity;
@@ -59,6 +60,24 @@ public class CommunityMembershipsController : ControllerBase
         [FromBody] JoinCommunityRequest? request)
     {
         return (await _mediator.Send(new JoinCommunityCommand(communityId, request?.Notes))).ToActionResult(this);
+    }
+
+    /// <summary>
+    /// Cancels a pending join request submitted by the current authenticated user.
+    /// </summary>
+    /// <param name="communityId">The unique identifier of the community.</param>
+    /// <response code="200">Join request cancelled successfully.</response>
+    /// <response code="401">User is unauthenticated.</response>
+    /// <response code="404">No pending join request found.</response>
+    [HttpDelete("join-request")]
+    [Authorize]
+    [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [RequireSession]
+    public async Task<ActionResult<Result>> CancelJoinRequestAsync([FromRoute] Guid communityId)
+    {
+        return (await _mediator.Send(new CancelJoinRequestCommand(communityId))).ToActionResult(this);
     }
 
     /// <summary>

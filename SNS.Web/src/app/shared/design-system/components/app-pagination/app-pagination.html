@@ -1,5 +1,5 @@
 <nav class="pagination-container" aria-label="Pagination">
-    <button class="btn btn-icon pagination-btn prev-btn" 
+    <button class="btn btn-icon btn-secondary pagination-btn prev-btn" 
             [disabled]="currentPage() <= 1" 
             (click)="onPrevious()"
             [attr.aria-label]="'Identity.Security_Settings.Session_Management.Previous' | translate">
@@ -9,7 +9,8 @@
     <div class="pages-group">
         @for (page of pages(); track page) {
             <button class="btn pagination-btn page-number"
-                    [class.active]="page === currentPage()"
+                    [class.btn-primary]="page === currentPage()"
+                    [class.btn-secondary]="page !== currentPage()"
                     (click)="onPageChange(page)"
                     [attr.aria-label]="('Identity.Security_Settings.Session_Management.Page' | translate) + ' ' + page">
                 {{ page }}
@@ -17,7 +18,7 @@
         }
     </div>
 
-    <button class="btn btn-icon pagination-btn next-btn" 
+    <button class="btn btn-icon btn-secondary pagination-btn next-btn" 
             [disabled]="currentPage() >= totalPages() || totalPages() === 0" 
             (click)="onNext()"
             [attr.aria-label]="'Identity.Security_Settings.Session_Management.Next' | translate">

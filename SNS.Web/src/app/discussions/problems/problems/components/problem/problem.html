@@ -1,32 +1,55 @@
-<div class="problem-card">
-    <div class="card-header">
-        <div class="author-info">
+<article class="problem-card" (click)="onProblemClick($event)">
+    <!-- Header: Author Avatar, Full Name, Community Badge, Specialization, Date -->
+    <header class="card-header">
+        <div class="author-section">
             <div class="author-avatar">
-                <img 
-                    [src]="problem().authorProfilePictureUrl || defaultAvatar" 
-                    [alt]="problem().authorName" 
-                    class="avatar-img"
-                    (error)="onAvatarError($event)" />
+                <app-avatar [src]="problem().author.profilePictureUrl" [name]="problem().author.fullName" size="md"></app-avatar>
             </div>
-            <div class="author-meta">
-                <span class="author-name">{{ problem().authorName }}</span>
-                <span class="created-date">
-                    <svg lucideCalendar class="calendar-icon"></svg>
-                    <span>{{ problem().createdAt | date:'mediumDate' }}</span>
-                </span>
+
+            <div class="author-details">
+                <div class="author-name-row">
+                    <span class="author-name">{{ problem().author.fullName }}</span>
+
+                    @if (problem().community) {
+                        <a 
+                            [routerLink]="['/communities', problem().community!.id]" 
+                            class="community-badge"
+                            (click)="$event.stopPropagation()">
+                            <svg lucideUsers class="community-icon"></svg>
+                            <span class="community-name">{{ problem().community!.name }}</span>
+                        </a>
+                    }
+                </div>
+
+                @if (problem().author.specialization) {
+                    <div class="author-sub-row">
+                        <span class="author-specialization">{{ problem().author.specialization }}</span>
+                    </div>
+                }
             </div>
         </div>
 
-        <div class="badges-row">
-            <span class="badge badge-level" [attr.data-level]="problem().level">
-                {{ ('Problem.Level.' + problem().level) | translate }}
-            </span>
-            <span class="badge badge-status" [attr.data-status]="problem().status">
-                {{ ('Problem.Status.' + problem().status) | translate }}
-            </span>
+        <div class="header-right">
+            <div class="posted-time">
+                <svg lucideClock class="time-icon"></svg>
+                <span>{{ problem().createdAt | localDate }}</span>
+            </div>
         </div>
+    </header>
+
+    <!-- Badges Row: Status & Level -->
+    <div class="badges-row">
+        <span class="badge badge-status" [attr.data-status]="problem().status">
+            <span class="badge-dot">●</span>
+            <span>{{ ('Problem.Status.' + problem().status) | translate }}</span>
+        </span>
+        <span class="badge badge-level" [attr.data-level]="problem().level">
+            <span class="badge-dot">●</span>
+            <span>{{ ('Problem.Level.' + problem().level) | translate }}</span>
+        </span>
     </div>
 
+    <!-- Body: Title & Content Preview -->
     <div class="card-body">
         <h3 class="problem-title">{{ problem().title }}</h3>
 
@@ -56,7 +79,8 @@
             </div>
         }
 
-        @if (problem().tags.length > 0) {
+        <!-- Tags -->
+        @if (problem().tags && problem().tags.length > 0) {
             <div class="tags-wrap">
                 @for (tag of problem().tags; track tag) {
                     <span class="tag-pill">#{{ tag }}</span>
@@ -65,21 +89,59 @@
         }
     </div>
 
-    <div class="card-footer">
-        <div class="metrics-row">
-            <span class="metric-item">
-                <svg lucideThumbsUp class="metric-icon"></svg>
-                <span><strong>{{ problem().upvotesCount | number }}</strong> {{ 'Problem.Upvotes' | translate }}</span>
-            </span>
-            <span class="metric-item">
-                <svg lucideCheckCircle2 class="metric-icon"></svg>
-                <span><strong>{{ problem().solutionsCount | number }}</strong> {{ 'Problem.Solutions' | translate }}</span>
-            </span>
+    <!-- Footer: Upvote, Downvote, Solutions, Bookmark -->
+    <footer class="card-footer">
+        <div class="vote-group">
+            <!-- Upvote Button -->
+            <button 
+                type="button" 
+                class="btn btn-secondary btn-sm vote-pill-btn" 
+                [class.active]="isUpVoted()" 
+                (click)="toggleUpvote($event)"
+                [attr.aria-label]="'Problem.Upvote' | translate"
+                [disabled]="isVoting()">
+                <svg lucideArrowUp class="vote-icon"></svg>
+                <span class="vote-count">{{ upvotesCount() }}</span>
+            </button>
+
+            <!-- Downvote Button -->
+            <button 
+                type="button" 
+                class="btn btn-secondary btn-sm vote-pill-btn" 
+                [class.active]="isDownVoted()" 
+                (click)="toggleDownvote($event)"
+                [attr.aria-label]="'Problem.Downvote' | translate"
+                [disabled]="isVoting()">
+                <svg lucideArrowDown class="vote-icon"></svg>
+                <span class="vote-count">{{ downvotesCount() }}</span>
+            </button>
         </div>
 
-        <a [routerLink]="['/discussions/problems', problem().id]" class="view-problem-link" (click)="onProblemClick($event)">
-            <span>{{ 'Problem.View_Problem' | translate }}</span>
-            <svg lucideArrowRight class="link-arrow"></svg>
-        </a>
-    </div>
-</div>
+        <div class="actions-group">
+            <!-- Solutions Pill -->
+            <button 
+                type="button" 
+                class="btn btn-secondary btn-sm solutions-pill-btn" 
+                (click)="onProblemClick($event)">
+                <svg lucideLightbulb class="solutions-icon"></svg>
+                <span>{{ problem().solutionsCount | number }} {{ 'Problem.Solutions' | translate }}</span>
+            </button>
+
+            <!-- Bookmark Button -->
+            <button 
+                type="button" 
+                class="btn btn-icon btn-ghost bookmark-btn" 
+                [class.saved]="isSaved()" 
+                (click)="toggleSave($event)"
+                [attr.aria-label]="'Problem.Save' | translate">
+                <svg lucideBookmark class="bookmark-icon" [class.fill-current]="isSaved()"></svg>
+            </button>
+        </div>
+    </footer>
+</article>
+
+<app-want-to-login 
+    [isOpen]="isWantToLoginOpen()" 
+    (isOpenChange)="isWantToLoginOpen.set($event)"
+    (closed)="isWantToLoginOpen.set(false)">
+</app-want-to-login>

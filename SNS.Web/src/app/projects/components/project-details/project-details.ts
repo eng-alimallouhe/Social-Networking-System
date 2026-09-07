@@ -1,7 +1,8 @@
 import { Component, OnInit, inject, signal, computed } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TranslatePipe } from '@ngx-translate/core';
+import { FormsModule } from '@angular/forms';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import {
     LucideArrowLeft,
     LucidePencil,
@@ -25,7 +26,10 @@ import {
     LucidePlus
 } from '@lucide/angular';
 import { ProjectService } from '../../services/project.service';
+import { ProjectRatingsService } from '../../services/project-ratings.service';
 import { AuthenticationService } from '../../../identity/shared/services/authentication.service';
+import { ToastService } from '../../../identity/notifications/services/toast.service';
+import { RateProjectCommand } from '../../contracts/project-rating.contracts';
 import { ProjectDetailsDto } from '../../contracts/project-details.dto';
 import { ProjectParticipantDetailsDto } from '../../contracts/project-participant-details.dto';
 import { ProjectRatingDto } from '../../contracts/project-rating.dto';
@@ -38,6 +42,8 @@ import { SkeletonLoaderComponent, SkeletonType } from '../../../shared/Loading/c
 import { CircleLoader } from '../../../shared/Loading/components/circle-loader/circle-loader';
 import { AddSkillModal } from '../add-skill-modal/add-skill-modal';
 import { AddContributorModal } from '../add-contributor-modal/add-contributor-modal';
+import { AppInput } from '../../../shared/design-system/components/app-input/app-input';
+import { AppAvatar } from '../../../shared/design-system/components/app-avatar/app-avatar';
 
 export type ProjectTab = 'readme' | 'media' | 'milestones' | 'source-code' | 'reviews';
 
@@ -46,11 +52,14 @@ export type ProjectTab = 'readme' | 'media' | 'milestones' | 'source-code' | 're
     standalone: true,
     imports: [
         CommonModule,
+        FormsModule,
         TranslatePipe,
         SkeletonLoaderComponent,
         CircleLoader,
         AddSkillModal,
         AddContributorModal,
+        AppInput,
+        AppAvatar,
         LucideArrowLeft,
         LucidePencil,
         LucideUserPlus,
@@ -80,11 +89,34 @@ export class ProjectDetails implements OnInit {
     private router = inject(Router);
     private location = inject(Location);
     private projectService = inject(ProjectService);
+    private projectRatingsService = inject(ProjectRatingsService);
     private markdownService = inject(MarkdownService);
     private authService = inject(AuthenticationService);
+    private toastService = inject(ToastService);
+    private translate = inject(TranslateService);
+
+    // Rating submission state
+    userRating = signal<number>(0);
+    hoverRating = signal<number>(0);
+    userReviewComment = signal<string>('');
+    isSubmittingRating = signal<boolean>(false);
+
+    readonly displayRating = computed(() => {
+        const hover = this.hoverRating();
+        return hover > 0 ? hover : this.userRating();
+    });
+
+    readonly isAuthenticated = computed(() => this.authService.isAuthenticated());
+
+    readonly myExistingRating = computed(() => {
+        const myId = this.authService.getProfileId()?.toLowerCase();
+        if (!myId) return null;
+        return this.ratings().find(r => r.profileId?.toLowerCase() === myId) || null;
+    });
+
+    readonly hasUserRated = computed(() => !!this.myExistingRating());
 
     readonly SkeletonType = SkeletonType;
-    readonly defaultAvatar = 'assets/images/default-avatar.png';
     readonly defaultProjectImage = 'assets/images/default-project.png';
 
     projectId = signal<string>('');
@@ -149,7 +181,7 @@ export class ProjectDetails implements OnInit {
     readonly renderedReadme = computed<string | null>(() => {
         const readme = this.project()?.readmeContent;
         if (!readme) return null;
-        const cleanReadme = readme.replace(/\\n/g, '\n');
+        const cleanReadme = readme.replace(/\\n/g, '\n').replace(/\\t/g, '\t').replace(/\\r/g, '\r');
         return this.markdownService.parse(cleanReadme);
     });
 
@@ -216,6 +248,7 @@ export class ProjectDetails implements OnInit {
                 this.isLoadingReviews.set(false);
                 if (res?.isSuccess && res.value?.items) {
                     this.ratings.set(res.value.items);
+                    this.syncUserRating();
                 }
             },
             error: () => this.isLoadingReviews.set(false)
@@ -334,11 +367,6 @@ export class ProjectDetails implements OnInit {
         this.loadCollaborators();
     }
 
-    onAvatarError(event: Event): void {
-        const img = event.target as HTMLImageElement;
-        if (img) img.src = this.defaultAvatar;
-    }
-
     onImageError(): void {
         this.hasImageError.set(true);
     }
@@ -356,5 +384,80 @@ export class ProjectDetails implements OnInit {
         } else {
             this.router.navigate(['/home/search']);
         }
+    }
+
+    // Star Rating Interaction & Submission
+    onStarHover(star: number): void {
+        if (this.isSubmittingRating()) return;
+        this.hoverRating.set(star);
+    }
+
+    onStarLeave(): void {
+        if (this.isSubmittingRating()) return;
+        this.hoverRating.set(0);
+    }
+
+    onStarClick(star: number): void {
+        if (this.isSubmittingRating()) return;
+        this.userRating.set(star);
+    }
+
+    onStarKeydown(event: KeyboardEvent, star: number): void {
+        if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            this.onStarClick(star);
+        }
+    }
+
+    syncUserRating(): void {
+        const existing = this.myExistingRating();
+        if (existing) {
+            this.userRating.set(existing.ratingValue);
+            this.userReviewComment.set(existing.comment || '');
+        }
+    }
+
+    resetRatingForm(): void {
+        const existing = this.myExistingRating();
+        if (existing) {
+            this.userRating.set(existing.ratingValue);
+            this.userReviewComment.set(existing.comment || '');
+        } else {
+            this.userRating.set(0);
+            this.userReviewComment.set('');
+        }
+    }
+
+    submitRating(): void {
+        const id = this.projectId();
+        const rating = this.userRating();
+        if (!id || rating < 1 || rating > 5 || this.isSubmittingRating()) return;
+
+        this.isSubmittingRating.set(true);
+        const command: RateProjectCommand = {
+            projectId: id,
+            ratingValue: rating,
+            comment: this.userReviewComment().trim()
+        };
+
+        this.projectRatingsService.rateProject(id, command).subscribe({
+            next: res => {
+                this.isSubmittingRating.set(false);
+                if (res?.isSuccess) {
+                    const title = this.translate.instant('Project.Rating.Rating_Success_Title') || 'Thank You!';
+                    const msg = this.hasUserRated()
+                        ? (this.translate.instant('Project.Rating.Rating_Update_Message') || 'Your rating has been updated successfully.')
+                        : (this.translate.instant('Project.Rating.Rating_Success_Message') || 'Your rating has been added successfully.');
+                    this.toastService.success(title, msg);
+                    this.loadReviews();
+                } else {
+                    this.toastService.error('Error', 'Failed to submit rating.');
+                }
+            },
+            error: () => {
+                this.isSubmittingRating.set(false);
+                this.toastService.error('Error', 'An error occurred while submitting your rating.');
+            }
+        });
     }
 }

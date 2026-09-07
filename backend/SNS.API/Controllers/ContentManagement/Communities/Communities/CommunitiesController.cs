@@ -11,6 +11,12 @@ using SNS.Application.ContentManagement.Communities.Communities.Commands.UpdateC
 using SNS.Application.ContentManagement.Communities.Communities.Contracts;
 using SNS.Application.ContentManagement.Communities.Communities.Queries.GetCommunityById;
 using SNS.Application.ContentManagement.Communities.Communities.Queries.GetMyCommunities;
+using SNS.Application.ContentManagement.Communities.Communities.Queries.GetSuggestedCommunities;
+using SNS.Application.ContentManagement.Posts.Posts.Commands.ApproveCommunityPost;
+using SNS.Application.ContentManagement.Posts.Posts.Commands.RejectCommunityPost;
+using SNS.Application.ContentManagement.Posts.Posts.Contracts;
+using SNS.Application.ContentManagement.Posts.Posts.Queries.GetCommunityPosts;
+using SNS.Application.ContentManagement.Posts.Posts.Queries.GetPendingCommunityPosts;
 using SNS.Application.Shared.DTOs;
 using SNS.Shared.Results;
 using SNS.API.Attributes;
@@ -153,5 +159,112 @@ public class CommunitiesController : ControllerBase
         [FromQuery] int pageSize = 10)
     {
         return (await _mediator.Send(new GetMyCommunitiesQuery(page, pageSize))).ToActionResult(this);
+    }
+
+    /// <summary>
+    /// Retrieves suggested/recommended communities for the authenticated user.
+    /// </summary>
+    /// <param name="count">Number of suggested communities to retrieve.</param>
+    /// <response code="200">Returns list of recommended communities.</response>
+    [HttpGet("suggested")]
+    [ProducesResponseType(typeof(Result<List<CommunitySummaryDto>>), StatusCodes.Status200OK)]
+    public async Task<ActionResult<Result<List<CommunitySummaryDto>>>> GetSuggestedCommunitiesAsync(
+        [FromQuery] int count = 5)
+    {
+        return (await _mediator.Send(new GetSuggestedCommunitiesQuery(count))).ToActionResult(this);
+    }
+
+    /// <summary>
+    /// Retrieves paginated active posts belonging to a community.
+    /// </summary>
+    /// <param name="id">The unique identifier of the community.</param>
+    /// <param name="page">The page number.</param>
+    /// <param name="pageSize">The number of items per page.</param>
+    /// <response code="200">Returns paginated post list <see cref="Paged{PostOverviewDto}"/>.</response>
+    /// <response code="401">User is unauthenticated (if private community).</response>
+    /// <response code="403">User is unauthorized to access private community posts.</response>
+    /// <response code="404">The community was not found.</response>
+    [HttpGet("{id:guid}/posts")]
+    [ProducesResponseType(typeof(Result<Paged<PostOverviewDto>>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<Result<Paged<PostOverviewDto>>>> GetCommunityPostsAsync(
+        [FromRoute] Guid id,
+        [FromQuery] int page = 1,
+        [FromQuery] int pageSize = 10)
+    {
+        return (await _mediator.Send(new GetCommunityPostsQuery(id, page, pageSize))).ToActionResult(this);
+    }
+
+    /// <summary>
+    /// Retrieves paginated posts awaiting approval in a community for community managers/moderators.
+    /// </summary>
+    /// <param name="id">The unique identifier of the community.</param>
+    /// <param name="page">The page number.</param>
+    /// <param name="pageSize">The number of items per page.</param>
+    /// <response code="200">Returns paginated pending posts <see cref="Paged{PostOverviewDto}"/>.</response>
+    /// <response code="401">User is unauthenticated.</response>
+    /// <response code="403">User lacks moderator/owner permissions.</response>
+    /// <response code="404">The community was not found.</response>
+    [HttpGet("{id:guid}/pending-posts")]
+    [Authorize]
+    [ProducesResponseType(typeof(Result<Paged<PostOverviewDto>>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [RequireSession]
+    public async Task<ActionResult<Result<Paged<PostOverviewDto>>>> GetPendingCommunityPostsAsync(
+        [FromRoute] Guid id,
+        [FromQuery] int page = 1,
+        [FromQuery] int pageSize = 10)
+    {
+        return (await _mediator.Send(new GetPendingCommunityPostsQuery(id, page, pageSize))).ToActionResult(this);
+    }
+
+    /// <summary>
+    /// Approves a pending community post.
+    /// </summary>
+    /// <param name="id">The unique identifier of the community.</param>
+    /// <param name="postId">The unique identifier of the post.</param>
+    /// <response code="200">Post approved successfully.</response>
+    /// <response code="401">User is unauthenticated.</response>
+    /// <response code="403">User lacks moderator/owner permissions.</response>
+    /// <response code="404">The post was not found or is no longer pending.</response>
+    [HttpPost("{id:guid}/pending-posts/{postId:guid}/approve")]
+    [Authorize]
+    [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [RequireSession]
+    public async Task<ActionResult<Result>> ApproveCommunityPostAsync(
+        [FromRoute] Guid id,
+        [FromRoute] Guid postId)
+    {
+        return (await _mediator.Send(new ApproveCommunityPostCommand(id, postId))).ToActionResult(this);
+    }
+
+    /// <summary>
+    /// Rejects a pending community post.
+    /// </summary>
+    /// <param name="id">The unique identifier of the community.</param>
+    /// <param name="postId">The unique identifier of the post.</param>
+    /// <response code="200">Post rejected successfully.</response>
+    /// <response code="401">User is unauthenticated.</response>
+    /// <response code="403">User lacks moderator/owner permissions.</response>
+    /// <response code="404">The post was not found or is no longer pending.</response>
+    [HttpPost("{id:guid}/pending-posts/{postId:guid}/reject")]
+    [Authorize]
+    [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [RequireSession]
+    public async Task<ActionResult<Result>> RejectCommunityPostAsync(
+        [FromRoute] Guid id,
+        [FromRoute] Guid postId)
+    {
+        return (await _mediator.Send(new RejectCommunityPostCommand(id, postId))).ToActionResult(this);
     }
 }

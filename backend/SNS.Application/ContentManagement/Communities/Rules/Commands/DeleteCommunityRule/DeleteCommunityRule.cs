@@ -66,6 +66,7 @@ internal sealed class DeleteCommunityRuleCommandHandler : ICommandHandler<Delete
 
         var isOwner = community.OwnerId == profileId.Value;
         var isModerator = !isOwner && await _dbContext.CommunityMemberships
+            .AsNoTracking()
             .AnyAsync(m => m.CommunityId == community.Id &&
                            m.MemberId == profileId.Value &&
                            (m.Role == CommunityRole.Moderator || m.Role == CommunityRole.Owner) &&

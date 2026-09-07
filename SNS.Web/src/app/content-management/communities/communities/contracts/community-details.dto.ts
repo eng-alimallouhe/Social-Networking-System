@@ -21,4 +21,6 @@ export interface CommunityDetailsDto {
     isMember: boolean;
     currentUserRole?: CommunityRole | null;
     hasPendingJoinRequest: boolean;
+    isManager: boolean;
+    hasPendingPost: boolean;
 }

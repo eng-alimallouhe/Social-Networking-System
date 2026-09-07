@@ -64,20 +64,7 @@
 }
 
 .mobile-menu-toggle {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: transparent;
-    border: none;
-    color: var(--text-primary);
-    cursor: pointer;
     padding: 8px;
-    border-radius: var(--border-radius-md);
-    transition: var(--transition-base);
-}
-
-.mobile-menu-toggle:hover {
-    background-color: var(--bg-hover);
 }
 
 .loading-wrapper {

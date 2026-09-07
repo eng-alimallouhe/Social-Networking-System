@@ -66,6 +66,7 @@ internal sealed class CreateCommunityRuleCommandHandler : ICommandHandler<Create
 
         var isOwner = community.OwnerId == profileId.Value;
         var isModerator = !isOwner && await _dbContext.CommunityMemberships
+            .AsNoTracking()
             .AnyAsync(m => m.CommunityId == request.CommunityId &&
                            m.MemberId == profileId.Value &&
                            (m.Role == CommunityRole.Moderator || m.Role == CommunityRole.Owner) &&

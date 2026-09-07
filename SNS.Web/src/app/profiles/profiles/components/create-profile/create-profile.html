@@ -26,7 +26,7 @@
                 </div>
 
                 <div class="avatar-actions">
-                    <button type="button" class="btn-upload" (click)="triggerFileInput()"
+                    <button type="button" class="btn btn-secondary btn-upload" (click)="triggerFileInput()"
                         aria-label="Upload profile photo">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -38,7 +38,7 @@
                     </button>
 
                     @if (imagePreviewUrl()) {
-                    <button type="button" class="btn-remove" (click)="removeImage()" aria-label="Remove profile photo">
+                    <button type="button" class="btn btn-delete btn-remove" (click)="removeImage()" aria-label="Remove profile photo">
                         {{ 'Shared.Actions.Remove' | translate }}
                     </button>
                     }
@@ -112,7 +112,7 @@
                             [attr.aria-expanded]="isDropdownOpen()" aria-autocomplete="list"
                             aria-controls="specialization-listbox" />
                         @if (selectedSpecialization()) {
-                        <button type="button" class="clear-btn" (click)="clearSpecialization()"
+                        <button type="button" class="btn btn-icon btn-ghost clear-btn" (click)="clearSpecialization()"
                             aria-label="Clear specialization">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
                                 stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
@@ -152,10 +152,10 @@
             </div>
 
             <!-- ── Continue ───────────────────────────────────────────────── -->
-            <button type="submit" id="createProfileContinueBtn" class="btn-primary" [disabled]="profileForm.invalid">
+            <button type="submit" id="createProfileContinueBtn" class="btn btn-primary btn-block" [disabled]="profileForm.invalid">
                 {{ 'Shared.Actions.Continue' | translate }}
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="btn-icon" aria-hidden="true">
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                     <line x1="5" y1="12" x2="19" y2="12" />
                     <polyline points="12 5 19 12 12 19" />
                 </svg>

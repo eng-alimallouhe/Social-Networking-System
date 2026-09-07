@@ -56,4 +56,10 @@ public class CommunityJoinRequest : Entity, IHardDeletable
         Status = JoinRequestStatus.Rejected;
         ReviewedAt = DateTime.UtcNow;
     }
+
+    public void Cancel()
+    {
+        Status = JoinRequestStatus.Cancelled;
+        ReviewedAt = DateTime.UtcNow;
+    }
 }

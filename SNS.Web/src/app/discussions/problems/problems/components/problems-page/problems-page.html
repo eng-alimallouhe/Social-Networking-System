@@ -1,0 +1,84 @@
+@if (isProblemsRootRoute()) {
+    <div class="problems-page-container">
+        <!-- Problems Feed List -->
+        <div class="problems-list">
+            @for (problem of loadedProblems(); track problem.id) {
+                <app-problem 
+                    [problem]="problem" 
+                    (problemClicked)="onProblemClick($event)">
+                </app-problem>
+            }
+        </div>
+
+        <!-- Initial Loading Skeletons -->
+        @if (isInitialLoading()) {
+            <div class="problems-skeletons" aria-label="Loading problems" aria-busy="true">
+                <app-skeleton-loader [type]="SkeletonType.Content"></app-skeleton-loader>
+                <app-skeleton-loader [type]="SkeletonType.Content"></app-skeleton-loader>
+                <app-skeleton-loader [type]="SkeletonType.Content"></app-skeleton-loader>
+            </div>
+        }
+
+        <!-- Next Page Loading Skeleton (Appended Below Existing Problems) -->
+        @if (isLoadingNextPage()) {
+            <div class="problems-skeletons problems-skeletons-more" aria-label="Loading more problems" aria-busy="true">
+                <app-skeleton-loader [type]="SkeletonType.Content"></app-skeleton-loader>
+            </div>
+        }
+
+        <!-- Infinite Scroll Sentinel -->
+        @if (hasNextPage() && !isInitialLoading() && !hasError()) {
+            <div #sentinel class="problems-sentinel" aria-hidden="true"></div>
+        }
+
+        <!-- Error on Next Page (Existing Problems Remain Visible) -->
+        @if (isNextPageError()) {
+            <div class="problems-error-banner" role="alert">
+                <svg lucideAlertCircle class="banner-icon"></svg>
+                <span class="banner-text">{{ 'Problem.Load_More_Error' | translate }}</span>
+                <button type="button" class="btn btn-primary btn-sm problems-retry-btn" (click)="retry()">
+                    <svg lucideRefreshCw class="btn-icon"></svg>
+                    <span>{{ 'Problem.Retry' | translate }}</span>
+                </button>
+            </div>
+        }
+
+        <!-- Initial Error State (When Initial Load Fails) -->
+        @if (isInitialError()) {
+            <div class="problems-error-state" role="alert">
+                <div class="error-icon-wrapper">
+                    <svg lucideAlertCircle class="error-icon"></svg>
+                </div>
+                <h3 class="error-title">{{ 'Problem.Feed_Error_Title' | translate }}</h3>
+                <p class="error-description">{{ 'Problem.Feed_Error_Description' | translate }}</p>
+                <button type="button" class="btn btn-primary btn-lg problems-retry-btn" (click)="retry()">
+                    <svg lucideRefreshCw class="btn-icon"></svg>
+                    <span>{{ 'Problem.Retry' | translate }}</span>
+                </button>
+            </div>
+        }
+
+        <!-- Empty State -->
+        @if (isEmpty()) {
+            <div class="problems-empty-state">
+                <div class="empty-icon-wrapper">
+                    <svg lucideMessagesSquare class="empty-icon"></svg>
+                </div>
+                <h3 class="empty-title">{{ 'Problem.Empty_Title' | translate }}</h3>
+                <p class="empty-description">{{ 'Problem.Empty_Description' | translate }}</p>
+            </div>
+        }
+
+        <!-- End of Feed State -->
+        @if (isEndOfFeed()) {
+            <div class="problems-end-message">
+                <span class="end-dot"></span>
+                <p class="end-text">{{ 'Problem.End_Of_Feed' | translate }}</p>
+                <span class="end-dot"></span>
+            </div>
+        }
+    </div>
+}
+
+<router-outlet />
+

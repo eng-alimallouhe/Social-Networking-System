@@ -18,6 +18,17 @@ export class ProblemsService {
     private http = inject(HttpClient);
     private baseUrl = environment.apiUrl;
 
+    getProblems(page: number = 1, pageSize: number = 10): Observable<Result<Paged<ProblemSummaryDto>>> {
+        const params = new HttpParams()
+            .set('page', page.toString())
+            .set('pageSize', pageSize.toString());
+
+        return this.http.get<Result<Paged<ProblemSummaryDto>>>(
+            `${this.baseUrl}${DISCUSSIONS_API_ROUTES.Problems}`,
+            { params }
+        );
+    }
+
     createProblem(command: CreateProblemCommand): Observable<Result<string>> {
         return this.http.post<Result<string>>(
             `${this.baseUrl}${DISCUSSIONS_API_ROUTES.Problems}`,

@@ -1,0 +1,215 @@
+<div class="company-details-container">
+  <!-- Back Button -->
+  <div class="top-nav-bar">
+    <button type="button" class="btn back-button" (click)="goBack()">
+      <svg lucideArrowLeft></svg>
+      <span>{{ 'Common.Back' | translate }}</span>
+    </button>
+  </div>
+
+  @if (isLoadingCompany()) {
+    <div class="loading-wrap">
+      <app-skeleton-loader [type]="SkeletonType.Content"></app-skeleton-loader>
+    </div>
+  } @else if (company(); as c) {
+    <!-- Company Header Card -->
+    <header class="company-header-card">
+      <div class="header-main">
+        <app-avatar
+          [src]="c.logoUrl"
+          [name]="c.name"
+          size="xl">
+        </app-avatar>
+
+        <div class="header-content">
+          <div class="title-row">
+            <h1 class="company-name">{{ c.name }}</h1>
+            @if (c.currentUserRole) {
+              <span class="role-badge" [class.role-owner]="c.currentUserRole === CompanyRole.Owner" [class.role-manager]="c.currentUserRole === CompanyRole.Manager">
+                <svg lucideShieldCheck class="badge-icon"></svg>
+                <span>{{ ('Company.Roles.' + c.currentUserRole) | translate }}</span>
+              </span>
+            }
+          </div>
+
+          <div class="meta-row">
+            @if (c.industry) {
+              <span class="meta-item">
+                <svg lucideBuilding class="meta-icon"></svg>
+                <span>{{ c.industry }}</span>
+              </span>
+            }
+            @if (c.websiteUrl) {
+              <a [href]="c.websiteUrl" target="_blank" rel="noopener noreferrer" class="meta-item meta-link">
+                <svg lucideGlobe class="meta-icon"></svg>
+                <span>{{ c.websiteUrl }}</span>
+                <svg lucideExternalLink class="external-icon"></svg>
+              </a>
+            }
+            <span class="meta-item">
+              <svg lucideCalendar class="meta-icon"></svg>
+              <span>{{ 'Company.About.Founded' | translate }}: {{ c.createdAt | date:'mediumDate' }}</span>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Stats Bar -->
+      <div class="stats-bar">
+        <div class="stat-card" (click)="setTab('jobs')">
+          <svg lucideBriefcase class="stat-icon"></svg>
+          <div class="stat-info">
+            <span class="stat-value">{{ c.activeJobsCount }}</span>
+            <span class="stat-label">{{ 'Company.Tabs.PublishedJobs' | translate }}</span>
+          </div>
+        </div>
+
+        <div class="stat-card" (click)="setTab('managers')">
+          <svg lucideUsers class="stat-icon"></svg>
+          <div class="stat-info">
+            <span class="stat-value">{{ c.administratorsCount }}</span>
+            <span class="stat-label">{{ 'Company.Tabs.Managers' | translate }}</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Tabs Navigation -->
+    <nav class="tabs-nav" aria-label="Company sections">
+      <button
+        type="button"
+        class="tab-btn"
+        [class.active]="activeTab() === 'about'"
+        (click)="setTab('about')">
+        <svg lucideBuilding class="tab-icon"></svg>
+        <span>{{ 'Company.Tabs.About' | translate }}</span>
+      </button>
+
+      <button
+        type="button"
+        class="tab-btn"
+        [class.active]="activeTab() === 'jobs'"
+        (click)="setTab('jobs')">
+        <svg lucideBriefcase class="tab-icon"></svg>
+        <span>{{ 'Company.Tabs.PublishedJobs' | translate }}</span>
+        <span class="tab-badge">{{ c.activeJobsCount }}</span>
+      </button>
+
+      <button
+        type="button"
+        class="tab-btn"
+        [class.active]="activeTab() === 'managers'"
+        (click)="setTab('managers')">
+        <svg lucideUsers class="tab-icon"></svg>
+        <span>{{ 'Company.Tabs.Managers' | translate }}</span>
+        <span class="tab-badge">{{ c.administratorsCount }}</span>
+      </button>
+    </nav>
+
+    <!-- Tab Contents -->
+    <main class="tab-content-container">
+      <!-- TAB 1: ABOUT (DEFAULT) -->
+      @if (activeTab() === 'about') {
+        <section class="tab-panel animate-fade-in" aria-labelledby="tab-about">
+          <div class="card about-card">
+            <h2 id="tab-about" class="section-heading">{{ 'Company.About.Title' | translate }}</h2>
+            <div class="info-grid">
+              <div class="info-item">
+                <span class="info-label">{{ 'Company.About.Industry' | translate }}</span>
+                <span class="info-value">{{ c.industry || ('Company.About.NoInfo' | translate) }}</span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">{{ 'Company.About.Website' | translate }}</span>
+                @if (c.websiteUrl) {
+                  <a [href]="c.websiteUrl" target="_blank" rel="noopener noreferrer" class="info-value info-link">
+                    {{ c.websiteUrl }}
+                  </a>
+                } @else {
+                  <span class="info-value">{{ 'Company.About.NoInfo' | translate }}</span>
+                }
+              </div>
+              <div class="info-item">
+                <span class="info-label">{{ 'Company.About.ActiveJobs' | translate }}</span>
+                <span class="info-value">{{ c.activeJobsCount }}</span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">{{ 'Company.About.Administrators' | translate }}</span>
+                <span class="info-value">{{ c.administratorsCount }}</span>
+              </div>
+            </div>
+          </div>
+        </section>
+      }
+
+      <!-- TAB 2: PUBLISHED JOBS -->
+      @if (activeTab() === 'jobs') {
+        <section class="tab-panel animate-fade-in" aria-labelledby="tab-jobs">
+          @if (isLoadingJobs()) {
+            <div class="loading-list">
+              <app-skeleton-loader [type]="SkeletonType.Content"></app-skeleton-loader>
+              <app-skeleton-loader [type]="SkeletonType.Content"></app-skeleton-loader>
+            </div>
+          } @else if (jobs().length === 0) {
+            <div class="card empty-state-card">
+              <svg lucideBriefcase class="empty-icon"></svg>
+              <h3 class="empty-title">{{ 'Company.Jobs.Empty' | translate }}</h3>
+              <p class="empty-subtitle">{{ 'Company.Jobs.EmptySubtitle' | translate }}</p>
+            </div>
+          } @else {
+            <div class="jobs-list">
+              @for (job of jobs(); track job.id) {
+                <app-job [job]="job"></app-job>
+              }
+            </div>
+          }
+        </section>
+      }
+
+      <!-- TAB 3: MANAGERS -->
+      @if (activeTab() === 'managers') {
+        <section class="tab-panel animate-fade-in" aria-labelledby="tab-managers">
+          @if (isLoadingManagers()) {
+            <div class="loading-list">
+              <app-skeleton-loader [type]="SkeletonType.Content"></app-skeleton-loader>
+              <app-skeleton-loader [type]="SkeletonType.Content"></app-skeleton-loader>
+            </div>
+          } @else if (managers().length === 0) {
+            <div class="card empty-state-card">
+              <svg lucideUsers class="empty-icon"></svg>
+              <h3 class="empty-title">{{ 'Company.Managers.Empty' | translate }}</h3>
+              <p class="empty-subtitle">{{ 'Company.Managers.EmptySubtitle' | translate }}</p>
+            </div>
+          } @else {
+            <div class="managers-grid">
+              @for (m of managers(); track m.id) {
+                <div class="card manager-card">
+                  <a [routerLink]="['/home/profiles', m.profileId]" class="manager-profile-link">
+                    <app-avatar
+                      [src]="m.profile.profilePictureUrl"
+                      [name]="m.profile.fullName"
+                      size="lg">
+                    </app-avatar>
+                    <div class="manager-info">
+                      <span class="manager-name">{{ m.profile.fullName }}</span>
+                      <span class="manager-spec">{{ m.profile.specialization || ('Company.Managers.Role.TeamMember' | translate) }}</span>
+                    </div>
+                  </a>
+                  <span class="role-badge" [class.role-owner]="m.adminRole === CompanyRole.Owner" [class.role-manager]="m.adminRole === CompanyRole.Manager">
+                    <svg lucideShieldCheck class="badge-icon"></svg>
+                    <span>{{ ('Company.Roles.' + m.adminRole) | translate }}</span>
+                  </span>
+                </div>
+              }
+            </div>
+          }
+        </section>
+      }
+    </main>
+  } @else {
+    <div class="card empty-state-card">
+      <svg lucideBuilding class="empty-icon"></svg>
+      <h3 class="empty-title">{{ 'Company.NotFound.Title' | translate }}</h3>
+      <p class="empty-subtitle">{{ 'Company.NotFound.Subtitle' | translate }}</p>
+    </div>
+  }
+</div>

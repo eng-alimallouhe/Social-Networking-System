@@ -1,0 +1,242 @@
+<div class="create-project-container">
+  <!-- Page Header -->
+  <header class="page-header">
+    <div class="header-left">
+      <button type="button" class="btn btn-icon btn-ghost btn-back" (click)="goBack()" [attr.aria-label]="'Common.Back' | translate">
+        <svg lucideArrowLeft></svg>
+      </button>
+      <div>
+        <h1 class="page-title">{{ 'ContentCreation.Project.Title' | translate }}</h1>
+        <p class="page-subtitle">{{ 'ContentCreation.Project.Subtitle' | translate }}</p>
+      </div>
+    </div>
+  </header>
+
+  @if (errorMessage()) {
+    <div class="error-banner" role="alert">
+      <svg lucideAlertCircle class="error-icon"></svg>
+      <span>{{ errorMessage() }}</span>
+      <button type="button" class="btn btn-icon btn-ghost btn-sm" (click)="errorMessage.set(null)" aria-label="Close error">
+        <svg lucideX class="icon-xs"></svg>
+      </button>
+    </div>
+  }
+
+  <!-- Main Creation Form -->
+  <form class="create-project-form" (ngSubmit)="onSubmit()">
+    <!-- Section 1: Basic Info -->
+    <section class="form-section card-section">
+      <div class="section-header">
+        <h2 class="section-title">{{ 'ContentCreation.Project.Project_Title' | translate }}</h2>
+      </div>
+
+      <div class="form-field">
+        <input 
+          id="project-title" 
+          type="text" 
+          class="field-input" 
+          [placeholder]="'ContentCreation.Project.Project_Title_Placeholder' | translate"
+          [ngModel]="title()" 
+          (ngModelChange)="title.set($event)"
+          name="projectTitle"
+          maxlength="200"
+          required
+          [disabled]="isSubmitting()"
+        />
+      </div>
+
+      <div class="form-field">
+        <label for="project-short-desc" class="field-label">{{ 'ContentCreation.Project.Short_Description' | translate }}</label>
+        <textarea 
+          id="project-short-desc" 
+          class="field-input field-textarea" 
+          rows="3" 
+          maxlength="250"
+          [placeholder]="'ContentCreation.Project.Short_Description_Placeholder' | translate"
+          [ngModel]="shortDescription()" 
+          (ngModelChange)="shortDescription.set($event)"
+          name="projectShortDesc"
+          required
+          [disabled]="isSubmitting()">
+        </textarea>
+        <div class="field-footer">
+          <span class="char-count">{{ shortDescription().length }} / 250</span>
+        </div>
+      </div>
+
+      <!-- Project Type Selection -->
+      <div class="type-selection-group">
+        <label class="field-label">{{ 'ContentCreation.Project.Project_Type' | translate }}</label>
+        <div class="type-pills">
+          @for (pt of projectTypes; track pt.value) {
+            <button 
+              type="button" 
+              class="btn-type-pill" 
+              [class.active]="type() === pt.value"
+              (click)="setProjectType(pt.value)"
+              [disabled]="isSubmitting()">
+              {{ pt.label | translate }}
+            </button>
+          }
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 2: Repository & Demo Links -->
+    <section class="form-section card-section">
+      <div class="section-header">
+        <h2 class="section-title">Links & Repository</h2>
+      </div>
+
+      <div class="links-grid">
+        <div class="form-field">
+          <label for="project-github" class="field-label">
+            <svg lucideGitBranch class="icon-xs inline-icon"></svg>
+            <span>{{ 'ContentCreation.Project.GitHub_Url' | translate }}</span>
+          </label>
+          <input 
+            id="project-github" 
+            type="url" 
+            class="field-input" 
+            [placeholder]="'ContentCreation.Project.GitHub_Url_Placeholder' | translate"
+            [ngModel]="gitHubUrl()" 
+            (ngModelChange)="gitHubUrl.set($event)"
+            name="projectGithub"
+            [disabled]="isSubmitting()"
+          />
+        </div>
+
+        <div class="form-field">
+          <label for="project-livedemo" class="field-label">
+            <svg lucideGlobe class="icon-xs inline-icon"></svg>
+            <span>{{ 'ContentCreation.Project.Live_Demo_Url' | translate }}</span>
+          </label>
+          <input 
+            id="project-livedemo" 
+            type="url" 
+            class="field-input" 
+            [placeholder]="'ContentCreation.Project.Live_Demo_Url_Placeholder' | translate"
+            [ngModel]="liveDemoUrl()" 
+            (ngModelChange)="liveDemoUrl.set($event)"
+            name="projectLiveDemo"
+            [disabled]="isSubmitting()"
+          />
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 3: Technologies & Skills -->
+    <section class="form-section card-section">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">{{ 'ContentCreation.Project.Skills' | translate }}</h2>
+          <span class="section-subtitle">Specify technologies, frameworks, and skills used in this project</span>
+        </div>
+        <button 
+          type="button" 
+          class="btn btn-primary btn-sm" 
+          (click)="openAddSkillModal()"
+          [disabled]="isSubmitting()">
+          <svg lucidePlus class="icon-xs"></svg>
+          <span>{{ 'ContentCreation.Project.Add_Skill' | translate }}</span>
+        </button>
+      </div>
+
+      <div class="chips-container">
+        @for (skill of selectedSkills(); track skill.skillId) {
+          <div class="chip-item">
+            <span class="chip-name">{{ skill.skillName }}</span>
+            <button 
+              type="button" 
+              class="btn btn-icon btn-ghost btn-chip-remove" 
+              (click)="removeSkill(skill.skillId)"
+              [disabled]="isSubmitting()"
+              aria-label="Remove skill">
+              <svg lucideX class="icon-xs"></svg>
+            </button>
+          </div>
+        }
+        @if (selectedSkills().length === 0) {
+          <p class="no-items-prompt">No technologies added yet. Click "Add Skill" to attach frameworks and tools.</p>
+        }
+      </div>
+    </section>
+
+    <!-- Section 4: Project Tags -->
+    <section class="form-section card-section">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">{{ 'ContentCreation.Project.Tags' | translate }}</h2>
+          <span class="section-subtitle">Categorize your project with search keywords</span>
+        </div>
+        <button 
+          type="button" 
+          class="btn btn-primary btn-sm" 
+          (click)="openAddTagModal()"
+          [disabled]="isSubmitting()">
+          <svg lucidePlus class="icon-xs"></svg>
+          <span>{{ 'ContentCreation.Project.Add_Tag' | translate }}</span>
+        </button>
+      </div>
+
+      <div class="chips-container">
+        @for (tag of selectedTags(); track tag.tagId) {
+          <div class="chip-item tag-variant">
+            <span class="chip-name">#{{ tag.tagName }}</span>
+            <button 
+              type="button" 
+              class="btn btn-icon btn-ghost btn-chip-remove" 
+              (click)="removeTag(tag.tagId)"
+              [disabled]="isSubmitting()"
+              aria-label="Remove tag">
+              <svg lucideX class="icon-xs"></svg>
+            </button>
+          </div>
+        }
+        @if (selectedTags().length === 0) {
+          <p class="no-items-prompt">No tags added yet. Click "Add Tag" to assign topic tags.</p>
+        }
+      </div>
+    </section>
+
+    <!-- Form Actions Footer -->
+    <div class="form-actions-footer">
+      <button 
+        type="button" 
+        class="btn btn-secondary" 
+        (click)="goBack()" 
+        [disabled]="isSubmitting()">
+        {{ 'Shared.Actions.Cancel' | translate }}
+      </button>
+      <button 
+        type="submit" 
+        class="btn btn-primary" 
+        [disabled]="!canSubmit()">
+        @if (isSubmitting()) {
+          <span class="spinner-small"></span>
+          <span>{{ 'ContentCreation.Project.Creating' | translate }}</span>
+        } @else {
+          <svg lucideSend class="icon-sm"></svg>
+          <span>{{ 'ContentCreation.Project.Submit' | translate }}</span>
+        }
+      </button>
+    </div>
+  </form>
+
+  <!-- Reusable Modals (In-Memory Selection Mode) -->
+  @if (isAddSkillModalOpen()) {
+    <app-add-skill-modal 
+      [existingSkillIds]="existingSkillIds()"
+      (skillAdded)="onSkillAdded($event)"
+      (closeModal)="closeAddSkillModal()">
+    </app-add-skill-modal>
+  }
+
+  @if (isAddTagModalOpen()) {
+    <app-add-tag-modal 
+      [existingTagIds]="existingTagIds()"
+      (tagAdded)="onTagAdded($event)"
+      (closeModal)="closeAddTagModal()">
+    </app-add-tag-modal>
+  }
+</div>

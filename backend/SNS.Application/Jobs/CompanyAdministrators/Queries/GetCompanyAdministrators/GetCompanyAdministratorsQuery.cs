@@ -50,6 +50,20 @@ internal sealed class GetCompanyAdministratorsQueryHandler : IQueryHandler<GetCo
             })
             .ToListAsync(cancellationToken);
 
+        var distinctKeys = rawList
+            .Select(ca => ca.ProfileAvatarObjectKey)
+            .Where(k => !string.IsNullOrWhiteSpace(k))
+            .Distinct()
+            .ToList();
+
+        var urlTasks = distinctKeys.Select(async k => new
+        {
+            Key = k!,
+            Url = await _fileStorageService.GetTemporaryUrlAsync(k!, TimeSpan.FromHours(1))
+        });
+        var resolvedUrls = await Task.WhenAll(urlTasks);
+        var urlMap = resolvedUrls.ToDictionary(r => r.Key, r => r.Url);
+
         var items = rawList.Select(ca => new CompanyAdministratorDto(
             Id: ca.Id,
             CompanyId: ca.CompanyId,
@@ -58,8 +72,8 @@ internal sealed class GetCompanyAdministratorsQueryHandler : IQueryHandler<GetCo
                 Id: ca.ProfileId,
                 FullName: ca.ProfileFullName,
                 Specialization: ca.ProfileSpecialization,
-                ProfilePictureUrl: !string.IsNullOrWhiteSpace(ca.ProfileAvatarObjectKey)
-                    ? _fileStorageService.GetFilePublicUrl(ca.ProfileAvatarObjectKey)
+                ProfilePictureUrl: !string.IsNullOrWhiteSpace(ca.ProfileAvatarObjectKey) && urlMap.TryGetValue(ca.ProfileAvatarObjectKey, out var url)
+                    ? url
                     : null
             ),
             AdminRole: ca.AdminRole

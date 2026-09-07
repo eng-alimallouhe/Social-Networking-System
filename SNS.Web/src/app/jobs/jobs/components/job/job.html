@@ -2,11 +2,7 @@
     <!-- Header: Logo, Title & Status, Location, Type, Actions -->
     <div class="card-header">
         <div class="company-logo-box">
-            @if (job().companyLogoUrl) {
-                <img [src]="job().companyLogoUrl" [alt]="job().companyName" class="company-logo-img" (error)="onLogoError($event)" />
-            } @else {
-                <span class="company-initials">{{ initials() }}</span>
-            }
+            <app-avatar [src]="job().companyLogoUrl" [name]="job().companyName" shape="square" size="lg"></app-avatar>
         </div>
 
         <div class="header-main">

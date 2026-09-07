@@ -1,4 +1,4 @@
-<div class="circle-loader">
+<div class="circle-loader" [class.custom-size]="!!size" [style.--loader-size]="size || null">
     <div class="circle-loader-wrapper">
         <div class="loader-aura"></div>
 

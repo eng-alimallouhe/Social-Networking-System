@@ -1,7 +1,7 @@
 import { Component, OnInit, inject, signal, computed, effect, DestroyRef } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import {
     LucideArrowLeft,
     LucideMapPin,
@@ -11,7 +11,6 @@ import {
     LucideUserCheck,
     LucideShare2,
     LucideMoreVertical,
-    LucideAward,
     LucideUser,
     LucideCode,
     LucideGraduationCap,
@@ -21,12 +20,16 @@ import {
     LucideCopy,
     LucideExternalLink,
     LucideAlertCircle,
-    LucideRefreshCw
+    LucideRefreshCw,
+    LucideSettings
 } from '@lucide/angular';
 import { ProfilesService } from '../../services/profiles.service';
 import { PostsService } from '../../../../content-management/posts/services/posts.service';
 import { ProblemsService } from '../../../../discussions/problems/problems/services/problems.service';
 import { ResumesService } from '../../../../resumes/resumes/services/resumes.service';
+import { FollowsService } from '../../../social-graph/services/follows.service';
+import { AuthenticationService } from '../../../../identity/shared/services/authentication.service';
+import { ToastService } from '../../../../identity/notifications/services/toast.service';
 import { ProfileDetailsDto } from '../../contracts/profile-details.dto';
 import { PostOverviewDto } from '../../../../content-management/posts/contracts/post-model.dto';
 import { ProblemSummaryDto } from '../../../../discussions/problems/problems/contracts/problem-summary.dto';
@@ -35,8 +38,11 @@ import { Post } from '../../../../content-management/posts/components/post/post'
 import { Problem } from '../../../../discussions/problems/problems/components/problem/problem';
 import { AppPagination } from '../../../../shared/design-system/components/app-pagination/app-pagination';
 import { SkeletonLoaderComponent, SkeletonType } from '../../../../shared/Loading/components/skeleton-loader/skeleton-loader';
+import { CircleLoader } from '../../../../shared/Loading/components/circle-loader/circle-loader';
 import { LanguageService } from '../../../../shared/services/language.service';
 import { SupportedLanguage } from '../../../../shared/contracts/supported-language.enum';
+
+import { AppAvatar } from '../../../../shared/design-system/components/app-avatar/app-avatar';
 
 export type ProfileTab = 'posts' | 'problems' | 'resumes';
 
@@ -46,10 +52,12 @@ export type ProfileTab = 'posts' | 'problems' | 'resumes';
     imports: [
         CommonModule,
         TranslatePipe,
+        AppAvatar,
         Post,
         Problem,
         AppPagination,
         SkeletonLoaderComponent,
+        CircleLoader,
         LucideArrowLeft,
         LucideMapPin,
         LucideCalendar,
@@ -58,7 +66,6 @@ export type ProfileTab = 'posts' | 'problems' | 'resumes';
         LucideUserCheck,
         LucideShare2,
         LucideMoreVertical,
-        LucideAward,
         LucideUser,
         LucideCode,
         LucideGraduationCap,
@@ -68,7 +75,8 @@ export type ProfileTab = 'posts' | 'problems' | 'resumes';
         LucideCopy,
         LucideExternalLink,
         LucideAlertCircle,
-        LucideRefreshCw
+        LucideRefreshCw,
+        LucideSettings
     ],
     templateUrl: './profile-details.html',
     styleUrl: './profile-details.css'
@@ -81,10 +89,13 @@ export class ProfileDetails implements OnInit {
     private postsService = inject(PostsService);
     private problemsService = inject(ProblemsService);
     private resumesService = inject(ResumesService);
+    private followsService = inject(FollowsService);
+    private authService = inject(AuthenticationService);
+    private toastService = inject(ToastService);
+    private translate = inject(TranslateService);
     private languageService = inject(LanguageService);
 
     readonly SkeletonType = SkeletonType;
-    readonly defaultAvatar = 'assets/images/default-avatar.png';
 
     // Route state
     profileId = signal<string>('');
@@ -94,6 +105,16 @@ export class ProfileDetails implements OnInit {
     isLoadingProfile = signal<boolean>(true);
     hasProfileError = signal<boolean>(false);
     isFollowing = signal<boolean>(false);
+    isFollowLoading = signal<boolean>(false);
+
+    currentProfileId = computed(() => this.authService.getProfileId() || this.authService.getUserId());
+
+    isOwner = computed(() => {
+        const myId = this.currentProfileId();
+        const prof = this.profile();
+        if (prof?.isViewerOwner) return true;
+        return !!(myId && this.profileId() && myId.toLowerCase() === this.profileId().toLowerCase());
+    });
 
     // Active Tab state ('posts' is default)
     activeTab = signal<ProfileTab>('posts');
@@ -277,14 +298,42 @@ export class ProfileDetails implements OnInit {
     }
 
     toggleFollow(): void {
-        this.isFollowing.update(f => !f);
-    }
+        const id = this.profileId();
+        if (!id || this.isFollowLoading()) return;
 
-    onAvatarError(event: Event): void {
-        const target = event.target as HTMLImageElement;
-        if (target && target.src !== this.defaultAvatar) {
-            target.src = this.defaultAvatar;
-        }
+        const willFollow = !this.isFollowing();
+        this.isFollowing.set(willFollow);
+        this.isFollowLoading.set(true);
+
+        const request$ = willFollow
+            ? this.followsService.followProfile(id)
+            : this.followsService.unfollowProfile(id);
+
+        request$.subscribe({
+            next: res => {
+                this.isFollowLoading.set(false);
+                if (!res?.isSuccess) {
+                    this.isFollowing.set(!willFollow);
+                    this.toastService.error(
+                        this.translate.instant('Common.Error') || 'Error',
+                        this.translate.instant('Profile.Follow_Error') || 'Failed to update follow status.'
+                    );
+                } else {
+                    this.profile.update(p => p ? {
+                        ...p,
+                        followersCount: p.followersCount + (willFollow ? 1 : -1)
+                    } : null);
+                }
+            },
+            error: () => {
+                this.isFollowLoading.set(false);
+                this.isFollowing.set(!willFollow);
+                this.toastService.error(
+                    this.translate.instant('Common.Error') || 'Error',
+                    'An error occurred while updating follow status.'
+                );
+            }
+        });
     }
 
     onPostCommentsClick(postId: string): void {
@@ -295,6 +344,18 @@ export class ProfileDetails implements OnInit {
         this.router.navigate(['../../problem', problemId], { relativeTo: this.route });
     }
 
+    navigateToSettings(): void {
+        this.router.navigate(['/home/profiles', this.profileId(), 'settings']);
+    }
+
+    navigateToFollowers(): void {
+        this.router.navigate(['followers'], { relativeTo: this.route });
+    }
+
+    navigateToFollowing(): void {
+        this.router.navigate(['following'], { relativeTo: this.route });
+    }
+
     copyProfileLink(): void {
         if (typeof window !== 'undefined' && navigator.clipboard) {
             navigator.clipboard.writeText(window.location.href);
@@ -302,10 +363,12 @@ export class ProfileDetails implements OnInit {
     }
 
     goBack(): void {
-        if (typeof window !== 'undefined' && window.history.length > 1) {
+        if (this.router.url.includes('/search/')) {
+            this.router.navigate(['/home/search']);
+        } else if (typeof window !== 'undefined' && window.history.length > 1) {
             this.location.back();
         } else {
-            this.router.navigate(['/home/search']);
+            this.router.navigate(['/home']);
         }
     }
 }

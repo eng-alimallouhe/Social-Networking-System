@@ -27,7 +27,7 @@ import { CircleLoader } from '../../../shared/Loading/components/circle-loader/c
   styleUrl: './add-skill-modal.css'
 })
 export class AddSkillModal implements OnInit {
-  @Input({ required: true }) projectId!: string;
+  @Input() projectId?: string;
   @Input() existingSkillIds: string[] = [];
 
   readonly skillAdded = output<ProjectSkillDto>();
@@ -47,6 +47,7 @@ export class AddSkillModal implements OnInit {
 
   @HostListener('document:keydown.escape')
   onEscapeKey(): void {
+    if (this.isSubmitting()) return;
     this.onClose();
   }
 
@@ -94,7 +95,13 @@ export class AddSkillModal implements OnInit {
 
   onAddSkill(): void {
     const skill = this.selectedSkill();
-    if (!skill || !this.projectId || this.isSubmitting()) return;
+    if (!skill || this.isSubmitting()) return;
+
+    if (!this.projectId) {
+      this.skillAdded.emit(skill);
+      this.onClose();
+      return;
+    }
 
     this.isSubmitting.set(true);
     this.errorMessage.set(null);
@@ -120,6 +127,12 @@ export class AddSkillModal implements OnInit {
   }
 
   onClose(): void {
+    if (this.isSubmitting()) return;
     this.closeModal.emit();
+  }
+
+  onBackdropClick(): void {
+    if (this.isSubmitting()) return;
+    this.onClose();
   }
 }

@@ -28,6 +28,7 @@ public sealed record ApproveMembershipCommand(
 internal sealed class ApproveMembershipCommandHandler : ICommandHandler<ApproveMembershipCommand>
 {
     private readonly IApplicationDbContext _dbContext;
+    private readonly IRepository<CommunityJoinRequest> _joinRequestRepo;
     private readonly IRepository<CommunityMembership> _membershipRepo;
     private readonly IUnitOfWork _unitOfWork;
     private readonly ICurrentUserService _currentUserService;
@@ -35,12 +36,14 @@ internal sealed class ApproveMembershipCommandHandler : ICommandHandler<ApproveM
 
     public ApproveMembershipCommandHandler(
         IApplicationDbContext dbContext,
+        IRepository<CommunityJoinRequest> joinRequestRepo,
         IRepository<CommunityMembership> membershipRepo,
         IUnitOfWork unitOfWork,
         ICurrentUserService currentUserService,
         IMediator mediator)
     {
         _dbContext = dbContext;
+        _joinRequestRepo = joinRequestRepo;
         _membershipRepo = membershipRepo;
         _unitOfWork = unitOfWork;
         _currentUserService = currentUserService;
@@ -55,17 +58,28 @@ internal sealed class ApproveMembershipCommandHandler : ICommandHandler<ApproveM
             return Result.Failure(SecurityStatusCodes.AuthenticationRequired);
         }
 
-        var joinRequest = await _dbContext.CommunityJoinRequests
-            .Include(r => r.Community)
-            .FirstOrDefaultAsync(r => r.Id == request.RequestId, cancellationToken);
+        var joinRequest = await _joinRequestRepo.GetSingleByExpressionAsync(
+            r => r.Id == request.RequestId, cancellationToken);
 
         if (joinRequest == null || joinRequest.Status != JoinRequestStatus.Pending)
         {
             return Result.Failure(ResourceStatusCode.NotFound);
         }
 
-        var isOwner = joinRequest.Community.OwnerId == profileId.Value;
+        var community = await _dbContext.Communities
+            .AsNoTracking()
+            .Where(c => c.Id == joinRequest.CommunityId && c.IsActive)
+            .Select(c => new { c.Id, c.OwnerId })
+            .FirstOrDefaultAsync(cancellationToken);
+
+        if (community == null)
+        {
+            return Result.Failure(ResourceStatusCode.NotFound);
+        }
+
+        var isOwner = community.OwnerId == profileId.Value;
         var isModerator = !isOwner && await _dbContext.CommunityMemberships
+            .AsNoTracking()
             .AnyAsync(m => m.CommunityId == joinRequest.CommunityId &&
                            m.MemberId == profileId.Value &&
                            (m.Role == CommunityRole.Moderator || m.Role == CommunityRole.Owner) &&
@@ -81,8 +95,8 @@ internal sealed class ApproveMembershipCommandHandler : ICommandHandler<ApproveM
         {
             joinRequest.Approve();
 
-            var existingMembership = await _dbContext.CommunityMemberships
-                .FirstOrDefaultAsync(m => m.CommunityId == joinRequest.CommunityId && m.MemberId == joinRequest.SubmitterId, cancellationToken);
+            var existingMembership = await _membershipRepo.GetSingleByExpressionAsync(
+                m => m.CommunityId == joinRequest.CommunityId && m.MemberId == joinRequest.SubmitterId, cancellationToken);
 
             if (existingMembership != null)
             {

@@ -21,14 +21,14 @@
                 <div class="section-header" (click)="toggleSection(section.titleKey)">
                     <h2 class="section-title">{{ section.titleKey | translate }}</h2>
                     <div class="collapse-icon-wrapper">
-                        @if (collapsedSections().has(section.titleKey)) {
+                        @if (collapsedSections().has(section.titleKey) && !searchQuery()) {
                             <svg lucideChevronDown class="collapse-icon"></svg>
                         } @else {
                             <svg lucideChevronUp class="collapse-icon"></svg>
                         }
                     </div>
                 </div>
-                @if (!collapsedSections().has(section.titleKey)) {
+                @if (!collapsedSections().has(section.titleKey) || searchQuery()) {
                     <div class="pages-grid">
                         @for (page of section.pages; track page.route) {
                             <a [routerLink]="page.route" [queryParams]="page.queryParams" class="page-card">

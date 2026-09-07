@@ -7,7 +7,7 @@
   <!-- Top Header Bar (matches Post Details component styling) -->
   <header class="edit-page-header">
     <div class="title-section">
-      <button type="button" class="btn btn-icon-text back-btn" (click)="goBack()"
+      <button type="button" class="btn btn-secondary btn-icon back-btn" (click)="goBack()"
         [attr.aria-label]="'ProjectEdit.Common.Back' | translate">
         <svg lucideArrowLeft class="directional-icon"></svg>
       </button>
@@ -279,8 +279,8 @@
           <h2 class="panel-title">{{ 'ProjectEdit.Skills.Title' | translate }}</h2>
           <p class="panel-desc">{{ 'ProjectEdit.Skills.Description' | translate }}</p>
         </div>
-        <button type="button" class="btn-primary" (click)="openAddSkill()">
-          <svg lucidePlus class="icon-sm"></svg>
+        <button type="button" class="btn btn-primary" (click)="openAddSkill()">
+          <svg lucidePlus></svg>
           <span>{{ 'ProjectEdit.Skills.Add_Skill_Button' | translate }}</span>
         </button>
       </div>
@@ -294,7 +294,7 @@
         @for (skill of skills(); track skill.skillId) {
         <div class="skill-manage-chip">
           <span class="skill-name">{{ skill.skillName }}</span>
-          <button type="button" class="btn-chip-remove" (click)="removeSkill(skill)"
+          <button type="button" class="btn btn-icon btn-ghost btn-chip-remove" (click)="removeSkill(skill)"
             [attr.aria-label]="'ProjectEdit.Common.Remove' | translate">
             <svg lucideX class="icon-xs"></svg>
           </button>
@@ -310,7 +310,7 @@
     </section>
     }
 
-    <!-- 3. TAGS TAB -->
+    <!-- 4. TAGS TAB -->
     @if (activeTab() === 'tags') {
     <section class="tab-panel tags-panel">
       <div class="panel-header">
@@ -318,99 +318,23 @@
           <h2 class="panel-title">{{ 'ProjectEdit.Tags.Title' | translate }}</h2>
           <p class="panel-desc">{{ 'ProjectEdit.Tags.Description' | translate }}</p>
         </div>
-        <button type="button" class="btn-primary" (click)="toggleAddTagUi()">
-          @if (isAddTagOpen()) {
-          <svg lucideX class="icon-sm"></svg>
-          <span>{{ 'ProjectEdit.Common.Cancel' | translate }}</span>
-          } @else {
-          <svg lucidePlus class="icon-sm"></svg>
+        <button type="button" class="btn btn-primary" (click)="openAddTagModal()">
+          <svg lucidePlus></svg>
           <span>{{ 'ProjectEdit.Tags.Add_Tag_Button' | translate }}</span>
-          }
         </button>
       </div>
-
-      @if (isAddTagOpen()) {
-      <div class="tag-search-container">
-        <div class="search-input-wrapper">
-          <svg lucideSearch class="search-icon"></svg>
-          <input type="text" class="search-input" [placeholder]="'ProjectEdit.Tags.Search_Placeholder' | translate"
-            [ngModel]="tagSearchQuery()" (ngModelChange)="onTagSearchChange($event)"
-            (keydown.enter)="onTagInputEnter($event)" autofocus />
-          @if (tagSearchQuery()) {
-          <button type="button" class="clear-search-btn" (click)="onTagSearchChange('')">
-            <svg lucideX class="icon-xs"></svg>
-          </button>
-          }
-        </div>
-
-        @if (selectedTag(); as selected) {
-        <div class="selected-tag-bar">
-          <span class="selected-label">{{ 'ProjectEdit.Tags.Selected' | translate }}:</span>
-          <span class="tag-pill active-pill">
-            <svg lucideCheck class="icon-xs"></svg>
-            #{{ selected.name }}
-          </span>
-          <button type="button" class="btn-clear-selection" (click)="clearSelectedTag()"
-            [attr.aria-label]="'ProjectEdit.Common.Cancel' | translate">
-            <svg lucideX class="icon-xs"></svg>
-          </button>
-        </div>
-        }
-
-        <div class="tag-suggestions-box">
-          <span class="suggestions-label">{{ 'ProjectEdit.Tags.Available_Tags' | translate }}</span>
-
-          @if (isLoadingTagSuggestions()) {
-          <div class="tag-loader-wrap">
-            <app-circle-loader></app-circle-loader>
-          </div>
-          } @else {
-          <div class="tag-suggestions-grid">
-            @for (item of tagSuggestions(); track item.id) {
-            <button type="button" class="tag-suggestion-pill" [class.selected]="selectedTag()?.id === item.id"
-              [class.disabled]="isTagAlreadyAdded(item.id)" [disabled]="isTagAlreadyAdded(item.id)"
-              (click)="selectTag(item)">
-              @if (selectedTag()?.id === item.id) {
-              <svg lucideCheck class="icon-xs"></svg>
-              } @else if (!isTagAlreadyAdded(item.id)) {
-              <svg lucidePlus class="icon-xs"></svg>
-              }
-              <span>#{{ item.name }}</span>
-              @if (isTagAlreadyAdded(item.id)) {
-              <span class="badge-added">{{ 'ProjectEdit.Tags.Already_Added' | translate }}</span>
-              }
-            </button>
-            }
-            @if (tagSuggestions().length === 0 && !isLoadingTagSuggestions()) {
-            <p class="empty-suggestions-text">{{ 'ProjectEdit.Tags.No_Tags_Found' | translate }}</p>
-            }
-          </div>
-          }
-        </div>
-
-        <div class="tag-actions-row">
-          <button type="button" class="btn-primary" [disabled]="!selectedTag() || isAddingTag()" (click)="addTag()">
-            <svg lucidePlus class="icon-sm"></svg>
-            <span>{{ 'ProjectEdit.Tags.Add_Tag_Button' | translate }}</span>
-          </button>
-          <button type="button" class="btn-outlined" (click)="closeAddTagUi()">
-            <span>{{ 'ProjectEdit.Common.Cancel' | translate }}</span>
-          </button>
-        </div>
-      </div>
-      }
 
       <div class="tags-manager-grid">
         @for (tag of tags(); track tag.tagId) {
         <div class="tag-manage-chip">
           <span>#{{ tag.tagName }}</span>
-          <button type="button" class="btn-chip-remove" (click)="removeTag(tag)"
+          <button type="button" class="btn btn-icon btn-ghost btn-chip-remove" (click)="removeTag(tag)"
             [attr.aria-label]="'ProjectEdit.Common.Remove' | translate">
             <svg lucideX class="icon-xs"></svg>
           </button>
         </div>
         }
-        @if (tags().length === 0 && !isAddTagOpen()) {
+        @if (tags().length === 0) {
         <div class="empty-panel-state">
           <p>{{ 'ProjectEdit.Tags.No_Tags_Assigned' | translate }}</p>
         </div>
@@ -427,8 +351,8 @@
           <h2 class="panel-title">{{ 'ProjectEdit.Contributors.Title' | translate }}</h2>
           <p class="panel-desc">{{ 'ProjectEdit.Contributors.Description' | translate }}</p>
         </div>
-        <button type="button" class="btn-primary" (click)="openAddContributor()">
-          <svg lucidePlus class="icon-sm"></svg>
+        <button type="button" class="btn btn-primary" (click)="openAddContributor()">
+          <svg lucidePlus></svg>
           <span>{{ 'ProjectEdit.Contributors.Add_Contributor_Button' | translate }}</span>
         </button>
       </div>
@@ -448,8 +372,7 @@
         <div class="contributors-cards-grid">
           @for (c of acceptedContributors(); track c.profileId) {
           <div class="contributor-manage-card">
-            <img [src]="c.profileImageUrl || defaultAvatar" [alt]="c.displayName" class="member-avatar"
-              (error)="onAvatarError($event)" />
+            <app-avatar [src]="c.profileImageUrl" [name]="c.displayName" size="md" customClass="member-avatar"></app-avatar>
             <div class="member-meta">
               <div class="member-header">
                 <span class="member-name">{{ c.displayName }}</span>
@@ -459,7 +382,7 @@
                 }}</span>
             </div>
 
-            <button type="button" class="btn-danger-outline btn-sm" (click)="removeContributorOrInvitation(c)">
+            <button type="button" class="btn btn-delete btn-sm" (click)="removeContributorOrInvitation(c)">
               <svg lucideTrash2 class="icon-xs"></svg>
               <span>{{ 'ProjectEdit.Contributors.Remove_Contributor' | translate }}</span>
             </button>
@@ -492,8 +415,7 @@
             </div>
 
             <div class="member-main-row">
-              <img [src]="c.profileImageUrl || defaultAvatar" [alt]="c.displayName" class="member-avatar"
-                (error)="onAvatarError($event)" />
+              <app-avatar [src]="c.profileImageUrl" [name]="c.displayName" size="md" customClass="member-avatar"></app-avatar>
               <div class="member-meta">
                 <div class="member-header">
                   <span class="member-name">{{ c.displayName }}</span>
@@ -511,7 +433,7 @@
             }
 
             <div class="card-actions-row">
-              <button type="button" class="btn-cancel-invite btn-sm" (click)="removeContributorOrInvitation(c)">
+              <button type="button" class="btn btn-delete btn-sm" (click)="removeContributorOrInvitation(c)">
                 <svg lucideX class="icon-xs"></svg>
                 <span>{{ 'ProjectEdit.Contributors.Cancel_Invitation' | translate }}</span>
               </button>
@@ -537,20 +459,108 @@
         </div>
       </div>
 
-      <!-- Upload Box -->
-      <div class="media-upload-box">
-        <div class="upload-inputs">
-          <input type="file" #fileInput accept="image/*" class="file-picker-input"
-            (change)="onMediaFileSelected($event)" />
-          <input type="text" class="field-input caption-input"
-            [placeholder]="'ProjectEdit.Media.Caption_Placeholder' | translate" [ngModel]="newMediaCaption()"
-            (ngModelChange)="newMediaCaption.set($event)" />
+      <!-- Upload Card -->
+      <div class="media-upload-card" [class.uploading]="isUploadingMedia()">
+        <!-- Hidden file input -->
+        <input type="file" #fileInput accept="image/*" class="sr-only"
+          [disabled]="isUploadingMedia()"
+          (change)="onMediaFileSelected($event)" />
+
+        @if (!selectedMediaFile()) {
+        <!-- Drag & Drop / Click Dropzone Area -->
+        <div class="media-dropzone"
+          [class.drag-over]="isDragOver()"
+          role="button"
+          tabindex="0"
+          (click)="triggerFileInput()"
+          (keydown.enter)="triggerFileInput()"
+          (keydown.space)="triggerFileInput()"
+          (dragover)="onDragOver($event)"
+          (dragleave)="onDragLeave($event)"
+          (drop)="onFileDrop($event)">
+          <div class="dropzone-icon-wrap">
+            <svg lucideImage class="dropzone-icon"></svg>
+          </div>
+          <div class="dropzone-text-group">
+            <p class="dropzone-prompt">
+              <span class="dropzone-action">{{ 'ProjectEdit.Media.Dropzone_Title' | translate }}</span>
+            </p>
+            <span class="dropzone-hint">{{ 'ProjectEdit.Media.Dropzone_Hint' | translate }}</span>
+          </div>
         </div>
-        <button type="button" class="btn-primary" [disabled]="!selectedMediaFile() || isUploadingMedia()"
-          (click)="uploadMedia()">
-          <svg lucideUpload class="icon-sm"></svg>
-          <span>{{ 'ProjectEdit.Media.Upload_Button' | translate }}</span>
-        </button>
+        } @else {
+        <!-- File Selected Preview & Details -->
+        <div class="media-preview-container">
+          <div class="media-preview-header">
+            <div class="media-preview-main">
+              <div class="media-thumb-wrap">
+                @if (selectedMediaPreviewUrl()) {
+                <img [src]="selectedMediaPreviewUrl()" alt="Selected preview" class="media-thumb-img" />
+                } @else {
+                <svg lucideImage class="media-thumb-fallback"></svg>
+                }
+              </div>
+              <div class="media-file-info">
+                <span class="media-file-name" [title]="selectedMediaFile()?.name">{{ selectedMediaFile()?.name }}</span>
+                <div class="media-file-meta">
+                  <span class="media-file-size">{{ selectedMediaFileSizeFormatted() }}</span>
+                  <span class="media-file-badge">
+                    <svg lucideCheck class="icon-xs"></svg>
+                    <span>{{ 'ProjectEdit.Media.Ready_Badge' | translate }}</span>
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="media-preview-actions">
+              <button type="button" class="btn btn-ghost btn-sm" (click)="triggerFileInput()" [disabled]="isUploadingMedia()">
+                <span>{{ 'ProjectEdit.Media.Change_Image' | translate }}</span>
+              </button>
+              <button type="button" class="btn btn-icon btn-delete btn-sm" (click)="clearSelectedMediaFile()" [disabled]="isUploadingMedia()"
+                [attr.aria-label]="'ProjectEdit.Media.Remove_Image' | translate">
+                <svg lucideX class="icon-xs"></svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Caption Input Group -->
+          <div class="media-caption-group">
+            <label for="mediaCaptionInput" class="media-caption-label">
+              {{ 'ProjectEdit.Media.Caption_Label' | translate }}
+            </label>
+            <input id="mediaCaptionInput" type="text" class="field-input caption-input"
+              [placeholder]="'ProjectEdit.Media.Caption_Placeholder' | translate"
+              [ngModel]="newMediaCaption()"
+              (ngModelChange)="newMediaCaption.set($event)"
+              [disabled]="isUploadingMedia()" />
+          </div>
+
+          <!-- Card Actions Footer -->
+          <div class="media-card-footer">
+            <button type="button" class="btn btn-secondary btn-sm" (click)="clearSelectedMediaFile()" [disabled]="isUploadingMedia()">
+              {{ 'Shared.Actions.Cancel' | translate }}
+            </button>
+
+            @if (isUploadingMedia()) {
+            <div class="upload-progress-btn" role="status" aria-live="polite">
+              <div class="upload-shimmer-track">
+                <div class="upload-shimmer-bar"></div>
+              </div>
+              <div class="upload-progress-content">
+                <svg lucideUpload class="upload-icon-pulse"></svg>
+                <span class="uploading-text">{{ 'ProjectEdit.Media.Uploading' | translate }}</span>
+                <div class="upload-spinner-ring" aria-hidden="true"></div>
+              </div>
+            </div>
+            } @else {
+            <button type="button" class="btn btn-primary upload-btn" (click)="uploadMedia()">
+              <svg lucideUpload></svg>
+              <span>{{ 'ProjectEdit.Media.Upload_Button' | translate }}</span>
+            </button>
+            }
+          </div>
+        </div>
+        }
       </div>
 
       <!-- Media Grid -->
@@ -563,7 +573,7 @@
         @for (item of mediaList(); track item.mediaId) {
         <div class="media-item-card">
           <img [src]="item.mediaUrl" alt="Project Media" class="media-thumbnail" />
-          <button type="button" class="btn-media-delete" (click)="deleteMedia(item)"
+          <button type="button" class="btn btn-icon btn-delete btn-sm btn-media-delete" (click)="deleteMedia(item)"
             [attr.aria-label]="'ProjectEdit.Common.Remove' | translate">
             <svg lucideTrash2 class="icon-xs"></svg>
           </button>
@@ -632,8 +642,8 @@
           <h2 class="panel-title">{{ 'ProjectEdit.Settings.Title' | translate }}</h2>
           <p class="panel-desc">{{ 'ProjectEdit.Settings.Description' | translate }}</p>
         </div>
-        <button type="button" class="btn-primary" [disabled]="isSavingStatus()" (click)="saveProjectStatus()">
-          <svg lucideSave class="icon-sm"></svg>
+        <button type="button" class="btn btn-primary" [disabled]="isSavingStatus()" (click)="saveProjectStatus()">
+          <svg lucideSave></svg>
           <span>{{ 'ProjectEdit.Settings.Save_Status' | translate }}</span>
         </button>
       </div>
@@ -666,6 +676,11 @@
   @if (isAddContributorModalOpen()) {
   <app-add-contributor-modal [projectId]="projectId()" (contributorInvited)="onContributorInvited()"
     (closeModal)="closeAddContributor()"></app-add-contributor-modal>
+  }
+
+  @if (isAddTagModalOpen()) {
+  <app-add-tag-modal [projectId]="projectId()" [existingTagIds]="existingTagIds()"
+    (tagAdded)="onTagAdded($event)" (closeModal)="closeAddTagModal()"></app-add-tag-modal>
   }
   }
 </div>

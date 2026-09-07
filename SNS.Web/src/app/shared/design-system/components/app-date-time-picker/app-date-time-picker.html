@@ -33,11 +33,11 @@
 
             <!-- Month/Year Header (Vibrant Blue Banner) -->
             <div class="calendar-header">
-                <button type="button" class="header-nav-btn" (click)="prevMonth()" aria-label="Previous month">
+                <button type="button" class="btn btn-icon btn-ghost header-nav-btn" (click)="prevMonth()" aria-label="Previous month">
                     <svg lucideChevronLeft class="nav-icon"></svg>
                 </button>
                 <div class="header-title">{{ viewMonthTitle() }}</div>
-                <button type="button" class="header-nav-btn" (click)="nextMonth()" aria-label="Next month">
+                <button type="button" class="btn btn-icon btn-ghost header-nav-btn" (click)="nextMonth()" aria-label="Next month">
                     <svg lucideChevronRight class="nav-icon"></svg>
                 </button>
             </div>
@@ -89,7 +89,7 @@
                                 class="time-input"
                                 [ngModel]="minute()"
                                 (ngModelChange)="minute.set($event); onTimeChange()" />
-                            <button type="button" class="ampm-toggle" (click)="toggleAmPm()">
+                            <button type="button" class="btn btn-secondary btn-sm ampm-toggle" (click)="toggleAmPm()">
                                 {{ isPm() ? 'PM' : 'AM' }}
                             </button>
                         </div>
@@ -99,10 +99,10 @@
 
             <!-- Footer Actions -->
             <div class="calendar-footer">
-                <button type="button" class="btn-footer-action btn-clear" (click)="clear()">
+                <button type="button" class="btn btn-ghost btn-sm btn-footer-action btn-clear" (click)="clear()">
                     {{ 'Search.Clear' | translate }}
                 </button>
-                <button type="button" class="btn-footer-action btn-today" (click)="setToday()">
+                <button type="button" class="btn btn-primary btn-sm btn-footer-action btn-today" (click)="setToday()">
                     {{ 'Search.Today' | translate }}
                 </button>
             </div>

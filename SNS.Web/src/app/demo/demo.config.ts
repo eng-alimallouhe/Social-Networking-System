@@ -12,7 +12,16 @@ import {
     LucideFingerprintPattern,
     LucideShieldPlus,
     LucideArchive,
-    LucideHouse
+    LucideHouse,
+    LucideUser,
+    LucideUserCheck,
+    LucideSettings,
+    LucideBuilding,
+    LucideBriefcase,
+    LucideGlobe,
+    LucideFileText,
+    LucideCode,
+    LucideFolderPlus
 } from '@lucide/angular';
 import { DemoDataService } from './services/demo-data.service';
 
@@ -23,6 +32,7 @@ export interface DemoPage {
     icon: any;
     queryParams?: Record<string, string>;
     generateQueryParams?: (dataService: DemoDataService) => Record<string, string>;
+    generateRoute?: (dataService: DemoDataService) => string;
 }
 
 export interface DemoSection {
@@ -31,6 +41,99 @@ export interface DemoSection {
 }
 
 export const DEMO_CONFIG: DemoSection[] = [
+    {
+        titleKey: 'Demo.Dashboard.Sections.Profiles',
+        pages: [
+            {
+                titleKey: 'Demo.Dashboard.Pages.ProfileSettings',
+                descriptionKey: 'Demo.Dashboard.Pages.ProfileSettings_Desc',
+                route: '/home/profiles/4c0f91e8-55f1-444b-b430-3c82cf75d950/settings',
+                generateRoute: (data) => `/home/profiles/${data.getDemoProfileId()}/settings`,
+                icon: LucideSettings
+            },
+            {
+                titleKey: 'Demo.Dashboard.Pages.ProfileDetails',
+                descriptionKey: 'Demo.Dashboard.Pages.ProfileDetails_Desc',
+                route: '/home/profiles/4c0f91e8-55f1-444b-b430-3c82cf75d950',
+                generateRoute: (data) => `/home/profiles/${data.getDemoProfileId()}`,
+                icon: LucideUser
+            },
+            {
+                titleKey: 'Demo.Dashboard.Pages.Followers',
+                descriptionKey: 'Demo.Dashboard.Pages.Followers_Desc',
+                route: '/home/profiles/4c0f91e8-55f1-444b-b430-3c82cf75d950/followers',
+                generateRoute: (data) => `/home/profiles/${data.getDemoProfileId()}/followers`,
+                icon: LucideUsers
+            },
+            {
+                titleKey: 'Demo.Dashboard.Pages.Following',
+                descriptionKey: 'Demo.Dashboard.Pages.Following_Desc',
+                route: '/home/profiles/4c0f91e8-55f1-444b-b430-3c82cf75d950/following',
+                generateRoute: (data) => `/home/profiles/${data.getDemoProfileId()}/following`,
+                icon: LucideUserCheck
+            }
+        ]
+    },
+    {
+        titleKey: 'Demo.Dashboard.Sections.Companies',
+        pages: [
+            {
+                titleKey: 'Demo.Dashboard.Pages.CompanyDetails',
+                descriptionKey: 'Demo.Dashboard.Pages.CompanyDetails_Desc',
+                route: '/home/companies/b1c37f36-38c6-41bf-9e78-5e2260bde7c5',
+                generateRoute: (data) => `/home/companies/${data.getDemoCompanyId()}`,
+                icon: LucideBuilding
+            },
+            {
+                titleKey: 'Demo.Dashboard.Pages.JobDetails',
+                descriptionKey: 'Demo.Dashboard.Pages.JobDetails_Desc',
+                route: '/home/search/job/2edb6e7e-521b-4906-860a-e52867efbf05',
+                generateRoute: (data) => `/home/search/job/${data.getDemoJobId()}`,
+                icon: LucideBriefcase
+            }
+        ]
+    },
+    {
+        titleKey: 'Demo.Dashboard.Sections.Communities',
+        pages: [
+            {
+                titleKey: 'Demo.Dashboard.Pages.CommunityDetails',
+                descriptionKey: 'Demo.Dashboard.Pages.CommunityDetails_Desc',
+                route: '/home/communities/a8abb121-698e-4d16-ba9d-04d3056b347a',
+                generateRoute: (data) => `/home/communities/${data.getDemoCommunityId()}`,
+                icon: LucideGlobe
+            }
+        ]
+    },
+    {
+        titleKey: 'Demo.Dashboard.Sections.ContentCreation',
+        pages: [
+            {
+                titleKey: 'Demo.Dashboard.Pages.CreatePost',
+                descriptionKey: 'Demo.Dashboard.Pages.CreatePost_Desc',
+                route: '/home/create-post',
+                icon: LucideFileText
+            },
+            {
+                titleKey: 'Demo.Dashboard.Pages.CreateProblem',
+                descriptionKey: 'Demo.Dashboard.Pages.CreateProblem_Desc',
+                route: '/home/create-problem',
+                icon: LucideCode
+            },
+            {
+                titleKey: 'Demo.Dashboard.Pages.CreateProject',
+                descriptionKey: 'Demo.Dashboard.Pages.CreateProject_Desc',
+                route: '/home/create-project',
+                icon: LucideFolderPlus
+            },
+            {
+                titleKey: 'Demo.Dashboard.Pages.HomeFeed',
+                descriptionKey: 'Demo.Dashboard.Pages.HomeFeed_Desc',
+                route: '/home',
+                icon: LucideHouse
+            }
+        ]
+    },
     {
         titleKey: 'Demo.Dashboard.Sections.Authentication',
         pages: [

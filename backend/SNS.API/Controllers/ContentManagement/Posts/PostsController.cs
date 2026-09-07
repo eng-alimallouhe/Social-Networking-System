@@ -18,6 +18,9 @@ using SNS.Application.Shared.DTOs;
 using SNS.Shared.Results;
 using SNS.API.Attributes;
 
+using SNS.API.Contracts.ContentManagement.Posts;
+using SNS.Application.Shared.Contracts.Storage;
+
 namespace SNS.API.Controllers.ContentManagement.Posts;
 
 [Route("api/v{version:apiVersion}/content-managment/Posts")]
@@ -35,11 +38,24 @@ public class PostsController : ControllerBase
 
     [HttpPost]
     [Authorize]
+    [Consumes("multipart/form-data")]
     [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
     [RequireSession]
-    public async Task<ActionResult<Result>> CreatePostAsync([FromBody] CreatePostCommand request)
+    public async Task<ActionResult<Result>> CreatePostAsync([FromForm] CreatePostRequest request)
     {
-        return (await _mediator.Send(request)).ToActionResult(this);
+        var uploadedFiles = request.Files?
+            .Select(f => f.ToUploadedFile())
+            .ToList() ?? new List<UploadedFile>();
+
+        var command = new CreatePostCommand(
+            request.CommunityId,
+            request.Title,
+            request.Content,
+            request.IsPenned,
+            uploadedFiles,
+            request.MentionedProfileIds);
+
+        return (await _mediator.Send(command)).ToActionResult(this);
     }
 
     [HttpGet("feed")]

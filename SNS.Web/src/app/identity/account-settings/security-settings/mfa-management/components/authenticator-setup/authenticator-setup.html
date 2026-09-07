@@ -25,7 +25,7 @@
         
         <div class="secret-key-box">
             <span class="secret-value">{{ secretKey() }}</span>
-            <button type="button" class="copy-btn" (click)="copyToClipboard()" [appTooltip]="'Common.Copied'" [tooltipVisible]="isCopied()">
+            <button type="button" class="btn btn-ghost btn-sm copy-btn" (click)="copyToClipboard()" [appTooltip]="'Common.Copied'" [tooltipVisible]="isCopied()">
                 <ng-container *ngIf="!isCopied()">
                     <svg lucideCopy></svg>
                     <span>{{ 'Common.Copy' | translate }}</span>

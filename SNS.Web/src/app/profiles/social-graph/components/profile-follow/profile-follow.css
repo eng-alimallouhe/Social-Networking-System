@@ -1,0 +1,213 @@
+:host {
+    display: block;
+    width: 100%;
+    max-width: 680px;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+.profile-follow-card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-xl, 16px);
+    padding: var(--spacing-4, 16px) var(--spacing-5, 20px);
+    box-shadow: var(--shadow-sm);
+    width: 100%;
+    box-sizing: border-box;
+    transition: border-color var(--transition-base, 0.2s ease), box-shadow var(--transition-base, 0.2s ease);
+    position: relative;
+}
+
+.profile-follow-card:hover {
+    border-color: var(--primary-color);
+    box-shadow: var(--shadow-md);
+}
+
+.card-content {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-3-5, 14px);
+    width: 100%;
+    min-width: 0;
+}
+
+/* Avatar button */
+.avatar-btn {
+    background: transparent;
+    border: none;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    border-radius: var(--radius-full, 9999px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: transform var(--transition-fast, 0.15s ease);
+}
+
+.avatar-btn:hover {
+    transform: scale(1.04);
+}
+
+.avatar-btn:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+/* User Info */
+.user-info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.name-row {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-1-5, 6px);
+    min-width: 0;
+}
+
+.name-btn {
+    background: transparent;
+    border: none;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    font-size: var(--text-base, 15px);
+    font-weight: var(--font-weight-bold, 700);
+    color: var(--text-primary);
+    text-align: start;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: color var(--transition-fast, 0.15s ease);
+}
+
+.name-btn:hover {
+    color: var(--primary-color);
+    text-decoration: underline;
+}
+
+.name-btn:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+    border-radius: var(--radius-xs, 4px);
+}
+
+.verified-badge {
+    width: 16px;
+    height: 16px;
+    color: var(--primary-color);
+    flex-shrink: 0;
+}
+
+.specialization {
+    font-size: var(--text-xs, 12.5px);
+    color: var(--text-secondary);
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.meta-row {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-1-5, 6px);
+    font-size: 11.5px;
+    color: var(--text-muted);
+    margin-top: 2px;
+}
+
+.meta-icon {
+    width: 13px;
+    height: 13px;
+    color: var(--text-muted);
+    flex-shrink: 0;
+}
+
+.meta-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Actions Group */
+.actions-group {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-2, 8px);
+    flex-shrink: 0;
+}
+
+.btn-follow {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    font-size: var(--text-xs, 12px);
+    font-weight: var(--font-weight-medium, 500);
+    border-radius: var(--radius-full, 9999px);
+    white-space: nowrap;
+    transition: all var(--transition-fast, 0.2s ease);
+}
+
+.action-icon {
+    width: 14px;
+    height: 14px;
+}
+
+.view-profile-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 6px 12px;
+    font-size: var(--text-xs, 12px);
+    font-weight: var(--font-weight-medium, 500);
+    border-radius: var(--radius-full, 9999px);
+    color: var(--primary-color);
+    white-space: nowrap;
+    transition: all var(--transition-fast, 0.2s ease);
+}
+
+.view-profile-btn:hover {
+    background-color: var(--bg-hover);
+    color: var(--primary-hover);
+}
+
+.link-arrow {
+    width: 14px;
+    height: 14px;
+    transition: transform var(--transition-fast, 0.2s ease);
+}
+
+.view-profile-btn:hover .link-arrow {
+    transform: translateX(3px);
+}
+
+:host-context([dir="rtl"]) .view-profile-btn:hover .link-arrow {
+    transform: translateX(-3px);
+}
+
+/* Responsive adjustments */
+@media (max-width: 580px) {
+    .profile-follow-card {
+        padding: var(--spacing-3, 12px) var(--spacing-4, 16px);
+    }
+
+    .card-content {
+        flex-wrap: wrap;
+    }
+
+    .actions-group {
+        width: 100%;
+        justify-content: flex-end;
+        padding-top: var(--spacing-2, 8px);
+        border-top: 1px solid var(--border-color);
+        margin-top: 4px;
+    }
+}

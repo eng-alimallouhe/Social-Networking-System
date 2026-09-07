@@ -1,4 +1,4 @@
-﻿/* ============================================================
+/* ============================================================
    Global Button Design System
    ============================================================
    API:
@@ -143,19 +143,22 @@
    Continue, Confirm
    ----------------------------------------------------------- */
 
-.btn-primary {
+.btn-primary,
+.btn.primary {
     background: var(--primary-color);
     color: var(--text-inverse);
     border-color: transparent;
     box-shadow: var(--shadow-glow-primary);
 }
 
-.btn-primary:hover:not(:disabled) {
+.btn-primary:hover:not(:disabled),
+.btn.primary:hover:not(:disabled) {
     background: var(--primary-hover);
     box-shadow: var(--shadow-md);
 }
 
-.btn-primary:active:not(:disabled) {
+.btn-primary:active:not(:disabled),
+.btn.primary:active:not(:disabled) {
     background: var(--primary-hover);
     box-shadow: none;
 }
@@ -166,18 +169,21 @@
    with medium prominence. Examples: Cancel, Back
    ----------------------------------------------------------- */
 
-.btn-secondary {
+.btn-secondary,
+.btn.secondary {
     background: var(--bg-secondary);
     color: var(--text-primary);
     border-color: var(--border-color);
 }
 
-.btn-secondary:hover:not(:disabled) {
+.btn-secondary:hover:not(:disabled),
+.btn.secondary:hover:not(:disabled) {
     background: var(--bg-hover);
     border-color: var(--text-secondary);
 }
 
-.btn-secondary:active:not(:disabled) {
+.btn-secondary:active:not(:disabled),
+.btn.secondary:active:not(:disabled) {
     background: var(--bg-hover);
     transform: scale(0.97);
 }
@@ -188,19 +194,22 @@
    View
    ----------------------------------------------------------- */
 
-.btn-outlined {
+.btn-outlined,
+.btn.outlined {
     background: transparent;
     color: var(--primary-color);
     border-color: var(--primary-color);
 }
 
-.btn-outlined:hover:not(:disabled) {
+.btn-outlined:hover:not(:disabled),
+.btn.outlined:hover:not(:disabled) {
     background: color-mix(in srgb, var(--primary-color) 8%, transparent);
     border-color: var(--primary-hover);
     color: var(--primary-hover);
 }
 
-.btn-outlined:active:not(:disabled) {
+.btn-outlined:active:not(:disabled),
+.btn.outlined:active:not(:disabled) {
     background: color-mix(in srgb, var(--primary-color) 14%, transparent);
     transform: scale(0.97);
 }
@@ -211,18 +220,21 @@
    Examples: Settings, Remove, Upload, icon actions
    ----------------------------------------------------------- */
 
-.btn-ghost {
+.btn-ghost,
+.btn.ghost {
     background: transparent;
     color: var(--text-secondary);
     border-color: transparent;
 }
 
-.btn-ghost:hover:not(:disabled) {
+.btn-ghost:hover:not(:disabled),
+.btn.ghost:hover:not(:disabled) {
     background: var(--bg-hover);
     color: var(--text-primary);
 }
 
-.btn-ghost:active:not(:disabled) {
+.btn-ghost:active:not(:disabled),
+.btn.ghost:active:not(:disabled) {
     background: var(--bg-hover);
     transform: scale(0.97);
 }
@@ -232,19 +244,22 @@
    Modifying existing data. Examples: Apply, Save Changes
    ----------------------------------------------------------- */
 
-.btn-update {
+.btn-update,
+.btn.update {
     background: var(--primary-color);
     color: var(--text-inverse);
     border-color: transparent;
     box-shadow: var(--shadow-glow-primary);
 }
 
-.btn-update:hover:not(:disabled) {
+.btn-update:hover:not(:disabled),
+.btn.update:hover:not(:disabled) {
     background: var(--primary-hover);
     box-shadow: var(--shadow-md);
 }
 
-.btn-update:active:not(:disabled) {
+.btn-update:active:not(:disabled),
+.btn.update:active:not(:disabled) {
     background: var(--primary-hover);
     transform: scale(0.97);
     box-shadow: none;
@@ -256,21 +271,66 @@
    Examples: Delete, Remove, Regenerate Codes
    ----------------------------------------------------------- */
 
-.btn-delete {
+.btn-delete,
+.btn.delete {
     background: var(--error);
     color: var(--text-inverse);
     border-color: transparent;
 }
 
-.btn-delete:hover:not(:disabled) {
+.btn-delete:hover:not(:disabled),
+.btn.delete:hover:not(:disabled) {
     background: var(--secondary-hover);
     box-shadow: var(--shadow-base);
 }
 
-.btn-delete:active:not(:disabled) {
+.btn-delete:active:not(:disabled),
+.btn.delete:active:not(:disabled) {
     background: var(--secondary-hover);
     transform: scale(0.97);
     box-shadow: none;
+}
+
+
+/* -- Dedicated Back Button ----------------------------------
+   Modeled after Post Details Back button
+   ----------------------------------------------------------- */
+
+.btn.back-button,
+.back-button {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-2);
+    aspect-ratio: 1;
+    width: 2.5rem;
+    height: 2.5rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.btn.back-button:hover:not(:disabled),
+.back-button:hover:not(:disabled) {
+    background: var(--bg-hover);
+    border-color: var(--text-secondary);
+}
+
+.btn.back-button:active:not(:disabled),
+.back-button:active:not(:disabled) {
+    background: var(--bg-hover);
+    transform: scale(0.97);
+}
+
+.btn.back-button svg,
+.btn.back-button lucide-icon,
+.back-button svg,
+.back-button lucide-icon {
+    width: 20px;
+    height: 20px;
 }
 
 

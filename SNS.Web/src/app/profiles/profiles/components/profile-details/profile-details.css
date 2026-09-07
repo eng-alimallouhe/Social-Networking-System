@@ -317,55 +317,12 @@
     flex-shrink: 0;
 }
 
-.btn-follow {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 7px 16px;
-    background: transparent;
-    border: 1px solid var(--primary-color);
-    color: var(--primary-color);
-    border-radius: 8px;
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.btn-follow:hover {
-    background: var(--primary-color);
-    color: var(--text-inverse);
-}
-
-.btn-following {
-    background: rgba(66, 129, 119, 0.1);
-    color: var(--primary-color);
-}
-
-.btn-icon-action {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 36px;
-    height: 36px;
-    background: transparent;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    color: var(--text-secondary);
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.btn-icon-action:hover {
-    background: var(--bg-hover);
-    border-color: var(--primary-color);
-    color: var(--primary-color);
-}
-
 .action-icon {
     width: 16px;
     height: 16px;
 }
+
+
 
 .header-stats-row {
     display: flex;
@@ -389,6 +346,29 @@
     display: flex;
     align-items: baseline;
     gap: 6px;
+}
+
+button.counter-item.clickable-counter {
+    background: transparent;
+    border: none;
+    padding: 4px 8px;
+    margin: -4px -8px;
+    border-radius: var(--radius-sm, 6px);
+    cursor: pointer;
+    transition: background-color var(--transition-fast, 0.2s ease), transform var(--transition-fast, 0.2s ease);
+}
+
+button.counter-item.clickable-counter:hover {
+    background-color: var(--bg-hover);
+}
+
+button.counter-item.clickable-counter:hover .counter-number {
+    color: var(--primary-color);
+}
+
+button.counter-item.clickable-counter:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
 }
 
 .counter-number {
@@ -446,19 +426,7 @@
     margin: 0;
 }
 
-.card-action-icon-btn {
-    background: transparent;
-    border: none;
-    color: var(--text-muted);
-    cursor: pointer;
-    padding: 4px;
-    display: inline-flex;
-    align-items: center;
-}
 
-.card-action-icon-btn:hover {
-    color: var(--primary-color);
-}
 
 .action-icon-sm {
     width: 15px;
@@ -654,29 +622,7 @@
 }
 
 .profile-tab-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 16px;
-    background: transparent;
-    border: none;
-    border-radius: 8px;
-    color: var(--text-secondary);
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s ease;
     white-space: nowrap;
-}
-
-.profile-tab-pill:hover {
-    color: var(--text-primary);
-    background: var(--bg-hover);
-}
-
-.profile-tab-pill.tab-active {
-    background: var(--primary-color);
-    color: var(--text-inverse);
 }
 
 .tab-icon {

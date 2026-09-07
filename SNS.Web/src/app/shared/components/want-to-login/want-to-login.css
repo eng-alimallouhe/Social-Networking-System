@@ -61,32 +61,12 @@
 .btn-close {
     position: absolute;
     top: var(--spacing-4);
-    right: var(--spacing-4);
-    background: transparent;
-    border: none;
-    color: var(--text-secondary);
-    cursor: pointer;
-    padding: var(--spacing-1);
-    border-radius: var(--radius-md);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background-color 0.2s ease, color 0.2s ease;
-}
-
-.btn-close:hover {
-    background-color: var(--hover-bg);
-    color: var(--text-primary);
+    inset-inline-end: var(--spacing-4);
 }
 
 .btn-close svg {
     width: 20px;
     height: 20px;
-}
-
-:host-context([dir="rtl"]) .btn-close {
-    right: auto;
-    left: var(--spacing-4);
 }
 
 .modal-header h3 {

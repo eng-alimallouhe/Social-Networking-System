@@ -1,0 +1,92 @@
+<div class="followers-page">
+    <!-- Top Bar with Back Button -->
+    <div class="title-section">
+        <button
+            type="button"
+            class="btn btn-secondary btn-icon back-btn"
+            (click)="goBack()"
+            [attr.aria-label]="'Common.Back' | translate">
+            <svg lucideArrowLeft class="directional-icon" aria-hidden="true"></svg>
+        </button>
+        <h1 class="page-title">{{ 'Profile.Followers_Title' | translate }}</h1>
+    </div>
+
+    <!-- Main List Container -->
+    <div class="followers-list-container">
+        <!-- Followers List -->
+        @for (item of followers(); track item.profileId) {
+            <app-profile-follow
+                [follow]="item"
+                (profileClicked)="onProfileClicked($event)">
+            </app-profile-follow>
+        }
+
+        <!-- Initial Loading Skeletons -->
+        @if (isLoading()) {
+            <div class="skeletons-list" aria-label="Loading followers" aria-busy="true">
+                <app-skeleton-loader [type]="SkeletonType.Content"></app-skeleton-loader>
+                <app-skeleton-loader [type]="SkeletonType.Content"></app-skeleton-loader>
+                <app-skeleton-loader [type]="SkeletonType.Content"></app-skeleton-loader>
+            </div>
+        }
+
+        <!-- Next Page Loading Skeleton -->
+        @if (isLoadingNextPage()) {
+            <div class="skeletons-list skeletons-more" aria-label="Loading more followers" aria-busy="true">
+                <app-skeleton-loader [type]="SkeletonType.Content"></app-skeleton-loader>
+            </div>
+        }
+
+        <!-- Infinite Scroll Sentinel -->
+        @if (hasNextPage() && !isLoading() && !hasError()) {
+            <div #sentinel class="scroll-sentinel" aria-hidden="true"></div>
+        }
+
+        <!-- Next Page Error Banner (Existing items stay visible) -->
+        @if (isNextPageError()) {
+            <div class="load-more-error-banner" role="alert">
+                <svg lucideAlertCircle class="banner-icon" aria-hidden="true"></svg>
+                <span class="banner-text">{{ 'Profile.Followers_Error' | translate }}</span>
+                <button type="button" class="btn btn-primary btn-sm retry-btn" (click)="retry()">
+                    <svg lucideRefreshCw class="btn-icon" aria-hidden="true"></svg>
+                    <span>{{ 'Profile.Retry' | translate }}</span>
+                </button>
+            </div>
+        }
+
+        <!-- Initial Error State -->
+        @if (hasError()) {
+            <div class="error-state-card" role="alert">
+                <div class="error-icon-wrapper">
+                    <svg lucideAlertCircle class="error-icon" aria-hidden="true"></svg>
+                </div>
+                <h3 class="error-title">{{ 'Profile.Load_Error_Title' | translate }}</h3>
+                <p class="error-description">{{ 'Profile.Followers_Error' | translate }}</p>
+                <button type="button" class="btn btn-primary btn-lg retry-btn" (click)="retry()">
+                    <svg lucideRefreshCw class="btn-icon" aria-hidden="true"></svg>
+                    <span>{{ 'Profile.Retry' | translate }}</span>
+                </button>
+            </div>
+        }
+
+        <!-- Empty State -->
+        @if (isEmpty()) {
+            <div class="empty-state-card">
+                <div class="empty-icon-wrapper">
+                    <svg lucideUsers class="empty-icon" aria-hidden="true"></svg>
+                </div>
+                <h3 class="empty-title">{{ 'Profile.No_Followers_Title' | translate }}</h3>
+                <p class="empty-description">{{ 'Profile.No_Followers_Desc' | translate }}</p>
+            </div>
+        }
+
+        <!-- End of List State -->
+        @if (isEndOfList()) {
+            <div class="end-of-list-message">
+                <span class="end-dot"></span>
+                <p class="end-text">{{ 'Profile.End_Of_List' | translate }}</p>
+                <span class="end-dot"></span>
+            </div>
+        }
+    </div>
+</div>

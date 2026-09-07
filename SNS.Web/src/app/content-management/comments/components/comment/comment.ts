@@ -23,6 +23,8 @@ import { LocalDatePipe } from '../../../../shared/pipes/local-date.pipe';
 import { LanguageService } from '../../../../shared/services/language.service';
 import { SupportedLanguage } from '../../../../shared/contracts/supported-language.enum';
 
+import { AppAvatar } from '../../../../shared/design-system/components/app-avatar/app-avatar';
+
 @Component({
     selector: 'app-comment',
     standalone: true,
@@ -34,6 +36,7 @@ import { SupportedLanguage } from '../../../../shared/contracts/supported-langua
         AppConfirmDialog,
         WantToLogin,
         CommentReport,
+        AppAvatar,
         LucideThumbsUp,
         LucideCornerUpLeft,
         LucideMoreHorizontal,
@@ -85,8 +88,6 @@ export class Comment {
 
     currentProfileId = computed(() => this.authService.getClaim('ProfileId') || this.authService.getUserId());
     isOwner = computed(() => !!this.currentProfileId() && this.currentProfileId() === this.activeComment().author?.id);
-
-    defaultAvatar = 'assets/images/default-avatar.png';
 
     toggleLike(): void {
         if (!this.authService.isAuthenticated()) {

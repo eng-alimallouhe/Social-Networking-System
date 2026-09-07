@@ -40,7 +40,7 @@ import { TranslatePipe } from '@ngx-translate/core';
         <div class="toast-message">{{ toast.message | translate }}</div>
       </div>
       
-      <button class="toast-close" (click)="close()">
+      <button class="btn btn-icon btn-ghost toast-close" (click)="close()" aria-label="Close">
         <svg lucideX></svg>
       </button>
       

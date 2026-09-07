@@ -1,0 +1,200 @@
+<div class="create-post-container">
+  <!-- Page Header -->
+  <header class="page-header">
+    <div class="header-left">
+      <button type="button" class="btn btn-icon btn-ghost btn-back" (click)="goBack()" [attr.aria-label]="'Common.Back' | translate">
+        <svg lucideArrowLeft></svg>
+      </button>
+      <div>
+        <h1 class="page-title">{{ 'ContentCreation.Post.Title' | translate }}</h1>
+        <p class="page-subtitle">{{ 'ContentCreation.Post.Subtitle' | translate }}</p>
+      </div>
+    </div>
+  </header>
+
+  @if (errorMessage()) {
+    <div class="error-banner" role="alert">
+      <svg lucideAlertCircle class="error-icon"></svg>
+      <span>{{ errorMessage() }}</span>
+      <button type="button" class="btn btn-icon btn-ghost btn-sm" (click)="errorMessage.set(null)" aria-label="Close error">
+        <svg lucideX class="icon-xs"></svg>
+      </button>
+    </div>
+  }
+
+  <!-- Main Creation Form -->
+  <form class="create-post-form" (ngSubmit)="onSubmit()">
+    <!-- Section 1: Post Name / Title -->
+    <section class="form-section card-section">
+      <div class="section-header">
+        <h2 class="section-title">{{ 'ContentCreation.Post.Post_Name' | translate }}</h2>
+      </div>
+      <div class="form-field">
+        <input 
+          id="post-title" 
+          type="text" 
+          class="field-input" 
+          [placeholder]="'ContentCreation.Post.Post_Name_Placeholder' | translate"
+          [ngModel]="title()" 
+          (ngModelChange)="title.set($event)"
+          name="postTitle"
+          maxlength="200"
+          required
+          [disabled]="isSubmitting()"
+        />
+        <div class="field-footer">
+          <span class="char-count">{{ title().length }} / 200</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 2: Post Content / Editor -->
+    <section class="form-section card-section">
+      <div class="section-header content-header">
+        <h2 class="section-title">{{ 'ContentCreation.Post.Post_Content' | translate }}</h2>
+        
+        <!-- Editor / Preview Tabs -->
+        <div class="editor-tabs">
+          <button 
+            type="button" 
+            class="tab-btn" 
+            [class.active]="!isPreviewActive()" 
+            (click)="togglePreview(false)">
+            <svg lucideEdit3 class="icon-sm"></svg>
+            <span>Write</span>
+          </button>
+          <button 
+            type="button" 
+            class="tab-btn" 
+            [class.active]="isPreviewActive()" 
+            (click)="togglePreview(true)">
+            <svg lucideEye class="icon-sm"></svg>
+            <span>Preview</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="editor-body">
+        @if (!isPreviewActive()) {
+          <textarea 
+            id="post-content" 
+            class="field-input field-textarea" 
+            rows="10"
+            [placeholder]="'ContentCreation.Post.Post_Content_Placeholder' | translate"
+            [ngModel]="content()" 
+            (ngModelChange)="content.set($event)"
+            name="postContent"
+            required
+            [disabled]="isSubmitting()">
+          </textarea>
+        } @else {
+          <div class="markdown-preview-box">
+            @if (content().trim().length > 0) {
+              <div class="markdown-rendered" [innerHTML]="renderedMarkdown()"></div>
+            } @else {
+              <p class="preview-empty">Nothing to preview yet. Write some markdown content first!</p>
+            }
+          </div>
+        }
+      </div>
+    </section>
+
+    <!-- Section 3: Add Media -->
+    <section class="form-section card-section">
+      <div class="section-header">
+        <h2 class="section-title">{{ 'ContentCreation.Post.Add_Media' | translate }}</h2>
+      </div>
+
+      <div class="media-upload-area">
+        <!-- Hidden input for file picking -->
+        <input 
+          #fileInput 
+          type="file" 
+          accept="image/*,video/*" 
+          multiple 
+          class="sr-only" 
+          (change)="onFilesSelected($event)"
+          [disabled]="isSubmitting()"
+        />
+
+        <!-- Dropzone -->
+        <div 
+          class="media-dropzone"
+          [class.drag-over]="isDragOver()"
+          role="button"
+          tabindex="0"
+          (click)="triggerFileInput(fileInput)"
+          (keydown.enter)="triggerFileInput(fileInput)"
+          (keydown.space)="triggerFileInput(fileInput)"
+          (dragover)="onDragOver($event)"
+          (dragleave)="onDragLeave($event)"
+          (drop)="onFileDrop($event)">
+          <div class="dropzone-icon-wrap">
+            <svg lucideUpload class="dropzone-icon"></svg>
+          </div>
+          <div class="dropzone-text-group">
+            <p class="dropzone-prompt">
+              <span class="dropzone-action">{{ 'ContentCreation.Post.Dropzone_Prompt' | translate }}</span>
+            </p>
+            <span class="dropzone-hint">Supports JPEG, PNG, GIF, WebP, MP4, WebM (up to 50MB)</span>
+          </div>
+        </div>
+
+        <!-- Attached Media Grid -->
+        @if (mediaFiles().length > 0) {
+          <div class="attached-media-list">
+            @for (media of mediaFiles(); track $index) {
+              <div class="media-item-card">
+                <div class="media-thumb-wrap">
+                  @if (media.file.type.startsWith('image/')) {
+                    <img [src]="media.previewUrl" [alt]="media.file.name" class="media-thumb" />
+                  } @else {
+                    <div class="video-thumb-placeholder">
+                      <svg lucideImage class="icon-md"></svg>
+                      <span>Video</span>
+                    </div>
+                  }
+                </div>
+                <div class="media-details">
+                  <span class="media-name" [title]="media.file.name">{{ media.file.name }}</span>
+                  <span class="media-size">{{ media.formattedSize }}</span>
+                </div>
+                <button 
+                  type="button" 
+                  class="btn btn-icon btn-delete btn-sm btn-remove-media" 
+                  (click)="removeMedia($index)"
+                  [disabled]="isSubmitting()"
+                  [attr.aria-label]="'Shared.Actions.Remove' | translate">
+                  <svg lucideX class="icon-xs"></svg>
+                </button>
+              </div>
+            }
+          </div>
+        }
+      </div>
+    </section>
+
+    <!-- Form Actions Footer -->
+    <div class="form-actions-footer">
+      <button 
+        type="button" 
+        class="btn btn-secondary" 
+        (click)="goBack()" 
+        [disabled]="isSubmitting()">
+        {{ 'Shared.Actions.Cancel' | translate }}
+      </button>
+      <button 
+        type="submit" 
+        class="btn btn-primary" 
+        [disabled]="!canSubmit()">
+        @if (isSubmitting()) {
+          <span class="spinner-small"></span>
+          <span>{{ 'ContentCreation.Post.Publishing' | translate }}</span>
+        } @else {
+          <svg lucideSend class="icon-sm"></svg>
+          <span>{{ 'ContentCreation.Post.Submit' | translate }}</span>
+        }
+      </button>
+    </div>
+  </form>
+</div>

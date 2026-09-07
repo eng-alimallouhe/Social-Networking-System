@@ -12,7 +12,7 @@
         </div>
         <h2 class="site-name">{{ 'App.Site_Name' | translate }}</h2>
     </a>
-    <button class="mobile-menu-toggle" (click)="toggleMobileNav()">
+    <button class="btn btn-icon btn-ghost mobile-menu-toggle" (click)="toggleMobileNav()" aria-label="Toggle navigation">
         @if (isMobileNavOpen()) {
         <svg lucideX></svg>
         } @else {
@@ -67,7 +67,7 @@
                 @if (userResource.value()) {
                 <div class="account-info">
                     <div class="picture-wrapper">
-                        <img [src]="userResource.value()!.profilePictureUrl" [alt]="userResource.value()!.userName">
+                        <app-avatar [src]="userResource.value()!.profilePictureUrl" [name]="userResource.value()!.userName" size="custom" style="width: 100%; height: 100%; font-size: 36px;"></app-avatar>
                     </div>
                     <div class="info">
                         <h1>{{userResource.value()!.userName}}</h1>

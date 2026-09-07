@@ -38,11 +38,16 @@ import { LanguageService } from '../../../../shared/services/language.service';
 import { SupportedLanguage } from '../../../../shared/contracts/supported-language.enum';
 
 
+import { AppAvatar } from '../../../../shared/design-system/components/app-avatar/app-avatar';
+import { getInitials } from '../../../../shared/utils/avatar-utils';
+
+
 @Component({
     selector: 'app-post',
     standalone: true,
     imports: [
         CommonModule,
+        AppAvatar,
         MediaPlayer,
         LucideThumbsUp,
         LucideMessageSquare,
@@ -67,6 +72,9 @@ import { SupportedLanguage } from '../../../../shared/contracts/supported-langua
     styleUrls: ['./post.css']
 })
 export class Post {
+    communityInitials = computed(() => {
+        return getInitials(this.post().community?.name);
+    });
     post = input<PostModelDto>({
         id: "",
         author: {

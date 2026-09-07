@@ -333,15 +333,8 @@
 }
 
 .close-btn {
-    background: none;
-    border: none;
     color: var(--text-muted);
-    cursor: pointer;
     padding: 4px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: color 0.2s ease;
 }
 
 .close-btn:hover {

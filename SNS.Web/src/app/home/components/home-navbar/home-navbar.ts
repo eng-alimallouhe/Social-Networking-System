@@ -1,11 +1,23 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { BreakpointObserver } from '@angular/cdk/layout';
+import { OverlayModule, ConnectedPosition } from '@angular/cdk/overlay';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
 import { TranslatePipe } from '@ngx-translate/core';
-import { LucideMenu, LucideSearch, LucideHome, LucidePieChart, LucideMessageSquare, LucideFolderClosed, LucideSettings, LucidePlus, LucideBell, LucideSquarePlus, LucideMessagesSquare } from '@lucide/angular';
+import { 
+  LucideMenu, 
+  LucideSearch, 
+  LucideHome, 
+  LucideFolderClosed, 
+  LucideSquarePlus, 
+  LucideMessagesSquare, 
+  LucideBell,
+  LucideFileText,
+  LucideHelpCircle,
+  LucideFolderPlus
+} from '@lucide/angular';
 import { HomeStateService } from '../../services/home-state.service';
 
 @Component({
@@ -15,6 +27,7 @@ import { HomeStateService } from '../../services/home-state.service';
     CommonModule,
     RouterLink,
     RouterLinkActive,
+    OverlayModule,
     TranslatePipe,
     LucideMenu,
     LucideSearch,
@@ -22,7 +35,10 @@ import { HomeStateService } from '../../services/home-state.service';
     LucideFolderClosed,
     LucideSquarePlus,
     LucideMessagesSquare,
-    LucideBell
+    LucideBell,
+    LucideFileText,
+    LucideHelpCircle,
+    LucideFolderPlus
   ],
   templateUrl: './home-navbar.html',
   styleUrl: './home-navbar.css'
@@ -30,6 +46,26 @@ import { HomeStateService } from '../../services/home-state.service';
 export class HomeNavbar {
   private breakpointObserver = inject(BreakpointObserver);
   private homeState = inject(HomeStateService);
+  private router = inject(Router);
+
+  isCreateMenuOpen = signal(false);
+
+  createMenuPositions = signal<ConnectedPosition[]>([
+    {
+      originX: 'end',
+      originY: 'bottom',
+      overlayX: 'end',
+      overlayY: 'top',
+      offsetY: 8
+    },
+    {
+      originX: 'start',
+      originY: 'bottom',
+      overlayX: 'start',
+      overlayY: 'top',
+      offsetY: 8
+    }
+  ]);
 
   isMobile = toSignal(
     this.breakpointObserver.observe('(max-width: 990px)').pipe(
@@ -40,5 +76,10 @@ export class HomeNavbar {
 
   toggleSideMenu() {
     this.homeState.toggleSideMenu();
+  }
+
+  navigateTo(route: string): void {
+    this.isCreateMenuOpen.set(false);
+    this.router.navigate([route]);
   }
 }

@@ -6,5 +6,5 @@ export interface CreateProblemCommand {
     level: DifficultyLevel;
     communityId?: string | null;
     contentBlocks: CreateProblemContentBlockDto[];
-    tags?: string[] | null;
+    tagIds?: string[] | null;
 }

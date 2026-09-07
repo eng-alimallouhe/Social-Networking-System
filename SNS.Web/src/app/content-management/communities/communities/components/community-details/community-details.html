@@ -1,7 +1,7 @@
 <div class="community-details-page">
     <!-- Top Bar with Back Button -->
     <div class="details-top-bar">
-        <button type="button" class="btn-back" (click)="goBack()" [attr.aria-label]="'Common.Back' | translate">
+        <button type="button" class="btn btn-secondary btn-sm" (click)="goBack()" [attr.aria-label]="'Common.Back' | translate">
             <svg lucideArrowLeft></svg>
             <span class="back-text">{{ 'Common.Back' | translate }}</span>
         </button>
@@ -9,134 +9,509 @@
 
     <!-- Loading Skeleton -->
     @if (isLoading()) {
-    <div class="details-loading" aria-busy="true">
-        <app-skeleton-loader [type]="SkeletonType.Post"></app-skeleton-loader>
-        <app-skeleton-loader [type]="SkeletonType.Post"></app-skeleton-loader>
-    </div>
+        <div class="details-loading" aria-busy="true">
+            <app-skeleton-loader [type]="SkeletonType.Content"></app-skeleton-loader>
+            <app-skeleton-loader [type]="SkeletonType.Content"></app-skeleton-loader>
+        </div>
     }
 
     <!-- Error State -->
     @if (!isLoading() && (hasError() || !community())) {
-    <div class="details-error" role="alert">
-        <svg lucideAlertCircle class="error-icon"></svg>
-        <h3 class="error-title">{{ 'Community.Error_Title' | translate }}</h3>
-        <p class="error-desc">{{ 'Community.Error_Desc' | translate }}</p>
-        <button type="button" class="btn btn-primary" (click)="loadCommunity()">
-            <svg lucideRefreshCw class="btn-icon"></svg>
-            <span>{{ 'Community.Retry' | translate }}</span>
-        </button>
-    </div>
+        <div class="details-error" role="alert">
+            <svg lucideAlertCircle class="error-icon"></svg>
+            <h3 class="error-title">{{ 'Community.Error_Title' | translate }}</h3>
+            <p class="error-desc">{{ 'Community.Error_Desc' | translate }}</p>
+            <button type="button" class="btn btn-primary" (click)="loadCommunity()">
+                <svg lucideRefreshCw class="btn-icon"></svg>
+                <span>{{ 'Community.Retry' | translate }}</span>
+            </button>
+        </div>
     }
 
-    <!-- Main Community Details Card -->
+    <!-- Main Community Details Article -->
     @if (!isLoading() && community(); as c) {
-    <article class="community-details-card">
-        <!-- Banner Header -->
-        <div class="community-banner">
-            <div class="banner-gradient"></div>
-            <div class="banner-badges">
-                <span class="type-pill" [class.type-public]="isPublic()" [class.type-private]="!isPublic()">
-                    @if (isPublic()) {
-                    <svg lucideGlobe class="badge-icon"></svg>
-                    } @else {
-                    <svg lucideLock class="badge-icon"></svg>
-                    }
-                    <span>{{ ('Community.Type.' + c.type) | translate }}</span>
-                </span>
-
-                <button type="button" class="btn-icon-banner" (click)="share()"
-                    [attr.aria-label]="'Community.Share' | translate">
-                    <svg lucideShare2 class="banner-action-icon"></svg>
-                </button>
-            </div>
-        </div>
-
-        <!-- Overlapping Logo & Main Info Bar -->
-        <div class="community-header-bar">
-            <div class="community-avatar-wrapper">
-                <div class="logo-box">
+        <article class="community-details-card">
+            <!-- Cover Banner with Corner Logo Badge -->
+            <div class="community-banner">
+                <div class="banner-gradient"></div>
+                <!-- Logo Badge on the top corner of the banner -->
+                <div class="banner-corner-logo">
                     @if (c.logoUrl) {
-                    <img [src]="c.logoUrl" [alt]="c.name" class="community-logo-img" />
+                        <img [src]="c.logoUrl" [alt]="c.name" class="corner-logo-img" />
                     } @else {
-                    <div class="community-logo-fallback">{{ initials() }}</div>
+                        <div class="corner-logo-fallback">{{ initials() }}</div>
                     }
-                    <span class="active-dot" aria-label="Active"></span>
+                    <span class="corner-logo-label">{{ 'Community.Type.' + c.type | translate }}</span>
                 </div>
             </div>
 
-            <div class="community-info-group">
-                <div class="title-and-join-row">
-                    <h1 class="community-name">{{ c.name }}</h1>
-
-                    <button type="button" class="btn btn-join-hub" [class.btn-joined]="isMember()"
-                        (click)="toggleMembership()">
-                        @if (isMember()) {
-                        <svg lucideCheck></svg>
-                        <span>{{ 'Community.Member' | translate }}</span>
-                        } @else {
-                        <svg lucideUserPlus></svg>
-                        <span>{{ 'Community.Join_Hub' | translate }}</span>
-                        }
+            <!-- Header Info Bar (Actions on one side, Name & Metadata on the other side) -->
+            <div class="community-header-bar">
+                <!-- Action Controls Group -->
+                <div class="community-actions-group">
+                    <!-- Share Button -->
+                    <button type="button" class="btn btn-secondary btn-share" (click)="share()" [attr.aria-label]="'Community.Shared' | translate">
+                        <span class="btn-label">{{ 'Community.Shared' | translate }}</span>
+                        <svg lucideShare2 class="btn-action-icon"></svg>
                     </button>
-                </div>
 
-                <div class="community-meta-row">
-                    <div class="meta-item">
-                        <svg lucideCalendar class="meta-icon"></svg>
-                        <span>{{ 'Community.Formed' | translate }} {{ c.createdAt | date:'MMMM yyyy' }}</span>
-                    </div>
-                    <span class="meta-dot">•</span>
-                    <div class="meta-item">
-                        <svg lucideUsers class="meta-icon"></svg>
-                        <span><strong>{{ c.membersCount | number }}</strong> {{ 'Community.Members' | translate
-                            }}</span>
-                    </div>
-                    <span class="meta-dot">•</span>
-                    <div class="meta-item">
-                        <svg lucideMessageSquare class="meta-icon"></svg>
-                        <span><strong>{{ c.postsCount | number }}</strong> {{ 'Community.Posts' | translate }}</span>
-                    </div>
-                </div>
-            </div>
-        </div>
+                    <!-- Non-Member: Join or Pending State -->
+                    @if (!isMember()) {
+                        @if (hasPendingJoinRequest()) {
+                            <div class="pending-join-container">
+                                <span class="badge-waiting">
+                                    <svg lucideClock class="badge-icon"></svg>
+                                    <span>{{ 'Community.Waiting_For_Approval' | translate }}</span>
+                                </span>
+                                <button type="button" class="btn btn-ghost btn-sm btn-cancel-request" (click)="cancelJoinRequest()" [disabled]="isCancellingRequest()" [title]="'Community.Cancel_Request' | translate">
+                                    <svg lucideX class="cancel-icon"></svg>
+                                    <span>{{ 'Community.Cancel_Request' | translate }}</span>
+                                </button>
+                            </div>
+                        } @else {
+                            <button type="button" class="btn btn-primary btn-join" (click)="joinCommunity()" [disabled]="isJoining()">
+                                <span>{{ 'Community.Join_Community' | translate }}</span>
+                                <svg lucideUserPlus class="btn-action-icon"></svg>
+                            </button>
+                        }
+                    } @else {
+                        <!-- Member States -->
+                        <span class="badge-member">
+                            <svg lucideCheck class="badge-icon"></svg>
+                            <span>{{ 'Community.Member' | translate }}</span>
+                        </span>
 
-        <!-- Description Section -->
-        <section class="details-section">
-            <h2 class="section-title">{{ 'Community.About' | translate }}</h2>
-            <p class="section-desc-text">{{ formattedDescription() }}</p>
-        </section>
-
-        <!-- Rules Section -->
-        @if (formattedRules().length > 0) {
-        <section class="details-section rules-section">
-            <div class="section-header-wrap">
-                <svg lucideScrollText class="section-icon"></svg>
-                <h2 class="section-title">{{ 'Community.Rules' | translate }}</h2>
-            </div>
-            <div class="rules-content-box">
-                @for (rule of formattedRules(); track $index) {
-                <p class="rule-line">{{ rule }}</p>
-                }
-            </div>
-        </section>
-        }
-
-        <!-- Community Owner / Leader -->
-        @if (c.owner) {
-        <section class="details-section owner-section">
-            <h2 class="section-title">{{ 'Community.Leader' | translate }}</h2>
-            <div class="owner-card">
-                <img [src]="c.owner.profilePictureUrl || defaultAvatar" [alt]="c.owner.fullName" class="owner-avatar"
-                    (error)="onOwnerAvatarError($event)" />
-                <div class="owner-info">
-                    <strong class="owner-name">{{ c.owner.fullName }}</strong>
-                    @if (c.owner.specialization) {
-                    <span class="owner-spec">{{ c.owner.specialization }}</span>
+                        @if (isManager()) {
+                            <button type="button" class="btn btn-secondary btn-manage" (click)="setTab('management')">
+                                <svg lucideSettings class="btn-action-icon"></svg>
+                                <span>{{ 'Community.Manage_Community' | translate }}</span>
+                            </button>
+                        }
                     }
                 </div>
+
+                <!-- Community Name & Metadata -->
+                <div class="community-identity-group">
+                    <h1 class="community-title">{{ c.name }}</h1>
+                    <div class="community-meta-line">
+                        <span class="meta-item">
+                            @if (isPublic()) {
+                                <svg lucideGlobe class="meta-icon"></svg>
+                            } @else {
+                                <svg lucideLock class="meta-icon"></svg>
+                            }
+                            <span>{{ ('Community.Type.' + c.type) | translate }}</span>
+                        </span>
+                        <span class="meta-separator">•</span>
+                        <span class="meta-item">
+                            <span><strong>{{ c.membersCount | number }}</strong> {{ 'Community.Members' | translate }}</span>
+                        </span>
+                    </div>
+                </div>
             </div>
-        </section>
-        }
-    </article>
+
+            <!-- Navigation Tabs Bar -->
+            <nav class="community-tabs-nav" aria-label="Community navigation">
+                <button
+                    type="button"
+                    class="tab-btn"
+                    [class.active]="activeTab() === 'about'"
+                    (click)="setTab('about')">
+                    {{ 'Community.Tabs.About' | translate }}
+                </button>
+
+                @if (canAccessContent()) {
+                    <button
+                        type="button"
+                        class="tab-btn"
+                        [class.active]="activeTab() === 'posts'"
+                        (click)="setTab('posts')">
+                        {{ 'Community.Tabs.Posts' | translate }}
+                    </button>
+
+                    <button
+                        type="button"
+                        class="tab-btn"
+                        [class.active]="activeTab() === 'problems'"
+                        (click)="setTab('problems')">
+                        {{ 'Community.Tabs.Problems' | translate }}
+                    </button>
+
+                    <button
+                        type="button"
+                        class="tab-btn"
+                        [class.active]="activeTab() === 'members'"
+                        (click)="setTab('members')">
+                        {{ 'Community.Tabs.Members' | translate }}
+                    </button>
+                }
+
+                @if (isManager()) {
+                    <button
+                        type="button"
+                        class="tab-btn tab-btn-mgmt"
+                        [class.active]="activeTab() === 'management'"
+                        (click)="setTab('management')">
+                        <svg lucideShield class="tab-icon"></svg>
+                        {{ 'Community.Tabs.Management' | translate }}
+                    </button>
+                }
+            </nav>
+
+            <!-- TAB 1: ABOUT TAB -->
+            @if (activeTab() === 'about') {
+                <div class="tab-content about-tab-content">
+                    <!-- Description Section -->
+                    <section class="details-section">
+                        <h2 class="section-title">{{ 'Community.About' | translate }}</h2>
+                        <p class="section-desc-text">{{ formattedDescription() }}</p>
+                    </section>
+
+                    <!-- Metadata Grid -->
+                    <section class="details-section meta-grid-section">
+                        <div class="meta-grid">
+                            <div class="meta-card">
+                                <svg lucideCalendar class="meta-card-icon"></svg>
+                                <div class="meta-card-info">
+                                    <span class="meta-card-label">{{ 'Community.Formed' | translate }}</span>
+                                    <strong class="meta-card-val">{{ c.createdAt | date:'MMMM yyyy' }}</strong>
+                                </div>
+                            </div>
+
+                            <div class="meta-card">
+                                <svg lucideUsers class="meta-card-icon"></svg>
+                                <div class="meta-card-info">
+                                    <span class="meta-card-label">{{ 'Community.Members' | translate }}</span>
+                                    <strong class="meta-card-val">{{ c.membersCount | number }}</strong>
+                                </div>
+                            </div>
+
+                            <div class="meta-card">
+                                <svg lucideMessageSquare class="meta-card-icon"></svg>
+                                <div class="meta-card-info">
+                                    <span class="meta-card-label">{{ 'Community.Posts' | translate }}</span>
+                                    <strong class="meta-card-val">{{ c.postsCount | number }}</strong>
+                                </div>
+                            </div>
+
+                            <div class="meta-card">
+                                <svg lucideShield class="meta-card-icon"></svg>
+                                <div class="meta-card-info">
+                                    <span class="meta-card-label">{{ 'Community.Moderation_Policy' | translate }}</span>
+                                    <strong class="meta-card-val">{{ c.policy }}</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Rules Section (if rules exist) -->
+                    @if (formattedRules().length > 0) {
+                        <section class="details-section rules-section">
+                            <div class="section-header-wrap">
+                                <svg lucideScrollText class="section-icon"></svg>
+                                <h2 class="section-title">{{ 'Community.Rules' | translate }}</h2>
+                            </div>
+                            <div class="rules-content-box">
+                                @for (rule of formattedRules(); track $index) {
+                                    <p class="rule-line">{{ rule }}</p>
+                                }
+                            </div>
+                        </section>
+                    }
+
+                    <!-- Community Owner / Leader Card -->
+                    @if (c.owner) {
+                        <section class="details-section owner-section">
+                            <h2 class="section-title">{{ 'Community.Leader' | translate }}</h2>
+                            <div class="owner-card">
+                                <app-avatar [src]="c.owner.profilePictureUrl" [name]="c.owner.fullName" size="lg" customClass="owner-avatar"></app-avatar>
+                                <div class="owner-info">
+                                    <strong class="owner-name">{{ c.owner.fullName }}</strong>
+                                    @if (c.owner.specialization) {
+                                        <span class="owner-spec">{{ c.owner.specialization }}</span>
+                                    }
+                                </div>
+                            </div>
+                        </section>
+                    }
+                </div>
+            }
+
+            <!-- TAB 2: POSTS TAB -->
+            @if (activeTab() === 'posts') {
+                <div class="tab-content posts-tab-content">
+                    <!-- Create Post Card (for members only) -->
+                    @if (isMember()) {
+                        <div class="create-post-card">
+                            <!-- Pending Post Alert Banner -->
+                            @if (hasPendingPost()) {
+                                <div class="pending-post-banner" role="alert">
+                                    <svg lucideClock class="banner-alert-icon"></svg>
+                                    <span>{{ 'Community.Pending_Post_Notice' | translate }}</span>
+                                </div>
+                            }
+
+                            <div class="create-post-form">
+                                <input
+                                    type="text"
+                                    class="form-input create-post-title-input"
+                                    [placeholder]="'Community.Post_Title_Placeholder' | translate"
+                                    [(ngModel)]="newPostTitle"
+                                    maxlength="150" />
+
+                                <textarea
+                                    class="form-textarea create-post-content-input"
+                                    [placeholder]="'Community.Create_Post_Prompt' | translate"
+                                    [(ngModel)]="newPostContent"
+                                    rows="3"></textarea>
+
+                                <div class="create-post-actions">
+                                    <button
+                                        type="button"
+                                        class="btn btn-primary btn-submit-post"
+                                        (click)="submitNewPost()"
+                                        [disabled]="!newPostTitle().trim() || !newPostContent().trim() || isSubmittingPost()">
+                                        <svg lucideSend class="btn-icon"></svg>
+                                        <span>{{ 'Community.Create_Post' | translate }}</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                    <!-- Posts List -->
+                    <div class="posts-list">
+                        @for (p of posts(); track p.id) {
+                            <app-post [post]="p"></app-post>
+                        }
+
+                        @if (isLoadingPosts()) {
+                            <div class="tab-loading-skeletons">
+                                <app-skeleton-loader [type]="SkeletonType.Content"></app-skeleton-loader>
+                            </div>
+                        }
+
+                        @if (!isLoadingPosts() && posts().length === 0) {
+                            <div class="tab-empty-state">
+                                <svg lucideMessageSquare class="empty-icon"></svg>
+                                <p class="empty-text">{{ 'Community.No_Posts' | translate }}</p>
+                            </div>
+                        }
+
+                        @if (hasMorePosts() && !isLoadingPosts()) {
+                            <div class="load-more-wrap">
+                                <button type="button" class="btn btn-secondary" (click)="loadMorePosts()">
+                                    {{ 'Common.Load_More' | translate }}
+                                </button>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+
+            <!-- TAB 3: PROBLEMS TAB -->
+            @if (activeTab() === 'problems') {
+                <div class="tab-content problems-tab-content">
+                    <div class="problems-list">
+                        @for (prob of problems(); track prob.id) {
+                            <app-problem [problem]="prob"></app-problem>
+                        }
+
+                        @if (isLoadingProblems()) {
+                            <div class="tab-loading-skeletons">
+                                <app-skeleton-loader [type]="SkeletonType.Content"></app-skeleton-loader>
+                            </div>
+                        }
+
+                        @if (!isLoadingProblems() && problems().length === 0) {
+                            <div class="tab-empty-state">
+                                <svg lucideHelpCircle class="empty-icon"></svg>
+                                <p class="empty-text">{{ 'Community.No_Problems' | translate }}</p>
+                            </div>
+                        }
+
+                        @if (hasMoreProblems() && !isLoadingProblems()) {
+                            <div class="load-more-wrap">
+                                <button type="button" class="btn btn-secondary" (click)="loadMoreProblems()">
+                                    {{ 'Common.Load_More' | translate }}
+                                </button>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+
+            <!-- TAB 4: MEMBERS TAB -->
+            @if (activeTab() === 'members') {
+                <div class="tab-content members-tab-content">
+                    <div class="members-grid">
+                        @for (m of members(); track m.membershipId) {
+                            <div class="member-card">
+                                <app-avatar [src]="m.member.profilePictureUrl" [name]="m.member.fullName" size="lg"></app-avatar>
+                                <div class="member-details">
+                                    <strong class="member-name">{{ m.member.fullName }}</strong>
+                                    @if (m.member.specialization) {
+                                        <span class="member-spec">{{ m.member.specialization }}</span>
+                                    }
+                                    <span class="member-role-badge" [class.badge-owner]="m.role === 'Owner'" [class.badge-mod]="m.role === 'Moderator'">
+                                        {{ m.role }}
+                                    </span>
+                                </div>
+                            </div>
+                        }
+                    </div>
+
+                    @if (isLoadingMembers()) {
+                        <div class="tab-loading-skeletons">
+                            <app-skeleton-loader [type]="SkeletonType.Content"></app-skeleton-loader>
+                        </div>
+                    }
+
+                    @if (!isLoadingMembers() && members().length === 0) {
+                        <div class="tab-empty-state">
+                            <svg lucideUsers class="empty-icon"></svg>
+                            <p class="empty-text">{{ 'Community.No_Members' | translate }}</p>
+                        </div>
+                    }
+
+                    @if (hasMoreMembers() && !isLoadingMembers()) {
+                        <div class="load-more-wrap">
+                            <button type="button" class="btn btn-secondary" (click)="loadMoreMembers()">
+                                {{ 'Common.Load_More' | translate }}
+                            </button>
+                        </div>
+                    }
+                </div>
+            }
+
+            <!-- TAB 5: MANAGEMENT TAB (Managers only) -->
+            @if (activeTab() === 'management' && isManager()) {
+                <div class="tab-content management-tab-content">
+                    <!-- Management Sub-Tabs -->
+                    <div class="mgmt-subnav">
+                        <button
+                            type="button"
+                            class="btn btn-ghost subnav-btn"
+                            [class.active]="mgmtActiveSubTab() === 'pending-posts'"
+                            (click)="setMgmtSubTab('pending-posts')">
+                            <svg lucideMessageSquare class="subnav-icon"></svg>
+                            <span>{{ 'Community.Management_Pending_Posts' | translate }}</span>
+                            @if (pendingPosts().length > 0) {
+                                <span class="badge-count">{{ pendingPosts().length }}</span>
+                            }
+                        </button>
+
+                        <button
+                            type="button"
+                            class="btn btn-ghost subnav-btn"
+                            [class.active]="mgmtActiveSubTab() === 'join-requests'"
+                            (click)="setMgmtSubTab('join-requests')">
+                            <svg lucideUserPlus class="subnav-icon"></svg>
+                            <span>{{ 'Community.Management_Join_Requests' | translate }}</span>
+                            @if (joinRequests().length > 0) {
+                                <span class="badge-count">{{ joinRequests().length }}</span>
+                            }
+                        </button>
+                    </div>
+
+                    <!-- Sub-Tab 1: Pending Posts -->
+                    @if (mgmtActiveSubTab() === 'pending-posts') {
+                        <div class="mgmt-items-list">
+                            @for (p of pendingPosts(); track p.id) {
+                                <div class="mgmt-item-card">
+                                    <div class="mgmt-item-header">
+                                        <div class="author-row">
+                                            <app-avatar [src]="p.author.profilePictureUrl" [name]="p.author.fullName" size="md"></app-avatar>
+                                            <div>
+                                                <strong class="author-name">{{ p.author.fullName }}</strong>
+                                                <span class="post-time">{{ p.createdAt | date:'short' }}</span>
+                                            </div>
+                                        </div>
+                                        <span class="badge-status-pending">{{ 'Community.Pending' | translate }}</span>
+                                    </div>
+
+                                    <h4 class="mgmt-post-title">{{ p.title }}</h4>
+                                    <p class="mgmt-post-excerpt">{{ p.content }}</p>
+
+                                    <div class="mgmt-item-actions">
+                                        <button type="button" class="btn btn-primary btn-sm btn-approve" (click)="approvePost(p.id)">
+                                            <svg lucideCheckCircle2 class="btn-mgmt-icon"></svg>
+                                            <span>{{ 'Community.Approve' | translate }}</span>
+                                        </button>
+                                        <button type="button" class="btn btn-delete btn-sm btn-reject" (click)="rejectPost(p.id)">
+                                            <svg lucideXCircle class="btn-mgmt-icon"></svg>
+                                            <span>{{ 'Community.Reject' | translate }}</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            }
+
+                            @if (isLoadingPendingPosts()) {
+                                <div class="tab-loading-skeletons">
+                                    <app-skeleton-loader [type]="SkeletonType.Content"></app-skeleton-loader>
+                                </div>
+                            }
+
+                            @if (!isLoadingPendingPosts() && pendingPosts().length === 0) {
+                                <div class="tab-empty-state">
+                                    <svg lucideCheckCircle2 class="empty-icon"></svg>
+                                    <p class="empty-text">{{ 'Community.No_Pending_Posts' | translate }}</p>
+                                </div>
+                            }
+                        </div>
+                    }
+
+                    <!-- Sub-Tab 2: Join Requests -->
+                    @if (mgmtActiveSubTab() === 'join-requests') {
+                        <div class="mgmt-items-list">
+                            @for (r of joinRequests(); track r.requestId) {
+                                <div class="mgmt-item-card">
+                                    <div class="mgmt-item-header">
+                                        <div class="author-row">
+                                            <app-avatar [src]="r.submitter.profilePictureUrl" [name]="r.submitter.fullName" size="md"></app-avatar>
+                                            <div>
+                                                <strong class="author-name">{{ r.submitter.fullName }}</strong>
+                                                @if (r.submitter.specialization) {
+                                                    <span class="author-spec">{{ r.submitter.specialization }}</span>
+                                                }
+                                                <span class="post-time">{{ r.createdAt | date:'short' }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    @if (r.notes) {
+                                        <p class="request-notes">"{{ r.notes }}"</p>
+                                    }
+
+                                    <div class="mgmt-item-actions">
+                                        <button type="button" class="btn btn-primary btn-sm btn-approve" (click)="approveRequest(r.requestId)">
+                                            <svg lucideCheckCircle2 class="btn-mgmt-icon"></svg>
+                                            <span>{{ 'Community.Approve' | translate }}</span>
+                                        </button>
+                                        <button type="button" class="btn btn-delete btn-sm btn-reject" (click)="rejectRequest(r.requestId)">
+                                            <svg lucideXCircle class="btn-mgmt-icon"></svg>
+                                            <span>{{ 'Community.Reject' | translate }}</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            }
+
+                            @if (isLoadingJoinRequests()) {
+                                <div class="tab-loading-skeletons">
+                                    <app-skeleton-loader [type]="SkeletonType.Content"></app-skeleton-loader>
+                                </div>
+                            }
+
+                            @if (!isLoadingJoinRequests() && joinRequests().length === 0) {
+                                <div class="tab-empty-state">
+                                    <svg lucideUserPlus class="empty-icon"></svg>
+                                    <p class="empty-text">{{ 'Community.No_Join_Requests' | translate }}</p>
+                                </div>
+                            }
+                        </div>
+                    }
+                </div>
+            }
+        </article>
     }
 </div>

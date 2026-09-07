@@ -1,4 +1,4 @@
-﻿/* Host */
+/* Host */
 :host {
     display: block;
     width: 100%;
@@ -331,7 +331,7 @@
     list-style: none;
 }
 
-.btn-primary:hover:not(:disabled) /* â”€â”€ Scrollbar styling for dropdown â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ── Scrollbar styling for dropdown ───────────────────────────── */
 .dropdown-list::-webkit-scrollbar {
     width: 4px;
 }

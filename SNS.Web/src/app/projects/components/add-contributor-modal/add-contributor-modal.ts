@@ -10,6 +10,7 @@ import { ProfileInvitationCandidateDto } from '../../contracts/profile-invitatio
 import { ProjectRole } from '../../enums/project-role.enum';
 import { CircleLoader } from '../../../shared/Loading/components/circle-loader/circle-loader';
 import { ToastService } from '../../../identity/notifications/services/toast.service';
+import { AppAvatar } from '../../../shared/design-system/components/app-avatar/app-avatar';
 
 @Component({
   selector: 'app-add-contributor-modal',
@@ -23,7 +24,8 @@ import { ToastService } from '../../../identity/notifications/services/toast.ser
     LucideSearch,
     LucideCheck,
     LucideSparkles,
-    LucideSend
+    LucideSend,
+    AppAvatar
   ],
   templateUrl: './add-contributor-modal.html',
   styleUrl: './add-contributor-modal.css'
@@ -38,7 +40,6 @@ export class AddContributorModal implements OnInit {
   private toastService = inject(ToastService);
   private translate = inject(TranslateService);
 
-  readonly defaultAvatar = 'assets/images/default-avatar.png';
   readonly ProjectRole = ProjectRole;
   readonly availableRoles = Object.values(ProjectRole);
 
@@ -55,6 +56,7 @@ export class AddContributorModal implements OnInit {
 
   @HostListener('document:keydown.escape')
   onEscapeKey(): void {
+    if (this.isSubmitting()) return;
     this.onClose();
   }
 
@@ -100,13 +102,6 @@ export class AddContributorModal implements OnInit {
     this.errorMessage.set(null);
   }
 
-  onAvatarError(event: Event): void {
-    const target = event.target as HTMLImageElement;
-    if (target && target.src !== this.defaultAvatar) {
-      target.src = this.defaultAvatar;
-    }
-  }
-
   sendInvitation(): void {
     const candidate = this.selectedCandidate();
     if (!candidate || !this.projectId || this.isSubmitting()) return;
@@ -140,6 +135,12 @@ export class AddContributorModal implements OnInit {
   }
 
   onClose(): void {
+    if (this.isSubmitting()) return;
     this.closeModal.emit();
+  }
+
+  onBackdropClick(): void {
+    if (this.isSubmitting()) return;
+    this.onClose();
   }
 }

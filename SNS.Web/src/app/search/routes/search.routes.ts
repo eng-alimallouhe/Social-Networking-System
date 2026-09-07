@@ -15,6 +15,22 @@ export const SEARCH_ROUTES: Routes = [
                 loadComponent: () => import('../../profiles/profiles/components/profile-details/profile-details').then(m => m.ProfileDetails)
             },
             {
+                path: 'profile/:profileId/followers',
+                loadComponent: () => import('../../profiles/social-graph/components/followers/followers').then(m => m.Followers)
+            },
+            {
+                path: 'profile/:profileId/following',
+                loadComponent: () => import('../../profiles/social-graph/components/following/following').then(m => m.Following)
+            },
+            {
+                path: 'profile/:profileId/settings',
+                loadComponent: () => import('../../profiles/profiles/components/profile-edit/profile-edit').then(m => m.ProfileEdit)
+            },
+            {
+                path: 'profile/:profileId/edit',
+                redirectTo: 'profile/:profileId/settings'
+            },
+            {
                 path: 'project/:projectId',
                 loadComponent: () => import('../../projects/components/project-details/project-details').then(m => m.ProjectDetails)
             },
@@ -25,6 +41,10 @@ export const SEARCH_ROUTES: Routes = [
             {
                 path: 'job/:jobId',
                 loadComponent: () => import('../../jobs/jobs/components/job-details/job-details').then(m => m.JobDetails)
+            },
+            {
+                path: 'company/:companyId',
+                loadComponent: () => import('../../jobs/companies/components/company-details/company-details').then(m => m.CompanyDetails)
             },
             {
                 path: 'problem/:problemId',

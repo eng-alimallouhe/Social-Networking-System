@@ -222,39 +222,7 @@
     position: relative;
 }
 
-.avatar {
-    width: 84px;
-    height: 84px;
-    border-radius: var(--radius-full);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    overflow: hidden;
-    box-shadow: 0 0 0 4px var(--bg-surface),
-        0 0 0 6px var(--border-color);
-    transition: box-shadow var(--transition-base);
-}
 
-.user-card:hover .avatar {
-    box-shadow: 0 0 0 4px var(--bg-surface),
-        0 0 0 6px color-mix(in srgb, var(--primary-color) 35%, transparent);
-}
-
-.avatar-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.avatar-initials {
-    font-size: var(--text-xl);
-    font-weight: var(--font-weight-bold);
-    color: #fff;
-    letter-spacing: var(--tracking-wide);
-    user-select: none;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
-}
 
 /* â”€â”€ Identity â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .user-identity {
