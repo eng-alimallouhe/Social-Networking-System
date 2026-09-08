@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { HomeLayout } from '../components/home-layout/home-layout';
+import { SuggestedJobs } from '../../jobs/jobs/components/suggested-jobs/suggested-jobs';
 export const HomeRoutes: Routes = [
     {
         path: '',
@@ -24,6 +25,10 @@ export const HomeRoutes: Routes = [
             {
                 path: 'companies',
                 loadChildren: () => import('../../jobs/companies/routes/companies.routes').then(m => m.COMPANIES_ROUTES)
+            },
+            {
+                path: "jobs",
+                component: SuggestedJobs
             }
         ]
     }

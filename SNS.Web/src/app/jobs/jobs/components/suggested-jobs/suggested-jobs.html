@@ -1,0 +1,61 @@
+<section class="jobs-page">
+
+    <header class="page-header">
+        <div class="page-header-icon">
+            <svg lucideBriefcase></svg>
+        </div>
+
+        <div class="page-header-content">
+            <h1>{{ 'Jobs.SuggestedJobs' | translate }}</h1>
+
+            <p>
+                {{ 'Jobs.SuggestedJobsDescription' | translate }}
+            </p>
+        </div>
+    </header>
+
+    <div class="jobs-content">
+
+        @if (isLoading()) {
+
+        <div class="jobs-list">
+            @for (item of skeletonItems; track $index) {
+            <app-skeleton-loader [type]="loaderType.Content" width="100%" height="300px">
+            </app-skeleton-loader>
+            }
+        </div>
+
+        } @else if (jobs().length === 0) {
+
+        <div class="empty-state">
+            <div class="empty-state-icon">
+                <svg lucideBriefcase></svg>
+            </div>
+
+            <h2>
+                {{ 'Jobs.NoSuggestedJobs' | translate }}
+            </h2>
+
+            <p>
+                {{ 'Jobs.NoSuggestedJobsDescription' | translate }}
+            </p>
+        </div>
+
+        } @else {
+
+        <div class="jobs-list">
+
+            @for (job of jobs(); track job.id) {
+
+            <app-job [job]="job">
+            </app-job>
+
+            }
+
+        </div>
+
+        }
+
+    </div>
+
+</section>

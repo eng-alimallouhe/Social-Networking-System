@@ -9,7 +9,7 @@ export const IDENTITY_API_ROUTES = {
     PasswordManagement: 'identity/security-settings/PasswordManagement',
     Recovery: 'identity/security-settings/Recovery',
     AdminActions: 'identity/users/AdminActions',
-    Registration: 'identity/users/Registration',
+    Registration: 'identity/users/Registeration',
     UserManagement: 'identity/users/UserManagement',
 
     //Profiles:

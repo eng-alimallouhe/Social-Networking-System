@@ -12,5 +12,9 @@ export const IdentityRoutes: Routes = [
     {
         path: '',
         loadChildren: () => import('./onboarding.routes').then(m => m.OnboardingRoutes)
+    },
+    {
+        path: '',
+        loadChildren: () => import('../account-settings/users/routes/users.routes').then(m => m.UsersRoutes)
     }
 ];

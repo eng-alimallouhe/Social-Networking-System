@@ -9,6 +9,7 @@ import { Result } from "../../../shared/contracts/result";
 
 import { UpdateBasicInformationDto } from "../contracts/update-basic-information.dto";
 import { UpdateSocialLinksDto } from "../contracts/update-social-links.dto";
+import { AuthTokenDto } from "../../../identity/shared/contracts/auth-token.dto";
 
 @Injectable({
     providedIn: 'root'
@@ -18,7 +19,7 @@ export class ProfilesService {
     private skillApiUrl = environment.apiUrl + 'profiles/ProfileSkill';
     private http = inject(HttpClient);
 
-    public createProfile(profile: CreateProfileRequest): Observable<Result> {
+    public createProfile(profile: CreateProfileRequest): Observable<Result<AuthTokenDto>> {
         const formData = new FormData();
         formData.append('fullName', profile.fullName);
         formData.append('bio', profile.bio || '');
@@ -26,7 +27,7 @@ export class ProfilesService {
         if (profile.profilePicture) {
             formData.append('profilePicture', profile.profilePicture);
         }
-        return this.http.post<Result>(this.apiUrl, formData);
+        return this.http.post<Result<AuthTokenDto>>(this.apiUrl, formData);
     }
 
     public getProfileById(profileId: string): Observable<Result<ProfileDetailsDto>> {
@@ -65,4 +66,4 @@ export class ProfilesService {
             }
         });
     }
-}
+}

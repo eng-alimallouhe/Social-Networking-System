@@ -3,144 +3,138 @@
 </div>
 
 <aside class="sidebar-menu" [class.mobile-open]="homeState.isSideMenuOpen()">
+
     <div class="sidebar-header">
-        <a
-            class="profile-summary clickable"
-            [routerLink]="['/home/profiles', authService.getProfileId()]"
-            (click)="closeMenu()">
-            <app-avatar
-                [src]="currentProfile()?.profilePictureUrl"
-                [name]="currentProfile()?.fullName || 'User'"
+
+        <a class="profile-summary clickable" [routerLink]="[
+                '/home/profiles',
+                authenticationService.getProfileId()
+            ]" (click)="closeMenu()">
+
+            <app-avatar [src]="currentProfile()?.profilePictureUrl" [name]="currentProfile()?.fullName || 'User'"
                 size="lg">
             </app-avatar>
+
             <div class="profile-info">
+
                 @if (isLoadingProfile()) {
-                    <div class="profile-name-skeleton"></div>
-                    <div class="profile-spec-skeleton"></div>
+
+                <div class="profile-name-skeleton"></div>
+                <div class="profile-spec-skeleton"></div>
+
                 } @else {
-                    <h3 class="profile-name">{{ currentProfile()?.fullName || 'User' }}</h3>
-                    @if (currentProfile()?.specialization) {
-                        <p class="profile-spec">{{ currentProfile()?.specialization }}</p>
-                    }
+
+                <h3 class="profile-name">
+                    {{ currentProfile()?.fullName || 'User' }}
+                </h3>
+
+                @if (currentProfile()?.specialization) {
+                <p class="profile-spec">
+                    {{ currentProfile()?.specialization }}
+                </p>
                 }
+
+                }
+
             </div>
+
         </a>
+
         <!-- Close button mobile only -->
-        <button type="button" class="btn btn-icon btn-ghost close-btn mobile-only" (click)="closeMenu()" aria-label="Close menu">
+        <button type="button" class="btn btn-icon btn-ghost close-btn mobile-only" (click)="closeMenu()"
+            aria-label="Close menu">
+
             <svg lucideX></svg>
+
         </button>
+
     </div>
 
+
     <div class="sidebar-content">
-        <!-- استبدل قسم الـ links بهذا الكود -->
+
         <div class="links">
-            <a
-                class="link"
-                [routerLink]="['/home/profiles', authService.getProfileId()]"
-                routerLinkActive="active"
-                (click)="closeMenu()">
+
+            <!-- Profile -->
+            <a class="link" [routerLink]="[
+                    '/home/profiles',
+                    authenticationService.getProfileId()
+                ]" routerLinkActive="active" (click)="closeMenu()">
+
                 <div class="link-icon">
                     <svg lucideUser></svg>
                 </div>
-                <p class="link-title">{{ 'App.Layout.Profile' | translate }}</p>
+
+                <p class="link-title">
+                    {{ 'App.Layout.Profile' | translate }}
+                </p>
+
             </a>
 
-            <a routerLink="/settings" routerLinkActive="active" class="link" (click)="closeMenu()">
+
+            <!-- Account Settings -->
+            <a routerLink="/account-settings" routerLinkActive="active" class="link" (click)="closeMenu()">
+
                 <div class="link-icon">
                     <svg lucideSettings></svg>
                 </div>
-                <p class="link-title">{{ 'App.Menu.Account_Settings' | translate }}</p>
+
+                <p class="link-title">
+                    {{ 'App.Menu.Account_Settings' | translate }}
+                </p>
+
             </a>
 
-            <div class="divider"></div>
-
-            <!-- Communities & Jobs Sections -->
-            <div class="sidebar-sections">
-                <!-- 1. My Communities -->
-                <div class="sidebar-section">
-                    <div class="sidebar-section-header">
-                        <span class="section-title">{{ 'Communities.MyCommunities' | translate }}</span>
-                    </div>
-                    @if (isLoadingMyCommunities()) {
-                        <app-skeleton-loader [type]="SkeletonType.Content"></app-skeleton-loader>
-                    } @else if (myCommunities().length === 0) {
-                        <p class="sidebar-empty-text">{{ 'Communities.NoCommunitiesYet' | translate }}</p>
-                    } @else {
-                        <div class="sidebar-items-list">
-                            @for (comm of myCommunities(); track comm.id) {
-                                <a [routerLink]="['/home/communities', comm.id]" class="sidebar-list-item" (click)="closeMenu()">
-                                    <app-avatar [src]="comm.logoUrl" [name]="comm.name" size="sm"></app-avatar>
-                                    <div class="item-text">
-                                        <span class="item-title">{{ comm.name }}</span>
-                                        <span class="item-sub">{{ comm.membersCount }} {{ 'Communities.Members' | translate }}</span>
-                                    </div>
-                                </a>
-                            }
-                        </div>
-                    }
-                </div>
-
-                <div class="divider"></div>
-
-                <!-- 2. Suggested Communities -->
-                <div class="sidebar-section">
-                    <div class="sidebar-section-header">
-                        <span class="section-title">{{ 'Communities.SuggestedCommunities' | translate }}</span>
-                    </div>
-                    @if (isLoadingSuggestedCommunities()) {
-                        <app-skeleton-loader [type]="SkeletonType.Content"></app-skeleton-loader>
-                    } @else if (suggestedCommunities().length === 0) {
-                        <p class="sidebar-empty-text">{{ 'Communities.NoSuggestedCommunities' | translate }}</p>
-                    } @else {
-                        <div class="sidebar-items-list">
-                            @for (comm of suggestedCommunities(); track comm.id) {
-                                <a [routerLink]="['/home/communities', comm.id]" class="sidebar-list-item" (click)="closeMenu()">
-                                    <app-avatar [src]="comm.logoUrl" [name]="comm.name" size="sm"></app-avatar>
-                                    <div class="item-text">
-                                        <span class="item-title">{{ comm.name }}</span>
-                                        <span class="item-sub">{{ comm.membersCount }} {{ 'Communities.Members' | translate }}</span>
-                                    </div>
-                                </a>
-                            }
-                        </div>
-                    }
-                </div>
-
-                <div class="divider"></div>
-
-                <!-- 3. Suggested Jobs -->
-                <div class="sidebar-section">
-                    <div class="sidebar-section-header">
-                        <span class="section-title">{{ 'Jobs.SuggestedJobs' | translate }}</span>
-                    </div>
-                    @if (isLoadingSuggestedJobs()) {
-                        <app-skeleton-loader [type]="SkeletonType.Content"></app-skeleton-loader>
-                    } @else if (suggestedJobs().length === 0) {
-                        <p class="sidebar-empty-text">{{ 'Jobs.NoSuggestedJobs' | translate }}</p>
-                    } @else {
-                        <div class="sidebar-items-list">
-                            @for (job of suggestedJobs(); track job.id) {
-                                <a [routerLink]="['/home/search/job', job.id]" class="sidebar-list-item" (click)="closeMenu()">
-                                    <app-avatar [src]="job.companyLogoUrl" [name]="job.companyName" size="sm"></app-avatar>
-                                    <div class="item-text">
-                                        <span class="item-title">{{ job.title }}</span>
-                                        <span class="item-sub">{{ job.companyName }} • {{ job.location }}</span>
-                                    </div>
-                                </a>
-                            }
-                        </div>
-                    }
-                </div>
-            </div>
 
             <div class="divider"></div>
 
-            <button class="link logout-link" (click)="closeMenu()">
+
+            <!-- Communities -->
+            <a routerLink="/home/communities" routerLinkActive="active" class="link" (click)="closeMenu()">
+
+                <div class="link-icon">
+                    <svg lucideUsers></svg>
+                </div>
+
+                <p class="link-title">
+                    {{ 'App.Layout.Communities' | translate }}
+                </p>
+
+            </a>
+
+
+            <!-- Jobs -->
+            <a routerLink="/home/jobs" routerLinkActive="active" class="link" (click)="closeMenu()">
+
+                <div class="link-icon">
+                    <svg lucideBriefcase></svg>
+                </div>
+
+                <p class="link-title">
+                    {{ 'App.Layout.Jobs' | translate }}
+                </p>
+
+            </a>
+
+
+            <div class="divider"></div>
+
+
+            <!-- Logout -->
+            <button type="button" class="link logout-link" (click)="logout()">
+
                 <div class="link-icon">
                     <svg lucideLogOut></svg>
                 </div>
-                <p class="link-title">{{ 'App.Layout.Logout' | translate }}</p>
+
+                <p class="link-title">
+                    {{ 'App.Layout.Logout' | translate }}
+                </p>
+
             </button>
+
         </div>
+
     </div>
+
 </aside>

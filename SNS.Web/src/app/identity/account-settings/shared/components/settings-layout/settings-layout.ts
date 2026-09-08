@@ -5,7 +5,7 @@ import { Router, NavigationEnd, RouterLink, RouterLinkActive, RouterOutlet } fro
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { of, map, finalize, filter } from 'rxjs';
 import { FormsModule } from '@angular/forms';
-import { LucideSearch, LucideMenu, LucideX, LucideClock, LucideSearchX, LucideChevronRight } from '@lucide/angular';
+import { LucideSearch, LucideMenu, LucideX, LucideClock, LucideSearchX, LucideChevronRight, LucideHome } from '@lucide/angular';
 import { CircleLoader } from '../../../../../shared/Loading/components/circle-loader/circle-loader';
 import { LineLoader } from '../../../../../shared/Loading/components/line-loader/line-loader';
 import { SkeletonLoaderComponent, SkeletonType } from '../../../../../shared/Loading/components/skeleton-loader/skeleton-loader';
@@ -38,7 +38,8 @@ import { AppAvatar } from '../../../../../shared/design-system/components/app-av
     LucideChevronRight,
     HighlightPipe,
     CircleLoader,
-    AppAvatar
+    AppAvatar,
+    LucideHome
   ],
   templateUrl: './settings-layout.html',
   styleUrl: './settings-layout.css',
@@ -70,6 +71,8 @@ export class SettingsLayout implements OnInit {
   public homeSetting = this.allSettings.find(s => s.id === 'account-home');
   public navSettings = this.allSettings.filter(s => s.id !== 'account-home' && s.id !== 'account-archive');
   public archiveSettings = this.allSettings.filter(s => s.id === 'account-archive');
+  public home = this.allSettings.filter(s => s.id === 'back-to-home');
+
 
   userResource = rxResource({
     params: () => ({

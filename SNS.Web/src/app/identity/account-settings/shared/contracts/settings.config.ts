@@ -1,4 +1,4 @@
-import { LucideIdCard, LucideFingerprintPattern, LucideKeyRound, LucideShieldPlus, LucideArchive, LucideHouse } from '@lucide/angular';
+import { LucideIdCard, LucideFingerprintPattern, LucideKeyRound, LucideShieldPlus, LucideArchive, LucideHouse, LucideHome } from '@lucide/angular';
 
 export interface SettingEntry {
     id: string;
@@ -62,5 +62,15 @@ export const SETTINGS_CONFIG: SettingEntry[] = [
         route: '/account-settings/archive',
         icon: LucideArchive,
         iconClass: 'archive-icon-style'
-    }
+    },
+    {
+        id: 'back-to-home',
+        titleKey: 'App.Layout.Settings.Back_To_Home',
+        descriptionKey: 'App.Layout.Settings.Back_To_Home_Desc',
+        categoryKey: 'App.Layout.Settings.Category.Data',
+        keywords: ['Home', 'Download', 'Data', 'Backup', 'Export', 'Delete'],
+        route: '/home',
+        icon: LucideHome,
+        iconClass: 'archive-icon-style'
+    },
 ];

@@ -184,8 +184,7 @@ internal sealed class CreatePostCommandHandler
 
             for (int i = 0; i < request.Files.Count; i++)
             {
-                var type = request.Files[i].FileType == FileType.Image ?
-                        MediaType.Image : MediaType.Video;
+                var type = MediaType.Image;
 
                 var mediaObjectKey = $"posts/{post.Id}/{type}s/{Guid.NewGuid()}.{request.Files[i].Extension}";
                 
@@ -213,6 +212,7 @@ internal sealed class CreatePostCommandHandler
             _postRepo.Add(post);
 
             await _unitOfWork.CompleteAsync(cancellationToken);
+
             await _unitOfWork.CommitTransactionAsync(cancellationToken);
 
             await _mediator.Publish(

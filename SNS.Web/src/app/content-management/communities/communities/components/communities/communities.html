@@ -1,0 +1,86 @@
+<section class="communities-page">
+
+    <header class="page-header">
+        <div class="page-header-icon">
+            <svg lucideUsers></svg>
+        </div>
+
+        <div class="page-header-content">
+            <h1>{{ 'Communities.Title' | translate }}</h1>
+            <p>{{ 'Communities.Description' | translate }}</p>
+        </div>
+    </header>
+
+    <nav class="page-tabs" aria-label="Communities">
+        <button type="button" class="btn tab-button" [class.active]="activeTab() === 'mine'"
+            (click)="selectTab('mine')">
+
+            <svg lucideUsers></svg>
+
+            <span>
+                {{ 'Communities.MyCommunities' | translate }}
+            </span>
+        </button>
+
+        <button type="button" class="btn tab-button" [class.active]="activeTab() === 'suggested'"
+            (click)="selectTab('suggested')">
+
+            <svg lucideCompass></svg>
+
+            <span>
+                {{ 'Communities.SuggestedCommunities' | translate }}
+            </span>
+        </button>
+    </nav>
+
+    <div class="communities-content">
+
+        @if (isLoading()) {
+
+        <div class="communities-grid">
+            @for (item of skeletonItems; track $index) {
+            <app-skeleton-loader [type]="loaderType.Post" width="100%" height="220px">
+            </app-skeleton-loader>
+            }
+        </div>
+
+        } @else if (communities().length === 0) {
+
+        <div class="empty-state">
+            <div class="empty-state-icon">
+                <svg lucideUsers></svg>
+            </div>
+
+            <h2>
+                {{
+                (activeTab() === 'mine'
+                ? 'Communities.NoCommunitiesYet'
+                : 'Communities.NoSuggestedCommunities')
+                | translate
+                }}
+            </h2>
+
+            <p>
+                {{
+                (activeTab() === 'mine'
+                ? 'Communities.NoCommunitiesDescription'
+                : 'Communities.NoSuggestedCommunitiesDescription')
+                | translate
+                }}
+            </p>
+        </div>
+
+        } @else {
+
+        <div class="communities-grid">
+            @for (community of communities(); track community.id) {
+            <app-community [community]="community">
+            </app-community>
+            }
+        </div>
+
+        }
+
+    </div>
+
+</section>

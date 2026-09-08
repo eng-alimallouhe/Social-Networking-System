@@ -20,6 +20,7 @@ import { ProfilesService } from '../../services/profiles.service';
 import { finalize } from 'rxjs';
 import { AppInput } from '../../../../shared/design-system/components/app-input/app-input';
 import { GlobalLoaderService } from '../../../../shared/Loading/services/global-loader.service';
+import { AuthenticationService } from '../../../../identity/shared/services/authentication.service';
 
 /** All common software / engineering specializations. Replacing with an API
  *  call later only requires swapping the signal population in ngOnInit. */
@@ -76,6 +77,8 @@ export class CreateProfile {
   private router = inject(Router);
   private profileService = inject(ProfilesService);
   private loadingService = inject(GlobalLoaderService);
+
+  private readonly authService = inject(AuthenticationService);
 
   @ViewChild('fileInput') fileInputRef!: ElementRef<HTMLInputElement>;
 
@@ -201,7 +204,10 @@ export class CreateProfile {
         })
       )
       .subscribe({
-        next: () => {
+        next: (response) => {
+          if (response.isSuccess && response.value) {
+            this.authService.setAccessToken(response.value.token);
+          }
           this.router.navigate(['/onboarding/follow-people']);
         }
       });

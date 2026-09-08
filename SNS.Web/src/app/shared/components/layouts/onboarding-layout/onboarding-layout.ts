@@ -3,11 +3,12 @@ import { RouterOutlet } from '@angular/router';
 import { LineLoader } from '../../../Loading/components/line-loader/line-loader';
 import { LoadingOnboardingService } from './loading-onboarding.service';
 import { GlobalLoaderService } from '../../../Loading/services/global-loader.service';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-onboarding-layout',
   standalone: true,
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, TranslatePipe],
   templateUrl: './onboarding-layout.html',
   styleUrl: './onboarding-layout.css',
 })

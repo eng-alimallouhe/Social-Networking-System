@@ -8,12 +8,13 @@ import { VerifyUserCommand } from '../contracts/verify-user-command.dto';
 import { ResendVerifyCodeCommand } from '../contracts/resend-verify-code-command.dto';
 import { RegisterResponse } from '../contracts/register-response.dto';
 import { AuthTokenDto } from '../../../../shared/contracts/auth-token.dto';
+import { IDENTITY_API_ROUTES } from '../../../../../shared/constants/api-routes/identity-api.routes';
 
 @Injectable({
     providedIn: 'root'
 })
 export class RegisterationService {
-    private apiUrl = environment.apiUrl + 'Registeration';
+    private apiUrl = environment.apiUrl + IDENTITY_API_ROUTES.Registration;
     private http = inject(HttpClient);
 
     public register(request: RegisterUserCommand): Observable<Result<RegisterResponse>> {

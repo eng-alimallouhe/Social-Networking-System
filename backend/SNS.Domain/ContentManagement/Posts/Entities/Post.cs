@@ -67,6 +67,8 @@ public class Post : Entity, ISoftDeletable
         entity.Type = type;
         entity.Status = status;
         entity.EngagementScore = engagementScore;
+        entity.Status = PostStatus.Accepted;
+        entity.IsActive = true;
         return entity;
     }
 

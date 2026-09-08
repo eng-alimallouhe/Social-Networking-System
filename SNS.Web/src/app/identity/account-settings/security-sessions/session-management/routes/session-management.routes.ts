@@ -2,6 +2,7 @@ import { Routes } from "@angular/router";
 import { SessionsAndDevicesComponent } from "../components/sessions-and-devices/sessions-and-devices";
 import { AllSessionsComponent } from "../components/all-sessions/all-sessions";
 import { AllDevicesComponent } from "../components/all-devices/all-devices";
+import { AuthLayout } from "../../../../shared/layout/components/auth-layout/auth-layout";
 
 export const SessionManagementRoutes: Routes = [
     {
